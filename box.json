@@ -1,0 +1,36 @@
+{
+    "name":"cbox-commerce",
+    "version":"0.0.0",
+    "author":"",
+    "location":"jclausen/cbox-commerce#v0.0.0",
+    "homepage":"https://github.com/jclausen/cbox-commerce",
+    "documentation":"https://github.com/jclausen/cbox-commerce",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/jclausen/cbox-commerce"
+    },
+    "bugs":"https://github.com/jclausen/cbox-commerce/issues",
+    "slug":"cbox-commerce",
+    "shortDescription":"An e-commerce module for the coldbox platform",
+    "description":"An e-commerce module for the coldbox platform",
+    "type":"modules",
+    "dependencies":{},
+    "devDependencies":{
+        "coldbox":"^4.3.0+188",
+        "testbox":"^2.4.0+80"
+    },
+    "installPaths":{
+        "testbox":"testbox",
+        "coldbox":"tests/resources/app/coldbox"
+    },
+    "scripts":{
+        "postVersion":"package set location='jclausen/cbox-commerce#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push && !git push --tags"
+    },
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ]
+}
