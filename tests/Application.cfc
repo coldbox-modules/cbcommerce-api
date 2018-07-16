@@ -13,5 +13,8 @@ component {
     this.mappings[ "/testingModuleRoot" ] = listDeleteAt( rootPath, listLen( rootPath, '\/' ), "\/" );
     this.mappings[ "/app" ] = testsPath & "resources/app";
     this.mappings[ "/coldbox" ] = testsPath & "resources/app/coldbox";
+    this.mappings[ "/quick" ] = testsPath & "resources/app/modules/quick";
     this.mappings[ "/testbox" ] = rootPath & "/testbox";
+
+    this.datasource = "cboxCommerce";
 }

@@ -16,6 +16,9 @@ component{
 	this.mappings[ "/root" ] = rootPath;
 	this.mappings[ "/testingModuleRoot" ] = listDeleteAt( rootPath, listLen( rootPath, '\/' ), "\/" );
 	this.mappings[ "/coldbox" ] = appPath & "coldbox";
+    this.mappings[ "/quick" ] = appPath & "modules/quick";
+
+    this.datasource = "cboxCommerce";
 
 	// COLDBOX STATIC PROPERTY, DO NOT CHANGE UNLESS THIS IS NOT THE ROOT OF YOUR COLDBOX APP
 	COLDBOX_APP_ROOT_PATH = appPath;
