@@ -1,12 +1,12 @@
 /**
 * A cool Customer entity
 */
-component quick table="cboxCommerce_customerAddresses"{
+component quick table="cbc_customerAddresses" extends="quick.models.BaseEntity" accessors="true"{
 
     property name="keyType" inject="UUID@quick" persistent="false";
     
     // Persistent column properties
-    property name="isActive" column="";
+    property name="isActive";
     property name="createdTime";
     property name="modifiedTime";
     property name="designation";
@@ -15,7 +15,5 @@ component quick table="cboxCommerce_customerAddresses"{
         return belongsTo( "Customer", "FK_customer" );
     }
    
-   
-
 }
 

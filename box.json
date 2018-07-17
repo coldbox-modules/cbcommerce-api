@@ -15,17 +15,17 @@
     "description":"An e-commerce module for the coldbox platform",
     "type":"modules",
     "dependencies":{
-        "cfmigrations":"^1.2.1",
+        "cfmigrations":"^1.2.2",
         "quick":"^1.0.0"
     },
     "devDependencies":{
-        "coldbox": "^5.0.0",
+        "coldbox":"^5.0.0",
         "testbox":"^2.4.0+80"
     },
     "installPaths":{
         "testbox":"testbox/",
         "coldbox":"tests/resources/app/coldbox",
-        "quick":"tests/resources/app/modules/quick",
+        "quick":"modules/quick",
         "cfmigrations":"modules/cfmigrations/"
     },
     "scripts":{
