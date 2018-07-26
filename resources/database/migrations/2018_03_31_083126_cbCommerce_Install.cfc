@@ -31,7 +31,7 @@ component {
             table.string( 'name', 75 );
 		});
 
-		schema.create('lookups_users_roles', function ( table ) {
+		schema.create('cbc_lookups_users_roles', function ( table ) {
             table.increments('id');
 			
 			table.uuid( 'FK_user')
@@ -47,7 +47,7 @@ component {
 					.onDelete( "CASCADE" );
 		});
 		
-		schema.create('lookups_roles_permissions', function ( table ) {
+		schema.create('cbc_lookups_roles_permissions', function ( table ) {
 			table.increments('id');
 			
 			table.uuid( 'FK_permission')
@@ -63,7 +63,7 @@ component {
 					.onDelete( "CASCADE" );
 		});
 		
-		schema.create('lookups_users_explicitPermissions', function ( table ) {
+		schema.create('cbc_lookups_users_explicitPermissions', function ( table ) {
             table.increments('id');
 			
 			table.uuid( 'FK_permission')
@@ -469,8 +469,9 @@ component {
 		schema.dropIfExists( "cbc_orders" );
 		schema.dropIfExists( "cbc_products" );
 		schema.dropIfExists( "cbc_customerAddresses" );
-        schema.dropIfExists( "cbc_user_explicitPermissions" );
-        schema.dropIfExists( "cbc_userRoles_userPermissions" );
+        schema.dropIfExists( "cbc_lookups_users_roles" );
+        schema.dropIfExists( "cbc_lookups_roles_permissions" );
+        schema.dropIfExists( "cbc_lookups_users_explicitPermissions" );
         schema.dropIfExists( "cbc_userPermissions" );
         schema.dropIfExists( "cbc_userRoles" );
         schema.dropIfExists( "cbc_users" );
