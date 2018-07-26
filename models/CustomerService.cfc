@@ -1,7 +1,7 @@
 /**
 * I manage Customer
 */
-component singleton accessors="true" extends="quick.models.BaseEntity" accessors="true"{
+component singleton accessors="true"extends="BaseCBCommerceEntity" accessors="true"{
 	
 	// Properties
 	

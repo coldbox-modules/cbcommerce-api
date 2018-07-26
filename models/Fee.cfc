@@ -1,9 +1,7 @@
 /**
 * A cool Fees entity
 */
-component quick table="cbc_fees" extends="quick.models.BaseEntity" accessors="true"{
-    property name="keyType" inject="UUID@quick" persistent="false";
-    
+component quick table="cbc_fees"extends="BaseCBCommerceEntity" accessors="true"{
     // Persistent column properties
 
 	

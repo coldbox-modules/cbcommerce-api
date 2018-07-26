@@ -1,8 +1,6 @@
-/**
-* A cool Customer entity
-*/
-component quick table="cbc_customerAddresses" extends="quick.models.BaseEntity" accessors="true"{
+component extends="quick.models.BaseEntity"{
 
+    //default entity properties
     property name="keyType" inject="UUID@quick" persistent="false";
     
     // Persistent column properties
@@ -11,9 +9,4 @@ component quick table="cbc_customerAddresses" extends="quick.models.BaseEntity" 
     property name="modifiedTime";
     property name="designation";
 
-    function customer(){
-        return belongsTo( "Customer", "FK_customer" );
-    }
-   
 }
-

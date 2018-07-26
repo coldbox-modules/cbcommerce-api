@@ -1,8 +1,7 @@
 /**
 * A cool Discount entity
 */
-component quick table="cbc_ciscounts" extends="quick.models.BaseEntity" accessors="true"{
-    property name="keyType" inject="UUID@quick" persistent="false";
+component quick table="cbc_ciscounts"extends="BaseCBCommerceEntity" accessors="true"{
     
     // Persistent column properties
 

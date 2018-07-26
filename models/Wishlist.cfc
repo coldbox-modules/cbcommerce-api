@@ -6,9 +6,14 @@ component   table="cbc_wishlists"
 			accessors="true"
 			quick
 {
-    property name="keyType" inject="UUID@quick" persistent="false";
-    
-    // Persistent column properties
+   property name="name" type="string";
 
-	
+   function customer(){
+	   return belongsTo( "User", "FK_user" );
+   }
+
+   function items(){
+	   return hasMany( "WishlistItem", "FK_wishlist" );
+   }
+
 }

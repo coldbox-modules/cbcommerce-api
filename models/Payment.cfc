@@ -1,11 +1,19 @@
 /**
-* A cool Payment entity
+* cboxCommerce Payment Object
 */
-component quick table="cbc_payments" extends="quick.models.BaseEntity" accessors="true"{
-    property name="keyType" inject="UUID@quick" persistent="false";
-    
-    // Persistent column properties
+component   table="cbc_payments" 
+			extends="BaseCBCommerceEntity" 
+			accessors="true"
+			quick
+{  
+    property name="externalTransactionId" type="string";
+    property name="amount" type="numeric";
+    property name="comment" type="string";
+    property name="lastFour" type="numeric";
+    property name="paymentMethod" type="string"; 
 
-	
+    function order(){
+        return belongsTo( "Order", "FK_order" );
+    }
+
 }
-

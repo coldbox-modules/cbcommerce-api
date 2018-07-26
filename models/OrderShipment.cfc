@@ -1,18 +1,20 @@
 /**
-* I am a new Model Object
+* cboxCommerce Order Item Object
 */
-component accessors="true"{
-	
-	// Properties
-	
+component   table="cbc_orderShipments" 
+			extends="BaseCBCommerceEntity" 
+			accessors="true"
+			quick
+{   
+	property name="quantity" type="numeric";
+	property name="carrierReferenceNumber" type="string";
 
-	/**
-	 * Constructor
-	 */
-	OrderShipment function init(){
-		
-		return this;
+	function order(){
+		return belongsTo( "Order", "FK_order" );
 	}
-	
+
+	function inventoryLocation(){
+		return belongsTo(  "InventoryLocation", "FK_inventoryLocation" );
+	}
 
 }

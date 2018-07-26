@@ -1,17 +1,16 @@
 /**
-* I am a new Model Object
+* cboxCommerce default Product Object
 */
-component accessors="true"{
-	
-	// Properties
-	
+component   table="cbc_virtualSKUs" 
+			extends="BaseCBCommerceEntity" 
+			accessors="true"
+			quick
+{   	
+	//persistent properties
+	property name="location";
 
-	/**
-	 * Constructor
-	 */
-	VirtualSKU function init(){
-		
-		return this;
+	function sku(){
+		return belongsTo( "ProductSKU", "FK_sku" );
 	}
 	
 

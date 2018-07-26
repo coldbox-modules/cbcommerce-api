@@ -2,32 +2,102 @@ component {
     
     function up( schema ) {
 
-    	schema.create( "cbc_customers", function( table ){
+		schema.create( "cbc_users", function( table ){
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
-		    
-    	} );
+			table.boolean( "isActive" ).default( 1 );
+			table.string('firstName', 255).nullable();
+            table.string('lastName', 255).nullable();
+            table.string('email', 255).unique();
+            table.string('password');
+            table.char( 'primaryPhone', 25 ).nullable();
+            table.char( 'secondaryPhone', 25 ).nullable();
+		} );
+
+		schema.create( "cbc_userPermissions", function( table ){
+			table.uuid( 'id' ).primaryKey();
+            table.timestamp( "createdTime" );
+		    table.timestamp( "modifiedTime" );
+            table.string('prefix', 75);
+            table.string('suffix', 75);
+		} );
+
+		schema.create( "cbc_userRoles", function( table ){
+			table.uuid( 'id' ).primaryKey();
+            table.timestamp( "createdTime" );
+		    table.timestamp( "modifiedTime" );
+			table.boolean( "isActive" ).default( 1 );
+            table.string( 'name', 75 );
+		});
+
+		schema.create('lookups_users_roles', function ( table ) {
+            table.increments('id');
+			
+			table.uuid( 'FK_user')
+		    		.references( "id" )
+		    		.onTable( "cbc_users" )
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+
+			table.uuid( 'FK_user_role')
+					.references('id')
+					.on('cbc_userRoles')
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+		});
+		
+		schema.create('lookups_roles_permissions', function ( table ) {
+			table.increments('id');
+			
+			table.uuid( 'FK_permission')
+					.references('id')
+					.on('cbc_userPermissions')
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+
+			table.uuid( 'FK_user_role')
+					.references('id')
+					.on('cbc_userRoles')
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+		});
+		
+		schema.create('lookups_users_explicitPermissions', function ( table ) {
+            table.increments('id');
+			
+			table.uuid( 'FK_permission')
+					.references('id')
+					.on('cbc_userPermissions')
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+			
+			table.uuid( 'FK_user')
+					.references('id')
+					.on('users')
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+        });
+		
 
     	schema.create( "cbc_customerAddresses", function( table ){
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
-			table.text( "designation" );
+		    table.boolean( "isActive" ).default( 1 );
+			table.string( "designation", 25 );
 			
 			table.string( 'address1', 255 );
 			table.string( 'address2', 255 );
 			table.string( 'city', 255 );
 			table.string( 'province', 3 );
-			table.string( 'postal_code', 15);
-			table.string( 'country', 3 ).default( 'USA' );
-			table.boolean( 'isPrimary' ).default( false );
+			table.string( 'postalCode', 15);
+			table.string( 'country', 3 ).default( "'USA'" );
+			table.boolean( 'isPrimary' ).default( 0 );
 
-		    table.uuid( "FK_customer" )
+		    table.uuid( "FK_user" )
 		    		.references( "id" )
-		    		.onTable( "cbc_customers" )
+		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
 		    
@@ -38,7 +108,7 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 			
 			table.string( "name", 300 );
 			table.string( "shortDescription", 1000 );
@@ -54,7 +124,7 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
 			table.string( "name" );
 			table.string( "description");
@@ -67,7 +137,7 @@ component {
 
 		schema.create( "cbc_lookups_products_categories", function( table ){
 
-			table.increment( "increments" );
+			table.increments( "increments" );
 
 			table.uuid( "FK_product" )
 		    		.references( "id" )
@@ -85,53 +155,61 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
-			table.boolean( "isVirtual" ).default( false );
-			table.decimal( "cost" );
-			table.decimal( "basePrice" );
-			table.decimal( "minimumPrice" ).nullable();
-			table.decimal( "MSRP" ).nullable();
+			table.boolean( "isActive" ).default( 1 );
+			table.boolean( "isVirtual" ).default( 0 );
+			table.decimal( "cost", 8, 2 );
+			table.decimal( "basePrice",  8, 2  );
+			table.enum( "condition", [ 'New', 'Used'] ).default( "'Used'" );
+			table.enum( "subCondition", [ 'Like New', 'Good', 'Fair', 'Poor'] ).nullable();
+			table.text( "conditionDescription" ).nullable();
+			table.boolean( "isConsigned").default( 0 );
+			table.decimal( "minimumPrice", 8, 2  ).nullable();
+			table.decimal( "MSRP", 8, 2  ).nullable();
 			table.timestamp( "discontinueOn" ).nullable();
-			table.decimal( "packagedWeight" ).default( 0 );
-			table.decimal( "packagingX" ).default( 0 );
-			table.decimal( "packagingY" ).default( 0 );
-			table.decimal( "packagingZ" ).default( 0 );
+			table.decimal( "packagedWeight", 8, 2  ).default( 0 );
+			table.decimal( "packagingX", 8, 2  ).default( 0 );
+			table.decimal( "packagingY", 8, 2  ).default( 0 );
+			table.decimal( "packagingZ", 8, 2  ).default( 0 );
 			table.json( "options" );
 
 			table.uuid( "FK_product" )
 		    		.references( "id" )
 					.onTable( "cbc_products" );
+
+			table.uuid( "FK_consignee" )
+		    		.references( "id" )
+					.onTable( "cbc_users" );
 					
 		} );
 
-		schema.create( "cbc_virtualSKU", function( table ){
+		schema.create( "cbc_virtualSKUs", function( table ){
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
 			table.string( "location", 255 );
 
 			table.uuid( "FK_sku" )
 		    		.references( "id" )
-		    		.onTable( "cbc_skus" );
+		    		.onTable( "cbc_SKUs" );
 		} );
 
 		schema.create( "cbc_inventoryLocations", function( table ) {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
 			table.string( "name", 255 );
-			table.string( "description" );
+			table.string( "description" ).nullable();
 
 			table.string( 'address1', 255 );
 			table.string( 'address2', 255 );
 			table.string( 'city', 255 );
 			table.string( 'province', 3 );
-			table.string( 'postal_code', 15);
-			table.string( 'country', 3 ).default( 'USA' );
+			table.string( 'postalCode', 15);
+			table.string( 'country', 3 ).default( "'USA'" );
 		    
 		} );
 
@@ -139,12 +217,12 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
 			table.integer( "available" ).default( 0 );
 			table.integer( "unaccounted" ).default( 0 );
-			table.boolean( "countRequired" ).default( false );
-			table.boolean( "allowBackorder" ).default( false );
+			table.boolean( "countRequired" ).default( 0 );
+			table.boolean( "allowBackorder" ).default( 0 );
 
 			table.uuid( "FK_sku" )
 		    		.references( "id" )
@@ -162,20 +240,20 @@ component {
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
+		    table.boolean( "isActive" ).default( 1 );
 		    table.timestamp( "approvalTime" );
 		    table.timestamp( "fulfilledTime" );
-		    table.decimal( "subtotal" );
-		    table.decimal( "shipping" );
-		    table.decimal( "fees" );
-		    table.decimal( "tax" );
-		    table.decimal( "discount" );
-		    table.decimal( "total" );
+		    table.decimal( "subtotal", 8, 2  );
+		    table.decimal( "shipping", 8, 2  );
+		    table.decimal( "fees", 8, 2  );
+		    table.decimal( "tax", 8, 2  );
+		    table.decimal( "discount", 8, 2  );
+		    table.decimal( "total", 8, 2  );
 		    table.timestamp( "paidInFull" );
 		    
-		    table.uuid( "FK_customer" )
+		    table.uuid( "FK_user" )
 		    		.references( "id" )
-		    		.onTable( "cbc_customers" )
+		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
 
@@ -194,18 +272,18 @@ component {
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
-			table.boolean( "isVirtual" ).default( false );
+			table.boolean( "isActive" ).default( 1 );
+			table.boolean( "isVirtual" ).default( 0 );
 
 			table.integer( "quantityOrdered" ).default( 1 );
 			table.integer( "quantityCancelled" ).default( 0 );
 			table.integer( "quantityRefunded" ).default( 0 );
 			table.integer( "quantityDownloaded" ).nullable( 0 );
 
-			table.decimal( "originalPrice" );
-			table.decimal( "originalCost" );
+			table.decimal( "originalPrice", 8, 2  );
+			table.decimal( "originalCost", 8, 2  );
 
-			table.json( "productSnapshot" ).default('{}');
+			table.json( "productSnapshot" ).nullable();
 
 		    table.uuid( "FK_order" )
 					.references( "id" )
@@ -218,9 +296,10 @@ component {
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
 			table.integer( "quantity" );
+			table.string( "carrierReferenceNumber", 125 );
 
 			table.uuid( "FK_order" )
 					.references( "id" )
@@ -236,11 +315,11 @@ component {
     		table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
+		    table.boolean( "isActive" ).default( 1 );
 		    table.string( "externalTransactionID" );
 		    table.index( [ "externalTransactionID" ], "IDX_externalTransactionID" );
-		    table.decimal( "amount" );
-		    table.text( "comment" );
+		    table.decimal( "amount", 8, 2  );
+		    table.text( "comment" ).nullable();
 		    table.integer( "lastFour" );
 		    table.string( "paymentMethod" );
 
@@ -256,17 +335,20 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
+		    table.boolean( "isActive" ).default( 1 );
 		    table.json( "contents" );
-		    table.json( "audit" );
+		    table.json( "audit" ).nullable();
 
-		    table.uuid( "FK_customer" )
+		    table.uuid( "FK_user" )
 		    		.references( "id" )
-		    		.onTable( "cbc_customers" )
+		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
 
-		    table.uuid( "FK_order" ).references( "id" ).onTable( "cbc_orders" );
+			table.uuid( "FK_order" )
+					.nullable()
+					.references( "id" )
+					.onTable( "cbc_orders" );
 
 		} );
 
@@ -275,13 +357,13 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 			
 			table.string( "name", 255 );
 			
-			table.uuid( "FK_customer" )
+			table.uuid( "FK_user" )
 		    		.references( "id" )
-		    		.onTable( "cbc_customers" )
+		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
 		    
@@ -289,15 +371,23 @@ component {
 		    
 		} );
 
-		schema.create( "cbc_wishlistItems", function( ){
+		schema.create( "cbc_wishlistItems", function( table ){
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
+			table.boolean( "isActive" ).default( 1 );
 
-			table.uuid( "FK_product" )
+			table.decimal( "baselinePrice" );
+
+			table.uuid( "FK_sku" )
 		    		.references( "id" )
-		    		.onTable( "cbc_products" )
+		    		.onTable( "cbc_skus" )
+					.onDelete( "CASCADE" );
+
+			table.uuid( "FK_wishlist" )
+					.references( "id" )
+					.onTable( "cbc_wishlists" )
+					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
 
 		} );
@@ -307,8 +397,8 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-			table.boolean( "isActive" ).default( true );
-			table.string( "designation" ).default( 'product' );
+			table.boolean( "isActive" ).default( 1 );
+			table.string( "designation" ).default( "'image'" );
 			table.string( "title", 255 ).nullable();
 			table.string( "caption", 750 ).nullable();
 		    table.string( 'originalFileName', 255 );
@@ -321,8 +411,8 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
-			table.boolean( "isPrimary" ).default( false );
+		    table.boolean( "isActive" ).default( 1 );
+			table.boolean( "isPrimary" ).default( 0 );
 			table.integer( "displayOrder" ).default( 0 );
 
 			table.uuid( "FK_media" )
@@ -342,8 +432,8 @@ component {
 		    table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" );
 		    table.timestamp( "modifiedTime" );
-		    table.boolean( "isActive" ).default( true );
-			table.boolean( "isPrimary" ).default( false );
+		    table.boolean( "isActive" ).default( 1 );
+			table.boolean( "isPrimary" ).default( 0 );
 			table.integer( "displayOrder" ).default( 0 );
 
 			table.uuid( "FK_media" )
@@ -364,7 +454,6 @@ component {
         schema.dropIfExists( "cbc_orderShipments" );
         schema.dropIfExists( "cbc_orderItems" );
         schema.dropIfExists( "cbc_payments" );
-		schema.dropIfExists( "cbc_orders" );
 		schema.dropIfExists( "cbc_inventoryLocationStock");
 		schema.dropIfExists( "cbc_inventoryLocations");
 		schema.dropIfExists( "cbc_lookups_products_categories" );
@@ -372,14 +461,19 @@ component {
 		schema.dropIfExists( "cbc_productSKUMedia" );
 		schema.dropIfExists( "cbc_productMedia" );
 		schema.dropIfExists( "cbc_media" );
-		schema.dropIfExists( "cbc_wishlists" );
 		schema.dropIfExists( "cbc_wishlistItems" );
+		schema.dropIfExists( "cbc_wishlists" );
         schema.dropIfExists( "cbc_carts" );
 		schema.dropIfExists( "cbc_virtualSKUs" );
 		schema.dropIfExists( "cbc_SKUs" );
+		schema.dropIfExists( "cbc_orders" );
 		schema.dropIfExists( "cbc_products" );
-        schema.dropIfExists( "cbc_customerAddresses" );
-        schema.dropIfExists( "cbc_customers" );
+		schema.dropIfExists( "cbc_customerAddresses" );
+        schema.dropIfExists( "cbc_user_explicitPermissions" );
+        schema.dropIfExists( "cbc_userRoles_userPermissions" );
+        schema.dropIfExists( "cbc_userPermissions" );
+        schema.dropIfExists( "cbc_userRoles" );
+        schema.dropIfExists( "cbc_users" );
     }
 
 }
