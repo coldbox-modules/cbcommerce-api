@@ -14,7 +14,7 @@ component   table="cbc_orderShipments"
 	}
 
 	function inventoryLocation(){
-		return belongsTo(  "InventoryLocation", "FK_inventoryLocation" );
+		return belongsTo(  "InventoryLocation@cbc", "FK_inventoryLocation" );
 	}
 
 }

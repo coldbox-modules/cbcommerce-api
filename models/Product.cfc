@@ -5,7 +5,7 @@ component   table="cbc_products"
 			extends="BaseCBCommerceEntity" 
 			accessors="true"
 			quick
-{
+{	
     // Column Properties
 	property name="name" type="string" default="";
 	property name="shortDescription" type="string" default="";
@@ -15,15 +15,15 @@ component   table="cbc_products"
 
 	// Relationships
 	function skus(){
-		return hasMany( "ProductSKU", "FK_product" );
+		return hasMany( "ProductSKU@cbc", "FK_product" );
 	}
 
 	function categories(){
-		return belongsToMany( "ProductCategory", "cbc_lookups_products_categories",  "FK_product", "FK_category" );
+		return belongsToMany( "ProductCategory@cbc", "cbc_lookups_products_categories",  "FK_product", "FK_category" );
 	}
 
 	function media(){
-		return hasMany( "ProductMedia", "FK_product" );
+		return hasMany( "ProductMedia@cbc", "FK_product" );
 	}
 
 }

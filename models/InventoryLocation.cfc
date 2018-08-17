@@ -16,6 +16,6 @@ component   table="cbc_inventoryLocations"
 	property name="country" type="string" default="";
 
 	function inventory(){
-		return hasMany( "InventoryLocationStock", "FK_inventoryLocation" );
+		return hasMany( "InventoryLocationStock@cbc", "FK_inventoryLocation" );
 	}
 }

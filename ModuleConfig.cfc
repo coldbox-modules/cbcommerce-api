@@ -3,23 +3,18 @@ component {
     this.name = "cbox-commerce";
     this.author = "Jon Clausen <jclausen@ortussolutions.com>";
     this.webUrl = "https://github.com/jclausen/cbox-commerce";
-    this.dependencies = [ "quick", "cfmigrations" ];
+    this.dependencies = [ "quick", "cfmigrations", "cffractal", "cbstorages", "BCrypt", "cbsecurity" ];
     this.cfmapping = "cbc";
+    this.modelNamespace	= "cbc";
     this.entryPoint = "cbox-commerce";
-
-
-    private function getEnv( required string name, any defaultValue ){
-
-    }
 
     function configure() {
         settings = {
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases 
                 "externalModel" : false,
-                "externalModelMapping" : "",
-                "externalSKU" : false,
-                "externalSKUMapping": "",
+                "externalModelBinding" : "",
+                "externalModelMapping" : {},
                 "defaultCurrency" : "USD"
             },
             "media" : {
@@ -35,9 +30,10 @@ component {
                     "bucket" : getEnv('AWS_BUCKET', ''),
                     // the AWS base URL for serving assets ( e.g. cloudflare )
                     "url" : getEnv('AWS_URL', ''),
-                }
-
-            }
+                },
+                //the security service - may be changed to use a different wirebox mapping ( e.g. - ContentBox )
+                "securityService" : "SecurityService@cbc"
+            },
             "payments" : {
                 "processor" : {
                     "default" : "StripeProcessor@cbc",
@@ -48,6 +44,14 @@ component {
             }
         };
 
+        // Custom Declared Interceptors
+		interceptors = [
+			{  
+					class="cbc.interceptors.CBCQuickEntity",
+					name="CBCQuickEntityInterceptor"
+			}
+		];
+
     }
 
     function onLoad() {
@@ -55,16 +59,9 @@ component {
         if( settings.products.externalModel ){
             binder
                 .map( 
-                    alias = "Product@cbc", 
+                    alias = "ExternalProduct@cbc", 
                     force = true 
                 ).to( settings.products.externalModelMapping );
-        }
-        if( settings.products.externalSKU ){
-            binder
-                .map( 
-                    alias = "ProductSKU@cbc", 
-                    force = true 
-                ).to( settings.products.externalSKUMapping );
         }
     }
 }

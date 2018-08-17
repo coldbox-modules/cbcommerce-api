@@ -7,11 +7,11 @@ component quick table="cbc_userRoles"extends="BaseCBCommerceEntity" accessors="t
     property name="name";
 
     function users(){
-        return belongsToMany( "User" , "lookups_users_roles", "FK_role", "FK_user" );
+        return belongsToMany( "User@cbc" , "lookups_users_roles", "FK_role", "FK_user" );
     }
 
     function permissions(){
-        return belongsToMany( "UserPermission", "lookups_roles_permissions", "FK_role", "FK_permission" );
+        return belongsToMany( "UserPermission@cbc", "lookups_roles_permissions", "FK_role", "FK_permission" );
     }
 
 

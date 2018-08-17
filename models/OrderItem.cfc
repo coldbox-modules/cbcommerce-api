@@ -17,7 +17,11 @@ component   table="cbc_orderItems"
     property name="productSnapshot" type="string";
 
     function order(){
-        return belongsTo( "Order", "FK_order" );
+        return belongsTo( "Order@cbc", "FK_order" );
+    }
+
+    function sku(){
+        return belongsTo( "ProductSKU@cbc", "FK_sku" );
     }
 
 }

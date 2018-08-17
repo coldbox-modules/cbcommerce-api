@@ -10,11 +10,11 @@ component   table="cbc_wishlistItems"
    property name="baselinePrice" type="numeric";
 
    function sku(){
-       return belongsTo( "ProductSKU", "FK_sku" );
+       return belongsTo( "ProductSKU@cbc", "FK_sku" );
    }
 
    function wishlist(){
-	   return belongsTo( "Wishlist", "FK_wishlist" );
+	   return belongsTo( "Wishlist@cbc", "FK_wishlist" );
    }
 
 }

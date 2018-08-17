@@ -1,0 +1,71 @@
+{
+    "primaryPhone": "",
+    "emailName": "",
+    "lastName": "",
+    "secondaryPhone": "",
+    "password": "",
+    "modifiedTime": "2018-07-27T22:13:33-04:00",
+    "firstName": "",
+    "id": "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2",
+    "createdTime": "2018-07-27T22:13:33-04:00",
+    "shippingAddresses" : {
+        "results" : ["4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2"],
+        "resultsMap" : {
+            "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2" : {
+                "postalCode": "",
+                "address2": "",
+                "country": "",
+                "address1": "",
+                "modifiedTime": "2018-07-27T22:14:48-04:00",
+                "id": "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2",
+                "createdTime": "2018-07-27T22:14:48-04:00",
+                "city": "",
+                "province": ""
+            }
+        }
+    },
+    "billingAddresses" : {
+        "results": [
+            "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2"
+        ],
+        "resultsMap": {
+            "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2": {
+                "postalCode": "",
+                "address2": "",
+                "country": "",
+                "address1": "",
+                "modifiedTime": "2018-07-27T22:14:48-04:00",
+                "id": "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2",
+                "createdTime": "2018-07-27T22:14:48-04:00",
+                "city": "",
+                "province": ""
+            }
+        }
+    },
+    "activeCart" : {
+        "modifiedTime": "2018-07-27T22:16:45-04:00",
+        "id": "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2",
+        "audit": [
+        ],
+        "createdTime": "2018-07-27T22:16:45-04:00",
+        "contents": [
+            {
+                "quantity" : 1,
+                "priceOnAdd" : 0.0,
+                "product" : {
+                    "name": "",
+                    "shortDescription" : "",
+                    "id": "4D8F68DF-E526-4A4F-BC3B7CE52B1B98E2",
+                    "href" : ""
+                },
+                "sku" : {
+                    "id" : "",
+                    "options" : {},
+                    "condition": "New",
+                    "subCondition": "",
+                    "conditionDescription": ""
+                }
+            }      
+        ]
+    }
+}

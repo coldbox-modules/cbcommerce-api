@@ -57,6 +57,12 @@
 			development = "localhost,^127\.0\.0\.1"
 		};
 
+		moduleSettings = {
+			"quick" : {
+				"defaultGrammar" : "MySQLGrammar"
+			}
+		};
+
 		// Module Directives
 		modules = {
 			//Turn to false in production

@@ -13,7 +13,7 @@ component   table="cbc_payments"
     property name="paymentMethod" type="string"; 
 
     function order(){
-        return belongsTo( "Order", "FK_order" );
+        return belongsTo( "Order@cbc", "FK_order" );
     }
 
 }

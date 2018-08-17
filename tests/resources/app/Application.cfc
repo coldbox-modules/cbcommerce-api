@@ -16,7 +16,8 @@ component{
 	this.mappings[ "/root" ] = rootPath;
 	this.mappings[ "/testingModuleRoot" ] = listDeleteAt( rootPath, listLen( rootPath, '\/' ), "\/" );
 	this.mappings[ "/coldbox" ] = appPath & "coldbox";
-    this.mappings[ "/quick" ] = appPath & "modules/quick";
+    this.mappings[ "/config"] = appPath & "config";
+    this.mappings[ "/quick" ] = rootPath & "modules/quick";
 
     this.datasource = "cboxCommerce";
 
@@ -25,7 +26,7 @@ component{
 	// The web server mapping to this application. Used for remote purposes or static purposes
 	COLDBOX_APP_MAPPING   = "";
 	// COLDBOX PROPERTIES
-	COLDBOX_CONFIG_FILE 	 = "";
+	COLDBOX_CONFIG_FILE 	 = "config.Coldbox";
 	// COLDBOX APPLICATION KEY OVERRIDE
 	COLDBOX_APP_KEY 		 = "";
 
@@ -43,6 +44,12 @@ component{
 
 	// request start
 	public boolean function onRequestStart( string targetPage ){
+
+		if( !application.cbController.getModuleService().isModuleRegistered( 'cbox-commerce' ) ){
+			application.cbController
+				.getModuleService()
+				.registerAndActivateModule( "cbox-commerce", "testingModuleRoot" );
+		}
 		// Process ColdBox Request
 		application.cbBootstrap.onRequestStart( arguments.targetPage );
 

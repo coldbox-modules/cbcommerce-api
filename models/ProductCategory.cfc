@@ -1,7 +1,8 @@
 /**
 * cboxCommerce default Product Category Object
 */
-component   table="cbc_productCategories"  
+component   table="cbc_productCategories"
+			extends="BaseCBCommerceEntity" 
 			accessors="true"
 			quick
 {
@@ -11,15 +12,15 @@ component   table="cbc_productCategories"
 	
 	// Relationships
 	function parent(){
-		return belongsTo( "ProductCategory", "FK_parent");
+		return belongsTo( "ProductCategory@cbc", "FK_parent");
 	}
 
 	function children(){
-		return hasMany( "ProductCategory", "FK_parent" );
+		return hasMany( "ProductCategory@cbc", "FK_parent" );
 	}
 
 	function products(){
-		return belongsToMany( "Product", "cbc_lookups_products_categories", "FK_category",  "FK_product" );
+		return belongsToMany( "Product@cbc", "cbc_lookups_products_categories", "FK_category",  "FK_product" );
 	}
 
 }

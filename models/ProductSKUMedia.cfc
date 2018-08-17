@@ -2,6 +2,7 @@
 * cboxCommerce default Product Category Object
 */
 component   table="cbc_productSKUMedia"  
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
 {
@@ -9,11 +10,11 @@ component   table="cbc_productSKUMedia"
 	property name="displayOrder" type="numeric" default=0;
 	
 	function mediaItem(){
-		return belongsTo( "Media", "FK_media" );
+		return belongsTo( "Media@cbc", "FK_media" );
 	}
 
 	function sku(){
-		return belongsTo( "ProductSKU", "FK_sku" );
+		return belongsTo( "ProductSKU@cbc", "FK_sku" );
 	}
 
 }

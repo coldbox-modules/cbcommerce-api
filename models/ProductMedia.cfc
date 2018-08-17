@@ -2,6 +2,7 @@
 * cboxCommerce default Product Category Object
 */
 component   table="cbc_productMedia"  
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
 {

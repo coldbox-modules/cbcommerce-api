@@ -12,11 +12,11 @@ component table="cbc_carts"
    property name="audit";
 
    function customer(){
-   		return belongsTo( "User", "FK_user" );
+   		return belongsTo( "User@cbc", "FK_user" );
    }
 
    function order(){
-   		return belongsTo( "Order", "FK_order" );
+   		return belongsTo( "Order@cbc", "FK_order" );
    }
 	
 }

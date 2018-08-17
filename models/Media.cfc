@@ -13,5 +13,9 @@ component   table="cbc_media"
 	property name="originalFileName" type="string";
 	property name="fileLocation" type="string";
 	property name="fileSizeBytes" type="string";
+
+	function url(){
+		return "";
+	}
 	
 }

@@ -6,7 +6,7 @@ component   table="cbc_skus"
 			accessors="true"
 			quick
 {   
-    // Persistent column properties
+	// Persistent column properties
 	property name="isVirtual" type="boolean" default="false";
 	property name="isConsigned" type="boolean" default="false";
 	property name="cost" type="numeric";
@@ -24,15 +24,19 @@ component   table="cbc_skus"
 	property name="conditionDescription" type="string";
 
 	function product(){
-		return belongsTo( "Product", "FK_product" );
+		return belongsTo( "Product@cbc", "FK_product" );
+	}
+
+	function images(){
+		return hasMany( "ProductSkuMedia@cbc", "FK_sku" );
 	}
 
 	function virtualSKUs(){
-		return hasMany( "VirtualSKU", "FK_sku" );
+		return hasMany( "VirtualSKU@cbc", "FK_sku" );
 	}
 
 	function consignee(){
-		return belongsTo( "User", "FK_consignee" );
+		return belongsTo( "User@cbc", "FK_consignee" );
 	}
 	
 }

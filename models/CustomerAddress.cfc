@@ -11,7 +11,7 @@ component quick table="cbc_customerAddresses"extends="BaseCBCommerceEntity" acce
     property name="country" default="";
 
     function customer(){
-        return belongsTo( "User", "FK_user" );
+        return belongsTo( "User@cbc", "FK_user" );
     }
    
 }
