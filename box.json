@@ -15,7 +15,7 @@
     "description":"An e-commerce module for the coldbox platform",
     "type":"modules",
     "dependencies":{
-        "cfmigrations":"^1.2.2",
+        "cfmigrations":"^1.3.1",
         "quick":"^1.0.0",
         "cffractal":"6.1.2",
         "cbsecurity":"^1.3.0",
@@ -32,11 +32,11 @@
         "coldbox":"tests/resources/app/coldbox/",
         "quick":"modules/quick/",
         "cfmigrations":"modules/cfmigrations/",
-        "cffractal":"modules/cffractal",
-        "cbsecurity":"modules/cbsecurity",
-        "cbstorages":"modules/cbstorages",
-        "cbguard":"modules/cbguard",
-        "BCrypt":"modules/BCrypt"
+        "cffractal":"modules/cffractal/",
+        "cbsecurity":"modules/cbsecurity/",
+        "cbstorages":"modules/cbstorages/",
+        "cbguard":"modules/cbguard/",
+        "BCrypt":"modules/BCrypt/"
     },
     "scripts":{
         "postVersion":"package set location='jclausen/cbox-commerce#v`package version`'",
@@ -55,6 +55,7 @@
             "class":"${DB_CLASS}",
             "username":"${DB_USER}"
         },
+        "schema":"${DB_DATABASE}",
         "defaultGrammar":"MySQLGrammar"
     }
 }
