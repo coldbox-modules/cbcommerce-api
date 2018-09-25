@@ -10,8 +10,15 @@ component   table="cbc_products"
 	property name="name" type="string" default="";
 	property name="shortDescription" type="string" default="";
 	property name="description" type="string" default="";
-	property name="hasOptions" type="boolean" default="false";
+	// need to scope this as a bit until quick fixes the boolean handling
+	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
+
+	this.constraints = {
+		name = { required : true },
+		hasOptions = { required : true, type : "numeric" },
+		requiredOptions = { required : true, type : "string" }
+	};
 
 	// Relationships
 	function skus(){

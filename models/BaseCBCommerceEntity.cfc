@@ -9,4 +9,37 @@ component extends="quick.models.BaseEntity"{
     property name="createdTime" type="date" default="#now()#";
     property name="modifiedTime" type="date" default="#now()#";
 
+
+    /**
+	* Retrieves an entity by its primary key.
+	* If the entity doesn't exist, it throws an exception.
+	*
+	* @throws EntityNotFoundException
+	*
+	* @id The primary key for the entity.
+	*
+	* @return A loaded entity.
+	*/
+	any function getOrFail( required any id ) {
+
+		if ( isNull( id ) || ! len( id ) ) {
+			throw(
+				type = "EntityNotFoundException",
+				message = "Could not find a #getMetaData( this ).name# entity. The identifier provied was empty."
+			);
+		}
+
+		var entityInstance = this.find( id );
+		
+		if ( isNull( entityInstance ) ) {
+			throw(
+				type = "EntityNotFoundException",
+				message = "Could not find a #getMetaData( this ).name# entity with id [#id#]."
+			);
+		}
+
+		return entityInstance;
+	
+	}
+
 }

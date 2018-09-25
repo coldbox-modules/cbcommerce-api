@@ -50,8 +50,34 @@ component {
 					class="cbc.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
 			}
-		];
-
+        ];
+        
+        // API Routing
+        router
+            .resources( 
+                route   = "api/v1/products",
+                handler = "API.v1.Photos"
+            )
+            .resources(
+                route   = "api/v1/cart",
+                handler = "API.v1.Cart"   
+            )
+            .resources(
+                route   = "api/v1/orders",
+                handler = "API.v1.Cart"
+            )
+            .resources(
+                route   = "api/v1/customers",
+                handler = "API.v1.Customers"
+            )
+            .resources(
+                route   = "api/v1/payments",
+                handler = "API.v1.Payments"
+            )
+            .resources(
+                route = "api/v1/skus",
+                handler = "API.v1.ProductSKUs"
+            );
     }
 
     function onLoad() {

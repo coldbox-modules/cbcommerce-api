@@ -55,6 +55,8 @@ component extends="coldbox.system.EventHandler"{
 		event.paramValue( "currency", "USD" );
 		event.paramValue( "maxrows", 25 );
 		event.paramValue( "offset", 0 );
+		event.paramValue( "sortOrder", "createdTime DESC" );
+
 		//options includes
 		event.paramValue( "returnOptions", "" );
 
@@ -90,6 +92,16 @@ component extends="coldbox.system.EventHandler"{
 						.addMessage( e.message )
 						.setStatusText( "Expectation Failed" )
 						.setStatusCode( STATUS.EXPECTATION_FAILED );
+		} catch ( EntityNotFoundException e ) {
+			prc.response.addMessage( e.message );
+			fourOhFour( event, rc, prc );
+		} catch ( EntityValidationException e ) {
+			prc.response.setStatusCode( STATUS.NOT_ACCEPTABLE );
+			prc.response.setError( true );
+			prc.response.addMessage( deserializeJSON( e.message ) );
+		} catch ( AuthorizationException e ) {
+			prc.response.setStatusCode( STATUS.NOT_AUTHORIZED );
+			prc.response.addMessage( e.message );
 		} catch( Any e ){
 			log.error( "Error calling #event.getCurrentEvent()#: #e.message# #e.detail#", e.stackTrace );	
 			// Setup General Error Response
@@ -358,5 +370,26 @@ component extends="coldbox.system.EventHandler"{
 			abort;
 		}
 	}
+
+
+	/**
+	 * Validates a model and throws a custom exception if validation fails
+	 *
+	 * @model  The model to validate
+	 */
+	public function validateModelOrFail( model ) {
+
+		var validationResults = validateModel( model );
+
+        if ( validationResults.hasErrors() ) {
+            var messages = validationResults.getAllErrors();
+            arrayPrepend( messages, "The #getMetadata( model ).name# failed to pass validation.  Please try again." );
+            throw(
+                type = "EntityValidationException",
+                message = serializeJSON( messages )
+            );
+        }
+        return this;
+    }
 
 }
