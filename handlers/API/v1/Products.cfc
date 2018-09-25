@@ -35,6 +35,8 @@ component{
 
 		validateModelOrFail( prc.product );
 
+		prc.product.save();
+
 		prc.response.setData( 
 			fractal.builder()
 				.item( prc.product )
@@ -77,6 +79,8 @@ component{
 		prc.product.fill( rc );
 
 		validateModelOrFail( prc.product );
+
+		prc.product.save();
 
 		prc.response.setData( 
 			fractal.builder()
