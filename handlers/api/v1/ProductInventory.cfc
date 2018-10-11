@@ -1,14 +1,15 @@
 /**
-* Products Handler - API v1
+* Product SKUs Handler - API v1
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler"{
-	property name="entityService" inject="ProductService@cbc";
-
-	this.APIBaseURL = '/store/api/v1/products'
+component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 	
-	// (GET) /cbc/api/v1/products
+	property name="entityService" inject="InventoryLocationStockService@cbc";
+
+	this.APIBaseURL = '/store/api/v1/product-inventory'
+	
+	// (GET) /cbc/api/v1/product-inventory
 	function index( event, rc, prc ){
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
@@ -18,7 +19,7 @@ component extends="BaseAPIHandler"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -30,20 +31,20 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /cbc/api/v1/products
-	function create( event, rc, prc ) secured="Products:Manage"{
+	// (POST) /cbc/api/v1/product-inventory
+	function create( event, rc, prc ){
 		
-		prc.product = entityService.newEntity().fill( rc );
+		prc.sku = entityService.newEntity().fill( rc );
 
-		validateModelOrFail( prc.product );
+		validateModelOrFail( prc.sku );
 
-		prc.product.save();
+		prc.sku.save();
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -54,16 +55,16 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /cbc/api/v1/products/:id
+	// (GET) /cbc/api/v1/product-inventory/:id
 	function show( event, rc, prc ){
 		
-		prc.product = entityService.newEntity().getOrFail( rc.id );
+		prc.sku = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -74,21 +75,21 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /cbc/api/v1/products/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
-		prc.product = entityService.newEntity().getOrFail( rc.id );
+	// (PUT|PATCH) /cbc/api/v1/product-inventory/:id
+	function update( event, rc, prc ){
+		prc.sku = entityService.newEntity().getOrFail( rc.id );
 
-		prc.product.fill( rc );
+		prc.sku.fill( rc );
 
-		validateModelOrFail( prc.product );
+		validateModelOrFail( prc.sku );
 
-		prc.product.save();
+		prc.sku.save();
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -100,15 +101,14 @@ component extends="BaseAPIHandler"{
 		
 	}
 
-	// (DELETE) /cbc/api/v1/products/:id
-	function delete( event, rc, prc ) secured="Products:Manage"{
+	// (DELETE) /cbc/api/v1/product-inventory/:id
+	function delete( event, rc, prc ){
 
-		prc.product = entityService.newEntity().getOrFail( rc.id );
-		prc.product.delete();
+		prc.sku = entityService.newEntity().getOrFail( rc.id );
+		prc.sku.delete();
 
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
 	}
 
-	
 }

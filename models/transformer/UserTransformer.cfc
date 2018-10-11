@@ -20,7 +20,7 @@ component extends="BaseModelTransformer"{
 
     function includeRoles( activeEntity ){
         return collection(
-            activeEntity.getRoles().getCollection(),
+            activeEntity.getRoles(),
             wirebox.getInstance( "BaseModelTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         )
@@ -29,7 +29,7 @@ component extends="BaseModelTransformer"{
 
     function includeExplicitPermissions( activeEntity ){
         return collection(
-            activeEntity.getExplicitPermissions().getCollection(),
+            activeEntity.getExplicitPermissions(),
             wirebox.getInstance( "BaseModelTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         )

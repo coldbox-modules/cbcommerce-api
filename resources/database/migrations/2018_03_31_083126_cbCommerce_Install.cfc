@@ -456,6 +456,7 @@ component {
 		    table.json( "audit" ).nullable();
 
 		    table.uuid( "FK_user" )
+					.nullable()
 		    		.references( "id" )
 		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )

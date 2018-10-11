@@ -4,11 +4,11 @@
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
 component extends="BaseAPIHandler"{
-	property name="entityService" inject="ProductService@cbc";
+	property name="entityService" inject="ProductCategoryService@cbc";
 
-	this.APIBaseURL = '/store/api/v1/products'
+	this.APIBaseURL = '/store/api/v1/product-categories'
 	
-	// (GET) /cbc/api/v1/products
+	// (GET) /cbc/api/v1/product-categories
 	function index( event, rc, prc ){
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
@@ -18,7 +18,7 @@ component extends="BaseAPIHandler"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -30,20 +30,20 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /cbc/api/v1/products
+	// (POST) /cbc/api/v1/product-categories
 	function create( event, rc, prc ) secured="Products:Manage"{
 		
-		prc.product = entityService.newEntity().fill( rc );
+		prc.category = entityService.newEntity().fill( rc );
 
-		validateModelOrFail( prc.product );
+		validateModelOrFail( prc.category );
 
-		prc.product.save();
+		prc.category.save();
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -54,16 +54,16 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /cbc/api/v1/products/:id
+	// (GET) /cbc/api/v1/product-categories/:id
 	function show( event, rc, prc ){
 		
-		prc.product = entityService.newEntity().getOrFail( rc.id );
+		prc.category = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -74,21 +74,21 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /cbc/api/v1/products/:id
+	// (PUT|PATCH) /cbc/api/v1/product-categories/:id
 	function update( event, rc, prc ) secured="Products:Edit"{
-		prc.product = entityService.newEntity().getOrFail( rc.id );
+		prc.category = entityService.newEntity().getOrFail( rc.id );
 
-		prc.product.fill( rc );
+		prc.category.fill( rc );
 
-		validateModelOrFail( prc.product );
+		validateModelOrFail( prc.category );
 
-		prc.product.save();
+		prc.category.save();
 
 		prc.response.setData( 
 			fractal.builder()
-				.item( prc.product )
+				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbc" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -100,11 +100,11 @@ component extends="BaseAPIHandler"{
 		
 	}
 
-	// (DELETE) /cbc/api/v1/products/:id
+	// (DELETE) /cbc/api/v1/product-categories/:id
 	function delete( event, rc, prc ) secured="Products:Manage"{
 
-		prc.product = entityService.newEntity().getOrFail( rc.id );
-		prc.product.delete();
+		prc.category = entityService.newEntity().getOrFail( rc.id );
+		prc.category.delete();
 
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 

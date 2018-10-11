@@ -3,6 +3,14 @@
 	// Configure ColdBox Application
 	function configure(){
 
+		conventions = {
+			handlersLocation = "handlers",
+			viewsLocation 	 = "views",
+			layoutsLocation  = "layouts",
+			modelsLocation 	 = "models",
+			modulesLocation  = "rootModules",
+			eventAction 	 = "index"
+		};
 		// coldbox directives
 		coldbox = {
 			//Application Setup
@@ -60,7 +68,16 @@
 		moduleSettings = {
 			"quick" : {
 				"defaultGrammar" : "MySQLGrammar"
-			}
+			},
+			"cbauth" : {
+				"userServiceClass" : "UserService@cbc"
+			},
+			"cbguard" : {
+                "authenticationOverrideEvent"     = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
+                "authenticationAjaxOverrideEvent" = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
+                "authorizationOverrideEvent"      = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
+                "authorizationAjaxOverrideEvent"  = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure"
+            }
 		};
 
 		// Module Directives

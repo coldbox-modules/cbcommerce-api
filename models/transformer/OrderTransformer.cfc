@@ -25,7 +25,7 @@ component extends="BaseModelTransformer"{
 
     function includeItems( activeEntity ){
         return collection(
-            activeEntity.getItems().getCollection(),
+            activeEntity.getItems(),
             wirebox.getInstance( "OrderItemTransformer@cbc" )
 
         )

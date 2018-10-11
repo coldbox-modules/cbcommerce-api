@@ -17,7 +17,7 @@ component extends="BaseModelTransformer"{
 
     function includeProducts( activeEntity ){
         return collection(
-            activeEntity.getProducts().getCollection(),
+            activeEntity.getProducts(),
             wirebox.getInstance( "ProductTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );
@@ -32,7 +32,7 @@ component extends="BaseModelTransformer"{
 
     function includeChildren( activeEntity ){
         return collection(
-            activeEntity.getChildren().getCollection(),
+            activeEntity.getChildren(),
             wirebox.getInstance( "ProductCategoryTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );

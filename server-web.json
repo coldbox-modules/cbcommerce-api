@@ -3,8 +3,10 @@
         "cfengine":"lucee@5"
     },
     "web":{
+        "webroot":"./tests/resources/app",
         "rewrites":{
             "enable":"true"
         }
-    }
+    },
+    "name":"web"
 }

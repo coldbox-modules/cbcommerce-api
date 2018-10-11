@@ -1,5 +1,5 @@
 component extends="BaseModelTransformer"{
-    
+
     function init(){
         arrayAppend( 
             variables.availableIncludes,
@@ -28,6 +28,18 @@ component extends="BaseModelTransformer"{
         return memento;
     }
 
+    function includeConsignee( activeEntity ){
+        return item(
+            activeEntity.getConsignee(),
+            wirebox.getInstance( "UserTransformer@cbc" )
+        );
+    }
+
+    function includeInventory( activeEntity ){
+        var inventory = wirebox.getInstance( "InventoryLocationStock@cbc" ).newQuery().where( 'FK_sku', activeEntity.getId() );
+        
+    }
+
     function includeOnHand( activeEntity ){
 
         return item(
@@ -49,7 +61,7 @@ component extends="BaseModelTransformer"{
 
     function includeVirtualSKUs( activeEntity ){
         return collection(
-            activeEntity.getVirtualSKUs().getCollection(),
+            activeEntity.getVirtualSKUs(),
             wirebox.getInstance( "BaseModelTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         )

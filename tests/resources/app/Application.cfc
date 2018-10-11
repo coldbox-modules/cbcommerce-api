@@ -19,7 +19,7 @@ component{
     this.mappings[ "/config"] = appPath & "config";
     this.mappings[ "/quick" ] = rootPath & "modules/quick";
 
-    this.datasource = "cboxCommerce";
+    this.datasource = "cbc_testing";
 
 	// COLDBOX STATIC PROPERTY, DO NOT CHANGE UNLESS THIS IS NOT THE ROOT OF YOUR COLDBOX APP
 	COLDBOX_APP_ROOT_PATH = appPath;
@@ -34,6 +34,11 @@ component{
 	public boolean function onApplicationStart(){
 		application.cbBootstrap = new coldbox.system.Bootstrap( COLDBOX_CONFIG_FILE, COLDBOX_APP_ROOT_PATH, COLDBOX_APP_KEY, COLDBOX_APP_MAPPING );
 		application.cbBootstrap.loadColdbox();
+		if( !application.cbController.getModuleService().isModuleRegistered( 'cbCommerce' ) ){
+			application.cbController
+				.getModuleService()
+				.registerAndActivateModule( "cbCommerce", "testingModuleRoot" );
+		}
 		return true;
 	}
 
@@ -44,11 +49,18 @@ component{
 
 	// request start
 	public boolean function onRequestStart( string targetPage ){
-
-		if( !application.cbController.getModuleService().isModuleRegistered( 'cbox-commerce' ) ){
-			application.cbController
-				.getModuleService()
-				.registerAndActivateModule( "cbox-commerce", "testingModuleRoot" );
+		// In case bootstrap or controller are missing, perform a manual restart
+		if ( 
+			!structKeyExists( application, "cbBootstrap" ) 
+			||
+			!structKeyExists( application, "cbController" )
+			|| 	
+			application.cbBootStrap.isfwReinit() 
+			||
+			!application.cbController.getModuleService().isModuleRegistered( 'cbCommerce' )
+			)
+		{
+			onApplicationStart();
 		}
 		// Process ColdBox Request
 		application.cbBootstrap.onRequestStart( arguments.targetPage );
@@ -67,5 +79,6 @@ component{
 	public boolean function onMissingTemplate( template ){
 		return application.cbBootstrap.onMissingTemplate( argumentCollection=arguments );
 	}
+
 
 }

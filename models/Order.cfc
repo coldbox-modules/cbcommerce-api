@@ -32,5 +32,9 @@ component   table="cbc_orders"
     function billingAddress(){
         return belongsTo( "CustomerAddress@cbc", "FK_billingAddress" );
     }
+
+    function invoices(){
+        return belongsTo( "OrderInvoice@cbc", "FK_invoice" );
+    }
 }
 

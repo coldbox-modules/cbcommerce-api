@@ -32,53 +32,11 @@ component extends="coldbox.system.testing.BaseTestCase" appMapping="/"{
 	
 	function run(){
 
-		describe( "Customers,Products,Carts,Orders,OrderItems Suite", function(){
+		describe( "Authentication Suite", function(){
 
 			beforeEach(function( currentSpec ){
 				// Setup as a new ColdBox request for this suite, VERY IMPORTANT. ELSE EVERYTHING LOOKS LIKE THE SAME REQUEST.
 				setup();
-			});
-
-			it( "index", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.index", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "new", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.new", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "create", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.create", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "show", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.show", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "edit", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.edit", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "update", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.update", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
-			});
-
-			it( "delete", function(){
-				var event = execute( event="Customers,Products,Carts,Orders,OrderItems.delete", renderResults=true );
-				// expectations go here.
-				expect( false ).toBeTrue();
 			});
 
 		

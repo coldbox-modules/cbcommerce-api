@@ -15,7 +15,7 @@ component extends="BaseModelTransformer"{
             variables.availableIncludes,
             [
                 "skus",
-                "categories",
+                "categories"
             ],
             true
         );
@@ -31,7 +31,7 @@ component extends="BaseModelTransformer"{
 
     function includeSkus( activeEntity ){
         return collection(
-            activeEntity.getSkus().getCollection(),
+            activeEntity.getSkus(),
             wirebox.getInstance( "ProductSKUTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );
@@ -39,7 +39,7 @@ component extends="BaseModelTransformer"{
 
     function includeCategories( activeEntity ){
         return collection(
-            activeEntity.getCategories().getCollection(),
+            activeEntity.getCategories(),
             wirebox.getInstance( "ProductCategoryTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );
@@ -52,7 +52,7 @@ component extends="BaseModelTransformer"{
                 .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' )
-                .retrieve().getCollection(),
+                .retrieve(),
             wirebox.getInstance( "MediaTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );

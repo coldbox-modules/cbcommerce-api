@@ -1,12 +1,22 @@
 component {
     
-    this.name = "cbox-commerce";
+    this.name = "cbCommerce";
     this.author = "Jon Clausen <jclausen@ortussolutions.com>";
-    this.webUrl = "https://github.com/jclausen/cbox-commerce";
+    this.webUrl = "https://github.com/jclausen/cbCommerce";
     this.dependencies = [ "quick", "cfmigrations", "cffractal", "cbstorages", "BCrypt", "cbsecurity" ];
     this.cfmapping = "cbc";
     this.modelNamespace	= "cbc";
-    this.entryPoint = "cbox-commerce";
+    this.entryPoint = "store";
+    this.dependencies = [
+        "cbauth",
+        "cbguard",
+        "quick",
+        "cfmigrations",
+        "cffractal",
+        "cbstorages",
+        "cbsecurity",
+        "BCrypt"
+    ];
 
     function configure() {
         settings = {
@@ -42,6 +52,7 @@ component {
                     }
                 }
             }
+            // An optional "storage" key may be provided which specifies custom cb storage and matches the settings structure of that module
         };
 
         // Custom Declared Interceptors
@@ -49,34 +60,66 @@ component {
 			{  
 					class="cbc.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
+            },
+			{  
+					class="cbc.interceptors.CBCAPIHelper",
+					name="CBCAPIHelperInterceptor"
 			}
         ];
         
         // API Routing
+
+        // Custom routes
+        router.route( "api/v1/authentication" )
+                .withAction( {
+                    GET : "get",
+                    POST : "create",
+                    DELETE : "delete"
+                } )
+                .toHandler( "API.v1.Authentication" );
+        
+        router.route( "api/v1/cart" )
+                .withAction("get")
+                .toHandler( "API.v1.Cart" );
+
+        router.route( "api/v1/cart/:itemId" )
+                .withAction(
+                    {
+                        "PUT" : "addItem",
+                        "PATCH" : "addItem"
+                    }
+                )
+                .toHandler( "API.v1.Cart" );
+
+        // Resource Routes ( auto-magic method conventions )
         router
             .resources( 
-                route   = "api/v1/products",
-                handler = "API.v1.Photos"
+                resource   = "api/v1/products",
+                handler = "API.v1.Products"
             )
             .resources(
-                route   = "api/v1/cart",
-                handler = "API.v1.Cart"   
+                resource = "api/v1/skus",
+                handler = "API.v1.ProductSKUs"
+            )
+            .resources( 
+                resource   = "api/v1/product-categories",
+                handler = "API.v1.ProductCategories"
+            )
+            .resources( 
+                resource   = "api/v1/product-inventory",
+                handler = "API.v1.ProductInventory"
             )
             .resources(
-                route   = "api/v1/orders",
-                handler = "API.v1.Cart"
+                resource   = "api/v1/orders",
+                handler = "API.v1.Orders"
             )
             .resources(
-                route   = "api/v1/customers",
+                resource   = "api/v1/customers",
                 handler = "API.v1.Customers"
             )
             .resources(
-                route   = "api/v1/payments",
+                resource   = "api/v1/payments",
                 handler = "API.v1.Payments"
-            )
-            .resources(
-                route = "api/v1/skus",
-                handler = "API.v1.ProductSKUs"
             );
     }
 
@@ -89,5 +132,40 @@ component {
                     force = true 
                 ).to( settings.products.externalModelMapping );
         }
+
+        var storageSettings = {
+            // Cache Storage Settings
+		    cacheStorage = {
+                // we know the template cache will always exist so that is our default
+                cachename   = !isNull( settings.storage.cacheStorage.cachename ) ? settings.storage.cacheStorage.cachename : 'template',
+                // default timeout for cache storage is 7 days
+		        timeout     = !isNull( settings.storage.cacheStorage.timeout ) ? settings.storage.cacheStorage.timeout : 10080 
+		    },
+			// Cookie Storage settings
+			cookieStorage = {
+				useEncryption 	= true,
+				encryptionSeed 	= "cbc_CookieStorage",
+		        encryptionAlgorithm = "AES/CBC/PKCS5Padding",
+		        encryptionEncoding = "HEX"
+			}
+        };
+
+        /**
+         * Custom storage settings exclusive to this model
+         */
+        binder.map(
+            alias = "SessionStorage@cbc"
+        ).to( "cbstorages.models.CacheStorage" )
+        .initWith(
+           settings = storageSettings,
+           cachebox = cachebox
+        );
+
+        binder.map(
+            alias = "CookieStorage@cbc"
+        ).to( "cbstorages.models.CookieStorage" )
+        .initWith(
+           settings = storageSettings
+        );
     }
 }
