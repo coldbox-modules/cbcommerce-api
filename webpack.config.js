@@ -11,7 +11,31 @@ elixir.config.mergeConfig({
 			"Vue"          : ["vue/dist/vue.esm.js", "default"],
             "window.Vue"   : ["vue/dist/vue.esm.js", "default"]
         })
-    ]
+    ],
+    module : {
+        rules : [
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 100000,
+                    name: global.elixir.versioning
+                        ? "includes/fonts/[name].[hash:7].[ext]"
+                        : "includes/fonts/[name].[ext]"
+                }
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 100000,
+                    name: global.elixir.versioning
+                        ? "includes/images/[name].[hash:7].[ext]"
+                        : "includes/images/[name].[ext]"
+                }
+            }
+        ]
+    }
 });
 
 module.exports = elixir(function(mix) {
