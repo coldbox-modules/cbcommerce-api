@@ -1,0 +1,45 @@
+.block {
+  padding: 60px 0;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-delay: 0.2s;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-duration: 1s;
+  -moz-animation-delay: 0.2s;
+  -moz-animation-timing-function: ease;
+  -moz-animation-fill-mode: both;
+  -ms-animation-duration: 1s;
+  -ms-animation-delay: 0.2s;
+  -ms-animation-timing-function: ease;
+  -ms-animation-fill-mode: both;
+  -o-animation-duration: 1s;
+  -o-animation-delay: 0.2s;
+  -o-animation-timing-function: ease;
+  -o-animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-delay: 0.2s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Block background style
+   ========================================================================== */
+
+.color-scheme-1 {
+  background-color: #0e0e0e;
+}
+.color-scheme-2 {
+  background-color: #eaeaea;
+}
+.color-scheme-3 {
+  background-color: #eb2c33;
+}
+.color-scheme-white-90 {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+.color-scheme-dark-90 {
+  background-color: rgba(0, 0, 0, 0.85);
+}

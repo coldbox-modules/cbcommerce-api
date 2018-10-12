@@ -1,0 +1,161 @@
+.category.light {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 5px solid #ffffff;
+  margin: 5px auto 10px;
+  padding-bottom: 25px;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  &:hover {
+    border-color: #ffffff;
+    -webkit-box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    .category-caption {
+      background-color: #ffffff;
+    }
+  }
+  .spinner {
+    margin-top: 50px;
+  }
+  .category-caption {
+    text-align: left;
+    position: relative;
+    padding: 10px 10px 5px 10px;
+    background-color: #ffffff;
+    .category-name {
+      font-size: 24px;
+      padding: 0 0 5px;
+      display: block;
+      text-decoration: none;
+      font-family: 'Raleway', sans-serif;
+      color: #6A0000;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .block-name {
+      display: inline-block;
+    }
+  }
+
+  .description {
+    font-size: 14px;
+    color: rgba(14, 14, 14, 0.7);
+    text-align: left;
+    margin: 0 10px 20px 10px;
+  }
+
+  .subCatLink{
+    margin: 10px 0;
+    text-align: left;
+    a {
+      color: #f7941d;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 100;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+
+  .figure-hover-overlay {
+    position: relative;
+    overflow: hidden;
+    .figure-href {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 5;
+    }
+    .img-overlay {
+      position: absolute;
+      opacity: 1;
+      z-index: 2;
+    }
+    img {
+      position: relative;
+      -webkit-transition: all 0.5s ease-out;
+      -moz-transition: all 0.5s ease-out;
+      -o-transition: all 0.5s ease-out;
+      -ms-transition: all 0.5s ease-out;
+      transition: all 0.5s ease-out;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+      backface-visibility: hidden;
+      max-height: 300px;
+    }
+  }
+
+}
+
+
+
+.img-overlay {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2;
+}
+
+
+
+@keyframes placeHolderShimmer{
+  0%{
+    background-position: -468px 0
+  }
+  100%{
+    background-position: 468px 0
+  }
+}
+
+.category.loading.animated-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 800px 104px;
+  height: 500px;
+  position: relative;
+
+  .background-masker {
+    background: #fff;
+    position: absolute;
+
+    &.image-bottom {
+      height: 10px;
+      width: 100%;
+      top: 200px;
+    }
+    &.title-side {
+      height: 30px;
+      width: 40%;
+      right: 0;
+      top: 210px;
+    }
+    &.title-bottom {
+      height: 10px;
+      width: 100%;
+      top: 240px;
+    }
+    &.description-bottom {
+      height: 10px;
+      width: 100%;
+      top: 320px;
+    }
+
+  }
+
+}
+

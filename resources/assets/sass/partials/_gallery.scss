@@ -1,0 +1,26 @@
+.gallery-main{
+	.viewer{
+		text-align: center;
+	}
+	.item {
+		box-shadow: 2px 2px 2px rgba( 0,0,0,.25 );
+		display: inline-block;
+		height: 200px;
+		margin: 5px;
+		overflow: hidden;
+		width: 300px;
+		transition: all 1s;
+
+	}
+	button{
+		text-transform: uppercase;
+		margin: 5px 3px;
+	}
+}
+.list-complete-enter, .list-complete-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-complete-leave-active {
+  position: absolute;
+}

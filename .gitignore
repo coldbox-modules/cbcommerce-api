@@ -3,6 +3,8 @@
 /tests/resources/app/coldbox
 /node_modules
 /modules
+!/modules/cbcommerce-admin
+/includes
 
 /.vscode
 /.env

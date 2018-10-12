@@ -6,6 +6,9 @@
         "webroot":"./tests/resources/app",
         "rewrites":{
             "enable":"true"
+        },
+        "aliases": {
+            "/testingModuleRoot/cbCommerce/": "../../../"
         }
     },
     "name":"web"

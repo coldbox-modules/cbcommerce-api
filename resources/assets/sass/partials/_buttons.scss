@@ -1,0 +1,15 @@
+.btn {
+	border-radius: 0px;
+}
+.btn-secondary{
+	background-color: $btn-secondary-bg;
+	color: #fff;
+}
+.btn-border{
+	border: 1px solid $dark-grey;
+	box-shadow: none;
+}
+.btn-border.active, .btn-border:hover{
+	background-color: $primary;
+	color: #fff;
+}

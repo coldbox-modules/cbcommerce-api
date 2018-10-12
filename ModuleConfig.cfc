@@ -22,10 +22,10 @@ component {
         settings = {
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases 
-                "externalModel" : false,
+                "externalModel"        : false,
                 "externalModelBinding" : "",
                 "externalModelMapping" : {},
-                "defaultCurrency" : "USD"
+                "defaultCurrency"      : "USD"
             },
             "media" : {
                 //local or s3 storage currently supported
@@ -34,12 +34,12 @@ component {
                 "storageLocation" : "/includes/shared/cbc",
                 // Only used for s3 driver
                 "s3" : {
-                    "key" : getEnv('AWS_ACCESS_KEY_ID', ''),
-                    "secret" : getEnv('AWS_SECRET_ACCESS_KEY', ''),
-                    "region" : getEnv('AWS_DEFAULT_REGION', ''),
-                    "bucket" : getEnv('AWS_BUCKET', ''),
+                    "key"    :   getEnv('AWS_ACCESS_KEY_ID',     ''),
+                    "secret" :   getEnv('AWS_SECRET_ACCESS_KEY', ''),
+                    "region" :   getEnv('AWS_DEFAULT_REGION',    ''),
+                    "bucket" :   getEnv('AWS_BUCKET',            ''),
                     // the AWS base URL for serving assets ( e.g. cloudflare )
-                    "url" : getEnv('AWS_URL', ''),
+                    "url"    :   getEnv('AWS_URL',               ''),
                 },
                 //the security service - may be changed to use a different wirebox mapping ( e.g. - ContentBox )
                 "securityService" : "SecurityService@cbc"
@@ -68,7 +68,6 @@ component {
         ];
         
         // API Routing
-
         // Custom routes
         router.route( "api/v1/authentication" )
                 .withAction( {
@@ -95,32 +94,38 @@ component {
         router
             .resources( 
                 resource   = "api/v1/products",
-                handler = "API.v1.Products"
+                handler    = "API.v1.Products"
             )
             .resources(
                 resource = "api/v1/skus",
-                handler = "API.v1.ProductSKUs"
+                handler  = "API.v1.ProductSKUs"
             )
             .resources( 
                 resource   = "api/v1/product-categories",
-                handler = "API.v1.ProductCategories"
+                handler    = "API.v1.ProductCategories"
             )
             .resources( 
                 resource   = "api/v1/product-inventory",
-                handler = "API.v1.ProductInventory"
+                handler    = "API.v1.ProductInventory"
             )
             .resources(
                 resource   = "api/v1/orders",
-                handler = "API.v1.Orders"
+                handler    = "API.v1.Orders"
             )
             .resources(
                 resource   = "api/v1/customers",
-                handler = "API.v1.Customers"
+                handler    = "API.v1.Customers"
             )
             .resources(
                 resource   = "api/v1/payments",
-                handler = "API.v1.Payments"
+                handler    = "API.v1.Payments"
             );
+
+            /**
+             * Display routing
+             */
+            router.route( "/:action?" )
+                .toHandler( "Main" );
     }
 
     function onLoad() {
@@ -167,5 +172,20 @@ component {
         .initWith(
            settings = storageSettings
         );
+
+        // Run any outstanding migrations on module load
+        try{
+            var migrationService = new cfmigrations.models.MigrationService();
+            migrationService.setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
+            migrationService.setMigrationsDirectory( getCurrentTemplatePath() & '/resources/database/migrations' );
+            wirebox.autoWire( migrationService );
+            migrationService.runAllMigrations( "up" );
+        } catch( any e ){
+            throw( 
+                type="cbCommerceMigrationsException",
+                message="The cfmigrations module is not installed or has not been registered.  Module registration failed."
+            );
+        }
+ 
     }
 }

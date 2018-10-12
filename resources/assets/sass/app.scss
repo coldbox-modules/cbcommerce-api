@@ -1,0 +1,22 @@
+/* Import colors and mixins */
+@import 'partials/variables';
+
+/* Import layout-specific styles */
+@import 'partials/layout';
+@import 'partials/typography';
+@import 'partials/navigation';
+@import 'partials/forms';
+@import 'partials/buttons';
+@import 'partials/tabs';
+@import 'partials/carousels';
+@import 'partials/gallery';
+@import 'partials/testimonials';
+@import 'partials/products';
+@import 'partials/productDetail';
+@import 'partials/categories';
+@import 'partials/blocks';
+@import 'partials/headers';
+@import 'partials/toolbars';
+@import 'partials/widgets';
+@import 'partials/pagination';
+@import 'partials/cart';

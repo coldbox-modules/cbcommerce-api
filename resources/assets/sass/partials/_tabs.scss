@@ -1,0 +1,18 @@
+.tabs-grey{
+	.nav-tabs > li > a {
+		border: none;
+	}
+	.nav-tabs > li.active a{
+		background-color: #ebebeb;
+		border-radius: 0px;
+		border: none;
+	}
+	.tab-content{
+		background-color: #ebebeb;
+		padding: 25px;
+
+		a{
+		  color: #f7941d;
+		}
+	}
+}

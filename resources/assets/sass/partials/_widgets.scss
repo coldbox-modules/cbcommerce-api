@@ -1,0 +1,138 @@
+.widget-title {
+  position: relative;
+  height: 50px;
+  background-color: #eaeaea;
+  font-size: 16px;
+  font-family: 'Raleway', sans-serif;
+  margin: 30px 0 20px;
+  i {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #eb2c33;
+    color: #ffffff;
+    text-align: center;
+    margin-right: 10px;
+    &:after {
+      content: '';
+      position: absolute;
+      border-right: 8px solid transparent;
+      border-bottom: none;
+      border-top: 8px solid #eb2c33;
+      border-left: 8px solid transparent;
+      left: 16px;
+      bottom: -8px;
+      z-index: 1;
+    }
+  }
+  &.dark {
+    background-color: #222;
+    color: #aaa;
+  }
+}
+
+.first-widget {
+  margin-top: 0px;
+}
+
+.widget-block {
+
+  .colors {
+    margin: 0 !important;
+    list-style: none;
+    li {
+      float: left;
+      margin: 0 10px 10px 0;
+      a {
+        cursor: pointer;
+        display: block;
+        width: 32px;
+        height: 32px;
+        border: 1px #CCC solid;
+      }
+    }
+  }
+
+  &.dark {
+    .product-name {
+      color: #aaa;
+    }
+    .product-price {
+      color: #aaa;
+      span {
+        color: #777;
+      }
+    }
+  }
+  margin-bottom: 20px;
+  .product-name {
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 5px 0 5px;
+    display: block;
+    text-decoration: none;
+    font-family: 'Raleway', sans-serif;
+    color: #0e0e0e;
+    &:hover {
+      color: #eb2c33;
+    }
+  }
+  .block-name {
+    display: inline-block;
+  }
+  .product-price {
+    color: rgba(14, 14, 14, 0.9);
+    font-size: 15px;
+    margin: 0;
+    span {
+      color: rgba(14, 14, 14, 0.5);
+      font-size: 13px;
+      text-decoration: line-through;
+    }
+  }
+  .product-rating {
+    width: 100%;
+    padding: 5px 0 3px;
+    position: relative;
+    .stars {
+      unicode-bidi: bidi-override;
+      direction: rtl;
+      font-size: 12px;
+      text-align: left;
+      span.star {
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        display: inline-block;
+        &.active:before {
+          content: "\f005";
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        &:before {
+          content: "\f006";
+          padding: 0 2px;
+          color: rgba(235, 44, 51, 0.9);
+        }
+        &:hover {
+          &:before, ~ span.star:before {
+            content: "\f005";
+            color: #eb2c33;
+          }
+        }
+      }
+    }
+    .review {
+      color: rgba(14, 14, 14, 0.7);
+      font-size: 11px;
+      position: absolute;
+      left: 85px;
+      top: 7px;
+      text-decoration: none;
+      &:hover {
+        color: #eb2c33;
+      }
+    }
+  }
+}

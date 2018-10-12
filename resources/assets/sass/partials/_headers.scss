@@ -1,0 +1,39 @@
+.header-for-light {
+  margin-bottom: 20px;
+  position: relative;
+}
+.header-for-light h1 {
+  font-size: 42px;
+  text-transform: uppercase;
+  text-align: left;
+  margin-top: 0;
+}
+.header-for-light h1 span,
+.header-for-light h4 span {
+  color: #b10505;
+}
+.header-for-light h3 {
+  text-align: right;
+}
+.header-for-light h4 {
+  text-transform: uppercase;
+  text-align: left;
+  margin-top: 0;
+}
+.header-for-light .header-bottom-line {
+  display: block;
+  border-bottom: 1px solid rgba(14, 14, 14, 0.3);
+  height: 0;
+}
+
+.header-for-light h1 {
+	font-size: 32px;
+	line-height: 42px;
+}
+
+@media (max-width: 480px) {
+  .header-for-light h1 {
+    font-size: 26px;
+    line-height: 42px;
+  }
+}
