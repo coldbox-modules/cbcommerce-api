@@ -1,0 +1,37 @@
+{
+    "debuggingEnabled":true,
+    "debuggingReportExecutionTimes":false,
+    "disableInternalCFJavaComponents":false,
+    "inspectTemplate":"always",
+    "requestTimeout":"0,0,0,90",
+	"robustExceptionEnabled":true,
+	"datasources": {
+        "cbc_testing":
+        {
+            "allowAlter": true,
+            "allowCreate": true,
+            "allowDelete": true,
+            "allowDrop": true,
+            "allowGrant": true,
+            "allowInsert": true,
+            "allowRevoke": true,
+            "allowSelect": true,
+            "allowUpdate": true,
+            "blob": "false",
+            "class": "${DB_CLASS}",
+            "clob": "false",
+            "connectionTimeout": "1",
+            "custom": "useSSL=false&useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true&serverTimezone=UTC",
+            "database": "${DB_DATABASE}",
+            "dbdriver": "MySQL",
+            "dsn": "jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}",
+            "host": "${DB_HOST}",
+            "metaCacheTimeout": "60000",
+            "port": "3306",
+            "storage": "false",
+            "username": "${DB_USER}",
+            "password" : "${DB_PASSWORD}",
+            "validate": "false"
+        }
+    },
+}

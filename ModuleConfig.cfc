@@ -1,13 +1,12 @@
 component {
-    
-    this.name = "cbCommerce";
-    this.author = "Jon Clausen <jclausen@ortussolutions.com>";
-    this.webUrl = "https://github.com/jclausen/cbCommerce";
-    this.dependencies = [ "quick", "cfmigrations", "cffractal", "cbstorages", "BCrypt", "cbsecurity" ];
-    this.cfmapping = "cbc";
+
+    this.name           = "cbCommerce";
+    this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
+    this.webUrl         = "https://github.com/jclausen/cbCommerce";
+    this.cfmapping      = "cbc";
     this.modelNamespace	= "cbc";
-    this.entryPoint = "store";
-    this.dependencies = [
+    this.entryPoint     = "store";
+    this.dependencies   = [
         "cbauth",
         "cbguard",
         "quick",
@@ -18,10 +17,13 @@ component {
         "BCrypt"
     ];
 
+	/**
+	 * Configure Module
+	 */
     function configure() {
         settings = {
             "products" : {
-                // Allows for the configuration of an external products model, to interface with existing databases 
+                // Allows for the configuration of an external products model, to interface with existing databases
                 "externalModel"        : false,
                 "externalModelBinding" : "",
                 "externalModelMapping" : {},
@@ -57,18 +59,17 @@ component {
 
         // Custom Declared Interceptors
 		interceptors = [
-			{  
+			{
 					class="cbc.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
             },
-			{  
+			{
 					class="cbc.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
 			}
         ];
-        
+
         // API Routing
-        // Custom routes
         router.route( "api/v1/authentication" )
                 .withAction( {
                     GET : "get",
@@ -76,7 +77,7 @@ component {
                     DELETE : "delete"
                 } )
                 .toHandler( "API.v1.Authentication" );
-        
+
         router.route( "api/v1/cart" )
                 .withAction("get")
                 .toHandler( "API.v1.Cart" );
@@ -92,7 +93,7 @@ component {
 
         // Resource Routes ( auto-magic method conventions )
         router
-            .resources( 
+            .resources(
                 resource   = "api/v1/products",
                 handler    = "API.v1.Products"
             )
@@ -100,11 +101,11 @@ component {
                 resource = "api/v1/skus",
                 handler  = "API.v1.ProductSKUs"
             )
-            .resources( 
+            .resources(
                 resource   = "api/v1/product-categories",
                 handler    = "API.v1.ProductCategories"
             )
-            .resources( 
+            .resources(
                 resource   = "api/v1/product-inventory",
                 handler    = "API.v1.ProductInventory"
             )
@@ -129,12 +130,12 @@ component {
     }
 
     function onLoad() {
-        //change our binder mapping 
+        //change our binder mapping
         if( settings.products.externalModel ){
             binder
-                .map( 
-                    alias = "ExternalProduct@cbc", 
-                    force = true 
+                .map(
+                    alias = "ExternalProduct@cbc",
+                    force = true
                 ).to( settings.products.externalModelMapping );
         }
 
@@ -144,7 +145,7 @@ component {
                 // we know the template cache will always exist so that is our default
                 cachename   = !isNull( settings.storage.cacheStorage.cachename ) ? settings.storage.cacheStorage.cachename : 'template',
                 // default timeout for cache storage is 7 days
-		        timeout     = !isNull( settings.storage.cacheStorage.timeout ) ? settings.storage.cacheStorage.timeout : 10080 
+		        timeout     = !isNull( settings.storage.cacheStorage.timeout ) ? settings.storage.cacheStorage.timeout : 10080
 		    },
 			// Cookie Storage settings
 			cookieStorage = {
@@ -173,7 +174,18 @@ component {
            settings = storageSettings
         );
 
-        // Run any outstanding migrations on module load
+	}
+
+	/**
+	 * Listen to when application loads
+	 */
+	function afterConfigurationLoad( event, interceptData ){
+		// TODO: Only run in development mode, investigate if we want this in production
+		if( controller.getSetting( "environment" ) neq "development" ){
+			return;
+		}
+
+		// Run any outstanding migrations on module load
         try{
             var migrationService = new cfmigrations.models.MigrationService();
             migrationService.setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
@@ -181,11 +193,11 @@ component {
             wirebox.autoWire( migrationService );
             migrationService.runAllMigrations( "up" );
         } catch( any e ){
-            throw( 
+            throw(
                 type="cbCommerceMigrationsException",
                 message="The cfmigrations module is not installed or has not been registered.  Module registration failed."
             );
         }
- 
-    }
+	}
+
 }

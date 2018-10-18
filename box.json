@@ -1,8 +1,8 @@
 {
-    "name":"cbox-commerce",
-    "version":"0.0.1",
-    "author":"",
-    "location":"git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v0.0.1",
+    "name":"cbCommerce",
+    "version":"1.0.0",
+    "author":"Ortus Solutions, Corp",
+    "location":"git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v1.0.0",
     "homepage":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce",
     "documentation":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce",
     "repository":{
@@ -10,7 +10,7 @@
         "URL":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce"
     },
     "bugs":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce/issues",
-    "slug":"cbox-commerce",
+    "slug":"cbCommerce",
     "shortDescription":"An e-commerce module for the coldbox platform",
     "description":"An e-commerce module for the coldbox platform",
     "type":"modules",
@@ -27,14 +27,8 @@
         "cfcollection":"^3.6.1"
     },
     "devDependencies":{
-        "coldbox":"^5.0.0",
-        "testbox":"^2.4.0+80",
-        "route-visualizer":"^1.0.0",
-        "mockdatacfc":"^3.0.0+7"
     },
     "installPaths":{
-        "testbox":"testbox",
-        "coldbox":"tests/resources/app/coldbox",
         "quick":"modules/quick",
         "cfmigrations":"modules/cfmigrations",
         "cffractal":"modules/cffractal",
@@ -44,8 +38,6 @@
         "BCrypt":"modules/BCrypt",
         "cbvalidation":"modules/cbvalidation",
         "cbauth":"modules/cbauth",
-        "route-visualizer":"modules/route-visualizer",
-        "mockdatacfc":"modules/mockdatacfc",
         "cfcollection":"modules/cfcollection"
     },
     "scripts":{
@@ -55,8 +47,9 @@
     },
     "ignore":[
         "**/.*",
-        "test",
-        "tests"
+        "test-harness",
+        "examples",
+        "*/.md"
     ],
     "cfmigrations":{
         "connectionInfo":{
