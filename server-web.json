@@ -7,9 +7,9 @@
         "rewrites":{
             "enable":"true"
         },
-        "aliases": {
-            "/testingModuleRoot/cbCommerce/": "../../../"
+        "aliases":{
+            "/testingModuleRoot/cbCommerce/":"../../../"
         }
     },
-    "name":"web"
+    "name":"cbcommerce-lucee5"
 }
