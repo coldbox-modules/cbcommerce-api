@@ -10,5 +10,9 @@ test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
 
+# Development artifacts
+node_modules
+includes
+
 # log files
 logs/**
