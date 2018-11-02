@@ -9,6 +9,7 @@ test-harness/docbox/**
 test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
+test-harness/.engine/**
 
 # Development artifacts
 node_modules
