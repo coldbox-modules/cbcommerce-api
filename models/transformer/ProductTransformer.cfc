@@ -52,7 +52,7 @@ component extends="BaseModelTransformer"{
                 .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' )
-                .retrieve(),
+                .get(),
             wirebox.getInstance( "MediaTransformer@cbc" ),
             wirebox.getInstance( collectionSerializer )
         );
