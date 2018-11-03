@@ -31,7 +31,7 @@ component{
     this.mappings[ "/qb" ] = rootPath & "modules/quick/modules/qb";
     this.mappings[ "/cfcollection" ] = rootPath & "modules/quick/modules/cfcollection";
     this.mappings[ "/cffractal" ] = rootPath & "modules/cffractal";
-    this.mappings[ "/cbc" ] = rootPath;
+    this.mappings[ "/cbCommerce" ] = rootPath;
 	 */
 
 	// The module root path

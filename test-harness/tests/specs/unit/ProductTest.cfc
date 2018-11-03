@@ -12,7 +12,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app"{
 	function beforeAll(){
 		super.beforeAll();
 		// init the model object
-		variables.model = application.wirebox.getInstance( "Product@cbc" );
+		variables.model = application.wirebox.getInstance( "Product@cbCommerce" );
 	}
 
 	function afterAll(){
@@ -30,8 +30,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app"{
 				// writeDump( var = application.cbController.getModuleService().getLoadedModules() );
 				writeDump( serializeJSON( application.wirebox.getInstance( "Manager@cffractal" )
 					.builder()
-                    .item( application.wirebox.getInstance( "Payment@cbc") )
-                    .withTransformer( "BaseModelTransformer@cbc" )
+                    .item( application.wirebox.getInstance( "Payment@cbCommerce") )
+                    .withTransformer( "BaseModelTransformer@cbCommerce" )
 					.convert() 
 				)
 				);
