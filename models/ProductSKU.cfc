@@ -24,19 +24,19 @@ component   table="cbc_skus"
 	property name="conditionDescription" type="string";
 
 	function product(){
-		return belongsTo( "Product@cbc", "FK_product" );
+		return belongsTo( "Product@cbCommerce", "FK_product" );
 	}
 
 	function images(){
-		return hasMany( "ProductSkuMedia@cbc", "FK_sku" );
+		return hasMany( "ProductSkuMedia@cbCommerce", "FK_sku" );
 	}
 
 	function virtualSKUs(){
-		return hasMany( "VirtualSKU@cbc", "FK_sku" );
+		return hasMany( "VirtualSKU@cbCommerce", "FK_sku" );
 	}
 
 	function consignee(){
-		return belongsTo( "User@cbc", "FK_consignee" );
+		return belongsTo( "User@cbCommerce", "FK_consignee" );
 	}
 	
 }

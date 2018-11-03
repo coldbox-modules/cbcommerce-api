@@ -5,7 +5,7 @@
 */
 component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 	
-	property name="entityService" inject="InventoryLocationStockService@cbc";
+	property name="entityService" inject="InventoryLocationStockService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/product-inventory'
 	
@@ -19,7 +19,7 @@ component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -64,7 +64,7 @@ component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbc" )
+				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

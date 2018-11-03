@@ -34,14 +34,14 @@ component extends="BaseModelTransformer"{
     function includeOrder( activeEntity ){
         return item(
             activeEntity.getOrder(),
-            wirebox.getInstance( "OrderTransformer@cbc" )
+            wirebox.getInstance( "OrderTransformer@cbCommerce" )
         );
     }
 
     function includeProduct( activeEntity ){
         return item(
             activeEntity.getSKU().getProduct(),
-            wirebox.getInstance( "ProductTransformer@cbc" )
+            wirebox.getInstance( "ProductTransformer@cbCommerce" )
         );
     }
 

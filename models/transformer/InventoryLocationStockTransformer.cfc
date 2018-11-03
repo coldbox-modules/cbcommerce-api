@@ -16,14 +16,14 @@ component extends="BaseModelTransformer"{
     function includeLocation( activeEntity ){
         return item(
             activeEntity.getLocation(),
-            wirebox.getInstance( "InventoryLocationTransformer@cbc" )
+            wirebox.getInstance( "InventoryLocationTransformer@cbCommerce" )
         );
     }
 
     function includeSku( activeEntity ){
         return item( 
             activeEntity.getSku(),
-            wirebox.getInstance( "ProductSKUTransformer@cbc" )
+            wirebox.getInstance( "ProductSKUTransformer@cbCommerce" )
         );
     }
 

@@ -9,11 +9,11 @@ component   table="cbc_wishlists"
    property name="name" type="string";
 
    function customer(){
-	   return belongsTo( "User@cbc", "FK_user" );
+	   return belongsTo( "User@cbCommerce", "FK_user" );
    }
 
    function items(){
-	   return hasMany( "WishlistItem@cbc", "FK_wishlist" );
+	   return hasMany( "WishlistItem@cbCommerce", "FK_wishlist" );
    }
 
 }

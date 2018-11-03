@@ -16,11 +16,11 @@ component   table="cbc_orderInvoices"
 	property name="notes";
 
    function order(){
-	   return hasMany( "Order@cbc", "FK_invoice" );
+	   return hasMany( "Order@cbCommerce", "FK_invoice" );
    }
 
    function wishlist(){
-	   return belongsTo( "Wishlist@cbc", "FK_wishlist" );
+	   return belongsTo( "Wishlist@cbCommerce", "FK_wishlist" );
    }
 	
 }

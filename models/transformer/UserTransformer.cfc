@@ -21,7 +21,7 @@ component extends="BaseModelTransformer"{
     function includeRoles( activeEntity ){
         return collection(
             activeEntity.getRoles(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         )
     }
@@ -30,7 +30,7 @@ component extends="BaseModelTransformer"{
     function includeExplicitPermissions( activeEntity ){
         return collection(
             activeEntity.getExplicitPermissions(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         )
     }
@@ -42,7 +42,7 @@ component extends="BaseModelTransformer"{
                 .orderBy( 'isPrimary', 'DESC' )
                 .retreive()
                 .getCollection(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         )
     }
@@ -55,7 +55,7 @@ component extends="BaseModelTransformer"{
                 .orderBy( 'createdTime', 'ASC' )
                 .retreive()
                 .getCollection(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         )
     }
@@ -67,7 +67,7 @@ component extends="BaseModelTransformer"{
                     .orderBy( "createdTime", "DESC" )
                     .retrieve()
                     .getCollection(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }
@@ -78,7 +78,7 @@ component extends="BaseModelTransformer"{
                     .orderBy( "createdTime", "DESC" )
                     .retrieve()
                     .getCollection(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" ),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }

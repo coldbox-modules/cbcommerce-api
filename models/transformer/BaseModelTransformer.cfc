@@ -1,5 +1,5 @@
 component extends="cffractal.models.transformers.AbstractTransformer" accessors="true"{
-    property name="dateUtil" inject="DateFormatUtil@cbc";
+    property name="dateUtil" inject="DateFormatUtil@cbCommerce";
     property name="defaultIncludes";
     property name="availableIncludes";
     property name="collectionSerializer";

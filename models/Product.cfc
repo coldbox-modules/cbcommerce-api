@@ -22,15 +22,15 @@ component   table="cbc_products"
 
 	// Relationships
 	function skus(){
-		return hasMany( "ProductSKU@cbc", "FK_product" );
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" );
 	}
 
 	function categories(){
-		return belongsToMany( "ProductCategory@cbc", "cbc_lookups_products_categories",  "FK_product", "FK_category" );
+		return belongsToMany( "ProductCategory@cbCommerce", "cbc_lookups_products_categories",  "FK_product", "FK_category" );
 	}
 
 	function media(){
-		return hasMany( "ProductMedia@cbc", "FK_product" );
+		return hasMany( "ProductMedia@cbCommerce", "FK_product" );
 	}
 
 }
