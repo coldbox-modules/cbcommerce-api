@@ -49,14 +49,14 @@ const actions = {
 			api()
 				.get.products.list()
 				.then(list => {
-					// const products = get(list, "data", false);
-					const products = list;
+					const products = get(list, "data", false);
+					// const products = list;
 					if(!products || products.length === 0){
 						throw new Error("No products found");
 					}
 					// Normalize
 					const normProducts = {};
-					products.forEach(p => {
+					products.results.forEach(p => {
 						normProducts[p.id] = p;
 					});
 					commit( 'setProductList', normProducts );
@@ -101,6 +101,20 @@ const actions = {
 		if( !wishlistItem ){
 			commit( addProductToWishlist, { product: product, id: product.id } );
 		}
+	},
+	saveProduct: ({ commit, state }, product) => {
+		new Promise((resolve, reject) => {
+			api()
+				.post.products.save( product )
+				.then(product => {
+					console.log(product);
+					resolve(product);
+				})
+				.catch(err => {
+					console.log(err);
+					reject("Error: Could not save the product");
+				});
+		})
 	}
 };
 

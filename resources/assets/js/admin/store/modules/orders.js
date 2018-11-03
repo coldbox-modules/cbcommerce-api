@@ -31,13 +31,13 @@ const actions = {
 			api()
 				.get.orders.list()
 				.then(list => {
-					const orders = list;
+					const orders = get(list, "data", false);
 					if(!orders || orders.length === 0){
 						throw new Error("No orders found");
 					}
 					// Normalize
 					const normOrders = {};
-					orders.forEach(p => {
+					orders.results.forEach(p => {
 						normOrders[p.id] = p;
 					});
 					commit( 'setOrdersList', normOrders );
@@ -83,6 +83,20 @@ const actions = {
 		if( cartItem ){
 			commit( 'setProductBasePrice', { cart_item: cartItem, newPrice: payload.newPrice  } );
 		}
+	},
+	saveOrder: ({ commit, state }, order) => {
+		new Promise((resolve, reject) => {
+			api()
+				.post.orders.save(order)
+				.then(order => {
+					console.log(order);
+					resolve(order);
+				})
+				.catch(err => {
+					console.log(err);
+					reject("Error: Could not save the order");
+				});
+		})
 	}
 };
 

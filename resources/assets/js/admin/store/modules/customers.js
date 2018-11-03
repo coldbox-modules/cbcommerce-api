@@ -42,6 +42,20 @@ const actions = {
 	},
 	clearCurrentCustomer: ({ commit }) => {
 		commit( 'clearCurrentCustomer' );
+	},
+	saveCustomer: ({ commit, state }, customer) => {
+		new Promise((resolve, reject) => {
+			api()
+				.post.customers.save(customer)
+				.then(customer => {
+					console.log(customer);
+					resolve(customer);
+				})
+				.catch(err => {
+					console.log(err);
+					reject("Error: Could not save the customer");
+				});
+		})
 	}
 };
 

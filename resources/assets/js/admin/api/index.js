@@ -11,6 +11,10 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		orders(apiInstance).get,
 		categories(apiInstance).get,
 		customers(apiInstance).get,
+	),
+	post: Object.assign(
+		products(apiInstance).post,
+		categories(apiInstance).post
 	)
 });
 
