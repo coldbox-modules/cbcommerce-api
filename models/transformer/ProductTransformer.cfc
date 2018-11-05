@@ -32,7 +32,7 @@ component extends="BaseModelTransformer"{
     function includeSkus( activeEntity ){
         return collection(
             activeEntity.getSkus(),
-            wirebox.getInstance( "ProductSKUTransformer@cbc" ),
+            wirebox.getInstance( "ProductSKUTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }
@@ -40,7 +40,7 @@ component extends="BaseModelTransformer"{
     function includeCategories( activeEntity ){
         return collection(
             activeEntity.getCategories(),
-            wirebox.getInstance( "ProductCategoryTransformer@cbc" ),
+            wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }
@@ -52,8 +52,8 @@ component extends="BaseModelTransformer"{
                 .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' )
-                .get(),
-            wirebox.getInstance( "MediaTransformer@cbc" ),
+                .retrieve(),
+            wirebox.getInstance( "MediaTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }

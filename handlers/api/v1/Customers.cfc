@@ -5,7 +5,7 @@
  * @author Jon Clausen <jclausen@ortussolutions.com>
  **/
 component extends="BaseAPIHandler"  secured{
-	property name="entityService" inject="UserService@cbc";
+	property name="entityService" inject="UserService@cbCommerce";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
 	this.API_BASE_URL = "/store/api/v1/customers";
@@ -19,7 +19,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.collection( searchResponse.getResult() )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbc" )
+				.withTransformer( "CustomerTransformer@cbCommerce" )
 				.withPagination( searchResponse.getPagination() )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
@@ -38,7 +38,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbc" )
+				.withTransformer( "CustomerTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;
@@ -65,7 +65,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbc" )
+				.withTransformer( "CustomerTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbc" )
+				.withTransformer( "CustomerTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;

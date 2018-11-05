@@ -75,7 +75,7 @@
 				"defaultGrammar" : "MySQLGrammar"
 			},
 			"cbauth" : {
-				"userServiceClass" : "UserService@cbc"
+				"userServiceClass" : "UserService@cbCommerce"
 			},
 			"cbguard" : {
                 "authenticationOverrideEvent"     = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",

@@ -3,9 +3,9 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler" { // secured
 	
-	property name="entityService" inject="OrderService@cbc";
+	property name="entityService" inject="OrderService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/orders'
 	
@@ -19,7 +19,7 @@ component extends="BaseAPIHandler" secured{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbc" )
+				.withTransformer( "OrderTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.order )
 				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbc" )
+				.withTransformer( "OrderTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -64,7 +64,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.order )
 				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbc" )
+				.withTransformer( "OrderTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.order )
 				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbc" )
+				.withTransformer( "OrderTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

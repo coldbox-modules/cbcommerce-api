@@ -14,23 +14,23 @@ component quick table="cbc_users"extends="BaseCBCommerceEntity" accessors="true"
 
 
     function addresses(){
-        return hasMany( "CustomerAddress@cbc", "FK_user" );
+        return hasMany( "CustomerAddress@cbCommerce", "FK_user" );
     }
 
     function roles(){
-        return belongsToMany( "UserRole@cbc" , "lookups_users_roles", "FK_user", "FK_role" );
+        return belongsToMany( "UserRole@cbCommerce" , "lookups_users_roles", "FK_user", "FK_role" );
     }
 
     function explicitPermissions(){
-        return belongsToMany( "UserPermission@cbc" , "lookups_users_explicitPermissions", "FK_user", "FK_permission" );
+        return belongsToMany( "UserPermission@cbCommerce" , "lookups_users_explicitPermissions", "FK_user", "FK_permission" );
     }
 
     function carts(){
-        return hasMany( "Cart@cbc", "FK_user" );
+        return hasMany( "Cart@cbCommerce", "FK_user" );
     }
     
     function orders(){
-        return hasMany( "Order@cbc", "FK_user" );
+        return hasMany( "Order@cbCommerce", "FK_user" );
     }
 }
 

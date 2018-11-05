@@ -54,7 +54,9 @@
 
 			    <b-form-checkbox 
 			    	v-model="form.isActive" 
-			    	:model.sync="form.isActive">
+			    	:model.sync="form.isActive"
+					:true-value="1"
+					:false-value="0">
 			    	Enable Product
 			    </b-form-checkbox>
 
@@ -223,7 +225,7 @@ export default {
         return {
 			isLoading         : false,
 			form              : new Form(),
-			url               : '', /* The URL to post the submission to */
+			url               : '/api/v1/products', /* The URL to post the submission to */
 			moment            : moment,
 			errors            : [],
 			isSending         : false,
@@ -283,7 +285,8 @@ export default {
 
 		...mapActions([
 			"setCurrentProduct",
-			"getListOfProducts"
+			"getListOfProducts",
+			"saveProduct"
 		]),
 
 
@@ -317,27 +320,13 @@ export default {
 
     	submitContent: function(){
 
-    		var self = this;
+			var self = this;
+			
+			console.log( this.form );
 
-    		// Mocking sending the form data
-    		// Axios below will handle it in real life
-	        window.setTimeout(
-	            function(){
-					self.isSent    = true;
-					self.isSending = false;
-	            },
-	            500
-	        );
-
-	        /*
-			axios.post( this.url , this.form )
-				.then( ( response ) => {
-					console.log( response );
-				} )
-				.catch( ( error ) => {
-					this.errors = error.response.data.message;
-				} );
-			*/
+			this.saveProduct( this.form );
+			self.isSent    = true;
+			self.isSending = false;
 
     	},
 

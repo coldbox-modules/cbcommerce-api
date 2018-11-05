@@ -5,7 +5,7 @@
 */
 component extends="BaseAPIHandler"{
 	
-	property name="entityService" inject="CartService@cbc";
+	property name="entityService" inject="CartService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/cart';
 

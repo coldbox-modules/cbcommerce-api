@@ -72,7 +72,7 @@ component extends="coldbox.system.EventHandler"{
 			// start a resource timer
 			var stime = getTickCount();
 			// prepare our response object
-			prc.response = getInstance( "APIResponse@cbc" );
+			prc.response = getInstance( "APIResponse@cbCommerce" );
 			// prepare argument execution
 			var args = { 
 				event = arguments.event, 
@@ -105,7 +105,11 @@ component extends="coldbox.system.EventHandler"{
 			prc.response.setStatusCode( STATUS.NOT_AUTHORIZED );
 			prc.response.addMessage( e.message );
 		} catch( Any e ){
-			log.error( "Error calling #event.getCurrentEvent()#: #e.message# #e.detail#", e.stackTrace );	
+			log.error( "Error calling #event.getCurrentEvent()#: #e.message# #e.detail#", e.stackTrace );
+
+			writeDump( e );
+			abort;
+
 			// Setup General Error Response
 			prc.response
 				.setData( {} )
@@ -195,7 +199,7 @@ component extends="coldbox.system.EventHandler"{
 			
 			// Verify response exists, else create one
 			if( !structKeyExists( prc, "response" ) ){ 
-				prc.response = getInstance( "APIResponse@cbc" ); 
+				prc.response = getInstance( "APIResponse@cbCommerce" ); 
 			}
 
 			// Setup General Error Response
@@ -233,7 +237,7 @@ component extends="coldbox.system.EventHandler"{
 		// Log Locally
 		log.warn( "InvalidHTTPMethod Execution of (#arguments.faultAction#): #event.getHTTPMethod()#", getHTTPRequestData() );
 		// Setup Response
-		prc.response = getInstance( "APIResponse@cbc" )
+		prc.response = getInstance( "APIResponse@cbCommerce" )
 			.setError( true )
 			.addMessage( "InvalidHTTPMethod Execution of (#arguments.faultAction#): #event.getHTTPMethod()#" )
 			.setStatusCode( STATUS.NOT_ALLOWED )
@@ -257,7 +261,7 @@ component extends="coldbox.system.EventHandler"{
 		// Log Locally
 		log.warn( "Invalid HTTP Method Execution of (#arguments.missingAction#): #event.getHTTPMethod()#", getHTTPRequestData() );
 		// Setup Response
-		prc.response = getInstance( "APIResponse@cbc" )
+		prc.response = getInstance( "APIResponse@cbCommerce" )
 			.setError( true )
 			.addMessage( "Action '#arguments.missingAction#' could not be found" )
 			.setStatusCode( STATUS.NOT_ALLOWED )
@@ -282,7 +286,7 @@ component extends="coldbox.system.EventHandler"{
 	function routeNotFound( event, rc, prc ){
 		
 		if( !structKeyExists( prc, "response" ) ){
-			prc.response = getInstance( "APIResponse@cbc" );
+			prc.response = getInstance( "APIResponse@cbCommerce" );
 		}
 
 		prc.response.setError( true )
@@ -300,7 +304,7 @@ component extends="coldbox.system.EventHandler"{
 		prc 	= getRequestCollection( private=true ) 
 	){
 		if( !structKeyExists( prc, "response" ) ){
-			prc.response = getInstance( "APIResponse@cbc" );
+			prc.response = getInstance( "APIResponse@cbCommerce" );
 		}
 
 		prc.response.setError( true )
@@ -319,7 +323,7 @@ component extends="coldbox.system.EventHandler"{
 		abort 	= false 
 	){
 		if( !structKeyExists( prc, "response" ) ){
-			prc.response = getInstance( "APIResponse@cbc" );
+			prc.response = getInstance( "APIResponse@cbCommerce" );
 		}
 
 		log.warn( "Invalid Authentication", getHTTPRequestData() );
@@ -340,7 +344,7 @@ component extends="coldbox.system.EventHandler"{
 		abort 	= false 
 	){
 		if( !structKeyExists( prc, "response" ) ){
-			prc.response = getInstance( "APIResponse@cbc" );
+			prc.response = getInstance( "APIResponse@cbCommerce" );
 		}
 
 		log.warn( "Authorization Failure", getHTTPRequestData() );
