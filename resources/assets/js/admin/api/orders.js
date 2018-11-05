@@ -1,9 +1,20 @@
-export const getOrdersList = api => () => fetch( '/mockData/admin/orders.json' ).then(r => r.json());
+export const getOrdersList = api => () => api.get('/orders');
+export const createOrder = api => (data) => {
+  const bodyParams = data;
+  return api.post('/orders', JSON.stringify(bodyParams), {
+    headers: { "Content-Type": "application/json" }
+  });
+};
 
 export const orders = api => ({
   get: {
     orders: {
     	list: getOrdersList(api)
+    }
+  },
+  post: {
+    orders: {
+      save: createOrder(api)
     }
   }
 });

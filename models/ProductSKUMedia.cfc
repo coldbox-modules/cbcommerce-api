@@ -10,11 +10,11 @@ component   table="cbc_productSKUMedia"
 	property name="displayOrder" type="numeric" default=0;
 	
 	function mediaItem(){
-		return belongsTo( "Media@cbc", "FK_media" );
+		return belongsTo( "Media@cbCommerce", "FK_media" );
 	}
 
 	function sku(){
-		return belongsTo( "ProductSKU@cbc", "FK_sku" );
+		return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );
 	}
 
 }

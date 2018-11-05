@@ -22,11 +22,11 @@ component table="cbc_carts"
    }
 
    function customer(){
-   		return belongsTo( "User@cbc", "FK_user" );
+   		return belongsTo( "User@cbCommerce", "FK_user" );
    }
 
    function order(){
-   		return belongsTo( "Order@cbc", "FK_order" );
+   		return belongsTo( "Order@cbCommerce", "FK_order" );
    }
 
    /**

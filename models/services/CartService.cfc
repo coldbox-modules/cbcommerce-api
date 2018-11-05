@@ -1,11 +1,11 @@
 component extends="BaseQuickEntityService" singleton{
-    property name="sessionStorage" inject="SessionStorage@cbc";
-    property name="cookieStorage" inject="CookieStorage@cbc";
+    property name="sessionStorage" inject="SessionStorage@cbCommerce";
+    property name="cookieStorage" inject="CookieStorage@cbCommerce";
     property name="auth" inject="authenticationService@cbauth";
-    property name="dateUtil" inject="DateFormatUtil@cbc";
+    property name="dateUtil" inject="DateFormatUtil@cbCommerce";
     //provider for the entity - this provider must exist to use the search() method
-    function newEntity() provider="Cart@cbc"{}
-    function skuEntity() provider="ProductSKU@cbc"{}
+    function newEntity() provider="Cart@cbCommerce"{}
+    function skuEntity() provider="ProductSKU@cbCommerce"{}
 
     /**
      * Retreives the current cart contents

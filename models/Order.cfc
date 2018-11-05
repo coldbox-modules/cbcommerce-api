@@ -18,23 +18,23 @@ component   table="cbc_orders"
     property name="paidInFull" type="date";
 
 	function customer(){
-        return belongsTo( "User@cbc", "FK_user" );
+        return belongsTo( "User@cbCommerce", "FK_user" );
     }
 
     function items(){
-        return hasMany( "OrderItem@cbc", "FK_order" );
+        return hasMany( "OrderItem@cbCommerce", "FK_order" );
     }
 
     function shippingAddress(){
-        return belongsTo( "CustomerAddress@cbc", "FK_shippingAddress" );
+        return belongsTo( "CustomerAddress@cbCommerce", "FK_shippingAddress" );
     }
 
     function billingAddress(){
-        return belongsTo( "CustomerAddress@cbc", "FK_billingAddress" );
+        return belongsTo( "CustomerAddress@cbCommerce", "FK_billingAddress" );
     }
 
     function invoices(){
-        return belongsTo( "OrderInvoice@cbc", "FK_invoice" );
+        return belongsTo( "OrderInvoice@cbCommerce", "FK_invoice" );
     }
 }
 

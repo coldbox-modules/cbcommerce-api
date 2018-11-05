@@ -5,7 +5,7 @@
 */
 component extends="BaseAPIHandler" secured{
 	
-	property name="entityService" inject="PaymentService@cbc";
+	property name="entityService" inject="PaymentService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/payments'
 	
@@ -19,7 +19,7 @@ component extends="BaseAPIHandler" secured{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbc" )
+				.withTransformer( "PaymentTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.payment )
 				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbc" )
+				.withTransformer( "PaymentTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -64,7 +64,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.payment )
 				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbc" )
+				.withTransformer( "PaymentTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler" secured{
 			fractal.builder()
 				.item( prc.payment )
 				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbc" )
+				.withTransformer( "PaymentTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

@@ -13,11 +13,11 @@ component   table="cbc_inventoryLocationStock"
 	property name="allowBackorder" type="boolean" default="false";
 
 	function sku(){
-		return belongsTo( "ProductSKU@cbc", "FK_sku" );
+		return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );
 	}
 
 	function location(){
-		return belongsTo( "InventoryLocation@cbc", "FK_inventoryLocation" )
+		return belongsTo( "InventoryLocation@cbCommerce", "FK_inventoryLocation" )
 	}
 
 }

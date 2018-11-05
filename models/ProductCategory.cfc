@@ -12,15 +12,15 @@ component   table="cbc_productCategories"
 	
 	// Relationships
 	function parent(){
-		return belongsTo( "ProductCategory@cbc", "FK_parent");
+		return belongsTo( "ProductCategory@cbCommerce", "FK_parent");
 	}
 
 	function children(){
-		return hasMany( "ProductCategory@cbc", "FK_parent" );
+		return hasMany( "ProductCategory@cbCommerce", "FK_parent" );
 	}
 
 	function products(){
-		return belongsToMany( "Product@cbc", "cbc_lookups_products_categories", "FK_category",  "FK_product" );
+		return belongsToMany( "Product@cbCommerce", "cbc_lookups_products_categories", "FK_category",  "FK_product" );
 	}
 
 }

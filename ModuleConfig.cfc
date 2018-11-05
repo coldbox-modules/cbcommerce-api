@@ -3,8 +3,8 @@ component {
     this.name           = "cbCommerce";
     this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
     this.webUrl         = "https://github.com/jclausen/cbCommerce";
-    this.cfmapping      = "cbc";
-    this.modelNamespace	= "cbc";
+    this.cfmapping      = "cbCommerce";
+    this.modelNamespace	= "cbCommerce";
     this.entryPoint     = "store";
     this.dependencies   = [
         "cbauth",
@@ -44,11 +44,11 @@ component {
                     "url"    :   getEnv('AWS_URL',               ''),
                 },
                 //the security service - may be changed to use a different wirebox mapping ( e.g. - ContentBox )
-                "securityService" : "SecurityService@cbc"
+                "securityService" : "SecurityService@cbCommerce"
             },
             "payments" : {
                 "processor" : {
-                    "default" : "StripeProcessor@cbc",
+                    "default" : "StripeProcessor@cbCommerce",
                     "credentials" : {
                         //credentials will vary, depending on the implmented processor
                     }
@@ -60,11 +60,11 @@ component {
         // Custom Declared Interceptors
 		interceptors = [
 			{
-					class="cbc.interceptors.CBCQuickEntity",
+					class="cbCommerce.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
             },
 			{
-					class="cbc.interceptors.CBCAPIHelper",
+					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
 			}
         ];
@@ -134,7 +134,7 @@ component {
         if( settings.products.externalModel ){
             binder
                 .map(
-                    alias = "ExternalProduct@cbc",
+                    alias = "ExternalProduct@cbCommerce",
                     force = true
                 ).to( settings.products.externalModelMapping );
         }
@@ -160,7 +160,7 @@ component {
          * Custom storage settings exclusive to this model
          */
         binder.map(
-            alias = "SessionStorage@cbc"
+            alias = "SessionStorage@cbCommerce"
         ).to( "cbstorages.models.CacheStorage" )
         .initWith(
            settings = storageSettings,
@@ -168,7 +168,7 @@ component {
         );
 
         binder.map(
-            alias = "CookieStorage@cbc"
+            alias = "CookieStorage@cbCommerce"
         ).to( "cbstorages.models.CookieStorage" )
         .initWith(
            settings = storageSettings

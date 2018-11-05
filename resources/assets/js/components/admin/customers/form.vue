@@ -175,7 +175,8 @@ export default {
 			"getListOfCustomers",
 			"setCurrentCustomer",
 			"clearCurrentCustomer",
-			"getListOfProducts"
+			"getListOfProducts",
+			"saveCustomer"
 		]),
 
 		setFormData() {
@@ -236,27 +237,11 @@ export default {
 
     	submitContent: function(){
 
-    		var self = this;
-
-    		// Mocking sending the form data
-    		// Axios below will handle it in real life
-	        window.setTimeout(
-	            function(){
-					self.isSent    = true;
-					self.isSending = false;
-	            },
-	            500
-	        );
-
-	        /*
-			axios.post( this.url , this.form )
-				.then( ( response ) => {
-					console.log( response );
-				} )
-				.catch( ( error ) => {
-					this.errors = error.response.data.message;
-				} );
-			*/
+			var self = this;
+			
+			this.saveCustomer( this.form );
+			self.isSent    = true;
+			self.isSending = false;
 
     	}
 

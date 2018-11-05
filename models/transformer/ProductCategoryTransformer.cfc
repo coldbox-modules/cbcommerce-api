@@ -18,7 +18,7 @@ component extends="BaseModelTransformer"{
     function includeProducts( activeEntity ){
         return collection(
             activeEntity.getProducts(),
-            wirebox.getInstance( "ProductTransformer@cbc" ),
+            wirebox.getInstance( "ProductTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }
@@ -26,14 +26,14 @@ component extends="BaseModelTransformer"{
     function includeParent( activeEntity ){
         return item(
             activeEntity.getParent(),
-            wirebox.getInstance( "ProductCategoryTransformer@cbc" )
+            wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" )
         );
     }
 
     function includeChildren( activeEntity ){
         return collection(
             activeEntity.getChildren(),
-            wirebox.getInstance( "ProductCategoryTransformer@cbc" ),
+            wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }

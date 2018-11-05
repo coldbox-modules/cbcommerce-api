@@ -4,7 +4,7 @@
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
 component extends="BaseAPIHandler"{
-	property name="entityService" inject="ProductCategoryService@cbc";
+	property name="entityService" inject="ProductCategoryService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/product-categories'
 	
@@ -18,7 +18,7 @@ component extends="BaseAPIHandler"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -43,7 +43,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -63,7 +63,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -88,7 +88,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.category )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbc" )
+				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

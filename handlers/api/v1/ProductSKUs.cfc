@@ -5,7 +5,7 @@
 */
 component extends="BaseAPIHandler"{
 	
-	property name="entityService" inject="ProductSKUService@cbc";
+	property name="entityService" inject="ProductSKUService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/skus'
 	
@@ -19,7 +19,7 @@ component extends="BaseAPIHandler"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductSKUTransformer@cbc" )
+				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductSKUTransformer@cbc" )
+				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -64,7 +64,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductSKUTransformer@cbc" )
+				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductSKUTransformer@cbc" )
+				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

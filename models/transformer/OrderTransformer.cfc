@@ -19,14 +19,14 @@ component extends="BaseModelTransformer"{
     function includeCustomer( activeEntity ){
         return item(
             activeEntity.getCustomer(),
-            wirebox.getInstance( "UserTransformer@cbc" )
+            wirebox.getInstance( "UserTransformer@cbCommerce" )
         );
     }
 
     function includeItems( activeEntity ){
         return collection(
             activeEntity.getItems(),
-            wirebox.getInstance( "OrderItemTransformer@cbc" )
+            wirebox.getInstance( "OrderItemTransformer@cbCommerce" )
 
         )
     }
@@ -34,14 +34,14 @@ component extends="BaseModelTransformer"{
     function includeBillingAddress( activeEntity ){
         return item(
             activeEntity.getBillingAddress(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" )
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" )
         );
     }
 
     function includeShippingAddress( activeEntity ){
         return item(
             activeEntity.getShippingAddress(),
-            wirebox.getInstance( "BaseModelTransformer@cbc" )
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" )
         );
     }
 

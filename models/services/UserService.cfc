@@ -1,7 +1,7 @@
 component extends="BaseQuickEntityService" singleton{
-	property name="encryptionService" inject="EncryptionService@cbc";
+	property name="encryptionService" inject="EncryptionService@cbCommerce";
     //provider for the entity - this provider must exist to use the search() method
-    function newEntity() provider="User@cbc"{}
+    function newEntity() provider="User@cbCommerce"{}
 
     /**
      * CBAuth Implementation Methods

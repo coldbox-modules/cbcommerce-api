@@ -10,7 +10,7 @@ component   table="cbc_virtualSKUs"
 	property name="location";
 
 	function sku(){
-		return belongsTo( "ProductSKU@cbc", "FK_sku" );
+		return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );
 	}
 	
 

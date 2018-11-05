@@ -176,7 +176,8 @@ export default {
 
 		...mapActions([
 			"setCurrentCategory",
-			"getListOfCategories"
+			"getListOfCategories",
+			"saveCategory"
 		]),
 
 		onChanged() {
@@ -221,25 +222,9 @@ export default {
 
     		var self = this;
 
-    		// Mocking sending the form data
-    		// Axios below will handle it in real life
-	        window.setTimeout(
-	            function(){
-					self.isSent    = true;
-					self.isSending = false;
-	            },
-	            500
-	        );
-
-	        /*
-			axios.post( this.url , this.form )
-				.then( ( response ) => {
-					console.log( response );
-				} )
-				.catch( ( error ) => {
-					this.errors = error.response.data.message;
-				} );
-			*/
+			this.saveCategory( this.form );
+			self.isSent    = true;
+			self.isSending = false;
 
     	}
 

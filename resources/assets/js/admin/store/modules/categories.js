@@ -32,13 +32,13 @@ const actions = {
 			api()
 				.get.categories.list()
 				.then(list => {
-					const categories = list;
+					const categories = get(list, "data", false);
 					if(!categories || categories.length === 0){
 						throw new Error("No categories found");
 					}
 					// Normalize
 					const normCategories = {};
-					categories.forEach(p => {
+					categories.results.forEach(p => {
 						normCategories[p.id] = p;
 					});
 					commit( 'setCategoriesList', normCategories );
@@ -54,6 +54,20 @@ const actions = {
 	},
 	clearCurrentCategory: ({ commit }) => {
 		commit( 'clearCurrentCategory' );
+	},
+	saveCategory: ({ commit, state }, category) => {
+		new Promise((resolve, reject) => {
+			api()
+				.post.categories.save(category)
+				.then(category => {
+					console.log(category);
+					resolve(category);
+				})
+				.catch(err => {
+					console.log(err);
+					reject("Error: Could not save the category");
+				});
+		})
 	}
 };
 
