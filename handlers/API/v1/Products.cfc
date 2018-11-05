@@ -4,7 +4,7 @@
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
 component extends="BaseAPIHandler"{
-	property name="entityService" inject="ProductService@cbc";
+	property name="entityService" inject="ProductService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/products'
 	
@@ -18,7 +18,7 @@ component extends="BaseAPIHandler"{
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -31,9 +31,14 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/products
-	function create( event, rc, prc ) secured="Products:Manage"{
+	function create( event, rc, prc ) { // secured="Products:Manage"
+
+		var payload = event.getHTTPContent( json=true, xml=false );
+
+		// writedump( payload );
+		// abort;
 		
-		prc.product = entityService.newEntity().fill( rc );
+		prc.product = entityService.newEntity().fill( payload );
 
 		validateModelOrFail( prc.product );
 
@@ -43,7 +48,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -63,7 +68,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -75,7 +80,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/products/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
+	function update( event, rc, prc ) { // secured="Products:Edit"
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 
 		prc.product.fill( rc );
@@ -88,7 +93,7 @@ component extends="BaseAPIHandler"{
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbc" )
+				.withTransformer( "ProductTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -101,7 +106,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/products/:id
-	function delete( event, rc, prc ) secured="Products:Manage"{
+	function delete( event, rc, prc ) { // secured="Products:Manage"
 
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		prc.product.delete();
