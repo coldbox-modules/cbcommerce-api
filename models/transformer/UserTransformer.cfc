@@ -65,7 +65,7 @@ component extends="BaseModelTransformer"{
             activeEntity.carts()
                     .orderBy( "modifiedTime", "DESC" )
                     .orderBy( "createdTime", "DESC" )
-                    .retrieve()
+                    .get()
                     .getCollection(),
             wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
@@ -76,7 +76,7 @@ component extends="BaseModelTransformer"{
         return collection(
             activeEntity.orders()
                     .orderBy( "createdTime", "DESC" )
-                    .retrieve()
+                    .get()
                     .getCollection(),
             wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
