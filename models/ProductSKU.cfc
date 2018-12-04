@@ -1,7 +1,7 @@
 /**
 * cboxCommerce default Product Object
 */
-component   table="cbc_skus" 
+component   table="cbc_SKUs" 
 			extends="BaseCBCommerceEntity" 
 			accessors="true"
 			quick
