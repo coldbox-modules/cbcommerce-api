@@ -9,6 +9,7 @@ component {
     this.dependencies   = [
         "cbauth",
         "cbguard",
+        "cfcollection",
         "quick",
         "cfmigrations",
         "cffractal",
@@ -33,7 +34,8 @@ component {
                 //local or s3 storage currently supported
                 "driver" : getEnv( 'CBC_MEDIA_DRIVER', 'local' ),
                 // for local drivers, this would be the path from the root of the site
-                "storageLocation" : "/includes/shared/cbc",
+                "storageLocation" : "/includes/shared/store",
+                "tempStorageLocation" : "/includes/tmp",
                 // Only used for s3 driver
                 "s3" : {
                     "key"    :   getEnv('AWS_ACCESS_KEY_ID',     ''),
@@ -174,30 +176,27 @@ component {
            settings = storageSettings
         );
 
-	}
+        // Run any outstanding migrations on module load ( or reinit )
+        var migrationService = new cfmigrations.models.MigrationService();
+        migrationService.setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
+        migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/migrations' );
+        wirebox.autoWire( migrationService );
+        migrationService.runAllMigrations( "up" );
 
-	/**
-	 * Listen to when application loads
-	 */
-	function afterConfigurationLoad( event, interceptData ){
-		// TODO: Only run in development mode, investigate if we want this in production
+        // TODO: Only run seeds in development mode, investigate if we want this in production
 		if( controller.getSetting( "environment" ) neq "development" ){
 			return;
 		}
 
-		// Run any outstanding migrations on module load
-        try{
-            var migrationService = new cfmigrations.models.MigrationService();
-            migrationService.setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
-            migrationService.setMigrationsDirectory( getCurrentTemplatePath() & '/resources/database/migrations' );
-            wirebox.autoWire( migrationService );
+        // Run any outstanding seeders if requested
+        if( structKeyExists( url, "seed" ) && url.seed ){
+            migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
             migrationService.runAllMigrations( "up" );
-        } catch( any e ){
-            throw(
-                type="cbCommerceMigrationsException",
-                message="The cfmigrations module is not installed or has not been registered.  Module registration failed."
-            );
+        } else if( structKeyExists( url, "seed" ) && !url.seed ) {
+            migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
+            migrationService.runAllMigrations( "down" );
         }
+
 	}
 
 }

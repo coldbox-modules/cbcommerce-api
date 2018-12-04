@@ -6,8 +6,12 @@ component   table="cbc_productSKUMedia"
 			accessors="true"
 			quick
 {
-	property name="isPrimary" type="boolean" default="false";
+	property name="isPrimary" type="boolean" default=0;
 	property name="displayOrder" type="numeric" default=0;
+
+	//Foreign Keys
+	property name="FK_media";
+	property name="FK_sku";
 	
 	function mediaItem(){
 		return belongsTo( "Media@cbCommerce", "FK_media" );

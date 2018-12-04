@@ -29,7 +29,6 @@ component{
     this.mappings[ "/quick" ] = rootPath & "modules/quick";
     this.mappings[ "/bcrypt" ] = rootPath & "modules/BCrypt";
     this.mappings[ "/qb" ] = rootPath & "modules/quick/modules/qb";
-    this.mappings[ "/cfcollection" ] = rootPath & "modules/quick/modules/cfcollection";
     this.mappings[ "/cffractal" ] = rootPath & "modules/cffractal";
     this.mappings[ "/cbCommerce" ] = rootPath;
 	 */

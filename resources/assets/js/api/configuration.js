@@ -15,7 +15,7 @@ export const config = {
   environment: {
     development: {
       api: {
-        base        : `http://${getLocationHostname()}/store/api/v1/`,
+        base        : '/store/api/v1/',
         token       : "",
         timeout     : 10000,
         errorHandler: errorHandler(),
@@ -24,7 +24,7 @@ export const config = {
     stage: {
       debug: false,
       api: {
-        base        : `https://${getLocationHostname()}/store/api/v1/`,
+        base        : '/store/api/v1/',
         timeout     : 8000,
         errorHandler: errorHandler(),
       }
@@ -32,7 +32,7 @@ export const config = {
     production: {
       debug: false,
       api: {
-        base        : `https://${getLocationHostname()}/store/api/v1/`,
+        base        : '/store/api/v1/',
         timeout     : 8000,
         errorHandler: errorHandler(),
       }

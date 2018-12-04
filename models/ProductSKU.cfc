@@ -7,8 +7,8 @@ component   table="cbc_skus"
 			quick
 {   
 	// Persistent column properties
-	property name="isVirtual" type="boolean" default="false";
-	property name="isConsigned" type="boolean" default="false";
+	property name="isVirtual" type="boolean" default=0;
+	property name="isConsigned" type="boolean" default=0;
 	property name="cost" type="numeric";
 	property name="basePrice" type="numeric";
 	property name="minimumPrice" type="numeric";
@@ -19,9 +19,19 @@ component   table="cbc_skus"
 	property name="packagingY" type="numeric";
 	property name="packagingZ" type="numeric";
 	property name="options" type="string" default="{}";
-	property name="condition" type="string" default="New";
-	property name="subCondition" type="string";
 	property name="conditionDescription" type="string";
+	property name="sortOrder" type="numeric" default=0;
+	
+	// an external reference id used for syncing data between systems
+	property name="modelNumber" type="string";
+	property name="externalId" type="string";
+	
+	//Foreign Keys
+	property name="FK_product";
+	property name="FK_consignee";
+	property name="FK_condition";
+	property name="FK_subCondition";
+	
 
 	function product(){
 		return belongsTo( "Product@cbCommerce", "FK_product" );
@@ -37,6 +47,39 @@ component   table="cbc_skus"
 
 	function consignee(){
 		return belongsTo( "User@cbCommerce", "FK_consignee" );
+	}
+
+	function condition(){
+		return belongsTo( "ProductCondition@cbCommerce", "FK_condition" );
+	}
+
+	function subCondition(){
+		return belongsTo( "ProductCondition@cbCommerce", "FK_subCondition" );
+	}
+	
+	/**
+	 * Pre-save Interception
+	 */
+	function preSave(){
+		if( !isSimpleValue( variables.options ) ){
+			setOptions( variables.options );
+		}
+	}
+
+	function getOptions(){
+		if( isSimpleValue( variables.options ) ){
+			assignAttribute( retrieveAliasForColumn( 'options' ), deserializeJSON( variables.options ) );
+		}
+		return variables.options;
+	}
+
+	function setOptions( any options ){
+
+		if( !isSimpleValue( arguments.options ) ){
+			arguments.options = serializeJSON( arguments.options );
+		}
+
+		assignAttribute( retrieveAliasForColumn( 'options' ), arguments.options );
 	}
 	
 }

@@ -7,6 +7,7 @@ import VTooltip from 'v-tooltip';
 import Vuex from 'vuex';
 
 import createStore from "./store/index";
+import createRouter from "./store/router";
 import createFilters from "./filters/index";
 
 Vue.component( "mediaOwlCarousel", require( "./components/media-owl-carousel" ).default );
@@ -14,43 +15,32 @@ Vue.component( "cbSlickSlider", require( "./components/cb-slick-slider" ).defaul
 Vue.component( "cbMediaGallery", require( "./components/cb-media-gallery" ).default );
 Vue.component( "bsrFinanceCalculator", require( "./components/bsr-finance-calculator" ).default );
 
-import CategoryGrid from "./components/categories/category-grid";
-import ProductCarousel from "./components/products/product-carousel";
-import ProductFilterPage from "./components/products/product-filter-page";
-import ProductDetail from "./components/products/product-detail";
-import ContactForm from "./components/contact-form";
-import ProductComparison from "./components/products/product-comparison";
-import ProductWishlist from "./components/products/product-wishlist";
-import ShoppingCart from "./components/commerce/shopping-cart";
-import NavCart from "./components/ui/nav-cart";
+import App from "@/components/App";
+import Router from "vue-router";
 
-if ( document.getElementById( "app" ) ) {
+import { sync } from "vuex-router-sync";
 
-    const storeInstance = createStore( Vue, Vuex );
+const storeInstance = createStore(Vue, Vuex);
+const routerInstance = createRouter(Vue, Router);
 
-    new Vue( {
-        el        : "#app",
-        store     : storeInstance,
-        filters   : createFilters( Vue ),
-        components: {
-    		CategoryGrid,
-    		ProductCarousel,
-    		ProductFilterPage,
-    		ProductDetail,
-    		ContactForm,
-            ProductComparison,
-            ProductWishlist,
-            ShoppingCart,
-            NavCart
-    	}
-    } );
+sync(storeInstance, routerInstance);
 
-    Vue.use( VueTruncate );
-    Vue.use( VTooltip );
+export default new Vue({
+    el: "#app",
+    store: storeInstance,
+    router: routerInstance,
+    filters: createFilters(Vue),
+    template: "<app/>",
+    components: {
+        App
+    }
+});
 
-    new WOW().init();
+Vue.use( VueTruncate );
+Vue.use( VTooltip );
 
-}
+new WOW().init();
+
 
 // Fix header
 $(function() {

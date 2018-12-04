@@ -17,6 +17,12 @@ component   table="cbc_orders"
     property name="total" type="numeric";
     property name="paidInFull" type="date";
 
+    //Foreign Keys
+	property name="FK_user";
+	property name="FK_shippingAddress";
+	property name="FK_billingAddress";
+	property name="FK_invoice";
+
 	function customer(){
         return belongsTo( "User@cbCommerce", "FK_user" );
     }

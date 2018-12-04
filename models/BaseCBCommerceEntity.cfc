@@ -1,7 +1,4 @@
 component extends="quick.models.BaseEntity"{
-
-    //default entity properties
-    property name="_keyType" inject="UUID@quick" persistent="false";
     
     // Persistent column properties
     property name="id" type="string";
@@ -10,6 +7,13 @@ component extends="quick.models.BaseEntity"{
 	property name="modifiedTime" type="date" default="#now()#";
 
 	variables.id = lcase( createGUID() );
+
+
+
+	// UUID key type overload
+    function keyType() {
+        return variables._wirebox.getInstance( "UUID@quick" );
+	}
 
     /**
 	* Retrieves an entity by its primary key.

@@ -10,8 +10,8 @@ component accessors="true"{
 
 	property name="format" 			type="string" 		default="json";
 	property name="data" 			type="any"			default="";
-	property name="error" 			type="boolean"		default="false";
-	property name="binary" 			type="boolean"		default="false";
+	property name="error" 			type="boolean"		default=0;
+	property name="binary" 			type="boolean"		default=0;
 	property name="messages" 		type="array";
 	property name="location" 		type="string"		default="";
 	property name="jsonCallback" 	type="string"		default="";
@@ -20,7 +20,7 @@ component accessors="true"{
 	property name="statusCode" 		type="numeric"		default="200";
 	property name="statusText" 		type="string"		default="OK";
 	property name="responsetime"	type="numeric"		default="0";
-	property name="cachedResponse" 	type="boolean"		default="false";
+	property name="cachedResponse" 	type="boolean"		default=0;
 	property name="headers" 		type="array";
 
 	/**

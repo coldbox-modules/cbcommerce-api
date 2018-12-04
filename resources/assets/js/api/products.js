@@ -1,18 +1,22 @@
-// export const getProductsList = api => () => api.get("/mockData/products.json");
+export const getProductsList = api => () => api.get( '/products' );
+export const createProduct = api => ( data ) => {
+  const bodyParams = data;
+  return api.post( '/products', JSON.stringify(bodyParams), {
+    headers: { "Content-Type": "application/json" }
+  } );
+};
 
-export const getProductsList = api => () => fetch( '/products' ).then(r => r.json());
-// export const getProductReviews = api => () => fetch( 'mockData/productReviews.json' ).then(r => r.json());
-
-
-export const products = api => ({
+export const products = api => ( {
   get: {
     products: {
-    	list: getProductsList(api)
+    	list: getProductsList( api )
     }
-    /*,productReviews: {
-    	list: getProductReviews(api)
-    }*/
+  },
+  post: {
+    products: {
+      save: createProduct( api )
+    }
   }
-});
+} );
 
 export default products;

@@ -86,11 +86,13 @@ export default {
     destroyed() {},
 
     computed: {
-        ...mapGetters([
-            "productsListArray",
-            "productsList",
-            "currentProductID"
-        ])
+        ...mapGetters(
+            [
+                "productsListArray",
+                "productsList",
+                "currentProductID"
+            ]
+        )
     },
 
     methods: {
@@ -135,12 +137,12 @@ export default {
 
         fetchProducts(){
             const self = this;
-            Promise.resolve(this.getListOfProducts())
-            .then(() => {
+            Promise.resolve( this.getListOfProducts() )
+            .then( () => {
                 self.isLoading = false;
                 self.installOwlCarousel();
-            })
-            .catch(err => console.error(err));
+            } )
+            .catch( err => console.error(err) );
         }
 
     }

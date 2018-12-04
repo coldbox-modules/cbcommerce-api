@@ -22,8 +22,8 @@ component {
 			table.uuid( 'id' ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
 		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-            table.string('prefix', 75);
-            table.string('suffix', 75);
+            table.string( 'prefix', 75 );
+            table.string( 'suffix', 75 );
 		} );
 
 		var prefixes  = [ "Product", "Order", "Return" , "System" ];
@@ -138,7 +138,7 @@ component {
 			table.string( 'city', 255 );
 			table.string( 'province', 3 );
 			table.string( 'postalCode', 15);
-			table.string( 'country', 3 ).default( "'USA'" );
+			table.string( 'country', 3 ).default( "USA" );
 			table.boolean( 'isPrimary' ).default( 0 );
 
 		    table.uuid( "FK_user" )
@@ -176,6 +176,7 @@ component {
 			table.string( "description");
 
 			table.uuid( "FK_parent" )
+					.nullable()
 		    		.references( "id" )
 		    		.onTable( "cbc_productCategories" );
 
@@ -271,10 +272,10 @@ component {
 		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
 			table.boolean( "isActive" ).default( 1 );
 			table.boolean( "isVirtual" ).default( 0 );
+			table.boolean( "isConsigned").default( 0 );
 			table.decimal( "cost", 8, 2 );
 			table.decimal( "basePrice",  8, 2  );
 			table.text( "conditionDescription" ).nullable();
-			table.boolean( "isConsigned").default( 0 );
 			table.decimal( "minimumPrice", 8, 2  ).nullable();
 			table.decimal( "MSRP", 8, 2  ).nullable();
 			table.timestamp( "discontinueOn" ).nullable();
@@ -289,10 +290,17 @@ component {
 					.onTable( "cbc_products" );
 
 			table.uuid( "FK_consignee" )
+					.nullable()
 		    		.references( "id" )
 					.onTable( "cbc_users" );
 
 			table.uuid( "FK_condition" )
+					.default( "'#topLevelConditions[ 1 ].id#'" )
+					.references( "id" )
+					.onTable( "cbc_productConditions" );
+
+			table.uuid( "FK_subCondition" )
+					.nullable()
 					.references( "id" )
 					.onTable( "cbc_productConditions" );
 					
@@ -325,7 +333,7 @@ component {
 			table.string( 'city', 255 );
 			table.string( 'province', 3 );
 			table.string( 'postalCode', 15);
-			table.string( 'country', 3 ).default( "'USA'" );
+			table.string( 'country', 3 ).default( "USA" );
 		    
 		} );
 
@@ -515,7 +523,7 @@ component {
 		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
 		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
 			table.boolean( "isActive" ).default( 1 );
-			table.string( "designation" ).default( "'image'" );
+			table.string( "designation" ).default( "image" );
 			table.string( "title", 255 ).nullable();
 			table.string( "caption", 750 ).nullable();
 		    table.string( 'originalFileName', 255 );

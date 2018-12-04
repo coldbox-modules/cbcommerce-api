@@ -4,7 +4,8 @@
     "disableInternalCFJavaComponents":false,
     "inspectTemplate":"always",
     "requestTimeout":"0,0,0,90",
-	"robustExceptionEnabled":true,
+    "robustExceptionEnabled":true,
+    "adminPassword" : "commandbox",
 	"datasources": {
         "cbc_testing":
         {
@@ -33,5 +34,5 @@
             "password" : "${DB_PASSWORD}",
             "validate": "false"
         }
-    },
+    }
 }

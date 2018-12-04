@@ -19,7 +19,7 @@
         </div>
 	</div>
 </template>
-<script type="text/javascript">
+<script type="application/javascript">
 	import Owl from "owl.carousel";
 
 	export default {

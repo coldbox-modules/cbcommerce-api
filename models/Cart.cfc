@@ -8,8 +8,12 @@ component table="cbc_carts"
             accessors="true"
             quick 
 {
-   property name="contents";
-   property name="audit";
+   //JSON storage
+   property name="contents" type="string" default="{}";
+   property name="audit" type="string" default="{}";
+   //Foreign Keys
+   property name="FK_user";
+   property name="FK_order";
   
    function init(){
        super.init();

@@ -1,13 +1,13 @@
 /**
 * A cool Customer entity
 */
-component quick table="cbc_users"extends="BaseCBCommerceEntity" accessors="true"{
-    property name="bcrypt" inject="Bcrypt@BCrypt" persistent="false";
+component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true"{
+    property name="encryptionService" inject="EncryptionService@cbCommerce" persistent="false";
         
     // Persistent column properties
     property name="firstName";
     property name="lastName";
-    property name="emailName";
+    property name="email";
     property name="password";
     property name="primaryPhone";
     property name="secondaryPhone";
@@ -18,11 +18,11 @@ component quick table="cbc_users"extends="BaseCBCommerceEntity" accessors="true"
     }
 
     function roles(){
-        return belongsToMany( "UserRole@cbCommerce" , "lookups_users_roles", "FK_user", "FK_role" );
+        return belongsToMany( "UserRole@cbCommerce" , "cbc_lookups_users_roles", "FK_user", "FK_user_role" );
     }
 
     function explicitPermissions(){
-        return belongsToMany( "UserPermission@cbCommerce" , "lookups_users_explicitPermissions", "FK_user", "FK_permission" );
+        return belongsToMany( "UserPermission@cbCommerce" , "cbc_lookups_users_explicitPermissions", "FK_user", "FK_permission" );
     }
 
     function carts(){
@@ -32,5 +32,10 @@ component quick table="cbc_users"extends="BaseCBCommerceEntity" accessors="true"
     function orders(){
         return hasMany( "Order@cbCommerce", "FK_user" );
     }
+
+    function setPassword( value ) {
+        return assignAttribute( "password", encryptionService.bCrypt( value ) );
+    }
+
 }
 

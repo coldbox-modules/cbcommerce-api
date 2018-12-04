@@ -1,0 +1,40 @@
+{
+    "name":"cffractal",
+    "version":"0.0.0-semantic-released",
+    "author":"Eric Peterson",
+    "location":"coldbox-modules/cffractal#v6.1.0",
+    "homepage":"https://github.com/coldbox-modules/cffractal",
+    "documentation":"https://github.com/coldbox-modules/cffractal",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/coldbox-modules/cffractal"
+    },
+    "bugs":"https://github.com/coldbox-modules/cffractal/issues",
+    "slug":"cffractal",
+    "shortDescription":"Transform business models to JSON data structures. Based on the Fractal PHP library.",
+    "description":"Transform business models to JSON data structures. Based on the Fractal PHP library.",
+    "type":"modules",
+    "dependencies":{},
+    "devDependencies":{
+        "coldbox":"^4.3.0+188",
+        "testbox":"^2.4.0+80"
+    },
+    "installPaths":{
+        "testbox":"testbox",
+        "coldbox":"tests/resources/app/coldbox"
+    },
+    "scripts":{
+        "postVersion":"package set location='coldbox-modules/cffractal#v`package version`'"
+    },
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ],
+    "testbox":{
+        "runner":"http://localhost:49652/tests/runner.cfm",
+        "reporter":"json",
+        "verbose":"false",
+        "watchPaths":"/**/*.cfc"
+    }
+}

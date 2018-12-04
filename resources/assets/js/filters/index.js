@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const formatNumber = value =>
   value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
 
@@ -21,12 +23,36 @@ const floatToDollars = (floatDollars) => (floatDollars).toLocaleString("en-US", 
   currency: "USD"
 });
 
+const denormalize = function denormalize(res) {
+
+  if (!res) {
+    return [];
+  }
+
+  if (!res.results) {
+    return res;
+  }
+
+  return res.results.map(id => res.resultsMap[id]);
+}
+
+const dateToText = (date) => {
+  return (date) ? moment(date).format('MMM Do, YYYY h:mm:ss a') : '';
+}
+
+const itemStatusToText = (isActive) => {
+  return (isActive) ? 'Enabled' : 'Disabled';
+}
+
 export const createFilters = Vue => {
   Vue.filter("formatNumber", formatNumber);
   Vue.filter("formatPercentage", formatPercentage);
   Vue.filter("formatToPercent", formatToPercent);
   Vue.filter("centsToDollars", centsToDollars);
   Vue.filter("floatToDollars", floatToDollars);
+  Vue.filter("denormalize", denormalize);
+  Vue.filter("dateToText", dateToText);
+  Vue.filter("itemStatusToText", itemStatusToText);
 };
 
 export default createFilters;

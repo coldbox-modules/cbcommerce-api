@@ -18,13 +18,27 @@ component {
 		sortOrder = "createdTime DESC"
 	) {
 
+        arguments[ "entity" ] = newEntity();
+
+        var builder = newBuilder( argumentCollection = arguments );
+        builder.limit( maxrows )
+                .offset( offset )
+                .orderBy( 
+                    listFirst( sortOrder, " " ), 
+                    listLast( sortOrder, " " ) 
+                );
+        
+        var searchResults = arguments.entity.getEntities();
+
+        structDelete( arguments, "entity" );
+
         return {
             "pagination" : {
                 "maxrows" : maxrows,
                 "offset"  : offset,
                 "total"   : newBuilder( argumentCollection=arguments ).count()
             },
-            "collection"  : newBuilder( argumentCollection=arguments ).get()
+            "collection"  : searchResults
         };        
 
     }
@@ -40,18 +54,15 @@ component {
 		required searchCollection,
 		maxrows = 50,
 		offset = 0,
-		sortOrder = "createdTime DESC"    
+        sortOrder = "createdTime DESC",
+        entity
     ){
 
-        var entity = newEntity();
+        if( isNull( arguments.entity ) ){
+            arguments.entity = newEntity();
+        }
 
-        var builder = entity.newQuery()
-                        .limit( maxrows )
-                        .offset( offset )
-                        .orderBy( 
-                            listFirst( sortOrder, " " ), 
-                            listLast( sortOrder, " " ) 
-                        );
+        var builder = entity.newQuery();
         
         filterCommonSearchArgs( searchCollection, entity, builder );
 

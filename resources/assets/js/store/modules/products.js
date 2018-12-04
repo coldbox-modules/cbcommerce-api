@@ -47,9 +47,10 @@ const actions = {
 		new Promise((resolve, reject) => {
 			api()
 				.get.products.list()
-				.then(list => {
-					// const products = get(list, "data", false);
-					const products = list;
+				.then( XHR => {
+					let list = XHR.data;
+					const products = Vue.options.filters.denormalize( list );
+					console.log( products );
 					if(!products || products.length === 0){
 						throw new Error("No products found");
 					}
@@ -70,12 +71,13 @@ const actions = {
 		new Promise((resolve, reject) => {
 			api()
 				.get.productReviews.list()
-				.then(list => {
+				.then(XHR => {
+					let list = XHR.data;
 					const reviews = list;
-					if(!reviews || reviews.length === 0){
+					if (!reviews || reviews.length === 0) {
 						throw new Error("No reviews found");
 					}
-					commit( 'setProductReviewListItems', reviews );
+					commit("setProductReviewListItems", reviews);
 					resolve(reviews);
 				})
 				.catch(err => {

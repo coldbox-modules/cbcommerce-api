@@ -9,6 +9,10 @@ component   table="cbc_productCategories"
     // Column Properties
 	property name="name" type="string" default="";
 	property name="description" type="string" default="";
+	property name="sortOrder" type="numeric" default=0;
+
+	//Foreign Keys
+	property name="FK_parent";
 	
 	// Relationships
 	function parent(){

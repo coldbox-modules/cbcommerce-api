@@ -65,7 +65,7 @@
 				}
 			},
 			// Root Logger
-			root = { levelmax="DEBUG", appenders="*" },
+			root = { levelmax="INFO", appenders="*" },
 			// Implicit Level Categories
 			info = [ "coldbox.system" ]
 		};

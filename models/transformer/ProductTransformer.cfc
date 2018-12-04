@@ -47,12 +47,13 @@ component extends="BaseModelTransformer"{
 
     function includeMedia( activeEntity ){
 
-        return collection(
-            activeEntity.media().where( 'isActive', true )
+        var filteredMedia = activeEntity.media().where( 'isActive', true )
                 .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
-                .orderBy( 'createdTime', 'ASC' )
-                .retrieve(),
+                .orderBy( 'createdTime', 'ASC' );
+
+        return collection(
+            filteredMedia.getResults(),
             wirebox.getInstance( "MediaTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );

@@ -12,8 +12,11 @@ component   table="cbc_orderInvoices"
 	property name="externalId";
 
 	// Textual fields
-	property name="terms";
-	property name="notes";
+	property name="terms" type="string" default="";
+	property name="notes" type="string" default="";
+
+	//Foreign Keys
+	property name="FK_wishlist";
 
    function order(){
 	   return hasMany( "Order@cbCommerce", "FK_invoice" );

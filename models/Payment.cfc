@@ -10,7 +10,10 @@ component   table="cbc_payments"
     property name="amount" type="numeric";
     property name="comment" type="string";
     property name="lastFour" type="numeric";
-    property name="paymentMethod" type="string"; 
+    property name="paymentMethod" type="string";
+    
+    //Foreign Keys
+	property name="FK_order";
 
     function order(){
         return belongsTo( "Order@cbCommerce", "FK_order" );
