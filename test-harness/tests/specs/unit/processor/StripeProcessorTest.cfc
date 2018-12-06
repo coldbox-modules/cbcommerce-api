@@ -46,6 +46,17 @@ component extends="tests.resources.BaseTest"{
 				expect( response.getError() ).toBeTrue();
 			});
 
+			it( "can make a test valid charge", function(){
+				var response = stripeProcessor.charge(
+					amount = 100,
+					source = "tok_visa",
+					description="Unit test charge"
+				);
+
+				expect( response.getError() ).toBeFalse();
+				expect( response.getContent().content.paid ).toBeTrue();
+			});
+
 			it( "can make a fake refund", function(){
 				var response = stripeProcessor.refund(
 					charge = 123,
