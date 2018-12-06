@@ -56,7 +56,7 @@ component extends="BaseProcessor" implements="IPaymentProcessor" singleton{
 		var oResponse = newResponse();
 
 		if( log.canDebug() ){
-			log.debug( "Making a stripe call with the following data: #seralizeJSON( arguments )#" );
+			log.debug( "Stripe charge starting: #seralizeJSON( arguments )#" );
 		}
 
 		// Charge it baby!
@@ -70,7 +70,7 @@ component extends="BaseProcessor" implements="IPaymentProcessor" singleton{
 		}
 
 		if( log.canDebug() ){
-			log.debug( "Stripe call response: #seralizeJSON( oResponse.getContent() )#" );
+			log.debug( "Stripe charge response: #seralizeJSON( oResponse.getContent() )#" );
 		}
 
 		return oResponse;
@@ -94,7 +94,7 @@ component extends="BaseProcessor" implements="IPaymentProcessor" singleton{
 		var oResponse = newResponse();
 
 		if( log.canDebug() ){
-			log.debug( "Making a stripe call with the following data: #seralizeJSON( arguments )#" );
+			log.debug( "Stripe refund starting: #seralizeJSON( arguments )#" );
 		}
 
 		// Charge it baby!
@@ -108,7 +108,7 @@ component extends="BaseProcessor" implements="IPaymentProcessor" singleton{
 		}
 
 		if( log.canDebug() ){
-			log.debug( "Stripe call response: #seralizeJSON( oResponse.getContent() )#" );
+			log.debug( "Stripe refund response: #seralizeJSON( oResponse.getContent() )#" );
 		}
 
 		return oResponse;
