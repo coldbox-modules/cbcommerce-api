@@ -2,6 +2,7 @@
 
 .artifacts/**
 .tmp/**
+.env
 
 test-harness/.engine/**
 test-harness/.env
