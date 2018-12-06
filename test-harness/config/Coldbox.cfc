@@ -82,7 +82,11 @@
                 "authenticationAjaxOverrideEvent" = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
                 "authorizationOverrideEvent"      = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
                 "authorizationAjaxOverrideEvent"  = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure"
-            }
+			},
+			"stripecfml" : {
+				"apiKey" : getSystemSetting( "STRIPE_API_KEY", "" ),
+				"publishableKey" : getSystemSetting( "STRIPE_PUBLISHABLE_KEY", "" )
+			}
 		};
 
 	}

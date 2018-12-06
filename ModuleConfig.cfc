@@ -52,7 +52,7 @@ component {
                 "processor" : {
                     "default" : "StripeProcessor@cbCommerce",
                     "credentials" : {
-                        //credentials will vary, depending on the implmented processor
+						//credentials will vary, depending on the implmented processor
                     }
                 }
             }
