@@ -3,16 +3,16 @@
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseModelTest" model="models.InventoryLocation"{
-	
+component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.InventoryLocation"{
+
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
 	function beforeAll(){
 		super.beforeAll();
-		
+
 		// setup the model
 		super.setup();
-		
+
 		// init the model object
 		model.init();
 	}
@@ -22,11 +22,11 @@ component extends="coldbox.system.testing.BaseModelTest" model="models.Inventory
 	}
 
 	/*********************************** BDD SUITES ***********************************/
-	
+
 	function run(){
 
-		describe( "InventoryLocation Suite", function(){
-			
+		describe( "LocationInventory Suite", function(){
+
 
 		});
 

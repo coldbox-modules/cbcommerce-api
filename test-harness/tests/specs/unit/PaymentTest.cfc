@@ -3,7 +3,7 @@
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseModelTest" model="models.Payment"{
+component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.Payment"{
 	
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
@@ -28,7 +28,7 @@ component extends="coldbox.system.testing.BaseModelTest" model="models.Payment"{
 	
 	function run(){
 
-		describe( "models.Payment Suite", function(){
+		describe( "cbCommerce.models.Payment Suite", function(){
 			
 
 		});
