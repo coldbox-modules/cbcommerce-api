@@ -14,11 +14,11 @@ component   table="cbc_productMedia"
 	property name="FK_product";
 	
 	function mediaItem(){
-		return belongsTo( "Media", "FK_media" );
+		return belongsTo( "Media@cbCommerce", "FK_media" );
 	}
 
 	function product(){
-		return belongsTo( "Product", "FK_product" );
+		return belongsTo( "Product@cbCommerce", "FK_product" );
 	}
 
 }

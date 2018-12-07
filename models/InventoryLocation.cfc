@@ -13,7 +13,7 @@ component   table="cbc_inventoryLocations"
 	property name="city" type="string" default="";
 	property name="province" type="string" default="";
 	property name="postalCode" type="string" default="";
-	property name="country" type="string" default="";
+	property name="country" type="string" default="USA";
 
 	function inventory(){
 		return hasMany( "InventoryLocationStock@cbCommerce", "FK_inventoryLocation" );

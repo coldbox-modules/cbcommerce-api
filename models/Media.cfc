@@ -2,7 +2,7 @@
 * cboxCommerce Media Entity
 */
 component   table="cbc_media" 
-			extends="quick.models.BaseEntity" 
+			extends="BaseCBCommerceEntity" 
 			accessors="true"
 			quick
 { 
@@ -21,17 +21,16 @@ component   table="cbc_media"
 
 		/**
 	* Set our file from a path
-	* @model any 					The entity to associate the media object with
 	* @fileInput string 			The name of an input field to load the file from
 	* @filePath string 				An existing physical path to a file
 	* @pathExtension string 		An exension to append to the shared storage directory
 	* @chainable
 	**/
 	public Media function loadFile(
-		required any model,
 		string fileInput,
 		string filePath,
-		string pathExtension = "products"
+		string pathExtension = "products",
+		string mimeAccept = "*"
 	){
 		//the filesPath used for this model - may be overriden by model properties - defaults to the WEATCore setting + model name + identifier
 		var filesPath = mediaSettings.storageLocation & "/" & pathExtension;
@@ -52,7 +51,6 @@ component   table="cbc_media"
 
 		//Process our field upload and return the tmp clientFile
 		if( !isNull( arguments.fileInput ) ){
-
 			var tmpFile = uploadToTemp( arguments.fileInput, mimeAccept );
 		
 		} else if( !isNull( arguments.filePath ) ) {
@@ -84,16 +82,22 @@ component   table="cbc_media"
 			setTitle( tmpFile.clientFile );
 		}
 
-		setUploadFileName( listLast( tmpFile.clientFile, "/" ) );
+		setOriginalFileName( listLast( tmpFile.clientFile, "/" ) );
 
 		var fileExtension = tmpFile.clientFileExt;
 
-		var fileName = getId() & "." & lcase( fileExtension );
+		var identifier = variables.id;
+
+		var fileName = identifier & "." & lcase( fileExtension );
 
 		var fileDestination = filesDirectory & "/" & fileName;
 
 		//move the file to its new home
-		fileMove( tmpFile.serverDirectory & "/" & tmpfile.clientFile , fileDestination );
+		if( !isNull( arguments.fileInput ) ){
+			fileMove( tmpFile.serverDirectory & "/" & tmpfile.clientFile , fileDestination );
+		} else {
+			fileCopy( tmpFile.serverDirectory & "/" & tmpfile.clientFile , fileDestination );
+		}
 
 		this.setFileLocation( filesPath & "/" & fileName );
 

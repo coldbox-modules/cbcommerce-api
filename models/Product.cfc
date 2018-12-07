@@ -10,6 +10,7 @@ component   table="cbc_products"
 	property name="name" type="string" default="";
 	property name="shortDescription" type="string" default="";
 	property name="description" type="string" default="";
+	property name="manufacturer" type="string" default="";
 	// need to scope this as a bit until quick fixes the boolean handling
 	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
