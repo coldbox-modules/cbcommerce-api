@@ -328,11 +328,11 @@ component {
 			table.string( "name", 255 );
 			table.string( "description" ).nullable();
 
-			table.string( 'address1', 255 );
-			table.string( 'address2', 255 );
-			table.string( 'city', 255 );
-			table.string( 'province', 3 );
-			table.string( 'postalCode', 15);
+			table.string( 'address1', 255 ).nullable();
+			table.string( 'address2', 255 ).nullable();
+			table.string( 'city', 255 ).nullable();
+			table.string( 'province', 3 ).nullable();
+			table.string( 'postalCode', 15).nullable();
 			table.string( 'country', 3 ).default( "USA" );
 		    
 		} );
