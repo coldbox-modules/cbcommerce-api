@@ -1,10 +1,13 @@
-component {
+component{
 
+	/**
+	 * Get ColdBox Utility Object
+	 */
     function getUtil() provider="coldbox.system.core.util.Util"{}
 
     /**
 	* Performs an abstract search against product entities
-	* 
+	*
 	* @searchCollection 		struct 		The collection of arguments for the search ( e.g. - the public request collection  )
 	* @maxrows					[numeric] 	The max rows to be returned ( default=25 )
 	* @offset					[numeric] 	The offset for the query ( default=0 )
@@ -23,11 +26,11 @@ component {
         var builder = newBuilder( argumentCollection = arguments );
         builder.limit( maxrows )
                 .offset( offset )
-                .orderBy( 
-                    listFirst( sortOrder, " " ), 
-                    listLast( sortOrder, " " ) 
+                .orderBy(
+                    listFirst( sortOrder, " " ),
+                    listLast( sortOrder, " " )
                 );
-        
+
         var searchResults = arguments.entity.getEntities();
 
         structDelete( arguments, "entity" );
@@ -39,18 +42,18 @@ component {
                 "total"   : newBuilder( argumentCollection=arguments ).count()
             },
             "collection"  : searchResults
-        };        
+        };
 
     }
 
-    /** 
+    /**
 	* @searchCollection 		struct 		The collection of arguments for the search ( e.g. - the public request collection  )
 	* @maxrows					[numeric] 	The max rows to be returned ( default=25 )
 	* @offset					[numeric] 	The offset for the query ( default=0 )
 	* @sortOrder				[numeric] 	The sort for the recordset ( default="createdTime DESC" )
 	* @selectList 			    [string]    When passed the query will be transformed to a projection list, which will return an array of structs
 	**/
-    public QueryBuilder function newBuilder( 
+    public QueryBuilder function newBuilder(
 		required searchCollection,
 		maxrows = 50,
 		offset = 0,
@@ -63,7 +66,7 @@ component {
         }
 
         var builder = entity.newQuery();
-        
+
         filterCommonSearchArgs( searchCollection, entity, builder );
 
         if( structKeyExists( entity, "filterSearch" ) ){
@@ -93,8 +96,8 @@ component {
     }
 
     public boolean function hasMetaProperty( meta, key ){
-        return javacast( 
-            "boolean", 
+        return javacast(
+            "boolean",
             arrayLen( meta.properties.filter(
                 function( prop ){
                     return prop[ "name" ] == key
@@ -105,9 +108,9 @@ component {
 
     public boolean function hasMetaFunction( meta, key ){
 
-        return javacast( 
-            "boolean", 
-            arrayLen( 
+        return javacast(
+            "boolean",
+            arrayLen(
                 arrayFilter(
                     meta.functions,
                     function( fn ){

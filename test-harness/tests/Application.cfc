@@ -24,18 +24,31 @@ component{
 	request.MODULE_NAME = "cbCommerce";
 	this.datasource = "cbc_testing";
 
-	/**
-	 * this.mappings[ "/coldbox" ] = testsPath & "resources/app/coldbox";
-    this.mappings[ "/quick" ] = rootPath & "modules/quick";
-    this.mappings[ "/bcrypt" ] = rootPath & "modules/BCrypt";
-    this.mappings[ "/qb" ] = rootPath & "modules/quick/modules/qb";
-    this.mappings[ "/cffractal" ] = rootPath & "modules/cffractal";
-    this.mappings[ "/cbCommerce" ] = rootPath;
-	 */
+	this.mappings[ "/coldbox" ]    = rootPath & "coldbox";
+    this.mappings[ "/quick" ]      = rootPath & "modules/quick";
+    this.mappings[ "/bcrypt" ]     = rootPath & "modules/BCrypt";
+    this.mappings[ "/qb" ]         = rootPath & "modules/quick/modules/qb";
+    this.mappings[ "/cffractal" ]  = rootPath & "modules/cffractal";
 
 	// The module root path
 	moduleRootPath = REReplaceNoCase( this.mappings[ "/root" ], "#request.module_name#(\\|/)test-harness(\\|/)", "" );
 	this.mappings[ "/moduleroot" ] = moduleRootPath;
 	this.mappings[ "/#request.MODULE_NAME#" ] = moduleRootPath & "#request.MODULE_NAME#";
+
+	// request start
+	public boolean function onRequestStart( String targetPage ){
+		pagePoolClear();
+		if( url.keyExists( "fwreinit" ) ){
+			ormReload();
+		}
+		return true;
+	}
+
+    public void function onRequestEnd() {
+    	// Cleanup Frameworks in each request.
+        structdelete( application, "cbController" );
+        structdelete( application, "wirebox" );
+        return;
+	}
 
 }

@@ -1,18 +1,21 @@
 /**
-* The base model test case will use the 'model' annotation as the instantiation path
+* The base orm entity test case will use the 'model' annotation as the instantiation path
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.Wishlist"{
-	
+component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.processor.ProcessorResponse"{
+
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
 	function beforeAll(){
 		super.beforeAll();
-		
+
+		// load ColdBox
+		this.loadColdbox = true;
+
 		// setup the model
 		super.setup();
-		
+
 		// init the model object
 		model.init();
 	}
@@ -22,14 +25,18 @@ component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.model
 	}
 
 	/*********************************** BDD SUITES ***********************************/
-	
+
 	function run(){
 
-		describe( "Wishlist Suite", function(){
-			
+		describe( "Processor response", function(){
+
+			it( "can be created", function(){
+				expect( model ).toBeComponent();
+			});
 
 		});
 
 	}
 
 }
+

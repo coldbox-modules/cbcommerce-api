@@ -2,14 +2,18 @@
 
 .artifacts/**
 .tmp/**
+.env
 
 test-harness/.engine/**
+test-harness/.env
 test-harness/coldbox/**
 test-harness/docbox/**
 test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
-test-harness/.engine/**
+
+# CommandBox Modules
+modules/**
 
 # Development artifacts
 node_modules
