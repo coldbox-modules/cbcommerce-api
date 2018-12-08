@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -28,7 +28,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	any function renderIt(
 		numeric max=3,
 		string category=""
-
 	){
 		var contentResults = contentStoreService.findPublishedContent( max=arguments.max, category=arguments.category );
 		var slides = [];
@@ -61,12 +60,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 
 		}
 		// generate
-		saveContent variable="rString"{
-
-			include "contentstorecarousel-templates/default.cfm";
-
-		}
-
-		return rString;
+		return renderView( view="widgets/contentstorecarousel-display", module="cbCommerce", viewArgs={ "slides" : slides } );
 	}
 }

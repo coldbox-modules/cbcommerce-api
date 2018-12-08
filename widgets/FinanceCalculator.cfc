@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}

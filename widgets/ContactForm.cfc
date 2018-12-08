@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -24,11 +24,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	* Renders a published Content Form object, if no default value is used, this throws an exception
 	*/
 	any function renderIt(){
-		// generate
-		saveContent variable="rString"{
-			include "contactform-templates/display.cfm";
-
-		}
-		return rString;
+		return renderView( view="widgets/contactform-display", module="cbCommerce" );
 	}
 }

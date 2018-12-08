@@ -1,6 +1,9 @@
 component {
 
     this.name           = "cbCommerce";
+    this.title          = "cbCommerce "
+    this.description    = "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS"
+    this.version        = "1.0.0-alpha1"
     this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
     this.webUrl         = "https://github.com/jclausen/cbCommerce";
     this.cfmapping      = "cbCommerce";

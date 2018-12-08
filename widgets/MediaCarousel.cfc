@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -53,25 +53,17 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		var mediaPath = cbSettings.cb_media_directoryRoot & "/" & arguments.folder;
 		var mediaPathExpanded = expandPath( mediaPath );
 		//  Directory list with file info as json object
-		var listing = SerializeJSON( directoryList( path=mediaPathExpanded, recurse=false, listInfo="query", filter="*.jpg|*.png", sort='#arguments.sort# #arguments.order#' ), 'struct' );
+		arguments[ "listing" ] = SerializeJSON( directoryList( path=mediaPathExpanded, recurse=false, listInfo="query", filter="*.jpg|*.png", sort='#arguments.sort# #arguments.order#' ), 'struct' );
 		// File with additional data for each image in directory
 		var moreInfoFile = directoryList( path=mediaPathExpanded, recurse=false, listInfo="name", filter="directory-list.json");
 
 		// if directory-list.json exists in dir load content
 		if( ArrayLen( moreInfoFile ) > 0 ){
-			var moreInfo =  fileRead( mediaPathExpanded & "/directory-list.json" );
+			arguments[ "moreInfo" ] =  fileRead( mediaPathExpanded & "/directory-list.json" );
 		}else{
-			var moreInfo = SerializeJSON( {} );
-		}
-		var rString			= "";
-
-		// generate
-		saveContent variable="rString"{
-
-			include "media-carousel/mediaOwlCarousel.cfm";
-
+			arguments[ "moreInfo" ] = SerializeJSON( {} );
 		}
 
-		return rString;
+		return renderView( view="widgets/media-carousel/mediaOwlCarousel", module="cbCommerce", viewArgs=arguments );
 	}
 }

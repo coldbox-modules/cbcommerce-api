@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -28,10 +28,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	*/
 	any function renderIt(){
 		// generate
-		saveContent variable="rString"{
-			include "productcomparison-templates/display.cfm";
-
-		}
-		return rString;
+		return renderView( view="widgets/productcomparison-display", module="cbCommerce" );
 	}
 }

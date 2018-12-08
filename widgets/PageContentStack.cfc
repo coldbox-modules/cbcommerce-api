@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -32,54 +32,52 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		string category=""
 	){
 
-		var contentResults = pageService.findPublishedPages( max=arguments.max, category=arguments.category, sortOrder="order" );
-		var rString		= "";
-		var sfields		= {};
-		var inlineStyle = {};
-		var flexClass = "";
+		arguments[ "contentResults" ]  = pageService.findPublishedPages( max=arguments.max, category=arguments.category, sortOrder="order" );
+		arguments[ "inlineStyle"]      = {};
+		arguments[ "flexClass" ]       = "";
+		arguments[ "sfields" ]		   = {};
+		
+		arguments.sfields.bgColor    = "bgColor";
+		arguments.sfields.alignement = "alignment";
+		arguments.sfields.vcenter    = "vcenter";
 
-		sfields.bgColor = "bgColor";
-		sfields.alignement = "alignment";
-		sfields.vcenter = "vcenter";
-
-		inlineStyle.bgColor = "";
+		arguments.inlineStyle.bgColor = "";
 
 
-		if( contentResults.count ){
+		if( arguments.contentResults.count ){
+
 
 			// iteration cap
-			if( contentResults.count lt arguments.max){
-				arguments.max = contentResults.count;
+			if( arguments.contentResults.count lt arguments.max){
+				arguments.max = arguments.contentResults.count;
 			}
-			// generate
-			saveContent variable="rString"{
-				// iterate and create
-				for( var x=1; x lte arguments.max; x++ ){
-					if( contentResults.pages[ x ].getCustomField( sfields.bgColor, inlineStyle.bgColor ) != "" ){
-						inlineStyle.bgColor = contentResults.pages[ x ].getCustomField( sfields.bgColor, inlineStyle.bgColor );
-					}
-
-					if( contentResults.pages[ x ].getCustomField( sfields.vcenter, "no" ) ==  "yes" ){
-						flexClass = "container-flex";
-					} else {
-						flexClass = "";
-					}
-
-
-					var textAlignment = contentResults.pages[ x ].getCustomField( sfields.alignement, "left" );
-
-					if( textAlignment == "center" ){
-						include "pagecontentstack-templates/alignCenter.cfm";
-					} else if( textAlignment == "right" ) {
-						include "pagecontentstack-templates/alignRight.cfm";
-					} else {
-						include "pagecontentstack-templates/alignLeft.cfm";
-					}
-
-					inlineStyle.bgColor = "fff";
+			// iterate and create
+			for( var x=1; x lte arguments.max; x++ ){
+				if( arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.bgColor, arguments.inlineStyle.bgColor ) != "" ){
+					arguments.inlineStyle.bgColor = arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.bgColor, arguments.inlineStyle.bgColor );
 				}
+
+				if( arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.vcenter, "no" ) ==  "yes" ){
+					flexClass = "container-flex";
+				} else {
+					flexClass = "";
+				}
+
+
+				var textAlignment = arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.alignement, "left" );
+
+				if( textAlignment == "center" ){
+					return renderView( view="widgets/page-content-stack/alignCenter", module="cbCommerce", viewArgs=arguments );
+				} else if( textAlignment == "right" ) {
+					return renderView( view="widgets/page-content-stack/alignRight", module="cbCommerce", viewArgs=arguments );
+				} else {
+					return renderView( view="widgets/page-content-stack/alignLeft", module="cbCommerce", viewArgs=arguments );
+				}
+
+				arguments.inlineStyle.bgColor = "fff";
 			}
+		} else {
+			return "";
 		}
-		return rString;
 	}
 }

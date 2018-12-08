@@ -9,13 +9,13 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 
 	ProductCategory function init(){
 		// Widget Properties
-		setName( "Equipment Category Grid" );
+		setName( "Category Grid" );
 		setVersion( "1.1" );
-		setDescription( "A widget to display best equipment categories as a Vue grid." );
+		setDescription( "A widget to display best product categories as a Vue grid." );
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -28,10 +28,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	*/
 	any function renderIt(){
 		// generate
-		saveContent variable="rString"{
-			include "productcategory-templates/display.cfm";
-
-		}
-		return rString;
+		return renderView( view="widgets/productcategory-display", module="cbCommerce" );
 	}
 }

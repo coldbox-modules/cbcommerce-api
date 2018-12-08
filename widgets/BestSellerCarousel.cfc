@@ -15,7 +15,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 		setAuthor( "Ortus Solutions" );
 		setAuthorURL( "http://www.ortussolutions.com" );
 		setIcon( "hdd-o" );
-		setCategory( "Content" );
+		setCategory( "cbCommerce" );
 
 		return this;
 	}
@@ -27,11 +27,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	* @category.hint The category to filter the content on
 	*/
 	any function renderIt(){
-		// generate
-		saveContent variable="rString"{
-			include "bestsellercarousel-templates/carousel.cfm";
-
-		}
-		return rString;
+		return renderView( view="widgets/bestsellercarousel-display", module="cbCommerce" );
 	}
 }
