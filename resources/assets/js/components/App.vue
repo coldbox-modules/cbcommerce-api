@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import NavCart from "@/components/ui/nav-cart";
+    import NavCart from "@cbCommerce/components/ui/nav-cart";
     export default{
         name  : "app",
         components : {

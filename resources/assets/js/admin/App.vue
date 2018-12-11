@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import TopSearch from "@/components/admin/ui/top-search";
-import Sidebar from "@/components/admin/ui/sidebar";
+import TopSearch from "@cbCommerce/components/admin/ui/top-search";
+import Sidebar from "@cbCommerce/components/admin/ui/sidebar";
 export default {
 	name    : "app",
 	components: {

@@ -96,7 +96,7 @@ component extends="coldbox.system.EventHandler"{
 						.setStatusCode( STATUS.EXPECTATION_FAILED );
 		} catch ( EntityNotFoundException e ) {
 			prc.response.addMessage( e.message );
-			fourOhFour( event, rc, prc );
+			routeNotfound( event, rc, prc );
 		} catch ( EntityValidationException e ) {
 			prc.response.setStatusCode( STATUS.NOT_ACCEPTABLE );
 			prc.response.setError( true );

@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { Form } from '@/admin/classes/form';
+import { Form } from '@cbCommerce/admin/classes/form';
 export default {
 
 	props: {

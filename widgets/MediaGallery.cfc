@@ -52,7 +52,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 			arguments.moreInfo = SerializeJSON( {} );
 		}
 
-		return renderView( view="widgets/media-gallery-display", module="cbCommerce", viewArgs=arguments );
+		return renderView( view="widgets/media-gallery-display", module="cbCommerce", args=arguments );
 
 	}
 }

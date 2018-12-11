@@ -2,7 +2,7 @@
 	<media-owl-carousel
 		carousel-class='#args.carouselClass#'
 		carousel-id='#args.carouselId#'
-		:file-list = '#argslisting#'
+		:file-list = '#args.listing#'
 		:image-info = '#args.moreInfo#'
 		media-folder= '#args.folder#'
 		:show-nav = '#args.showNav#'

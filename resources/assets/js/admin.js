@@ -11,21 +11,21 @@ import VueCurrencyFilter from 'vue-currency-filter'
 import VueCharts from 'vue-chartjs'
 
 // Module components
-import PageHeader from '@/components/admin/ui/page-header';
-import BackButton from '@/components/admin/ui/back-button';
-import TablePagination from '@/components/admin/ui/table-pagination';
-import DismissableAlert from '@/components/admin/ui/dismissable-alert';
+import PageHeader from '@cbCommerce/components/admin/ui/page-header';
+import BackButton from '@cbCommerce/components/admin/ui/back-button';
+import TablePagination from '@cbCommerce/components/admin/ui/table-pagination';
+import DismissableAlert from '@cbCommerce/components/admin/ui/dismissable-alert';
 
 import Vuex from 'vuex';
 import Router from 'vue-router';
 
 import { sync } from 'vuex-router-sync';
 
-import createStore from "@/admin/store";
-import createRouter from "@/admin/router";
-import createFilters from "@/admin/filters";
+import createStore from "@cbCommerce/admin/store";
+import createRouter from "@cbCommerce/admin/router";
+import createFilters from "@cbCommerce/admin/filters";
 
-import App from "@/admin/App";
+import App from "@cbCommerce/admin/App";
 
 const storeInstance  = createStore( Vue, Vuex );
 const routerInstance = createRouter( Vue, Router );

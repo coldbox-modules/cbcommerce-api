@@ -8,9 +8,11 @@
 
                 <article class="product light">
                     <figure class="figure-hover-overlay">                                                                        
-                        <a :href="productLink"  class="figure-href"></a>
-                        <div v-if="this.isNew" class="product-new">new</div>
-                        <div class="product-sale" v-if="this.percentOff">{{ this.percentOff }} <br> off</div>
+                        <a :href="`/equipment/product/${product.id}`"  class="figure-href"></a>
+                        <div v-if="isNew" class="product-new">new</div>
+                        <div 
+                            class="product-sale" 
+                            v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
                         <a 
                             @click="addProductToComparisonList(product)"
@@ -22,28 +24,32 @@
                             v-tooltip="{ content: 'Add this item to your wishlist' }"
                             class="product-wishlist"><i class="fa fa-heart-o"></i></a>
                         
-                        <div v-images-loaded:on.progress="imageProgress">
+                        <div>
                             <img 
-                                :src="this.image" 
+                                v-for="mediaItem in product.media"
+                                :key="mediaItem.id"
+                                v-if="isImage( mediaItem )"
+                                :src="mediaItem.href" 
                                 class="img-overlay img-responsive" 
-                                :alt="this.name" />
+                                :alt="mediaItem.title" />
+                            
                             <img 
-                                :src="this.image2" 
+                                v-if="product.media.length === 1 && isImage( product.media[ 0 ] )"
+                                :src="product.media[ 0 ].href" 
                                 class="img-responsive" 
-                                :alt="this.name" />
+                                :alt="product.media[ 0 ].title" />
                         </div>
-                        
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
-                            <a href="#" class="product-name">{{ this.name }}</a>
+                            <a href="#" class="product-name">{{ product.name }}</a>
 
-                            <div v-if="this.listPrice">
-                                <div v-if="this.userPrice" class="priceWithDiscount">
-                                    <span>&dollar;{{ this.listPrice }}</span> &dollar;{{ this.userPrice }}
+                            <div v-if="product.startingPrice">
+                                <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
+                                    <span>&dollar;{{ product.startingPrice.MSRP }}</span> &dollar;{{ product.startingPrice.basePrice }}
                                 </div>
                                 <div v-else>
-                                    <p class="product-price">&dollar;{{ this.listPrice }}</p>
+                                    <p class="product-price">&dollar;{{ product.startingPrice.basePrice }}</p>
                                 </div>
                             </div>
                             <div v-else>
@@ -53,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div v-if="this.listPrice" class="product-cart">
+                    <div v-if="product.startingPrice" class="product-cart">
                         <a 
                             @click="addProductToCart( { product, quantity: 1 } )"
                             v-tooltip="'Add this item to your cart'"
@@ -66,7 +72,7 @@
                     </div>
 
                     <p class="description">
-                        {{ this.description | truncate( 35 ) }}
+                        {{ product.description | truncate( 35 ) }}
                     </p>
 
                 </article>
@@ -87,6 +93,7 @@
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import ProductItemLoading from './product-item-loading';
+import moment from "moment";
 export default {
     components: {
         ProductItemLoading
@@ -99,16 +106,7 @@ export default {
     ],
     data() {
         return {
-            productLink: '/equipment/category/sub-category/test-product',
-            isLoading  : false,
-            name       : null,
-            listPrice  : null,
-            userPrice  : null,
-            percentOff : null,
-            description: '&nbsp;',
-            isNew      : false,
-            image      : null,
-            image2     : null
+            isLoading  : false
         }
     },
 
@@ -117,7 +115,7 @@ export default {
     },
 
     mounted() {
-        this.parseContent();
+        this.isLoading = false;
     },
 
     computed: {
@@ -125,38 +123,29 @@ export default {
             "cartProducts",
             "wishlistProducts",
             "comparisonProducts"
-        ])
+        ]),
+        isNew(){
+            return moment( new Date( this.product.createdTime ) ) < moment( new Date() ).add( "30 days" );
+        },
+        percentOff(){
+            return parseInt( 100 * ( 1 - ( this.product.startingPrice.basePrice / this.product.startingPrice.MSRP ) ) );
+        }
     },
 
     methods: {
-
         ...mapActions([
             "addProductToCart",
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),
-        
-        parseContent: function(){
-            var self          = this;
-            var parsedContent = self.product;
-            self.name         = parsedContent.productName;
-            self.listPrice    = parsedContent.listPrice;
-            self.userPrice    = parsedContent.userPrice;
-            self.percentOff   = parsedContent.percentOff;
-            self.description  = parsedContent.description;
-            self.isNew        = parsedContent.isNew;
-            self.image        = parsedContent.image;
-            self.image2       = parsedContent.image2;
-            self.isLoading    = false;
+        isImage: function( mediaItem ){
+            return this.$options.filters.isImage( mediaItem );
         },
-        
         imageProgress: function( instance, image ){
-            var result = image.isLoaded ? 'loaded' : 'broken';
+            var result = image.href ? 'loaded' : 'broken';
         }
 
-    },
-
-    computed: {}
+    }
 }
 </script>
 

@@ -60,6 +60,6 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 
 		}
 		// generate
-		return renderView( view="widgets/contentstorecarousel-display", module="cbCommerce", viewArgs={ "slides" : slides } );
+		return renderView( view="widgets/contentstorecarousel-display", module="cbCommerce", args={ "slides" : slides } );
 	}
 }

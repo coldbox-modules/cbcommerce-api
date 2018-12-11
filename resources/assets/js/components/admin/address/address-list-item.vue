@@ -14,8 +14,8 @@
 </template>
 <script>
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
-import addressDetailsCard from '@/components/admin/address/address-details-card';
-import addressSidebar from '@/components/admin/address/address-sidebar';
+import addressDetailsCard from '@cbCommerce/components/admin/address/address-details-card';
+import addressSidebar from '@cbCommerce/components/admin/address/address-sidebar';
 export default {
 
 	components: {

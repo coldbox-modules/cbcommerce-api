@@ -14,7 +14,8 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "onHand"
+                "onHand",
+                "media"
             ],
             true
         );
@@ -65,5 +66,19 @@ component extends="BaseModelTransformer"{
             wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         )
+    }
+
+    function includeMedia( activeEntity ){
+
+        var filteredMedia = activeEntity.media().where( 'isActive', 1 )
+                .orderBy( 'isPrimary', 'DESC')
+                .orderBy( 'displayOrder', 'ASC')
+                .orderBy( 'createdTime', 'ASC' );
+
+        return collection(
+            filteredMedia.getResults(),
+            wirebox.getInstance( "MediaTransformer@cbCommerce" ),
+            wirebox.getInstance( collectionSerializer )
+        );
     }
 }

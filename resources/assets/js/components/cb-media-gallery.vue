@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<div :id="galleryId" :class="galleryClass">
-			<button class="btn btn-border" :class="{ active: showAllTags }" @click="resetImages()">All</button><button class="btn btn-border" v-for="( tag, index ) in allTags" :class="{ active: tag.show }" @click="setFilters( tag )">{{ tag.name }}</button>
+			<button class="btn btn-border" :class="{ active: showAllTags }" @click="resetImages()">All</button>
+			<button class="btn btn-border" v-for="( tag, index ) in allTags" :class="{ active: tag.show }" @click="setFilters( tag )">{{ tag.name }}</button>
 			<viewer :images="images" class="viewer" :options="options">
 				<transition-group name="list-complete">
 					<div class="item" v-for="( item, index ) in galleryFileData" v-if="getValue( item.name, 'show' )" :key="getMediaPath( item.name )">
@@ -12,9 +13,9 @@
 		</div>
 	</div>
 </template>
+
 <script>
-	import 'v-viewer/dist/v-viewer.js';
-	import Viewer from "v-viewer/src/component";
+	import Viewer from 'v-viewer';
 
 	export default {
 		props: {

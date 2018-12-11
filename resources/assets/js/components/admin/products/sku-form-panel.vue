@@ -217,8 +217,8 @@
 
 <script>
 import Datepicker from 'vuejs-datepicker';
-import htmlEditor from '@/components/admin/ui/html-editor';
-import { Form } from '@/admin/classes/form';
+import htmlEditor from '@cbCommerce/components/admin/ui/html-editor';
+import { Form } from '@cbCommerce/admin/classes/form';
 export default {
 
 	components: {

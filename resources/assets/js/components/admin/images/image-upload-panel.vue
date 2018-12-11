@@ -118,7 +118,7 @@
 
 </template>
 <script>
-import FormDataPost from '@/admin/classes/upload';
+import FormDataPost from '@cbCommerce/admin/classes/upload';
 import pictureInput from 'vue-picture-input';
 export default {
 

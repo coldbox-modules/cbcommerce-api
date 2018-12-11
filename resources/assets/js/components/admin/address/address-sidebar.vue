@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import { Form } from '@/admin/classes/form';
-import addressFormFields from '@/components/admin/address/address-form-fields';
+import { Form } from '@cbCommerce/admin/classes/form';
+import addressFormFields from '@cbCommerce/components/admin/address/address-form-fields';
 export default {
 
 	components: {

@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-    import ProductCarousel from "@/components/products/product-carousel";
+    import ProductCarousel from "@cbCommerce/components/products/product-carousel";
     export default {
         components : {
             ProductCarousel

@@ -45,7 +45,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 
 
 		if( arguments.contentResults.count ){
-
+			widgetContent = "";
 
 			// iteration cap
 			if( arguments.contentResults.count lt arguments.max){
@@ -53,29 +53,31 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 			}
 			// iterate and create
 			for( var x=1; x lte arguments.max; x++ ){
+				arguments[ "x" ] = x;
 				if( arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.bgColor, arguments.inlineStyle.bgColor ) != "" ){
 					arguments.inlineStyle.bgColor = arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.bgColor, arguments.inlineStyle.bgColor );
 				}
 
 				if( arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.vcenter, "no" ) ==  "yes" ){
-					flexClass = "container-flex";
+					arguments.flexClass = "container-flex";
 				} else {
-					flexClass = "";
+					arguments.flexClass = "";
 				}
 
 
 				var textAlignment = arguments.contentResults.pages[ x ].getCustomField( arguments.sfields.alignement, "left" );
 
 				if( textAlignment == "center" ){
-					return renderView( view="widgets/page-content-stack/alignCenter", module="cbCommerce", viewArgs=arguments );
+					widgetContent &= renderView( view="widgets/page-content-stack/alignCenter", module="cbCommerce", args=arguments );
 				} else if( textAlignment == "right" ) {
-					return renderView( view="widgets/page-content-stack/alignRight", module="cbCommerce", viewArgs=arguments );
+					widgetContent &= renderView( view="widgets/page-content-stack/alignRight", module="cbCommerce", args=arguments );
 				} else {
-					return renderView( view="widgets/page-content-stack/alignLeft", module="cbCommerce", viewArgs=arguments );
+					widgetContent &= renderView( view="widgets/page-content-stack/alignLeft", module="cbCommerce", args=arguments );
 				}
 
 				arguments.inlineStyle.bgColor = "fff";
 			}
+			return widgetContent;
 		} else {
 			return "";
 		}

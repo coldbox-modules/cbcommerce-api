@@ -6,7 +6,8 @@ component extends="BaseModelTransformer"{
             [
                 "media",
                 "createdTime",
-                "isActive"
+                "isActive",
+                "startingPrice"
             ],
             true
         );
@@ -37,6 +38,21 @@ component extends="BaseModelTransformer"{
         );
     }
 
+    function includeStartingPrice( activeEntity ){
+        return item(
+            activeEntity,
+            function( product ){
+                var sql = "SELECT id, basePrice, MSRP from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY basePrice ASC LIMIT 1"; 
+                var q = new query( sql=sql ).execute().getResult();
+                return {
+                    "SKU" : q.id,
+                    "basePrice" : q.basePrice,
+                    "MSRP" : q.MSRP
+                };
+            }
+        );
+    }
+
     function includeCategories( activeEntity ){
         return collection(
             activeEntity.getCategories(),
@@ -47,7 +63,7 @@ component extends="BaseModelTransformer"{
 
     function includeMedia( activeEntity ){
 
-        var filteredMedia = activeEntity.media().where( 'isActive', true )
+        var filteredMedia = activeEntity.media().where( 'isActive', 1 )
                 .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' );

@@ -1,18 +1,18 @@
 import get from "lodash/get";
 
-import Index from "@/components/admin/index";
-import Dashboard from "@/components/admin/dashboard";
-import Orders from "@/components/admin/orders/list";
-import OrderView from "@/components/admin/orders/view";
-import OrderForm from "@/components/admin/orders/form";
-import Categories from "@/components/admin/categories/list";
-import CategoryForm from "@/components/admin/categories/form";
-import Products from "@/components/admin/products/list";
-import ProductForm from "@/components/admin/products/form";
-import Customers from "@/components/admin/customers/list";
-import CustomerForm from "@/components/admin/customers/form";
+import Index from "@cbCommerce/components/admin/index";
+import Dashboard from "@cbCommerce/components/admin/dashboard";
+import Orders from "@cbCommerce/components/admin/orders/list";
+import OrderView from "@cbCommerce/components/admin/orders/view";
+import OrderForm from "@cbCommerce/components/admin/orders/form";
+import Categories from "@cbCommerce/components/admin/categories/list";
+import CategoryForm from "@cbCommerce/components/admin/categories/form";
+import Products from "@cbCommerce/components/admin/products/list";
+import ProductForm from "@cbCommerce/components/admin/products/form";
+import Customers from "@cbCommerce/components/admin/customers/list";
+import CustomerForm from "@cbCommerce/components/admin/customers/form";
 
-import StripeConfig from "@/components/admin/settings/stripe-config";
+import StripeConfig from "@cbCommerce/components/admin/settings/stripe-config";
 
 export const createRouter = (Vue, Router) => {
 	Vue.use(Router);

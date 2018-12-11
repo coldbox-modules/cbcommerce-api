@@ -37,7 +37,7 @@ component   table="cbc_SKUs"
 		return belongsTo( "Product@cbCommerce", "FK_product" );
 	}
 
-	function images(){
+	function media(){
 		return hasMany( "ProductSkuMedia@cbCommerce", "FK_sku" );
 	}
 

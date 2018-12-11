@@ -40,7 +40,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form } from '@/admin/classes/form';
+import { Form } from '@cbCommerce/admin/classes/form';
 export default {
 
 	name: "StripeConfig",

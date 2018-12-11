@@ -1,5 +1,5 @@
 import get from "lodash/get";
-import api from "@/api/index";
+import api from "@cbCommerce/api/index";
 
 const initialState = {
 	productsList         : [],

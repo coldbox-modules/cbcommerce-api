@@ -25,7 +25,8 @@
         "cbauth":"^2.0.0",
         "quick":"github:coldbox-modules/quick#development",
         "cfcollection":"^3.6.1",
-        "stripecfml":"^1.1.4"
+        "stripecfml":"^1.1.4",
+        "cbjavaloader": "^2.0.0+44"
     },
     "devDependencies":{},
     "installPaths":{
@@ -39,7 +40,8 @@
         "cbvalidation":"modules/cbvalidation",
         "cbauth":"modules/cbauth",
         "cfcollection":"test-harness/modules/cfcollection/",
-        "stripecfml":"modules/stripecfml"
+        "stripecfml":"modules/stripecfml",
+        "cbjavaloader" : "modules/cbjavaloader"
     },
     "scripts":{
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",

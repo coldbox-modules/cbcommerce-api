@@ -73,6 +73,14 @@ component {
 					name="CBCAPIHelperInterceptor"
 			}
         ];
+        // Forward Media
+        router.route( "media/:path" )
+                .withAction(
+                    {
+                        "get" : "deliver"
+                    }
+                )
+                .toHandler( "Media" );
 
         // API Routing
         router.route( "api/v1/authentication" )
@@ -135,6 +143,9 @@ component {
     }
 
     function onLoad() {
+        // load JavaXT jars
+        wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
+        
         //change our binder mapping
         if( settings.products.externalModel ){
             binder

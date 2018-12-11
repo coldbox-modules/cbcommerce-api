@@ -44,6 +44,12 @@ const itemStatusToText = (isActive) => {
   return (isActive) ? 'Enabled' : 'Disabled';
 }
 
+const isImage = ( mediaItem ) => {
+  let imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+  let pathParts = mediaItem.href.split( '.' );
+  return imageExtensions.indexOf( pathParts[ pathParts.length - 1 ] ) > -1;
+}
+
 export const createFilters = Vue => {
   Vue.filter("formatNumber", formatNumber);
   Vue.filter("formatPercentage", formatPercentage);
@@ -53,6 +59,8 @@ export const createFilters = Vue => {
   Vue.filter("denormalize", denormalize);
   Vue.filter("dateToText", dateToText);
   Vue.filter("itemStatusToText", itemStatusToText);
+  Vue.filter("isImage", isImage );
 };
+
 
 export default createFilters;
