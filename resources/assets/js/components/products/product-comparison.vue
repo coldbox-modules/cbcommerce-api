@@ -235,7 +235,7 @@ export default {
 			"setCurrentProduct",
 			"clearCurrentProduct",
 			"getListOfProducts",
-			"addProductToCart",
+			"addItemToCart",
 			"addProductToWishlist",
 			"addProductToComparisonList"
         ]),
@@ -263,7 +263,7 @@ export default {
 			const productID    = event.target.getAttribute( 'data-product-id' );
 			const quantity     = $( '.qty', '#quantity_' + productIndex ).val();
 			this.setCurrentProduct( productID );
-			this.addProductToCart( { product: this.currentProduct, quantity } );
+			this.addItemToCart( { product: this.currentProduct, quantity } );
 			this.clearCurrentProduct();
         }
 

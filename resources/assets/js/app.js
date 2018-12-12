@@ -4,6 +4,7 @@ import { WOW } from "wowjs/dist/wow.js";
 import 'owl.carousel/dist/owl.carousel.min.js';
 import VueTruncate from 'vue-truncate-filter';
 import VTooltip from 'v-tooltip';
+import VueCurrencyFilter from "vue-currency-filter";
 import Vuex from 'vuex';
 
 import createStore from "./store/index";
@@ -24,6 +25,18 @@ const storeInstance = createStore(Vue, Vuex);
 const routerInstance = createRouter(Vue, Router);
 
 sync(storeInstance, routerInstance);
+
+
+Vue.use( VueCurrencyFilter,
+	{
+		symbol            : '$',
+		thousandsSeparator: ',',
+		fractionCount     : 2,
+		fractionSeparator : '.',
+		symbolPosition    : 'front',
+		symbolSpacing     : false
+	}
+);
 
 export default new Vue({
     el: "#app",

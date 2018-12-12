@@ -4,6 +4,7 @@ import api from "@cbCommerce/api/index";
 const initialState = {
 	productsList         : [],
 	currentProductID     : null,
+	activeProduct        : null,
 	comparisonList       : [],
 	wishList             : [],
 	currentProductReviews: []
@@ -14,7 +15,7 @@ const getters = {
 	productsListArray: state => Object.values(state.productsList),
 	currentProductID : state => state.currentProductID,
 	currentProduct   : state => 
-		get(state, ["productsList", state.currentProductID], null),
+		state.activeProduct || get(state, ["productsList", state.currentProductID], null),
 	currentProductName: state => {
 		const n = get(
 			state,
@@ -43,6 +44,21 @@ const getters = {
 };
 
 const actions = {
+	getProduct: ( { commit }, id ) => {
+		commit( "setCurrentProduct", id );
+		return new Promise((resolve, reject) => {
+			api()
+				.get.products.detail( id )
+				.then( XHR => {
+					commit('setActiveProduct', XHR.data);
+					resolve( XHR.data );
+				} )
+				.catch( err => {
+					console.error(err);
+					reject("Error: Could retrieve a product with the id of " + id );
+				} );
+		} );
+	},
 	getListOfProducts: ({ commit }) =>
 		new Promise((resolve, reject) => {
 			api()
@@ -50,7 +66,6 @@ const actions = {
 				.then( XHR => {
 					let list = XHR.data;
 					const products = Vue.options.filters.denormalize( list );
-					console.log( products );
 					if(!products || products.length === 0){
 						throw new Error("No products found");
 					}
@@ -106,6 +121,10 @@ const actions = {
 };
 
 const mutations = {
+	setActiveProduct( state, product ){
+		state.currentProductID = product.id;
+		state.activeProduct = product;
+	},
 	setProductList( state, list ){
 		state.productsList = list;
 	},

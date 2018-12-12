@@ -8,7 +8,7 @@
 
                 <article class="product light">
                     <figure class="figure-hover-overlay">                                                                        
-                        <a :href="`/equipment/product/${product.id}`"  class="figure-href"></a>
+                        <a :href="`/store/product/${product.id}`"  class="figure-href"></a>
                         <div v-if="isNew" class="product-new">new</div>
                         <div 
                             class="product-sale" 
@@ -61,7 +61,7 @@
 
                     <div v-if="product.startingPrice" class="product-cart">
                         <a 
-                            @click="addProductToCart( { product, quantity: 1 } )"
+                            @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                             v-tooltip="'Add this item to your cart'"
                             class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
@@ -134,7 +134,7 @@ export default {
 
     methods: {
         ...mapActions([
-            "addProductToCart",
+            "addItemToCart",
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),

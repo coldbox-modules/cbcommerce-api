@@ -11,7 +11,9 @@
 	</head>
 	<body>
 	
-		<div id="app"></div>
+		<div id="app">
+			<cfoutput>#renderView()#</cfoutput>
+		</div>
     
         <script type="text/javascript" src="#event.getModuleRoot()#/includes/js/runtime.js"></script>
         <script type="text/javascript" src="#event.getModuleRoot()#/includes/js/vendor.js"></script>

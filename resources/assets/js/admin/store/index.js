@@ -1,5 +1,4 @@
 import createLogger from "vuex/dist/logger";
-
 import categories from "./modules/categories";
 import customers from "./modules/customers";
 import orders from "./modules/orders";

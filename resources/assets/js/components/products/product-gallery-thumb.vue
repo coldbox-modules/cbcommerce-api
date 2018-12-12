@@ -53,9 +53,9 @@ export default {
         parseContent: function(){
             var self          = this;
             var parsedContent = self.galleryItem;
-            self.mainImage    = parsedContent.main;
-            self.zoomImage    = parsedContent.large;
-            self.thumbImage   = parsedContent.thumb;
+            self.mainImage    = parsedContent.href;
+            self.zoomImage    = parsedContent.href;
+            self.thumbImage   = parsedContent.href;
         }
 
     }

@@ -19,7 +19,6 @@ component extends="BaseAPIHandler"{
 
 	// (PUT|PATCH) /store/api/v1/cart/:itemId
 	function addItem( event, rc, prc ){
-
 		entityService.addItem( argumentCollection=rc ).save();
 
 		prc.response.setData( 

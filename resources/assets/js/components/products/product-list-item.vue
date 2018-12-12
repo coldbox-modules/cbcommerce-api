@@ -65,7 +65,7 @@
 
                             <div v-if="this.listPrice" class="product-cart">
                                 <a 
-                                    @click="addProductToCart( { product, quantity: 1 } )"
+                                    @click="addItemToCart( { product, quantity: 1 } )"
                                     v-tooltip="'Add this item to your cart'"
                                     class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                             </div>
@@ -133,7 +133,7 @@ export default {
     methods: {
 
         ...mapActions([
-            "addProductToCart",
+            "addItemToCart",
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),

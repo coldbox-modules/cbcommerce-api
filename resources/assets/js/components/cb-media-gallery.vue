@@ -2,10 +2,10 @@
 	<div>
 		<div :id="galleryId" :class="galleryClass">
 			<button class="btn btn-border" :class="{ active: showAllTags }" @click="resetImages()">All</button>
-			<button class="btn btn-border" v-for="( tag, index ) in allTags" :class="{ active: tag.show }" @click="setFilters( tag )">{{ tag.name }}</button>
+			<button class="btn btn-border" v-for="( tag, index ) in allTags" :key="`${index}-${tag.name}`" :class="{ active: tag.show }" @click="setFilters( tag )">{{ tag.name }}</button>
 			<viewer :images="images" class="viewer" :options="options">
 				<transition-group name="list-complete">
-					<div class="item" v-for="( item, index ) in galleryFileData" v-if="getValue( item.name, 'show' )" :key="getMediaPath( item.name )">
+					<div class="item" v-for="item in galleryFileData" v-if="getValue( item.name, 'show' )" :key="getMediaPath( item.name )">
 		      			<img :data-source="getMediaPath( item.name )" :src="getThumbnailPath( item.name )" :alt="getValue( item.name, 'alt' )"/>
 		      		</div>
 		      	</transition-group>

@@ -8,6 +8,7 @@ component table="cbc_carts"
             accessors="true"
             quick 
 {
+
    //JSON storage
    property name="contents" type="string" default="{}";
    property name="audit" type="string" default="{}";

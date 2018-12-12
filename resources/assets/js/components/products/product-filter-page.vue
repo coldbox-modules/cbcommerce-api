@@ -134,7 +134,7 @@ export default {
             "getListOfProducts",
             "setCurrentProduct",
             "clearCurrentProduct",
-            "addProductToCart"
+            "addItemToCart"
         ]),
 
         fetchProducts(){

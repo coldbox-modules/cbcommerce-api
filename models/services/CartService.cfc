@@ -1,5 +1,4 @@
 component extends="BaseQuickEntityService" singleton{
-    property name="sessionStorage" inject="SessionStorage@cbCommerce";
     property name="cookieStorage" inject="CookieStorage@cbCommerce";
     property name="auth" inject="authenticationService@cbauth";
     property name="dateUtil" inject="DateFormatUtil@cbCommerce";
@@ -22,7 +21,6 @@ component extends="BaseQuickEntityService" singleton{
      */
     Cart function addItem( required string itemId, quantity=1 ){
         var cart = ensureCart();
-        appendAuditTrail( cart );
         var sku = skuEntity().find( itemId );
 
         //take no action if our item was not found
@@ -45,10 +43,11 @@ component extends="BaseQuickEntityService" singleton{
 
         if( !itemExists ){
             var newItem = {
-                "added"   :  dateUtil.toISO8601( now() ),
-                "updated" :  dateUtil.toISO8601( now() ), 
-                "product" :  sku.getProduct.getMemento(),
-                "sku"     :  sku.getMemento()
+                "added"    :  dateUtil.toISO8601( now() ),
+                "updated"  :  dateUtil.toISO8601( now() ), 
+                "product"  :  sku.getProduct().getMemento(),
+                "sku"      :  sku.getMemento(),
+                "quantity" : arguments.quantity
             };
             newItem.sku[ "quantity" ] = appendQuantity;
             arrayAppend( items, newItem );
@@ -66,7 +65,6 @@ component extends="BaseQuickEntityService" singleton{
      */
     Cart function removeItem( required string itemId, quantity ){
         var cart = ensureCart();
-        appendAuditTrail( cart );
 
         var contents = cart.getContents();
         var items = contents.items;
@@ -97,20 +95,9 @@ component extends="BaseQuickEntityService" singleton{
 
     }
 
-    /**
-     * Appends the audit trail information on cart change
-     * @cart The Cart entity
-     */
-    function appendAuditTrail( cart ){
-        var audit = getAudit();
-        arrayAppend( audit, cart.getContents() );
-        cart.setAudit( audit );
-    }
-
-
 
     private function ensureCart(){
-        var cartId = sessionStorage.getVar( "cartId" );
+        var cartId = cookieStorage.getVar( "cartId" );
         
         if( isNull( cartId ) && auth.isLoggedIn() ){
             //check first for an existing active cart
@@ -133,7 +120,7 @@ component extends="BaseQuickEntityService" singleton{
             activeCart.save();
         }
         
-        sessionStorage.setVar( "cartId", activeCart.getId() );
+        cookieStorage.setVar( "cartId", activeCart.getId() );
 
         return activeCart;
 

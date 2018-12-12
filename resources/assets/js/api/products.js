@@ -6,10 +6,15 @@ export const createProduct = api => ( data ) => {
   } );
 };
 
+export const getProduct = api => ( id ) => {
+  return api.get( '/products/' + id, { params : { includes : "skus" } } )
+};
+
 export const products = api => ( {
   get: {
     products: {
-    	list: getProductsList( api )
+      list: getProductsList( api ),
+      detail: getProduct( api )
     }
   },
   post: {

@@ -1,13 +1,3 @@
 <cfoutput>
-
-	<section id="productDetail">
-
-		<div class="container">
-
-		  <product-detail></product-detail>
-
-	    </div>
-
-	</section>
-
+	#renderView( view="product/detail", module="cbCommerce", args=args )#
 </cfoutput>

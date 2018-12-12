@@ -2,66 +2,99 @@ import get from "lodash/get";
 import api from "@cbCommerce/api/index";
 
 const initialState = {
-	added         : [],
+	cart 		  : { "items" : [] },
 	checkoutStatus: null
 };
 
 const getters = {
 	checkoutStatus: state => state.checkoutStatus,
-	cartProducts: (state, getters, rootState) => {
-		return state.added.map(({ id, quantity }) => {
-			const product = get(rootState.products, ["productsList", id], null);
-			return {
-				title: product.productName,
-				price: product.userPrice,
-				quantity
-			}
-		})
-	},
+	cartProducts: state => state.cart.items,
 	cartTotalQuantity: (state, getters) => {
-		return getters.cartProducts.reduce((total, product) => {
-			return ( total + product.quantity )
+		return getters.cartProducts.reduce( (total, item ) => {
+			return ( total + item.quantity )
 		}, 0)
 	},
 	cartTotalPrice: (state, getters) => {
-		return getters.cartProducts.reduce((total, product) => {
-			return total + product.price * product.quantity;
-		}, 0)
+		return getters.cartProducts.reduce( ( total, item ) => {
+			return total + ( item.sku.basePrice * item.quantity );
+		}, 0 )
 	}
 };
 
 const actions = {
-	addProductToCart: ({ state, commit }, payload ) => {
-		const product  = payload.product;
-		const quantity = ( isNaN( payload.quantity ) ) ? 1 : payload.quantity;
-		commit( 'setCheckoutStatus', null );
-		// Could potentially check inventory status here before proceeding
-		const cartItem = state.added.find(item => item.id === product.id);
-		if( !cartItem ){
-			commit( 'pushToCart', { product: product, id: product.id, quantity } );
+	getCart: ( context ) => {
+		return new Promise( (resolve, reject) => {
+			api().get.cart.get()
+						.then( XHR => {
+							context.commit( 'setCartItems', XHR.data );
+							resolve( XHR.data );
+						} )
+						.catch( err => {
+							console.error(err);
+							reject( "Error: An error occurred while retrieving the cart" );
+						});
+		} );
+	},
+	addItemToCart: ( context, payload ) => {
+		payload.quantity = ( isNaN( payload.quantity ) ) ? 1 : payload.quantity;
+		context.commit( 'setCheckoutStatus', null );
+		return new Promise((resolve, reject) => {
+		api().put.cart.item( payload )
+						.then(XHR => {
+							context.commit( 'setCartItems', XHR.data );
+							resolve( XHR.data );
+						})
+						.catch(err => {
+							console.error(err);
+							reject("Error: The sku with an id of " + payload.sku + " could not be added to the cart" );
+						});
+		});
+	},
+	updateCartItem: ( context, payload ) => {
+		payload.quantity = (isNaN(payload.quantity)) ? 0 : payload.quantity;
+		if( payload.quantity ){
+			return new Promise((resolve, reject) => {
+			api().put.cart.item( payload )
+						.then(XHR => {
+							context.commit( 'setCartItems', XHR.data );
+							resolve( XHR.data );
+						})
+						.catch(err => {
+							console.error(err);
+							reject("Error: The sku with an id of " + payload.sku + " could not be updated in the cart" );
+						});
+			});
 		} else {
-			commit( 'incrementItemQuantity', { cart_item: cartItem, quantity } );
+			return context.dispatch( "deleteCartItem", payload.sku );
 		}
+	},
+	deleteCartItem: ( context, sku ) => { 
+		return new Promise((resolve, reject) => {
+		api().delete.cart.item( sku )
+						.then(XHR => {
+							context.commit( 'removeCartItem', sku );
+							resolve( XHR.data );
+						})
+						.catch(err => {
+							console.error(err);
+							reject("Error: The sku with an id of " + sku + " could not be removed from the cart" );
+						});
+		});
 	}
 };
 
 const mutations = {
-	pushToCart( state, { id, product, quantity } ){
-		state.added.push({
-			id,
-			product,
-			quantity: parseInt( quantity )
-		})
+	removeCartItem( state, sku ){
+		remaining = state.cart.items.forEach( item => {
+			return item.sku.id !== sku;
+		} );
+		Vue.set( state.cart, "items", remaining );
 	},
 	setCheckoutStatus( state, status ){
 		state.checkoutStatus = status;
 	},
-	incrementItemQuantity(state, { cart_item, quantity } ){
-		const cartItem    = state.added.find(item => item.id === cart_item.id);
-		cartItem.quantity = cartItem.quantity+parseInt( quantity );
-	},
 	setCartItems( state, { items } ){
-		state.added = items;
+		Vue.set( state.cart, "items", items );
 	}
 };
 

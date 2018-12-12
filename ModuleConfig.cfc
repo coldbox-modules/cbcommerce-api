@@ -9,6 +9,8 @@ component {
     this.cfmapping      = "cbCommerce";
     this.modelNamespace	= "cbCommerce";
     this.entryPoint     = "store";
+    this.viewParentLookup = true;
+    this.layoutParentLookup = true;
     this.dependencies   = [
         "cbauth",
         "cbguard",
@@ -91,10 +93,6 @@ component {
                 } )
                 .toHandler( "API.v1.Authentication" );
 
-        router.route( "api/v1/cart" )
-                .withAction("get")
-                .toHandler( "API.v1.Cart" );
-
         router.route( "api/v1/cart/:itemId" )
                 .withAction(
                     {
@@ -102,6 +100,12 @@ component {
                         "PATCH" : "addItem"
                     }
                 )
+                .toHandler( "API.v1.Cart" );
+
+        router.route( "api/v1/cart" )
+                .withAction({
+                    "GET" : "get"
+                })
                 .toHandler( "API.v1.Cart" );
 
         // Resource Routes ( auto-magic method conventions )
@@ -133,7 +137,37 @@ component {
             .resources(
                 resource   = "api/v1/payments",
                 handler    = "API.v1.Payments"
+            )
+            .resources(
+                resource   = "api/v1/wishlists",
+                handler    = "API.v1.Wishlists"
             );
+
+            // Wishlist Item Routes
+            router.route( 'api/v1/wishlists/:wishlistId/items/:id' )
+                    .withAction(
+                        {
+                            "GET"    : "show",
+                            "PUT"    : "update",
+                            "PATCH"  : "update",
+                            "DELETE" : "delete"
+                        }
+                    )
+                    .toHandler( "API.v1.WishlistItems" );
+
+            router.route( 'api/v1/wishlists/:wishlistId/items' )
+                    .withAction(
+                        {
+                            "GET"  : "index",
+                            "POST" : "create"
+                        }
+                    )
+                    .toHandler( "API.v1.WishlistItems" );
+
+            router.route( "category/:id" ).to( "Category.detail" );
+            router.route( "category" ).to( "Category.index" );
+            router.route( "product/:id" ).to( "Product.detail" );
+            router.route( "product" ).to( "Product.index" );
 
             /**
              * Display routing
@@ -166,7 +200,7 @@ component {
 			// Cookie Storage settings
 			cookieStorage = {
 				useEncryption 	= true,
-				encryptionSeed 	= "cbc_CookieStorage",
+				encryptionSeed 	= "jxPp16lyN9M4bNFL2NR5ow==", // `generateSecretKey( "AES" )`
 		        encryptionAlgorithm = "AES/CBC/PKCS5Padding",
 		        encryptionEncoding = "HEX"
 			}

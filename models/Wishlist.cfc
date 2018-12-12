@@ -11,7 +11,7 @@ component   table="cbc_wishlists"
    //Foreign Keys
 	property name="FK_user";
 
-   function customer(){
+   function user(){
 	   return belongsTo( "User@cbCommerce", "FK_user" );
    }
 

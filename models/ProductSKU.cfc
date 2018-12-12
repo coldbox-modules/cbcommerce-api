@@ -9,6 +9,7 @@ component   table="cbc_SKUs"
 	// Persistent column properties
 	property name="isVirtual" type="boolean" default=0;
 	property name="isConsigned" type="boolean" default=0;
+	property name="allowBackorder" type="boolean" default=0;
 	property name="cost" type="numeric";
 	property name="basePrice" type="numeric";
 	property name="minimumPrice" type="numeric";
@@ -55,6 +56,10 @@ component   table="cbc_SKUs"
 
 	function subCondition(){
 		return belongsTo( "ProductCondition@cbCommerce", "FK_subCondition" );
+	}
+
+	function inventory(){
+		return hasMany( "InventoryLocationStock@cbCommerce", "FK_sku" );
 	}
 	
 	/**

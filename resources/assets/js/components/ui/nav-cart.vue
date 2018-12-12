@@ -13,13 +13,17 @@ import { mapGetters, mapActions } from "vuex";
 export default {
 
 	created() {
-
+		this.getCart();
 	},
-
 	computed: {
 		...mapGetters([
 			"cartTotalQuantity"
 		])
+	},
+	methods: {
+		...mapActions([
+            "getCart"
+        ])
 	}
 }
 </script>

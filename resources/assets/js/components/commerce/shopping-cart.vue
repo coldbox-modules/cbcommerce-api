@@ -99,7 +99,7 @@ export default {
             "setCurrentProduct",
             "clearCurrentProduct",
             "getListOfProducts",
-            "addProductToCart",
+            "addItemToCart",
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),

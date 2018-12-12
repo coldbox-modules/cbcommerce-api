@@ -6,9 +6,9 @@ import VueTruncate from 'vue-truncate-filter';
 import VTooltip from 'v-tooltip';
 import { VueSlideoutPanel } from 'vue2-slideout-panel';
 import VoerroTagsInput from '@voerro/vue-tagsinput';
-import Grid from 'vue-js-grid'
-import VueCurrencyFilter from 'vue-currency-filter'
-import VueCharts from 'vue-chartjs'
+import Grid from 'vue-js-grid';
+import VueCurrencyFilter from 'vue-currency-filter';
+import VueCharts from 'vue-chartjs';
 
 // Module components
 import PageHeader from '@cbCommerce/components/admin/ui/page-header';

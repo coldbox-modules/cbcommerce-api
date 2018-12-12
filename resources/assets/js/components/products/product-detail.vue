@@ -1,12 +1,12 @@
 <template>
 
-    <div>
+    <div v-if="currentProduct">
 
         <div class="col-md-12 productDetailHeader">
 
             <h1 
                 class="wow fadeInRight animated animated" 
-                data-wow-duration="1s">{{ this.productName }}</h1>
+                data-wow-duration="1s">{{ currentProduct.name }}</h1>
 
         </div>
         
@@ -22,19 +22,21 @@
                             v-images-loaded:on.progress="imageProgress"
                             class="product-image">
 
+                            
                             <img 
+                                v-if="currentProduct.media.length"
                                 id="product-zoom" 
-                                :src="this.productImage" 
-                                :data-zoom-image="this.productImageLarge" 
-                                :alt="this.productName" />
+                                :src="currentProduct.media[ 0 ].href" 
+                                :data-zoom-image="currentProduct.media[ 0 ].href" 
+                                :alt="currentProduct.media[ 0 ].caption" />
 
                             <div id="thumbnailNestedGallery">
 
                                 <product-gallery-thumb
-                                    v-for="(galleryItem, index) in productGallery"
+                                    v-for="(mediaItem, index) in currentProduct.media"
                                     :key="index"
-                                    :galleryItem="galleryItem"
-                                    :totalThumbs="productGallery.length"
+                                    :galleryItem="mediaItem"
+                                    :totalThumbs="currentProduct.media.length"
                                     v-on:thumbLoaded="thumbLoadedResponse"
                                 ></product-gallery-thumb>
 
@@ -54,19 +56,19 @@
                                     :show-rating="false"
                                     :item-size="10" 
                                     :read-only="true"
-                                    :rating="this.avgRating"
+                                    :rating="avgRating"
                                 ></star-rating>
 
-                                <a href="" class="review">{{ this.totalReviews }} Reviews</a> 
+                                <a href="" class="review">{{ totalReviews }} Reviews</a> 
                             </div>
 
                             <div class="clearfix">
-                                <p class="product-price">{{ this.userPrice }}</p>
+                                <p class="product-price">{{ activeSku.basePrice | currency }}</p>
                             </div>
 
                             <div class="clearfix">
                                 <label class="pull-left">List Price:</label>
-                                <p class="product-list-price">{{ this.listPrice }}</p>
+                                <p class="product-list-price">{{ activeSku.MSRP | currency }}</p>
                             </div>
 
                             <div class="product-information">
@@ -74,26 +76,20 @@
                                 <div class="clearfix">
                                     <p 
                                         class="availability"
-                                        v-bind:class="{ active: this.inStock }">{{ availabilityText }}</p>
+                                        v-bind:class="{ active: isAvailable }">{{ availabilityText }}</p>
                                 </div>
 
                                 <div class="clearfix"> 
-                                    <label class="pull-left">Brand:</label> {{ this.brand }}
+                                    <label class="pull-left">Brand:</label> {{ currentProduct.manufacturer }}
                                 </div>
 
                                 <div class="clearfix"> 
-                                    <label class="pull-left">Model:</label> {{ this.model }}
+                                    <label class="pull-left">Model:</label> {{ activeSku.modelNumber }}
                                 </div>
 
-                                <div class="clearfix">
-                                    
-                                    <p 
-                                        v-for="(feature, index) in this.features"
-                                        :key="index"
-                                        class="description">
-                                        {{ feature }}
-                                    </p>
-
+                                <div class="clearfix"> 
+                                    <label>Summary:</label>
+                                    <p v-html="currentProduct.shortDescription"></p>
                                 </div>
 
                             </div>
@@ -119,13 +115,21 @@
                         <br>
                         <h3>Product Details</h3>
                         <hr>
-                        <p>{{ this.details }}</p>
+                        <p>{{ currentProduct.description }}</p>
                     </div>
                     <div class="tab-pane" id="additional">
                         <br>
                         <h3>Additional Details</h3>
                         <hr>
-
+                        <h4>Specifications:</h4>
+                        <ul class="list-unstyled">
+                            <li 
+                                v-for="(spec, index) in activeSku.options.specifications"
+                                :key="index"
+                                class="description">
+                                {{ spec }}
+                            </li>
+                        </ul>
                     </div>
                     <div class="tab-pane" id="review">
                         <br>
@@ -133,9 +137,8 @@
                             <div class="col-md-12">
                                 <h3>Clients review</h3>
                                 <hr>
-                                
                                 <product-review
-                                    v-for="(review, index) in this.currentProductReviews"
+                                    v-for="(review, index) in currentProductReviews"
                                     :key="index"
                                     :review="review"
                                 ></product-review>
@@ -158,9 +161,7 @@
             </div>
 
             <!-- end tab box -->
-
             <related-product-carousel></related-product-carousel>
-
 
         </div>
 
@@ -170,18 +171,18 @@
 
                 <quantity-control 
                     :showLabel="false"
-                    v-if="this.inStock"
+                    v-if="isAvailable"
                     v-on:quantityChange="quantityChangeReaction"
                 ></quantity-control>
 
                 <div class="product-cart-total-price clearfix">
                     <label class="pull-left">Total:</label>
-                    <p>&dollar;{{this.cartTotalPrice}}</p>
+                    <p>&dollar;{{cartTotalPrice}}</p>
                 </div>
 
-                <div v-if="this.inStock" class="shopping-cart-buttons">
+                <div v-if="isAvailable" class="shopping-cart-buttons">
                     <a 
-                        @click="addProductToCart( { product, quantity: chosenQuantity } )"
+                        @click="addItemToCart( { sku: activeSku.id, quantity: chosenQuantity } )"
                         v-tooltip="'Add this item to your cart'"
                         class="addToCart"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                 </div>
@@ -189,12 +190,12 @@
                 <div class="shopping-cart-buttons mt-20">
 
                     <a 
-                        @click="addProductToWishlist(product)"
+                        @click="addProductToWishlist( activeSku )"
                         v-tooltip="{ content: 'Add this item to your wishlist' }"
                         title="Wishlist"><i class="fa fa-heart-o"></i></a>
 
                     <a 
-                        @click="addProductToComparisonList(product)"
+                        @click="addProductToComparisonList( activeSku )"
                         v-tooltip="{ content: 'Compare this item' }"
                         title="Compare"><i class="fa fa-random"></i></a>
 
@@ -244,15 +245,14 @@ export default {
             productName      : null,
             userPrice        : null,
             listPrice        : null,
-            inStock          : null,
             brand            : null,
             model            : null,
             features         : null,
             details          : null,
             totalReviews     : null,
             avgRating        : null,
-            cartTotalPrice   : null,
-            relatedProducts  : null
+            relatedProducts  : null,
+            activeSkuId      : null
         }
     },
 
@@ -276,6 +276,7 @@ export default {
     computed: {
 
         ...mapGetters([
+            "currentProduct",
             "cartProducts",
             "wishlistProducts",
             "comparisonProducts",
@@ -283,28 +284,47 @@ export default {
             "productsListArray",
             "currentProductReviews"
         ]),
-
+        isAvailable : function(){
+            return this.activeSku.allowBackorder || this.activeSku.onHand;
+        },
         availabilityText: function(){
-            return ( this.inStock ) ? 'In Stock' : 'Out Of Stock';
+            return ( this.activeSku.allowBackorder || this.activeSku.onHand ) ? 'In Stock' : 'Out Of Stock';
+        },
+        productId : () => {
+            var locationParts = window.location.pathname.split( '/' );
+            return locationParts[ locationParts.length - 1 ]; 
+        },
+        activeSku : function(){
+            if( !this.currentProduct ) return;
+            if( !this.activeSkuId ){
+                return this.currentProduct.skus[ 0 ];
+            } else {
+                var self = this;
+                let activeSkus = this.currentProduct.skus.filter( sku => sku.id === self.activeSkuId );
+                if( activeSkus.length ) return activeSkus[ 0 ];
+            }
+        },
+        cartTotalPrice : function(){
+            return this.chosenQuantity * this.activeSku.basePrice;
         }
-
     },
 
     methods: {
 
         ...mapActions([
-            "addProductToCart",
+            "addItemToCart",
             "addProductToWishlist",
             "addProductToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",
-            "getCurrentProductReviews"
+            "getCurrentProductReviews",
+            "getProduct"
         ]),
 
         // TODO: this can be removed once the API and persistence is in place
         fetchProducts(){
             const self = this;
-            Promise.resolve(this.getListOfProducts())
+            Promise.resolve( this.getListOfProducts() )
             .then(() => {
                 self.isLoading = false;
             })
@@ -318,6 +338,7 @@ export default {
         },
 
         thumbLoadedResponse: function(){
+            if( !this.productGallery ) return;
             this.thumbLoadCount++;
             if( this.thumbLoadCount == this.productGallery.length ){
                 $( '#product-zoom' ).ezPlus( {
@@ -333,7 +354,8 @@ export default {
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
-            fetch( 'mockData/productDetail.json' )
+
+            fetch( '/mockData/productDetail.json' )
                 .then(r => r.json())
                 .then(product => {
                     self.product           = product;
@@ -343,7 +365,6 @@ export default {
                     self.productName       = product.productName;
                     self.userPrice         = product.userPrice;
                     self.listPrice         = product.listPrice;
-                    self.inStock           = product.inStock;
                     self.brand             = product.brand;
                     self.model             = product.model;
                     self.features          = product.features;
@@ -354,6 +375,8 @@ export default {
                     self.isLoading         = false;
                     self.setCurrentProduct( product.id );
                 })
+            
+            console.log( self.getProduct( self.productId ) );
         },
 
         fetchReviews: function(){
@@ -368,9 +391,7 @@ export default {
         },
 
         quantityChangeReaction: function( quantity = 1 ){
-            const userPrice = this.userPrice.replace( "$", "" );
-            this.chosenQuantity = quantity;
-            this.cartTotalPrice = ( userPrice * quantity ).toFixed( 2 );
+            Vue.set( this, "chosenQuantity", quantity );
         }
 
     }
