@@ -1,57 +1,67 @@
 <template>
+     <div>
+    	<div class="col-sm-9">
+    		<div
+    			class="row cart-product-row"
+    			v-for="(product, index) in cartProducts"
+	            :key="index">
 
-    <div class="box-border">
+    			<div class="col-sm-7">
+    				<div class="cart-product">
+	    				<div class="cart-product-image">
+	    					<a :href="`/store/product/${item.product.id}`">
+	                            <img
+	                                :title="item.product.name"
+	                                :alt="item.product.name"
+	                                :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
+	                        </a>
+		                </div>
+		                <div class="cart-product-text">
+	    					<div class="cart-product-name">
+	    						<a :href="'store/product/'+ product.product.id">{{ product.product.name }}</a>
+	    					</div>
+	    					<div class="cart-product-actions">
+	    						<ul class="list-inline">
+	    							<li>
+	    								<a href="" @click.prevent="deleteCartItem( product.sku.id )">Remove</a>
+	    							</li>
+	    						</ul>
+	    					</div>
+	    				</div>
+	    			</div>
+    			</div>
+    			<div class="col-sm-2">
+    				<div class="cart-product-price">
+    					<span class="sr-only">unit price</span>{{ product.sku.basePrice }}
+    				</div>
+    			</div>
+    			<div class="col-sm-3">
+    				<div class="cart-product-quantity">
+		                <quantity-control
+		                    :showLabel="false"
+		                    :quantity="product.quantity"
+		                    v-on:quantityChange="quantityChangeReaction"
+		                ></quantity-control>
+		            </div>
+    			</div>
+    		</div>
+	     </div>
+	     <div class="col-sm-3">
+	     	<div class="cart-buy-box">
+		     	<div class="cart-buy-subtotal">
+		     		<span>Subtotal </span>
+		     		<span class="text-muted">(
+		     			<span>{{ totalItems }}</span>
+		     			<span v-if="totalItems > 1">items</span>
+		     			<span v-else>item</span>
+		     				)
+		     		</span><br/>
+		     		<span>${{ subtotal }} </span>
+		     	</div>
+		     	<button class="btn btn-primary">Proceed to Checkout</button>
+		    </div>
+	     </div>
 
-        <table class="cart-table table wow fadeInLeft animated">
-
-            <thead>
-                <tr>
-                    <td class="card_product_image">Image</td>
-                    <td class="card_product_name">Product Name</td>
-                    <td class="card_product_quantity">Quantity</td>
-                    <td class="card_product_price">Unit Price</td>
-                    <td class="card_product_total">Total</td>
-                </tr>
-            </thead>
-
-            <tbody>
-                
-                <tr
-                    v-if="cartProducts"
-                    v-for="(item, index) in cartProducts"
-                    :key="index">
-
-                    <td class="card_product_image" data-th="Image">
-                        <a :href="`/store/product/${item.product.id}`">
-                            <img 
-                                :title="item.product.name" 
-                                :alt="item.product.name" 
-                                :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
-                        </a>
-                    </td>
-                    <td class="card_product_name" data-th="Product Name">
-                        <a :href="`/store/product/${item.product.id}`">{{ item.product.name }}</a>
-                    </td>
-                    <td class="card_product_quantity" data-th="Quantity">
-
-                        <input 
-                            disabled="disabled" 
-                            type="number" :value="item.quantity" class="styler" />
-
-                    </td>
-                    <td class="card_product_price" data-th="Unit Price">
-                        {{ item.sku.basePrice | currency }}
-                    </td>
-                    
-                    <td class="card_product_total" data-th="Total">
-                        {{ item.quantity * item.sku.basePrice | currency }}
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
 
     </div>
 
@@ -60,23 +70,25 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
+import QuantityControl from '../products/quantity-control';
+
 export default {
+	components: {
+        QuantityControl
+    },
     directives: {
         imagesLoaded
     },
     data() {
         return {
-            isLoading: false,
-            products : null
+            isLoading: false
         }
     },
 
     created() {
-        this.isLoading = true;
     },
 
     mounted() {
-        // this.product = this.cartProducts;
         this.isLoading = false;
     },
 
@@ -90,7 +102,26 @@ export default {
             "cartProducts",
             "wishlistProducts",
             "comparisonProducts"
-        ])
+        ]),
+        subtotal(){
+        	var subTotal = 0;
+        	for( var i in this.cartProducts ){
+        		let itemPrice = this.cartProducts[ i ].sku.basePrice;
+        		let qty = this.cartProducts[ i ].quantity;
+
+        		subTotal = subTotal + ( itemPrice * qty )
+        	}
+        	return subTotal;
+        },
+        totalItems(){
+        	var total = 0;
+        	for( var i in this.cartProducts ){
+        		let qty = this.cartProducts[ i ].quantity;
+
+        		total = total +  qty;
+        	}
+        	return total;
+        }
     },
 
     methods: {
@@ -100,12 +131,18 @@ export default {
             "clearCurrentProduct",
             "getListOfProducts",
             "addItemToCart",
+            "deleteCartItem",
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),
 
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
+
+        },
+        quantityChangeReaction: function( quantity = 1 ){
+            // Vue.set( this, "chosenQuantity", quantity );
+            console.log( quantity );
         }
 
     }
