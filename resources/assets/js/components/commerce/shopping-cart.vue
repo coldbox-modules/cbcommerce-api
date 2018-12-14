@@ -17,31 +17,34 @@
             <tbody>
                 
                 <tr
-                    v-for="(product, index) in products"
+                    v-if="cartProducts"
+                    v-for="(item, index) in cartProducts"
                     :key="index">
 
                     <td class="card_product_image" data-th="Image">
-                        <img 
-                            :title="product.productName" 
-                            :alt="product.productName" 
-                            :src="product.image" />
+                        <a :href="`/store/product/${item.product.id}`">
+                            <img 
+                                :title="item.product.name" 
+                                :alt="item.product.name" 
+                                :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
+                        </a>
                     </td>
                     <td class="card_product_name" data-th="Product Name">
-                        {{ product.productName }}
+                        <a :href="`/store/product/${item.product.id}`">{{ item.product.name }}</a>
                     </td>
                     <td class="card_product_quantity" data-th="Quantity">
 
                         <input 
                             disabled="disabled" 
-                            type="number" value="1" class="styler" />
+                            type="number" :value="item.quantity" class="styler" />
 
                     </td>
                     <td class="card_product_price" data-th="Unit Price">
-                        {{ product.userPrice }}
+                        {{ item.sku.basePrice | currency }}
                     </td>
                     
                     <td class="card_product_total" data-th="Total">
-                        {{ product.userPrice }}
+                        {{ item.quantity * item.sku.basePrice | currency }}
                     </td>
 
                 </tr>
@@ -73,9 +76,6 @@ export default {
     },
 
     mounted() {
-        // TODO: this can be removed at at later time when the API and persistence is working
-        this.fetchProducts();
-        //
         // this.product = this.cartProducts;
         this.isLoading = false;
     },
@@ -106,18 +106,6 @@ export default {
 
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
-        },
-
-        // TODO: this can be removed once the API and persistence is in place
-        fetchProducts() {
-            const self = this;
-            Promise.resolve(this.getListOfProducts())
-            .then(() => {
-                self.isLoading = false;
-                // Mocking a limited result set here by slicing
-                self.products = this.productsListArray.slice( 1, 4 );
-            })
-            .catch(err => console.error(err));
         }
 
     }

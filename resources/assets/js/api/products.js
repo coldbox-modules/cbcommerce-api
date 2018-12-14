@@ -10,11 +10,18 @@ export const getProduct = api => ( id ) => {
   return api.get( '/products/' + id, { params : { includes : "skus" } } )
 };
 
+export const getProductReviews = api => ( id, params ) => {
+    return fetch( '/mockData/productReviews.json' );
+};
+
 export const products = api => ( {
   get: {
     products: {
       list: getProductsList( api ),
       detail: getProduct( api )
+    },
+    reviews: {
+      list: getProductReviews( api )
     }
   },
   post: {

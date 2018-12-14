@@ -105,7 +105,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills nav-justified">
                     <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
-                    <li><a href="#additional" data-toggle="tab" class="disabled">Additional</a></li>
+                    <li><a href="#additional" data-toggle="tab">Additional</a></li>
                     <li><a href="#review" @click="fetchReviews" data-toggle="tab">Review</a></li>
                 </ul>
 
@@ -381,7 +381,7 @@ export default {
 
         fetchReviews: function(){
             const self = this;
-            Promise.resolve(this.getCurrentProductReviews())
+            Promise.resolve( this.getCurrentProductReviews() )
             .then(() => {})
             .catch(err => console.error(err));
         },

@@ -85,7 +85,7 @@ const actions = {
 	getCurrentProductReviews: ({ commit }) =>
 		new Promise((resolve, reject) => {
 			api()
-				.get.productReviews.list()
+				.get.reviews.list(productId)
 				.then(XHR => {
 					let list = XHR.data;
 					const reviews = list;

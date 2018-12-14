@@ -2,6 +2,7 @@ component extends="BaseQuickEntityService" singleton{
     property name="cookieStorage" inject="CookieStorage@cbCommerce";
     property name="auth" inject="authenticationService@cbauth";
     property name="dateUtil" inject="DateFormatUtil@cbCommerce";
+    property name="fractal" inject="Manager@cffractal";
     //provider for the entity - this provider must exist to use the search() method
     function newEntity() provider="Cart@cbCommerce"{}
     function skuEntity() provider="ProductSKU@cbCommerce"{}
@@ -42,13 +43,42 @@ component extends="BaseQuickEntityService" singleton{
         } );
 
         if( !itemExists ){
+            var serializedProduct = fractal.builder()
+				.item( sku.getProduct() )
+				.withTransformer( "ProductTransformer@cbCommerce" )
+				.withItemCallback( 
+					function( transformed ) {
+						transformed[ "href" ] = '/store/api/v1/products/' & transformed[ "id" ]; 
+						return transformed;
+					} 
+				)
+                .convert();
+            if( arrayLen( serializedProduct.media ) ){
+                serializedProduct[ "image" ] = serializedProduct.media[ 1 ];
+            }
+
+            structDelete( serializedProduct, "media" );
+
+            var serializedSKU = fractal.builder()
+				.item( sku )
+				.withTransformer( "ProductSKUTransformer@cbCommerce" )
+                .convert();
+            
+            if( arrayLen( serializedSKU.media ) ){
+                serializedSKU[ "image" ] = serializedSKU.media[ 1 ];
+            }
+            
+            structDelete( serializedSKU, "media" );
+
+
             var newItem = {
                 "added"    :  dateUtil.toISO8601( now() ),
                 "updated"  :  dateUtil.toISO8601( now() ), 
-                "product"  :  sku.getProduct().getMemento(),
-                "sku"      :  sku.getMemento(),
+                "product"  :  serializedProduct,
+                "sku"      :  serializedSKU,
                 "quantity" : arguments.quantity
             };
+
             newItem.sku[ "quantity" ] = appendQuantity;
             arrayAppend( items, newItem );
         }
