@@ -97,7 +97,8 @@ component {
                 .withAction(
                     {
                         "PUT" : "addItem",
-                        "PATCH" : "addItem"
+                        "PATCH" : "addItem",
+                        "DELETE" : "deleteItem"
                     }
                 )
                 .toHandler( "API.v1.Cart" );
@@ -179,7 +180,7 @@ component {
     function onLoad() {
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
-        
+
         //change our binder mapping
         if( settings.products.externalModel ){
             binder
