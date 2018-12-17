@@ -7,48 +7,12 @@
     		</div>
     		<div
     			v-else
-    			class="row cart-product-row"
     			v-for="(item, index) in cartProducts"
     			:key="index">
 
-    			<div class="col-sm-7">
-    				<div class="cart-product">
-	    				<div class="cart-product-image">
-	    					<a :href="`/store/product/${item.product.id}`">
-	                            <img
-	                                :title="item.product.name"
-	                                :alt="item.product.name"
-	                                :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
-	                        </a>
-		                </div>
-		                <div class="cart-product-text">
-	    					<div class="cart-product-name">
-	    						<a :href="'store/product/'+ item.product.id">{{ item.product.name }}</a>
-	    					</div>
-	    					<div class="cart-product-actions">
-	    						<ul class="list-inline">
-	    							<li>
-	    								<a href="" @click.prevent="deleteCartItem( item.sku.id )">Remove</a>
-	    							</li>
-	    						</ul>
-	    					</div>
-	    				</div>
-	    			</div>
-    			</div>
-    			<div class="col-sm-2">
-    				<div class="cart-product-price">
-    					<span class="sr-only">unit price</span>{{ item.sku.basePrice }}
-    				</div>
-    			</div>
-    			<div class="col-sm-3">
-    				<div class="cart-product-quantity">
-		                <quantity-control
-		                    :showLabel="false"
-		                    :quantity="item.quantity"
-		                    v-on:quantityChange="quantityChangeReaction"
-		                ></quantity-control>
-		            </div>
-    			</div>
+    			<cart-item :item= "item">
+
+    			</cart-item>
     		</div>
 	     </div>
 	     <div class="col-sm-3">
@@ -75,18 +39,18 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
-import QuantityControl from '../products/quantity-control';
+import CartItem from './cart-item';
 
 export default {
 	components: {
-        QuantityControl
+        CartItem
     },
     directives: {
         imagesLoaded
     },
     data() {
         return {
-            isLoading: false
+        	isLoading: false
         }
     },
 
@@ -145,10 +109,9 @@ export default {
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
 
         },
-        quantityChangeReaction: function( quantity = 1 ){
-            // Vue.set( this, "chosenQuantity", quantity );
-            console.log( quantity );
-        }
+        // quantityChangeReaction: function( quantity = 1 ){
+        //     Vue.set( this, "chosenQuantity", quantity );
+        // }
 
     }
 
