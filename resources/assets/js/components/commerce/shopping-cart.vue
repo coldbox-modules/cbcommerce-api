@@ -1,10 +1,15 @@
 <template>
      <div>
     	<div class="col-sm-9">
+    		<div v-if="cartProducts && cartProducts.length == 0">
+    			<h3>Your Shopping Cart is empty.</h3>
+    			<p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
+    		</div>
     		<div
+    			v-else
     			class="row cart-product-row"
-    			v-for="(product, index) in cartProducts"
-	            :key="index">
+    			v-for="(item, index) in cartProducts"
+    			:key="index">
 
     			<div class="col-sm-7">
     				<div class="cart-product">
@@ -18,12 +23,12 @@
 		                </div>
 		                <div class="cart-product-text">
 	    					<div class="cart-product-name">
-	    						<a :href="'store/product/'+ product.product.id">{{ product.product.name }}</a>
+	    						<a :href="'store/product/'+ item.product.id">{{ item.product.name }}</a>
 	    					</div>
 	    					<div class="cart-product-actions">
 	    						<ul class="list-inline">
 	    							<li>
-	    								<a href="" @click.prevent="deleteCartItem( product.sku.id )">Remove</a>
+	    								<a href="" @click.prevent="deleteCartItem( item.sku.id )">Remove</a>
 	    							</li>
 	    						</ul>
 	    					</div>
@@ -32,14 +37,14 @@
     			</div>
     			<div class="col-sm-2">
     				<div class="cart-product-price">
-    					<span class="sr-only">unit price</span>{{ product.sku.basePrice }}
+    					<span class="sr-only">unit price</span>{{ item.sku.basePrice }}
     				</div>
     			</div>
     			<div class="col-sm-3">
     				<div class="cart-product-quantity">
 		                <quantity-control
 		                    :showLabel="false"
-		                    :quantity="product.quantity"
+		                    :quantity="item.quantity"
 		                    v-on:quantityChange="quantityChangeReaction"
 		                ></quantity-control>
 		            </div>
