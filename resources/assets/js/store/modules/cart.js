@@ -68,7 +68,7 @@ const actions = {
 			return context.dispatch( "deleteCartItem", payload.sku );
 		}
 	},
-	deleteCartItem: ( context, sku ) => { 
+	deleteCartItem: ( context, sku ) => {
 		return new Promise((resolve, reject) => {
 		api().delete.cart.item( sku )
 						.then(XHR => {
@@ -85,9 +85,9 @@ const actions = {
 
 const mutations = {
 	removeCartItem( state, sku ){
-		remaining = state.cart.items.forEach( item => {
-			return item.sku.id !== sku;
-		} );
+
+		var remaining = state.cart.items.filter( item => item.sku.id !== sku );
+
 		Vue.set( state.cart, "items", remaining );
 	},
 	setCheckoutStatus( state, status ){
