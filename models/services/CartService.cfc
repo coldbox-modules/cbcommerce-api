@@ -46,11 +46,11 @@ component extends="BaseQuickEntityService" singleton{
             var serializedProduct = fractal.builder()
 				.item( sku.getProduct() )
 				.withTransformer( "ProductTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = '/store/api/v1/products/' & transformed[ "id" ]; 
+						transformed[ "href" ] = '/store/api/v1/products/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
                 .convert();
             if( arrayLen( serializedProduct.media ) ){
@@ -63,17 +63,17 @@ component extends="BaseQuickEntityService" singleton{
 				.item( sku )
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
                 .convert();
-            
+
             if( arrayLen( serializedSKU.media ) ){
                 serializedSKU[ "image" ] = serializedSKU.media[ 1 ];
             }
-            
+
             structDelete( serializedSKU, "media" );
 
 
             var newItem = {
                 "added"    :  dateUtil.toISO8601( now() ),
-                "updated"  :  dateUtil.toISO8601( now() ), 
+                "updated"  :  dateUtil.toISO8601( now() ),
                 "product"  :  serializedProduct,
                 "sku"      :  serializedSKU,
                 "quantity" : arguments.quantity
@@ -93,7 +93,7 @@ component extends="BaseQuickEntityService" singleton{
      * @itemId the ProductSKU to remove
      * @quantity the quanitity of items to remove ( default all )
      */
-    Cart function removeItem( required string itemId, quantity ){
+    Cart function removeItem( required string itemId, quantity=1 ){
         var cart = ensureCart();
 
         var contents = cart.getContents();
@@ -111,7 +111,7 @@ component extends="BaseQuickEntityService" singleton{
             item.quantity -= removeQuantity;
             item.updated = dateUtil.toISO8601( now() );
 
-            if( item.quanity <= 0 ){
+            if( item.quantity <= 0 ){
                 deleteIndex = i;
                 break;
             }
@@ -128,7 +128,7 @@ component extends="BaseQuickEntityService" singleton{
 
     private function ensureCart(){
         var cartId = cookieStorage.getVar( "cartId" );
-        
+
         if( isNull( cartId ) && auth.isLoggedIn() ){
             //check first for an existing active cart
             var activeCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
@@ -149,7 +149,7 @@ component extends="BaseQuickEntityService" singleton{
             activeCart.setUser( auth.user() );
             activeCart.save();
         }
-        
+
         cookieStorage.setVar( "cartId", activeCart.getId() );
 
         return activeCart;
