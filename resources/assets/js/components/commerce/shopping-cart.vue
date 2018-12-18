@@ -1,21 +1,17 @@
 <template>
      <div>
-    	<div class="col-sm-9">
-    		<div v-if="cartProducts && cartProducts.length == 0">
-    			<h3>Your Shopping Cart is empty.</h3>
-    			<p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
-    		</div>
+        <div v-if="cartProducts && cartProducts.length == 0" class="col-sm-12">
+            <h3>Your Shopping Cart is empty.</h3>
+            <p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
+        </div>
+    	<div v-else class="col-sm-9">
     		<div
-    			v-else
     			v-for="(item, index) in cartProducts"
     			:key="index">
-
-    			<cart-item :item= "item">
-
-    			</cart-item>
+    			<cart-item :item= "item"></cart-item>
     		</div>
-	     </div>
-	     <div class="col-sm-3">
+	    </div>
+	    <div v-if="totalItems" class="col-sm-3">
 	     	<div class="cart-buy-box">
 		     	<div class="cart-buy-subtotal">
 		     		<span>Subtotal </span>
@@ -29,9 +25,8 @@
 		     	</div>
 		     	<button class="btn btn-primary">Proceed to Checkout</button>
 		    </div>
-	     </div>
-
-
+	    </div>
+        <div class="clearfix"></div>
     </div>
 
 </template>
