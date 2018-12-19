@@ -1,8 +1,8 @@
 <cfoutput>
+	<!--- <cfdump var="#prc#" top="1"> --->
+	<section id="shoppingCart">
 
-	<section id="productComparison">
-
-		<div class="container">
+		<div class="container-fluid">
 
 			<div class="header-for-light">
                 <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">

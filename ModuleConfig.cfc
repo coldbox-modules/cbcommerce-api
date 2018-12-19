@@ -73,6 +73,10 @@ component {
 			{
 					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
+			},
+			{
+					class="cbCommerce.interceptors.GlobalData",
+					name="GlobalDataInterceptor"
 			}
         ];
         // Forward Media
@@ -170,6 +174,7 @@ component {
             router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
+            router.route( "checkoutLogin" ).to( "Checkout.login" );
 
             /**
              * Display routing

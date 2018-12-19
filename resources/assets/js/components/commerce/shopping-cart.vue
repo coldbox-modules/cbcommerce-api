@@ -23,7 +23,8 @@
 		     		</span><br/>
 		     		<span>${{ subtotal }} </span>
 		     	</div>
-		     	<button class="btn btn-primary">Proceed to Checkout</button>
+		     	<a href="/store/checkout" class="btn btn-animate btn-lg" v-if="isLoggedIn">Proceed to Checkout</a>
+		     	<a href="/store/checkoutLogin" class="btn btn-animate btn-lg" v-else>Proceed to Checkout</a>
 		    </div>
 	    </div>
         <div class="clearfix"></div>
@@ -48,14 +49,10 @@ export default {
         	isLoading: false
         }
     },
-
-    created() {
-    },
-
     mounted() {
         this.isLoading = false;
     },
-
+    created() {},
     destroyed() {},
 
     computed: {
@@ -85,14 +82,19 @@ export default {
         		total = total +  qty;
         	}
         	return total;
+        },
+        isLoggedIn(){
+        	if( window.globalData && window.globalData.cbcAuthUser ){
+        		return true;
+        	} else {
+        		return false;
+        	}
         }
     },
 
     methods: {
 
         ...mapActions([
-            "setCurrentProduct",
-            "clearCurrentProduct",
             "getListOfProducts",
             "addItemToCart",
             "deleteCartItem",
@@ -103,7 +105,6 @@ export default {
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
         }
-
     }
 
 }

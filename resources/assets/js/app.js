@@ -15,6 +15,8 @@ Vue.component( "mediaOwlCarousel", require( "./components/media-owl-carousel" ).
 Vue.component( "cbSlickSlider", require( "./components/cb-slick-slider" ).default );
 Vue.component( "cbMediaGallery", require( "./components/cb-media-gallery" ).default );
 Vue.component( "bsrFinanceCalculator", require( "./components/bsr-finance-calculator" ).default );
+Vue.component( "loginForm", require( "./components/login-form" ).default );
+
 
 import App from "@cbCommerce/components/App";
 import Router from "vue-router";
