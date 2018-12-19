@@ -27,7 +27,8 @@
 		     		</span><br/>
 		     		<span>${{ subtotal }} </span>
 		     	</div>
-		     	<button class="btn btn-primary">Proceed to Checkout</button>
+		     	<a href="/store/checkout" class="btn btn-animate btn-lg" v-if="isLoggedIn">Proceed to Checkout</a>
+		     	<a href="/store/checkoutLogin" class="btn btn-animate btn-lg" v-else>Proceed to Checkout</a>
 		    </div>
 	     </div>
 
@@ -53,14 +54,10 @@ export default {
         	isLoading: false
         }
     },
-
-    created() {
-    },
-
     mounted() {
         this.isLoading = false;
     },
-
+    created() {},
     destroyed() {},
 
     computed: {
@@ -68,9 +65,7 @@ export default {
             "currentProduct",
             "productsListArray",
             "productsList",
-            "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts"
+            "cartProducts"
         ]),
         subtotal(){
         	var subTotal = 0;
@@ -90,14 +85,19 @@ export default {
         		total = total +  qty;
         	}
         	return total;
+        },
+        isLoggedIn(){
+        	if( window.globalData && window.globalData.cbcAuthUser ){
+        		return true;
+        	} else {
+        		return false;
+        	}
         }
     },
 
     methods: {
 
         ...mapActions([
-            "setCurrentProduct",
-            "clearCurrentProduct",
             "getListOfProducts",
             "addItemToCart",
             "deleteCartItem",
@@ -108,11 +108,7 @@ export default {
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
 
-        },
-        // quantityChangeReaction: function( quantity = 1 ){
-        //     Vue.set( this, "chosenQuantity", quantity );
-        // }
-
+        }
     }
 
 }
