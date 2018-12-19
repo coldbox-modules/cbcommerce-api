@@ -42,7 +42,7 @@
 </template>
 <script type="text/javascript">
 	import { mapGetters, mapActions } from "vuex";
-	import QuantityControl from '../products/quantity-control';
+	import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
 
 	export default{
 		components:{
@@ -59,7 +59,8 @@
 	            "deleteCartItem"
 	        ]),
 
-	        quantityChangeReaction: function( quantity = 1 ){
+	        quantityChangeReaction: function( {quantity, sku} ){
+				if(! quantity ) quantity=1;
 	            Vue.set( this.item, "quantity", quantity );
 	        }
 		}

@@ -15,12 +15,12 @@
                             v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
                         <a 
-                            @click="addProductToComparisonList(product)"
+                            @click="addItemToComparisonList( product.startingPrice.SKU )"
                             v-tooltip="{ content: 'Compare this item' }"
                             class="product-compare"><i class="fa fa-random"></i></a>
 
                         <a 
-                            @click="addProductToWishlist(product)"
+                            @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
                             v-tooltip="{ content: 'Add this item to your wishlist' }"
                             class="product-wishlist"><i class="fa fa-heart-o"></i></a>
                         
@@ -121,8 +121,8 @@ export default {
     computed: {
         ...mapGetters([
             "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts"
+            "wishlistItems",
+            "comparisonItems"
         ]),
         isNew(){
             return moment( new Date( this.product.createdTime ) ) < moment( new Date() ).add( "30 days" );
@@ -135,8 +135,8 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
-            "addProductToWishlist",
-            "addProductToComparisonList"
+            "addItemToWishlist",
+            "addItemToComparisonList"
         ]),
         isImage: function( mediaItem ){
             return this.$options.filters.isImage( mediaItem );

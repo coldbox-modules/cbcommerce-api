@@ -17,12 +17,12 @@
                             <div class="product-sale" v-if="this.percentOff">{{ this.percentOff }} <br> off</div>
 
                             <a 
-                                @click="addProductToComparisonList(product)"
+                                @click="addItemToComparisonList( product.startingPrice.SKU )"
                                 v-tooltip="{ content: 'Compare this item' }"
                                 class="product-compare"><i class="fa fa-random"></i></a>
 
                             <a 
-                                @click="addProductToWishlist(product)"
+                                @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
                                 v-tooltip="{ content: 'Add this item to your wishlist' }"
                                 class="product-wishlist"><i class="fa fa-heart-o"></i></a>
 
@@ -65,7 +65,7 @@
 
                             <div v-if="this.listPrice" class="product-cart">
                                 <a 
-                                    @click="addItemToCart( { product, quantity: 1 } )"
+                                    @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                                     v-tooltip="'Add this item to your cart'"
                                     class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                             </div>
@@ -125,8 +125,8 @@ export default {
     computed: {
         ...mapGetters([
             "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts"
+            "wishlistItems",
+            "comparisonItems"
         ])
     },
 
@@ -134,8 +134,8 @@ export default {
 
         ...mapActions([
             "addItemToCart",
-            "addProductToWishlist",
-            "addProductToComparisonList"
+            "addItemToWishlist",
+            "addItemToComparisonList"
         ]),
 
         parseContent: function(){

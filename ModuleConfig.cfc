@@ -167,6 +167,7 @@ component {
 
             router.route( "category/:id" ).to( "Category.detail" );
             router.route( "category" ).to( "Category.index" );
+            router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
 

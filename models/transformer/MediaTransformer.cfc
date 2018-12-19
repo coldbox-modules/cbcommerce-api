@@ -20,9 +20,12 @@ component extends="BaseModelTransformer"{
             var mediaItem = activeEntity.getMediaItem();
             var memento = mediaItem.getMemento();
             structAppend( memento, activeEntity.getMemento(), true );
+            structDelete( memento, "FK_media" );
         } else {
             return super.transform( argumentCollection = arguments );
         }
+
+        structDelete( memento, "fileLocation" );
 
         return memento;
         

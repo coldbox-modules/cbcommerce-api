@@ -64,8 +64,8 @@ export default {
             "productsListArray",
             "productsList",
             "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts"
+            "wishlistItems",
+            "comparisonItems"
         ]),
         subtotal(){
         	var subTotal = 0;
@@ -96,17 +96,13 @@ export default {
             "getListOfProducts",
             "addItemToCart",
             "deleteCartItem",
-            "addProductToWishlist",
-            "addProductToComparisonList"
+            "addItemToWishlist",
+            "addItemToComparisonList"
         ]),
 
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
-
-        },
-        // quantityChangeReaction: function( quantity = 1 ){
-        //     Vue.set( this, "chosenQuantity", quantity );
-        // }
+        }
 
     }
 

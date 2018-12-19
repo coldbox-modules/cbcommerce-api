@@ -2,16 +2,20 @@
 
 	<div class="box-border wow fadeInLeft animated" data-wow-duration="1s">
 
-	    <table class="cart-table table compare">
+	    <table v-if="comparisonItems.length" class="cart-table table compare">
 
 	        <thead>
 
 	            <tr class="card_product_name">
 	                <th>Details</th>
 	                <th 
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
-	                ><a href="/equipment/category/sub-category/test-product">{{ product.productName }}</a></th>
+	                >
+					<a :href="`/store/product/${sku.product.id}`">
+						{{ sku.product.name }}
+					</a>
+				</th>
 	            </tr>
 
 	        </thead>
@@ -22,14 +26,14 @@
 	                <td class="card_product_image" data-th="Products">Images</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_image"
-	                	:data-th="product.productName">
+	                	:data-th="sku.product.name">
 	                	<img 
-                			:title="product.productName" 
-                			:alt="product.productName" 
-                			:src="product.image" />
+                			:title="sku.product.name" 
+                			:alt="sku.product.name" 
+                			:src="primaryImage( sku )" />
 	               	</td>
 
 	            </tr>
@@ -37,10 +41,10 @@
 	                <td class="card_product_image" data-th="Products">Rating</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_rating"
-	                	:data-th="product.productName">
+	                	:data-th="sku.product.name">
 	                    <div class="product-rating">
 
 	                        <star-rating 
@@ -48,7 +52,7 @@
                                 :show-rating="false"
                                 :item-size="10" 
                                 :read-only="true"
-                                :rating="product.avgRating"
+                                :rating="sku.product.avgRating"
                             ></star-rating>
 
 	                    </div>
@@ -59,19 +63,21 @@
 	                <td class="card_product_image" data-th="Products">Description</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="product.productName">
-	                	{{ product.description }}
-
-	                	<p 
-                            v-for="(feature, index) in product.features"
-                            :key="index"
-                            class="description">
-                            {{ feature }}
-                        </p>
-
+	                	:data-th="sku.product.name">
+						<h4>Description:</h4>
+	                	{{ sku.product.shortDescription }}
+						<h4>Specifications:</h4>
+                        <ul class="list-unstyled">
+                            <li 
+                                v-for="(spec, index) in sku.options.specifications"
+                                :key="index"
+                                class="description">
+                                {{ spec }}
+                            </li>
+                        </ul>
 	                </td>
 
 	            </tr>
@@ -79,33 +85,33 @@
 	                <td class="card_product_image" data-th="Products">Manufacturer</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="product.productName">
-	                	{{ product.brand }}
+	                	:data-th="sku.product.name">
+	                	{{ sku.product.manufacturer }}
 	                </td>
 	            </tr>
 	            <tr>
 	                <td class="card_product_image" data-th="Products">Model</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="product.productName">
-	                	{{ product.model }}
+	                	:data-th="sku.product.name">
+	                	{{ sku.modelNumber }}
 	                </td>
 	            </tr>
 	            <tr>
 	                <td class="card_product_image" data-th="Products">Availability</td>
 	                
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="product.productName">
-	                	{{ availabilityText( product.inStock ) }}
+	                	:data-th="sku.product.name">
+	                	{{ availabilityText( sku ) }}
 	                </td>
 
 	            </tr>
@@ -113,19 +119,22 @@
 	                <td class="card_product_image" data-th="Products">Quantity</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	:data-id="index"
-	                	:data-product-id="product.id"
+	                	:data-product-id="sku.product.id"
 	                	class="card_product_quantity"
-	                	:data-th="product.productName">
+	                	:data-th="sku.product.name">
 
 		                <quantity-control 
+							:sku="sku"
 		                	:componentID="'quantity_' + index"
 		                    :showLabel="false"
-		                    v-if="product.inStock && product.listPrice"
+		                    v-if="inStock( sku ) && sku.basePrice"
 		                    v-on:quantityChange="quantityChangeReaction"
 		                ></quantity-control>
+
+						<small><a href="javascript:;" @click="removeItemFromComparisonList( sku.id )">[ Remove Item ]</a></small>
 
 	                </td>
 
@@ -134,13 +143,13 @@
 	                <td class="card_product_image" data-th="Products">Price</td>
 
 	                <td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="product.productName">
+	                	:data-th="sku.product.name">
 	                    <div class="product">
 	                        <div class="product-caption">
-	                            <p class="product-price">&dollar;{{ product.userPrice }}</p>
+	                            <p class="product-price">{{ sku.basePrice | currency }}</p>
 	                        </div> 
 	                    </div>
 	                </td>
@@ -150,23 +159,23 @@
 	            	<td></td>
 
 	            	<td
-	                	v-for="(product, index) in products"
+	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_add_to_cart"
-	                	:data-th="product.productName">
+	                	:data-th="sku.product.name">
 	                	<div class="product">
 	                        <div class="product-caption">
 
 	                        	<a 
-	                        		@click="addToCart"
+	                        		@click="addItemToCart( { sku: sku.id, quantity: sku.quantity || 1 } )"
 	                        		:data-id="index"
-	                				:data-product-id="product.id"
-	                        		v-if="product.inStock && product.listPrice"
+	                				:data-product-id="sku.product.id"
+	                        		v-if="inStock( sku )"
 	                        		class="addToCart">
 	                        		<i class="fa fa-shopping-cart"></i> Add to cart
 	                        	</a>
 
-								<div v-if="!product.listPrice" class="product-request">
+								<div class="product-request">
 			                    	<a 
 			                    		href="#" 
 			                    		class="btn">
@@ -184,6 +193,14 @@
 
 	    </table>
 
+		<table v-else class="cart-table table compare">
+			<tr>
+				<td>
+					<h3>No items selected for comparison</h3>
+					<p><a href="/">Continue Shopping</a></p>
+				</td>
+			</tr>
+		</table>
 	</div>
 
 </template>
@@ -192,7 +209,7 @@
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
-import QuantityControl from './quantity-control';
+import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
 export default {
     components: {
         StarRating,
@@ -212,10 +229,6 @@ export default {
         this.isLoading = true;
     },
 
-    mounted() {
-    	this.fetchProducts();
-    },
-
     destroyed() {},
 
     computed: {
@@ -224,48 +237,50 @@ export default {
     		"productsListArray",
     		"productsList",
     		"cartProducts",
-    		"wishlistProducts",
-    		"comparisonProducts"
+    		"wishlistItems",
+    		"comparisonItems"
     	])
     },
 
     methods: {
-
     	...mapActions([
 			"setCurrentProduct",
 			"clearCurrentProduct",
 			"getListOfProducts",
 			"addItemToCart",
-			"addProductToWishlist",
-			"addProductToComparisonList"
+			"addItemToWishlist",
+			"addItemToComparisonList",
+			"removeItemFromComparisonList"
         ]),
+    	availabilityText( sku ){
+            return this.inStock( sku ) ? 'In Stock' : 'Out Of Stock';
+		},
+		inStock( item ){
+			let sku = this.getSkuFromList( item );
+			if( !sku ) return false;
+            return ( sku.onHand || sku.allowBackorder );
+		},
+		primaryImage( item ){
+			let sku = this.getSkuFromList( item );
+			if( !sku ) return;
 
-    	availabilityText( inStock ){
-            return ( inStock ) ? 'In Stock' : 'Out Of Stock';
-        },
-
-        // TODO: this can be removed once the API and persistence is in place
-        fetchProducts() {
-            const self = this;
-            Promise.resolve(this.getListOfProducts())
-            .then(() => {
-                self.isLoading = false;
-                // Mocking a limited result set here by slicing
-                self.products = this.productsListArray.slice( 0, 2 );
-            })
-            .catch(err => console.error(err));
-        },
-
-        quantityChangeReaction( quantity = 1 ) {},
-
-        addToCart( event ) {
-			const productIndex = event.target.getAttribute( 'data-id' );
-			const productID    = event.target.getAttribute( 'data-product-id' );
-			const quantity     = $( '.qty', '#quantity_' + productIndex ).val();
-			this.setCurrentProduct( productID );
-			this.addItemToCart( { product: this.currentProduct, quantity } );
-			this.clearCurrentProduct();
-        }
+			if( sku.media.length ){
+				return sku.media[ 0 ].href;
+			} else {
+				return sku.product.media[ 0 ].href
+			}
+		},
+		getSkuFromList( sku ){
+			let filtered = this.comparisonItems.filter( item => item.id === sku.id );
+			if( !filtered.length ) return;
+			return filtered[ 0 ];
+		},
+		quantityChangeReaction: function( {quantity, sku} ){
+			console.log( sku );
+			let item = this.getSkuFromList( sku );
+			if( !item ) return;
+			Vue.set( item, "quantity", quantity );
+		}
 
     }
 

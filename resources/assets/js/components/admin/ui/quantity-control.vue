@@ -36,9 +36,9 @@ export default {
             default: 'quantityControlForm',
             type: String
         },
-        product: {
+        sku: {
             type    : Object,
-            required: true
+            required: false
         },
         quantity: {
             default: 1,
@@ -73,10 +73,13 @@ export default {
         setCurrentVal: function( quantity ){
             var self = this;
             this.$refs.quantityInput.value = quantity;
-            this.$emit('quantityChange', {
-                quantity: quantity,
-                product : self.product
-            } );
+            this.$emit(
+                'quantityChange', 
+                {
+                    quantity: quantity,
+                    sku : self.sku
+                }
+            );
         },
 
         increaseQty: function(){
