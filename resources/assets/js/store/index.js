@@ -10,7 +10,9 @@ export const createStore = (Vue, Vuex) => {
     process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test";
 
 	return new Vuex.Store({
-		state,
+		state:{
+			globalData  : window.cbcGlobalData
+		},
 		modules: {
 			products,
 			cart
