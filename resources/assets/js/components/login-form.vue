@@ -10,7 +10,7 @@
 				<input type="password" name="password" v-model="password" class="form-control" autocomplete="false"/>
 				<div class="clearfix"></div>
 			</div>
-			<div><a href="#">Forgot your password?</a></div>
+			<p><a href="#">Forgot your password?</a></p>
 			<div class="form-group">
 				<button class="btn btn-secondary btn-lg">Login</button>
 			</div>
