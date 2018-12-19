@@ -27,8 +27,14 @@
 		     		</span><br/>
 		     		<span>${{ subtotal }} </span>
 		     	</div>
-		     	<a href="/store/checkout" class="btn btn-animate btn-lg" v-if="isLoggedIn">Proceed to Checkout</a>
-		     	<a href="/store/checkoutLogin" class="btn btn-animate btn-lg" v-else>Proceed to Checkout</a>
+		     	<a
+		     		:href="checkoutURL"
+		     		class="btn btn-animate btn-lg"
+		     		:class="{ 'disabled': !cartProducts.length }"
+		     		disabled="!cartProducts.length">
+
+		     		Proceed to Checkout
+		     	</a>
 		    </div>
 	     </div>
 
@@ -38,7 +44,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import CartItem from './cart-item';
 
@@ -57,10 +63,13 @@ export default {
     mounted() {
         this.isLoading = false;
     },
-    created() {},
+    created() { console.log(window)},
     destroyed() {},
 
     computed: {
+        ...mapState( {
+    		globalData   : 'globalData'
+    	}),
         ...mapGetters([
             "currentProduct",
             "productsListArray",
@@ -87,10 +96,17 @@ export default {
         	return total;
         },
         isLoggedIn(){
-        	if( window.globalData && window.globalData.cbcAuthUser ){
+        	if( this.globalData && this.globalData.cbcAuthUser ){
         		return true;
         	} else {
         		return false;
+        	}
+        },
+        checkoutURL(){
+        	if( this.isLoggedIn ){
+        		return '/store/checkout'
+        	} else {
+        		return '/store/checkoutLogin'
         	}
         }
     },
