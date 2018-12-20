@@ -1,9 +1,7 @@
 export const getCustomerList = api => () => api.get('/customers');
 export const createCustomer = api => (data) => {
   const bodyParams = data;
-  return api.post('/customers', JSON.stringify(bodyParams), {
-    headers: { "Content-Type": "application/json" }
-  });
+  return api.post('/customers', JSON.stringify(bodyParams) );
 };
 
 export const customers = api => ({

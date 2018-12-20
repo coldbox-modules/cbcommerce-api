@@ -17,9 +17,19 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/cart/:itemId
+	// (POST) /store/api/v1/cart/:itemId
 	function addItem( event, rc, prc ){
 		entityService.addItem( argumentCollection=rc ).save();
+
+		prc.response.setData( 
+			entityService.getActiveCart().getContents()
+		);
+		
+	}
+
+	// (PUT|PATCH) /store/api/v1/cart/:itemId
+	function updateItem( event, rc, prc ){
+		entityService.updateItem( argumentCollection=rc ).save();
 
 		prc.response.setData( 
 			entityService.getActiveCart().getContents()

@@ -1,9 +1,7 @@
 export const getOrdersList = api => () => api.get('/orders');
 export const createOrder = api => (data) => {
   const bodyParams = data;
-  return api.post('/orders', JSON.stringify(bodyParams), {
-    headers: { "Content-Type": "application/json" }
-  });
+  return api.post('/orders', JSON.stringify(bodyParams) );
 };
 
 export const orders = api => ({

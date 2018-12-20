@@ -11,15 +11,18 @@ component extends="BaseQuickEntityService" singleton{
      * @username the email address of the user for authentication
      * @password the password to validate
      */
-    public function isValidCredentials( required string username, required string password ){
+    public boolean function isValidCredentials( required string username, required string password ){
         var user = retrieveUserByUsername( arguments.username );
-        if( !isNull( isNull ) ){
+        if( !isNull( user ) ){
             return encryptionService.bcryptMatches( arguments.password, user.getPassword() );
+        } else {
+            return false;
         }
     }
 
     public function retrieveUserByUsername( required string username ){
-        return newEntity().newQuery().where( 'email', arguments.username ).first();
+        var located = newEntity().where( 'email', arguments.username ).first();
+        if( located.isLoaded() ) return located;
     }
 
     public function retrieveById( required string id ){

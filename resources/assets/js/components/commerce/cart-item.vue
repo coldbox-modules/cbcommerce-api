@@ -34,6 +34,7 @@
                 <quantity-control
                     :showLabel="false"
                     :quantity="item.quantity"
+					:sku="item.sku"
                     v-on:quantityChange="quantityChangeReaction"
                 ></quantity-control>
             </div>
@@ -60,12 +61,14 @@
 	    },
 	    methods: {
 	        ...mapActions([
-	            "deleteCartItem"
+				"deleteCartItem",
+				"updateCartItem"
 	        ]),
 
 	        quantityChangeReaction: function( {quantity, sku} ){
 				if(! quantity ) quantity=1;
-	            Vue.set( this.item, "quantity", quantity );
+				Vue.set( this.item, "quantity", quantity );
+				this.updateCartItem( { sku : sku.id, quantity: quantity } );
 	        }
 		}
 	}

@@ -63,18 +63,15 @@ const useLoggers = apiInstance => {
   return apiInstance;
 };
 
-const getHeader = [
-  (data, headers) => {
-    headers.common.Authorization = `Bearer ${token}`;
-    return data; // don't know why
-  }
-];
-
 const apiAxios = Axios.create({
   baseURL: base,
   timeout,
-  transformRequest: getHeader
+  headers : {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type" : "application/json"
+  }
 });
+
 
 const finalAPI =
   process.env.NODE_ENV === "development" ? useLoggers(apiAxios) : apiAxios;

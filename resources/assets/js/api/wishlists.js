@@ -5,9 +5,7 @@ export const getWishlistItem = api => (wishlistId, id) => api.get('/wishlists/' 
 
 export const createWishlist = api => ( data ) => {
   const bodyParams = data;
-  return api.post('/wishlists', JSON.stringify( bodyParams ), {
-    headers: { "Content-Type": "application/json" }
-  });
+  return api.post('/wishlists', JSON.stringify( bodyParams ) );
 };
 export const updateWishlist = api => ( data ) => api.put( '/wishlists/' + id, JSON.stringify( data ) );
 export const deleteWishlist = api => ( id ) => api.delete('/wishlists/' + id);
@@ -16,10 +14,7 @@ export const addWishlistItem = api => ( wishlistId, data ) => {
   const bodyParams = data;
   return api.post( 
     '/wishlists/' + wishlistId + '/items', 
-    JSON.stringify(bodyParams), 
-    {
-      headers: { "Content-Type": "application/json" }
-    }
+    JSON.stringify(bodyParams)
   );
 };
 export const deleteWishlistItem = api => ( wishlistId, id ) => api.delete( '/wishlists/' + wishlistId + '/items/' + id );

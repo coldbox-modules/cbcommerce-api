@@ -1,9 +1,7 @@
 export const getProductsList = api => () => api.get( '/products' );
 export const createProduct = api => ( data ) => {
   const bodyParams = data;
-  return api.post( '/products', JSON.stringify(bodyParams), {
-    headers: { "Content-Type": "application/json" }
-  } );
+  return api.post( '/products', JSON.stringify(bodyParams) );
 };
 
 export const getProduct = api => ( id ) => {

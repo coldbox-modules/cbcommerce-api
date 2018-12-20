@@ -1,6 +1,7 @@
 import createLogger from "vuex/dist/logger";
 import VuexPersist from "vuex-persist";
 
+import auth from "@cbCommerce/store/modules/auth";
 import products from "@cbCommerce/store/modules/products";
 import wishlists from "@cbCommerce/store/modules/wishlists";
 import cart from "@cbCommerce/store/modules/cart";
@@ -29,6 +30,7 @@ export const createStore = (Vue, Vuex) => {
 			globalData  : window.cbcGlobalData
 		},
 		modules: {
+			auth,
 			products,
 			wishlists,
 			cart

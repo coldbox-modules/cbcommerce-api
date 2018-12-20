@@ -71,6 +71,17 @@ component extends="coldbox.system.EventHandler"{
 		try{
 			// start a resource timer
 			var stime = getTickCount();
+			
+			//handle any content payloads
+			// If the inbound content body is a JSON payload capture it
+			if( 
+				len( event.getHTTPContent() ) 
+				&& isJSON(  event.getHTTPContent() )
+				&& isStruct( event.getHTTPContent( json=true ) ) 
+			) {
+				structAppend( rc, event.getHTTPContent( json=true ) );
+			}
+			
 			// prepare our response object
 			prc.response = getInstance( "APIResponse@cbCommerce" );
 			// prepare argument execution
@@ -106,9 +117,6 @@ component extends="coldbox.system.EventHandler"{
 			prc.response.addMessage( e.message );
 		} catch( Any e ){
 			log.error( "Error calling #event.getCurrentEvent()#: #e.message# #e.detail#", e.stackTrace );
-
-			writeDump( e );
-			abort;
 
 			// Setup General Error Response
 			prc.response

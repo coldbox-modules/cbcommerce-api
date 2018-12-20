@@ -1,4 +1,5 @@
 import defaultAPI from "./create";
+import authentication from "./authentication";
 import products from "./products";
 import orders from "./orders";
 import categories from "./categories";
@@ -14,13 +15,15 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		categories( apiInstance ).get,
 		customers( apiInstance ).get,
 		wishlists( apiInstance ).get,
-		cart( apiInstance ).get
+		cart( apiInstance ).get,
+		authentication( apiInstance ).get
 	),
 	post: Object.assign(
 		products( apiInstance ).post,
 		categories( apiInstance ).post,
 		customers( apiInstance ).post,
 		wishlists( apiInstance ).post,
+		authentication( apiInstance ).post
 	),
 	put: Object.assign(
 		wishlists( apiInstance ).put,
@@ -28,7 +31,8 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 	),
 	delete: Object.assign(
 		wishlists( apiInstance ).delete,
-		cart( apiInstance ).delete
+		cart( apiInstance ).delete,
+		authentication( apiInstance ).delete
 	)
 });
 

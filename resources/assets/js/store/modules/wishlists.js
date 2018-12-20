@@ -27,7 +27,6 @@ const getters = {
 const actions = {
 	addItemToWishlist: ({ state, commit, getters }, { sku, wishlist }) => {
 		if( !state.isAuthenticated ) {
-			Event.$emit( "cbCommerce.onAuthenticationRequired" );
 			return;
 		}
 		if( !wishlist ) wishlist = getters.defaultWishList; 

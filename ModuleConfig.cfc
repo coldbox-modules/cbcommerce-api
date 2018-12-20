@@ -100,8 +100,9 @@ component {
         router.route( "api/v1/cart/:itemId" )
                 .withAction(
                     {
-                        "PUT" : "addItem",
-                        "PATCH" : "addItem",
+                        "POST" : "addItem",
+                        "PUT" : "updateItem",
+                        "PATCH" : "updateItem",
                         "DELETE" : "deleteItem"
                     }
                 )

@@ -39,7 +39,7 @@ component singleton
     function bCryptMatches( string provided,string stored ){
     	try{
 	    	//Note: BCrypt needs to stay a transient or strange things happen
-	        return variables.bCrypt.checkPassword( provided,stored );
+	        return variables.bCrypt.checkPassword( provided, stored );
     	} catch( "java.lang.IllegalArgumentException" e ){
     		return false;
     	}

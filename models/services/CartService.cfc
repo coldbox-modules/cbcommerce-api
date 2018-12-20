@@ -14,13 +14,19 @@ component extends="BaseQuickEntityService" singleton{
         return ensureCart();
     }
 
+    Cart function addItem( required string itemId, quantity = 1 ){
+        arguments.append = true;
+        return updateItem( argumentCollection = arguments );
+    }
+
     /**
      * Adds an item to the cart
      *
      * @itemId the ProductSKU to add
      * @quantity the quanitity of items to add (default 1)
+     * @append boolean Whether to append or replace the quantity
      */
-    Cart function addItem( required string itemId, quantity=1 ){
+    Cart function updateItem( required string itemId, quantity=1, append=false ){
         var cart = ensureCart();
         var sku = skuEntity().find( itemId );
 
@@ -37,7 +43,11 @@ component extends="BaseQuickEntityService" singleton{
         items.each( function( item ){
             if( item.sku.id == sku.getId() ){
                 itemExists = true;
-                item.quantity += appendQuantity;
+                if( append ){
+                    item.quantity += appendQuantity;
+                } else {
+                    item.quantity = appendQuantity;
+                }
                 item.updated = dateUtil.toISO8601( now() );
             }
         } );
