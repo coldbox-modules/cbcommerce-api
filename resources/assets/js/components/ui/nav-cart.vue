@@ -14,6 +14,7 @@ export default {
 
 	created() {
 		this.getCart();
+		this.getWishlists();
 	},
 	computed: {
 		...mapGetters([
@@ -22,7 +23,8 @@ export default {
 	},
 	methods: {
 		...mapActions([
-            "getCart"
+			"getCart",
+			"getWishlists"
         ])
 	}
 }

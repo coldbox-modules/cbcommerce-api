@@ -190,12 +190,12 @@
                 <div class="shopping-cart-buttons mt-20">
 
                     <a 
-                        @click="addProductToWishlist( activeSku )"
+                        @click="addItemToWishlist( { sku : activeSku.id } )"
                         v-tooltip="{ content: 'Add this item to your wishlist' }"
                         title="Wishlist"><i class="fa fa-heart-o"></i></a>
 
                     <a 
-                        @click="addProductToComparisonList( activeSku )"
+                        @click="addItemToComparisonList( activeSku.id )"
                         v-tooltip="{ content: 'Compare this item' }"
                         title="Compare"><i class="fa fa-random"></i></a>
 
@@ -218,7 +218,7 @@ import { StarRating } from 'vue-rate-it';
 import "ez-plus/src/jquery.ez-plus.js";
 import ProductGalleryThumb from './product-gallery-thumb';
 import ProductReview from './product-review';
-import QuantityControl from './quantity-control';
+import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
 export default {
@@ -278,8 +278,8 @@ export default {
         ...mapGetters([
             "currentProduct",
             "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts",
+            "wishlistItems",
+            "comparisonItems",
             "productsList",
             "productsListArray",
             "currentProductReviews"
@@ -313,8 +313,8 @@ export default {
 
         ...mapActions([
             "addItemToCart",
-            "addProductToWishlist",
-            "addProductToComparisonList",
+            "addItemToWishlist",
+            "addItemToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",
             "getCurrentProductReviews",
@@ -390,7 +390,8 @@ export default {
             var result = image.isLoaded ? 'loaded' : 'broken';
         },
 
-        quantityChangeReaction: function( quantity = 1 ){
+        quantityChangeReaction: function( {quantity, sku} ){
+            if( !quantity ) quantity=1;
             Vue.set( this, "chosenQuantity", quantity );
         }
 

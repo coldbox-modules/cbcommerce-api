@@ -25,7 +25,7 @@ const getters = {
 		return n;
 	},
 	currentProductReviews: state => state.currentProductReviews,
-	wishlistProducts: (state, getters) => {
+	wishlistItems: (state, getters) => {
 		return state.wishList.map(({ id, quantity }) => {
 			const product = get(state, ["productsList", id], null);
 			return {
@@ -33,7 +33,7 @@ const getters = {
 			}
 		})
 	},
-	comparisonProducts: (state, getters) => {
+	comparisonItems: (state, getters) => {
 		return state.comparisonList.map(({ id, quantity }) => {
 			const product = get(state, ["productsList", id], null);
 			return {

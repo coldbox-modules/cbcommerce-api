@@ -55,7 +55,9 @@
     "vuejs-paginate": "^1.9.0",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0",
-    "wowjs": "^1.1.3"
+    "wowjs": "^1.1.3",
+    "viewerjs": "^1.3.1",
+    "vuex-persist": "^2.0.0"
   },
   "dependencies": {},
   "scripts": {

@@ -129,7 +129,7 @@
 						<quantity-control 
 							:showLabel="false"
 							:quantity="data.item.quantity"
-							:product="data.item"
+							:sku="data.item"
 							v-on:quantityChange="quantityChangeProcess">
 						</quantity-control>
 					</template>

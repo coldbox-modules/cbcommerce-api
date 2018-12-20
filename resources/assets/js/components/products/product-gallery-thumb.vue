@@ -45,9 +45,11 @@ export default {
 
             var smallImage = this.$el.getAttribute( 'data-image' );
             var largeImage = this.$el.getAttribute( 'data-zoom-image' );
-            var ez         = $( '#product-zoom' ).data( 'ezPlus' );
-            ez.swaptheimage( smallImage, largeImage );
-
+            
+            if( $( '#product-zoom' ).length ){
+                var ez         = $( '#product-zoom' ).data( 'ezPlus' );
+                ez.swaptheimage( smallImage, largeImage );
+            }
         },
 
         parseContent: function(){

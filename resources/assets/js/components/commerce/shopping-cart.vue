@@ -1,18 +1,14 @@
 <template>
      <div>
-    	<div class="col-sm-9">
-    		<div v-if="cartProducts && cartProducts.length == 0">
-    			<h3>Your Shopping Cart is empty.</h3>
-    			<p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
-    		</div>
+        <div v-if="cartProducts && cartProducts.length == 0" class="col-sm-12">
+            <h3>Your Shopping Cart is empty.</h3>
+            <p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
+        </div>
+    	<div v-else class="col-sm-9">
     		<div
-    			v-else
     			v-for="(item, index) in cartProducts"
     			:key="index">
-
-    			<cart-item :item= "item">
-
-    			</cart-item>
+    			<cart-item :item= "item"></cart-item>
     		</div>
 	     </div>
 	     <div class="col-sm-3">
@@ -35,9 +31,8 @@
 		     		Proceed to Checkout
 		     	</a>
 		    </div>
-	     </div>
-
-
+	    </div>
+        <div class="clearfix"></div>
     </div>
 
 </template>
@@ -70,7 +65,13 @@ export default {
     		globalData   : 'globalData'
     	}),
         ...mapGetters([
-            "cartProducts"
+
+            "currentProduct",
+            "productsListArray",
+            "productsList",
+            "cartProducts",
+            "wishlistItems",
+            "comparisonItems"
         ]),
         subtotal(){
         	var subTotal = 0;
@@ -113,13 +114,12 @@ export default {
             "getListOfProducts",
             "addItemToCart",
             "deleteCartItem",
-            "addProductToWishlist",
-            "addProductToComparisonList"
+            "addItemToWishlist",
+            "addItemToComparisonList"
         ]),
 
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
-
         }
     }
 

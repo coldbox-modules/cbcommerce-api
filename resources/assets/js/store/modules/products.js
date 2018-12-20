@@ -5,16 +5,14 @@ const initialState = {
 	productsList         : [],
 	currentProductID     : null,
 	activeProduct        : null,
-	comparisonList       : [],
-	wishList             : [],
 	currentProductReviews: []
 };
 
 const getters = {
-	productsList     : state => state.productsList,
-	productsListArray: state => Object.values(state.productsList),
-	currentProductID : state => state.currentProductID,
-	currentProduct   : state => 
+	productsList      : state => state.productsList,
+	productsListArray : state => Object.values(state.productsList),
+	currentProductID  : state => state.currentProductID,
+	currentProduct    : state => 
 		state.activeProduct || get(state, ["productsList", state.currentProductID], null),
 	currentProductName: state => {
 		const n = get(
@@ -24,23 +22,7 @@ const getters = {
 		);
 		return n;
 	},
-	currentProductReviews: state => state.currentProductReviews,
-	wishlistProducts: (state, getters) => {
-		return state.wishList.map(({ id, quantity }) => {
-			const product = get(state, ["productsList", id], null);
-			return {
-				product
-			}
-		})
-	},
-	comparisonProducts: (state, getters) => {
-		return state.comparisonList.map(({ id, quantity }) => {
-			const product = get(state, ["productsList", id], null);
-			return {
-				product
-			}
-		})
-	},
+	currentProductReviews : state => state.currentProductReviews
 };
 
 const actions = {
@@ -105,18 +87,6 @@ const actions = {
 	},
 	clearCurrentProduct: ({ commit }) => {
 		commit( 'clearCurrentProduct' );
-	},
-	addProductToWishlist: ({ state, commit }, product) => {
-		const wishlistItem = state.wishList.find( item => item.id === product.id );
-		if( !wishlistItem ){
-			commit( 'addProductToWishlist', { product: product, id: product.id } );
-		}
-	},
-	addProductToComparisonList: ({ state, commit }, product) => {
-		const wishlistItem = state.comparisonList.find(item => item.id === product.id);
-		if( !wishlistItem ){
-			commit( addProductToWishlist, { product: product, id: product.id } );
-		}
 	}
 };
 
@@ -133,24 +103,6 @@ const mutations = {
 	},
 	clearCurrentProduct( state ){
 		state.currentProductID = null;
-	},
-	addProductToWishlist( state, { id, product } ){
-		state.wishList.push({
-			id,
-			product
-		})
-	},
-	setWishlistItems( state, { items } ){
-		state.wishList = items;
-	},
-	addProductToWishlist( state, { id, product } ){
-		state.comparisonList.push({
-			id,
-			product
-		})
-	},
-	setComparisonListItems( state, { items } ){
-		state.comparisonList = items;
 	},
 	setProductReviewListItems( state, list ){
 		state.currentProductReviews = list;

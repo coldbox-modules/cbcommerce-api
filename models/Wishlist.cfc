@@ -7,6 +7,8 @@ component   table="cbc_wishlists"
 			quick
 {
    property name="name" type="string";
+	property name="isDefault" type="boolean" default=0;
+	property name="isPublic" type="boolean" default=0;
 
    //Foreign Keys
 	property name="FK_user";

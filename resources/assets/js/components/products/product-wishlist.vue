@@ -76,7 +76,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
-import QuantityControl from './quantity-control';
+import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
 export default {
     components: {
         QuantityControl
@@ -107,8 +107,8 @@ export default {
         	"productsListArray",
             "productsList",
             "cartProducts",
-            "wishlistProducts",
-            "comparisonProducts"
+            "wishlistItems",
+            "comparisonItems"
         ])
     },
 
@@ -119,8 +119,8 @@ export default {
     		"clearCurrentProduct",
     		"getListOfProducts",
             "addItemToCart",
-            "addProductToWishlist",
-            "addProductToComparisonList"
+            "addItemToWishlist",
+            "addItemToComparisonList"
         ]),
 
     	availabilityText( inStock ){
@@ -139,7 +139,7 @@ export default {
             .catch(err => console.error(err));
         },
 
-        quantityChangeReaction( quantity = 1 ){},
+        quantityChangeReaction( {quantity, sku} ){},
 
         addToCart( event ){
 			const productIndex = event.target.getAttribute( 'data-id' );
