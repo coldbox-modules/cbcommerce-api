@@ -6,18 +6,26 @@
                 <li>
                 	<a
                 		href="#shipping"
-                		data-toggle="tab">
+                		@click.prevent="activateTab('shipping')">
 
                 		<i class="fa fa-truck"></i>
                 		Shipping
                 	</a>
                 </li>
-                <li>
+                <li v-if="validateStep( 1 )">
                 	<a
                 		href="#payment"
-                		data-toggle="tab"
-                		class="disabled">
+                		@click.prevent="activateTab('payment')"
+                		>
 
+                		<i class="fa fa-money"></i>
+                		Payment
+                	</a>
+                </li>
+                <li v-else>
+                	<a
+                		href="#"
+                		class="disabled">
                 		<i class="fa fa-money"></i>
                 		Payment
                 	</a>
@@ -25,8 +33,7 @@
                 <li>
                 	<a
                 		href="#review"
-                		data-toggle="tab"
-                		class="disabled">
+                		@click.prevent="activateTab('review')">
 
 	                	<i class="fa fa-check"></i>
 	                	Order Review
@@ -36,7 +43,7 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div class="tab-pane active" id="shipping">
+                <div class="tab-pane" :class="{ 'active' : activeTab === 'shipping' }" id="shipping">
                     <br>
                     <h3>Shipping Address</h3>
                     <hr>
@@ -65,7 +72,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputPhone" class="control-label">Phone:<span class="text-error">*</span></label>
+                                    <label for="inputPhone" class="control-label">Phone:<span class="text-danger">*</span></label>
                                     <div>
                                         <input
                                         	type="text"
@@ -77,7 +84,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-error">*</span></label>
+                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-danger">*</span></label>
                                     <div>
                                         <input
                                         	type="text"
@@ -97,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputCity" class="control-label">City: <span class="text-error">*</span></label>
+                                    <label for="inputCity" class="control-label">City: <span class="text-danger">*</span></label>
                                     <div>
                                         <input
                                         	type="text"
@@ -108,7 +115,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputState" class="control-label">State/Province: <span class="text-error">*</span></label>
+                                    <label for="inputState" class="control-label">State/Province: <span class="text-danger">*</span></label>
                                     <div>
                                         <input
                                         	type="text"
@@ -119,7 +126,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputPostCode" class="control-label">Zip Code: <span class="text-error">*</span></label>
+                                    <label for="inputPostCode" class="control-label">Zip Code: <span class="text-danger">*</span></label>
                                     <div>
                                         <input
                                         	type="text"
@@ -133,22 +140,23 @@
                     </form>
                     <hr>
                     <a href="/shopping-cart" class="btn-default-1">Back to Cart</a>
-                    <button
+                    <a href="#payment"
                     	class="btn btn-default-1"
-                    	:class="{ 'disabled' : !validateStep( 1 ) }">
+                    	:class="{ 'disabled' : !validateStep( 1 ) }"
+                    	@click.prevent="activateTab('payment')">
 
                     	Next
-                    </button>
+                    </a>
                 </div>
 
-                <div class="tab-pane" id="payment">
+                <div class="tab-pane" :class="{ 'active': activeTab === 'payment' }" id="payment">
                     <br>
                     Pay with your credit card via Stripe
 
                     <div class="row">
                     	<div class="col-md-6">
                             <div class="form-group">
-                                <label for="inputFirstName" class="control-label">Name on Card:<span class="text-error">*</span></label>
+                                <label for="inputFirstName" class="control-label">Name on Card:<span class="text-danger">*</span></label>
                                 <div>
                                     <input type="text" class="form-control" id="nameOnCard">
                                 </div>
@@ -158,7 +166,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="inputFirstName" class="control-label">Card:<span class="text-error">*</span></label>
+                                <label for="inputFirstName" class="control-label">Card:<span class="text-danger">*</span></label>
                                 <div>
                                     <input type="text" class="form-control" id="card">
                                 </div>
@@ -166,7 +174,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="inputFirstName" class="control-label">Expiration Date:<span class="text-error">*</span></label>
+                                <label for="inputFirstName" class="control-label">Expiration Date:<span class="text-danger">*</span></label>
                                 <div>
                                     <input type="text" class="form-control" id="expireDate">
                                 </div>
@@ -174,7 +182,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="inputFirstName" class="control-label">CCV:<span class="text-error">*</span></label>
+                                <label for="inputFirstName" class="control-label">CCV:<span class="text-danger">*</span></label>
                                 <div>
                                     <input type="text" class="form-control" id="ccv">
                                 </div>
@@ -186,123 +194,110 @@
 	                    <h3>Billing Address</h3>
 	                    	<div class="checkbox">
 							    <label>
-							      <input type="checkbox"> Same as Shipping Address
+							      <input type="checkbox"
+									  v-model="sameAddress"
+									  :true-value="true"
+									  :false-value="false">
+
+									  Same as Shipping Address
 							    </label>
 							</div>
 	                    <hr>
-	                    <form role="form" method="post" action="#">
-	                        <div class="row">
-	                            <div class="col-md-6">
-	                                <div class="form-group">
-	                                    <label for="inputFirstName" class="control-label">First Name:<span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input
-	                                        	type="text"
-	                                        	class="form-control"
-	                                        	id="inputFirstName"
-	                                        	>
-	                                    </div>
-	                                </div>
-	                                <div class="form-group">
-	                                    <label for="inputLastName" class="control-label">Last Name:<span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputLastName">
-	                                    </div>
-	                                </div>
-	                                <div class="form-group">
-	                                    <label for="inputPhone" class="control-label">Phone:</label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputPhone">
-	                                    </div>
-	                                </div>
-	                            </div>
-	                            <div class="col-md-6">
-	                                <div class="form-group">
-	                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputAdress1">
-	                                    </div>
-	                                </div>
+	                    <div v-if="sameAddress">
+	                    	<p>Same as shipping address.</p>
+	                    </div>
+	                    <div v-else>
+		                    <form role="form" method="post" action="#">
+		                        <div class="row">
+		                            <div class="col-md-6">
+		                                <div class="form-group">
+		                                    <label for="inputFirstName" class="control-label">First Name:<span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input
+		                                        	type="text"
+		                                        	class="form-control"
+		                                        	id="inputFirstName"
+		                                        	>
+		                                    </div>
+		                                </div>
+		                                <div class="form-group">
+		                                    <label for="inputLastName" class="control-label">Last Name:<span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputLastName">
+		                                    </div>
+		                                </div>
+		                                <div class="form-group">
+		                                    <label for="inputPhone" class="control-label">Phone:</label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputPhone">
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="col-md-6">
+		                                <div class="form-group">
+		                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputAdress1">
+		                                    </div>
+		                                </div>
 
-	                                <div class="form-group">
-	                                    <label for="inputCity" class="control-label">City: <span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputCity">
-	                                    </div>
-	                                </div>
+		                                <div class="form-group">
+		                                    <label for="inputCity" class="control-label">City: <span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputCity">
+		                                    </div>
+		                                </div>
 
-	                                 <div class="form-group">
-	                                    <label for="inputState" class="control-label">State/Province: <span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputState">
-	                                    </div>
-	                                </div>
+		                                 <div class="form-group">
+		                                    <label for="inputState" class="control-label">State/Province: <span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputState">
+		                                    </div>
+		                                </div>
 
-	                                <div class="form-group">
-	                                    <label for="inputPostCode" class="control-label">Zip Code: <span class="text-error">*</span></label>
-	                                    <div>
-	                                        <input type="text" class="form-control" id="inputPostCode">
-	                                    </div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </form>
+		                                <div class="form-group">
+		                                    <label for="inputPostCode" class="control-label">Zip Code: <span class="text-danger">*</span></label>
+		                                    <div>
+		                                        <input type="text" class="form-control" id="inputPostCode">
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </form>
+		                </div>
                     </div>
                     <hr>
-                    <a href="#" class="btn-default-1">Back</a>
-                    <a href="#" class="btn-default-1">Next</a>
+                    <a
+                    	href="#shipping"
+                    	class="btn-default-1"
+                    	@click.prevent="activateTab('payment')">
+
+                    	Back
+                    </a>
+                    <a
+                    	href="#review"
+                    	type="button"
+                    	class="btn-default-1"
+                    	:class="{ 'disabled' : !validateStep( 2 ) }"
+                    	@click.prevent="activateTab('review')">
+
+                    	Next
+                    </a>
                 </div>
 
-                <div class="tab-pane" id="review">
+                <div class="tab-pane" :class="{ 'active': activeTab === 'review' }" id="review">
                     <br>
                     <h3>Review</h3>
                     <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div
-				    			class="row cart-product-row"
-				    			v-for="(product, index) in cartProducts"
-					            :key="index">
+                    <div
+		    			v-for="(item, index) in cartProducts"
+			            :key="index">
 
-    			<div class="col-sm-8">
-    				<div class="cart-product">
-	    				<div class="cart-product-image">
-	    					<img
-		                    :title="product.productName"
-		                    :alt="product.productName"
-		                    :src="product.image"
-		                    class="image-responsive"/>
-		                </div>
-		                <div class="cart-product-text">
-	    					<div class="cart-product-name">
-	    						{{ product.productName }}
-	    					</div>
-	    					<div class="cart-product-actions">
-	    						<ul class="list-inline">
-	    							<li>
-	    								<a href="#">Remove</a>
-	    							</li>
-	    						</ul>
-	    					</div>
-	    				</div>
-	    			</div>
-    			</div>
-    			<div class="col-sm-2">
-    				<div class="cart-product-price">
-    					<span class="sr-only">unit price</span>{{ product.userPrice }}
-    				</div>
-    			</div>
-    			<div class="col-sm-2">
-    				<div class="cart-product-quantity">
-    					<input
-	                        type="number"
-	                        value="1"
-	                        class="form-control" />
-	                </div>
-    			</div>
-    		</div>
-                        </div>
-                    </div>
+		    			<cart-item :item= "item">
+
+						</cart-item>
+					</div>
+
                     <hr>
                     <a href="#" class="btn-default-1">Pay</a>
                 </div>
@@ -311,19 +306,35 @@
 
     	<div class="col-sm-3">
 	     	<div class="cart-buy-box">
-	     		<button class="btn btn-primary">Place Order</button><br/>
-	     		By Placing your order, you agree to BSR's Privacy Notice.
+	     		<button class="btn btn-animate">Place Order</button><br/>
+	     		<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
 
 		     	<div class="cart-summary">
-		     		Order Summary
-		     		<ul class="list-unstyled">
-                        <li>Sub Total: <strong>$500.00</strong></li>
-                        <li>Shipping &amp; Handling: <strong>$10.00</strong></li>
-                        <li>Total Before Tax: <strong>$510.00</strong></li>
-                        <li>Tax: <strong>$10.00</strong></li>
-                        <li><hr></li>
-                        <li class="active"><b>Order Total:</b> <strong>$520.00</strong></li>
-                    </ul>
+		     		<h4>Order Summary</h4>
+		     		<table class="table">
+		     			<tbody>
+		     				<tr>
+		     					<th>Sub Total:</th>
+		     					<td class="text-right">${{ subtotal }}</td>
+		     				</tr>
+		     				<tr>
+		     					<th>Shipping &amp; Handling:</th>
+		     					<td class="text-right">${{ shippingCost }}</td>
+		     				</tr>
+		     				<tr>
+		     					<th>Total Before Tax: </th>
+		     					<td class="text-right">${{ subtotal + shippingCost }}</td>
+		     				</tr>
+		     				<tr>
+		     					<th>Tax:</th>
+		     					<td class="text-right">${{ tax }}</td>
+		     				</tr>
+		     				<tr class="text-danger">
+		     					<th>Order Total:</th>
+		     					<td class="text-right">${{ subtotal + shippingCost + tax }}</td>
+		     				</tr>
+		     			</tbody>
+		     		</table>
 		     	</div>
 
 		    </div>
@@ -333,14 +344,19 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
+import CartItem from './cart-item';
 
 export default {
+	components: {
+        CartItem
+    },
     directives: {
         imagesLoaded
     },
     data() {
         return {
             isLoading: false,
+            activeTab: 'shipping',
             selectedShippingAddress: {
             	firstName: "",
             	lastName: "",
@@ -350,6 +366,23 @@ export default {
             	province: "",
             	postalCode: "",
             	phone: ""
+            },
+            selectedBillingAddress: {
+            	firstName: "",
+            	lastName: "",
+            	address1: "",
+            	address2: "",
+            	city: "",
+            	province: "",
+            	postalCode: "",
+            	phone: ""
+            },
+            sameAddress: false,
+            selectedPayment: {
+            	name: "",
+            	card: "",
+            	expirationDate: "",
+            	ccv: ""
             }
         }
     },
@@ -369,7 +402,23 @@ export default {
     	}),
         ...mapGetters([
             "cartProducts"
-        ])
+        ]),
+        subtotal(){
+        	var subTotal = 0;
+        	for( var i in this.cartProducts ){
+        		let itemPrice = this.cartProducts[ i ].sku.basePrice;
+        		let qty = this.cartProducts[ i ].quantity;
+
+        		subTotal = subTotal + ( itemPrice * qty )
+        	}
+        	return subTotal;
+        },
+        shippingCost(){
+        	return 0;
+        },
+        tax(){
+        	return 0;
+        }
     },
 
     methods: {
@@ -382,29 +431,47 @@ export default {
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),
-
+        activateTab( tabRef ){
+        	this.activeTab = tabRef;
+        },
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
+        },
+        validateAddress( address ){
+        	var isValid = false;
+        	for( var i in address ){
+	    		if( address[ i ] == "" && i != "address2"){
+		        	return false;
+		        }
+		        isValid = true;
+	    	}
+        	return isValid;
+        },
+        validatePayment(){
+        	var isValid = false;
+        	for( var i in this.selectedPayment ){
+	    		if( this.selectedPayment[ i ] == ""){
+		        	return false;
+		        }
+		        isValid = true;
+	    	}
+        	return isValid;
         },
         validateStep( step ){
 			var proceed = false;
 
 			switch( step ) {
 			    case 1:
-			    	for( var i in this.selectedShippingAddress ){
-			    		if( this.selectedShippingAddress[ i ] == "" ){
-				        	return proceed;
-				        }
+				    proceed = this.validateAddress( this.selectedShippingAddress );
+			    	break;
+			    case 2:
+			    	if(
+			    		( this.sameAddress || this.validateAddress( this.selectedBillingAddress ) ) &&
+			    		  this.validatePayment()
+			    		 ){
 				        proceed = true;
 			    	}
 			    	break;
-			    // case 2:
-			    //     if( ( this.importFilter.startWith == 'year' && this.importFilter.year != null ) || ( this.importFilter.startWith == 'course' && this.importFilter.course != null ) ){
-			    //     	proceed = true;
-			    //     } else if( this.importFilter.startWith == 'all' && this.importFilter.section != null){
-			    //     	proceed = true;
-			    //     }
-			    //     break;
 			    // case 3:
 			    // 	if( this.importFilter.section != null ){
 			    // 		proceed = true;
