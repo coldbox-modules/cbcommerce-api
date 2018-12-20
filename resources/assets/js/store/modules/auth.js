@@ -4,7 +4,7 @@ import api from "@cbCommerce/api/index";
 const initialState = {};
 
 const getters = {
-    authUser: state => state.rootState.globalData.authUser
+    authUser: ( state, getters, rootState ) => rootState.globalData.authUser
 };
 const actions = {
     authenticate: ( context, { email, password } ) => {
