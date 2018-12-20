@@ -280,14 +280,13 @@
                     <a
                     	href="#shipping"
                     	class="btn-default-1"
-                    	@click.prevent="activateTab('payment')">
+                    	@click.prevent="activateTab('shipping')">
 
                     	Back
                     </a>
                     <a
                     	href="#review"
-                    	type="button"
-                    	class="btn-default-1"
+                    	class="btn btn-default-1"
                     	:class="{ 'disabled' : !validateStep( 2 ) }"
                     	@click.prevent="activateTab('review')">
 
@@ -476,9 +475,9 @@ export default {
 			    	break;
 			    case 2:
 			    	if(
-			    		( this.sameAddress || this.validateAddress( this.selectedBillingAddress ) ) &&
-			    		  this.validatePayment()
-			    		 ){
+			    		( this.sameAddress || this.validateAddress( this.selectedBillingAddress ) )
+			    		&& this.validatePayment()
+			    	   ){
 				        proceed = true;
 			    	}
 			    	break;
