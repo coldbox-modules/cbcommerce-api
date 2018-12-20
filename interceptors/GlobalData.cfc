@@ -16,13 +16,13 @@
         // if logged in, add the authUser to globalData
         if( !isNull( prc.authCBCUser ) ){
 
-            prc.globalData[ "authCBCUser" ] = prc.authCBCUser.getMemento();
+            prc.globalData[ "cbcAuthUser" ] = prc.authCBCUser.getMemento();
 
         }
     }
 
     function cbui_beforeBodyEnd( event, interceptData, buffer, rc, prc ){
-    	var globalDataScript = "<script>window.globalData = " & serializeJSON( prc.globalData ) & ";</script>";
+    	var globalDataScript = "<script>window.cbcGlobalData = " & serializeJSON( prc.globalData ) & ";</script>";
 
         arguments.buffer.append( globalDataScript );
     }

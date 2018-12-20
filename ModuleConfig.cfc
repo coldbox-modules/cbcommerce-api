@@ -175,6 +175,7 @@ component {
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
             router.route( "checkoutLogin" ).to( "Checkout.login" );
+            router.route( "checkout" ).to( "Checkout.index" );
 
             /**
              * Display routing

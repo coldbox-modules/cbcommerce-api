@@ -14,7 +14,7 @@
 					<div class="cart-product-name">
 						<a :href="'store/product/'+ item.product.id">{{ item.product.name }}</a>
 					</div>
-					<div class="cart-product-actions">
+					<div class="cart-product-actions" v-if="showActions">
 						<ul class="list-inline">
 							<li>
 								<a href="" @click.prevent="deleteCartItem( item.sku.id )">Remove</a>
@@ -53,6 +53,10 @@
 	            required: true,
 	            type: Object
 	        },
+	        showActions: {
+	        	type: Boolean,
+	        	default: true
+	        }
 	    },
 	    methods: {
 	        ...mapActions([

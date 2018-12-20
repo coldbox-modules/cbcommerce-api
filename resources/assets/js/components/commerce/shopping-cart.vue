@@ -10,9 +10,9 @@
     			:key="index">
     			<cart-item :item= "item"></cart-item>
     		</div>
-	    </div>
-	    <div v-if="totalItems" class="col-sm-3">
-	     	<div class="cart-buy-box">
+	     </div>
+	     <div class="col-sm-3">
+	     	<div class="cart-buy-box text-center">
 		     	<div class="cart-buy-subtotal">
 		     		<span>Subtotal </span>
 		     		<span class="text-muted">(
@@ -23,8 +23,13 @@
 		     		</span><br/>
 		     		<span>${{ subtotal }} </span>
 		     	</div>
-		     	<a href="/store/checkout" class="btn btn-animate btn-lg" v-if="isLoggedIn">Proceed to Checkout</a>
-		     	<a href="/store/checkoutLogin" class="btn btn-animate btn-lg" v-else>Proceed to Checkout</a>
+		     	<a
+		     		:href="checkoutURL"
+		     		class="btn btn-animate btn-lg"
+		     		:class="{ 'disabled': !cartProducts.length }">
+
+		     		Proceed to Checkout
+		     	</a>
 		    </div>
 	    </div>
         <div class="clearfix"></div>
@@ -33,7 +38,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import CartItem from './cart-item';
 
@@ -56,7 +61,11 @@ export default {
     destroyed() {},
 
     computed: {
+        ...mapState( {
+    		globalData   : 'globalData'
+    	}),
         ...mapGetters([
+
             "currentProduct",
             "productsListArray",
             "productsList",
@@ -84,10 +93,17 @@ export default {
         	return total;
         },
         isLoggedIn(){
-        	if( window.globalData && window.globalData.cbcAuthUser ){
+        	if( this.globalData && this.globalData.cbcAuthUser ){
         		return true;
         	} else {
         		return false;
+        	}
+        },
+        checkoutURL(){
+        	if( this.isLoggedIn ){
+        		return '/store/checkout'
+        	} else {
+        		return '/store/checkoutLogin'
         	}
         }
     },
