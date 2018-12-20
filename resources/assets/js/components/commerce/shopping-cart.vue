@@ -16,7 +16,7 @@
     		</div>
 	     </div>
 	     <div class="col-sm-3">
-	     	<div class="cart-buy-box">
+	     	<div class="cart-buy-box text-center">
 		     	<div class="cart-buy-subtotal">
 		     		<span>Subtotal </span>
 		     		<span class="text-muted">(
