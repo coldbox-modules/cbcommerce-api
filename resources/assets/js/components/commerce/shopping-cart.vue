@@ -30,8 +30,7 @@
 		     	<a
 		     		:href="checkoutURL"
 		     		class="btn btn-animate btn-lg"
-		     		:class="{ 'disabled': !cartProducts.length }"
-		     		disabled="!cartProducts.length">
+		     		:class="{ 'disabled': !cartProducts.length }">
 
 		     		Proceed to Checkout
 		     	</a>
