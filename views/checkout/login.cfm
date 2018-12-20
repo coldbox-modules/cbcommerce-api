@@ -10,8 +10,8 @@
             </div>
             <div class="col-sm-6">
             	<h2>No BSR Online Account?</h2>
-            	<button class="btn btn-secondary btn-lg">Checkout as a guest</button>
-            	<button class="btn btn-primary btn-lg">Create an Account</button>
+            	<a href="/store/checkout" class="btn btn-secondary btn-lg">Checkout as a guest</a>
+            	<a href="##" class="btn btn-primary btn-lg">Create an Account</a>
             </div>
         </div>
 
