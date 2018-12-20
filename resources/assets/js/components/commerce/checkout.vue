@@ -12,7 +12,8 @@
                 		Shipping
                 	</a>
                 </li>
-                <li v-if="validateStep( 1 )" :class="{ 'active' : activeTab === 'payment' }" id="shipping">
+
+                <li v-if="validateStep( 1 )" :class="{ 'active' : activeTab === 'payment' }" id="payment">
                 	<a
                 		href="#payment"
                 		@click.prevent="activateTab('payment')"
@@ -30,7 +31,8 @@
                 		Payment
                 	</a>
                 </li>
-                <li v-if="validateStep( 2 )" :class="{ 'active' : activeTab === 'review' }" id="shipping">
+
+                <li v-if="validateStep( 2 )" :class="{ 'active' : activeTab === 'review' }" id="review">
                 	<a
                 		href="#review"
                 		@click.prevent="activateTab('review')">
@@ -166,7 +168,7 @@
                             <div class="form-group">
                                 <label for="inputFirstName" class="control-label">Name on Card:<span class="text-danger">*</span></label>
                                 <div>
-                                    <input type="text" class="form-control" id="nameOnCard">
+                                    <input type="text" class="form-control" id="nameOnCard" v-model="selectedPayment.nameOnCard">
                                 </div>
                             </div>
                         </div>
@@ -176,7 +178,7 @@
                             <div class="form-group">
                                 <label for="inputFirstName" class="control-label">Card:<span class="text-danger">*</span></label>
                                 <div>
-                                    <input type="text" class="form-control" id="card">
+                                    <input type="text" class="form-control" id="card" v-model="selectedPayment.card">
                                 </div>
                             </div>
                         </div>
@@ -184,7 +186,7 @@
                             <div class="form-group">
                                 <label for="inputFirstName" class="control-label">Expiration Date:<span class="text-danger">*</span></label>
                                 <div>
-                                    <input type="text" class="form-control" id="expireDate">
+                                    <input type="text" class="form-control" id="expireDate" v-model="selectedPayment.expireDate">
                                 </div>
                             </div>
                         </div>
@@ -192,7 +194,7 @@
                             <div class="form-group">
                                 <label for="inputFirstName" class="control-label">CCV:<span class="text-danger">*</span></label>
                                 <div>
-                                    <input type="text" class="form-control" id="ccv">
+                                    <input type="text" class="form-control" id="ccv" v-model="selectedPayment.ccv">
                                 </div>
                             </div>
                         </div>
@@ -301,7 +303,7 @@
 		    			v-for="(item, index) in cartProducts"
 			            :key="index">
 
-		    			<cart-item :item= "item">
+		    			<cart-item :item= "item" :show-actions="false">
 
 						</cart-item>
 					</div>
@@ -314,7 +316,7 @@
 
     	<div class="col-sm-3">
 	     	<div class="cart-buy-box">
-	     		<button class="btn btn-animate">Place Order</button><br/>
+	     		<button class="btn btn-animate btn-fluid">Place Order</button><br/><br/>
 	     		<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
 
 		     	<div class="cart-summary">
@@ -326,7 +328,7 @@
 		     					<td class="text-right">${{ subtotal }}</td>
 		     				</tr>
 		     				<tr>
-		     					<th>Shipping &amp; Handling:</th>
+		     					<th>Estimated Shipping:</th>
 		     					<td class="text-right">${{ shippingCost }}</td>
 		     				</tr>
 		     				<tr>
@@ -334,7 +336,7 @@
 		     					<td class="text-right">${{ subtotal + shippingCost }}</td>
 		     				</tr>
 		     				<tr>
-		     					<th>Tax:</th>
+		     					<th>Estimated Tax:</th>
 		     					<td class="text-right">${{ tax }}</td>
 		     				</tr>
 		     				<tr class="text-danger">
@@ -387,9 +389,9 @@ export default {
             },
             sameAddress: false,
             selectedPayment: {
-            	name: "",
+            	nameOnCard: "",
             	card: "",
-            	expirationDate: "",
+            	expireDate: "",
             	ccv: ""
             }
         }
@@ -480,11 +482,6 @@ export default {
 				        proceed = true;
 			    	}
 			    	break;
-			    // case 3:
-			    // 	if( this.importFilter.section != null ){
-			    // 		proceed = true;
-			    // 	}
-			    // 	break;
 			    default:
 			        proceed = false;
 			}
