@@ -1,9 +1,9 @@
 <template>
     <div>
-    	<div class="col-sm-9 block-form">
+    	<div class="col-sm-9 block-form tabs-steps">
 			<!-- Nav tabs -->
             <ul class="nav nav-pills  nav-justified">
-                <li>
+                <li :class="{ 'active' : activeTab === 'shipping' }" id="shipping">
                 	<a
                 		href="#shipping"
                 		@click.prevent="activateTab('shipping')">
@@ -12,7 +12,7 @@
                 		Shipping
                 	</a>
                 </li>
-                <li v-if="validateStep( 1 )">
+                <li v-if="validateStep( 1 )" :class="{ 'active' : activeTab === 'payment' }" id="shipping">
                 	<a
                 		href="#payment"
                 		@click.prevent="activateTab('payment')"
@@ -30,13 +30,21 @@
                 		Payment
                 	</a>
                 </li>
-                <li>
+                <li v-if="validateStep( 2 )" :class="{ 'active' : activeTab === 'review' }" id="shipping">
                 	<a
                 		href="#review"
                 		@click.prevent="activateTab('review')">
 
 	                	<i class="fa fa-check"></i>
 	                	Order Review
+                	</a>
+                </li>
+                <li v-else>
+                	<a
+                		href="#"
+                		class="disabled">
+                		<i class="fa fa-check"></i>
+                		Order Review
                 	</a>
                 </li>
             </ul>
