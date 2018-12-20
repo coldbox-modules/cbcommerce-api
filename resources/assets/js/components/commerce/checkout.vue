@@ -308,7 +308,7 @@
 					</div>
 
                     <hr>
-                    <a href="#" class="btn-default-1">Pay</a>
+                    <a href="#" class="btn-default-1">Place Order</a>
                 </div>
             </div>
     	</div>
