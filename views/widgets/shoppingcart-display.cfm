@@ -1,5 +1,4 @@
 <cfoutput>
-	<!--- <cfdump var="#prc#" top="1"> --->
 	<section id="shoppingCart">
 
 		<div class="container-fluid">
