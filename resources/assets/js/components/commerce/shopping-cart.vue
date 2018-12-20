@@ -62,7 +62,7 @@ export default {
     mounted() {
         this.isLoading = false;
     },
-    created() { console.log(window)},
+    created() {},
     destroyed() {},
 
     computed: {
@@ -70,9 +70,6 @@ export default {
     		globalData   : 'globalData'
     	}),
         ...mapGetters([
-            "currentProduct",
-            "productsListArray",
-            "productsList",
             "cartProducts"
         ]),
         subtotal(){
