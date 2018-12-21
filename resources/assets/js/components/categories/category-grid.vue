@@ -15,7 +15,6 @@
                 :key="category.id"
                 :category="category"
             ></category-grid-item>
-
         </div>
 
     </div>

@@ -10,6 +10,10 @@ component extends="BaseAPIHandler"{
 	
 	// (GET) /cbc/api/v1/products
 	function index( event, rc, prc ){
+		
+		if( rc.sortOrder == 'createdTime DESC' ){
+			rc.sortOrder = 'displayOrder ASC, name ASC';
+		}
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 

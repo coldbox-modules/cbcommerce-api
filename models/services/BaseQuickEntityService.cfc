@@ -24,6 +24,13 @@ component{
         arguments[ "entity" ] = newEntity();
 
         var builder = newBuilder( argumentCollection = arguments );
+        
+        if( structKeyExists( searchCollection, "isNull" ) ){
+            listToArray( searchCollection.isNull ).each( function( nullable ){
+                builder.whereNull( nullable );
+            } );
+        }
+
         builder.limit( maxrows )
                 .offset( offset )
                 .orderBy(

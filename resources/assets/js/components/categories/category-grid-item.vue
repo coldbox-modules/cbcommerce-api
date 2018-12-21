@@ -9,7 +9,7 @@
                 <div v-bind:class="{ loading: isLoading }" >
                     <div class="spinner" v-if="isLoading">
                         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                        <span class="sr-only">Removing...</span>
+                        <span class="sr-only">Loading product category...</span>
                     </div>
                 </div>
 
@@ -17,25 +17,25 @@
 
                     <img 
                         v-images-loaded:on.progress="imageProgress"
-                        :src="this.image" 
-                        :alt="this.catName"
+                        :src="primaryImage()" 
+                        :alt="category.name"
                         class="img-responsive" />
 
                 </figure>
 
                 <div class="category-caption">
                     <div class="block-name">
-                        <a :href="this.catLink" class="category-name">{{ this.catName }}</a>
+                        <a :href="`/store/category/${category.id}`" class="category-name">{{ category.name }}</a>
 
                     </div>
                 </div>
 
                 <p class="description">
-                    {{ this.description }}
+                    {{ category.description }}
                 </p>
 
                 <sub-category-links 
-                    v-for="(subCat, index) in this.subCats"
+                    v-for="(subCat, index) in category.children"
                     :key="index"
                     :subCat="subCat"></sub-category-links>
 
@@ -68,18 +68,12 @@ export default {
     ],
 
     created: function(){
-        this.isLoading = true;
-        this.parseContent();
+        this.isLoading = false;
     },
 
     data() {
         return {
-            isLoading  : true,
-            catName    : null,
-            catLink    : null,
-            description: null,
-            image      : null,
-            subCats    : null
+            isLoading  : true
         }
     },
 
@@ -88,15 +82,8 @@ export default {
     destroyed() {},
 
     methods: {
-        parseContent: function(){
-            var self          = this;
-            var parsedContent = self.category;
-            self.catName      = parsedContent.categoryName;
-            self.catLink      = parsedContent.link;
-            self.description  = parsedContent.description;
-            self.image        = parsedContent.image;
-            self.subCats      = parsedContent.subCats;
-            self.isLoading    = false;
+        primaryImage: function(){
+            return this.category.media.length ? this.category.media[ 0 ] : '';
         },
         imageProgress: function( instance, image ){
             var result = image.isLoaded ? 'loaded' : 'broken';

@@ -1,4 +1,4 @@
-export const getProductsList = api => () => api.get( '/products' );
+export const getProductsList = api => ( params ) => api.get( '/products', { params : params || undefined } );
 export const createProduct = api => ( data ) => {
   const bodyParams = data;
   return api.post( '/products', JSON.stringify(bodyParams) );

@@ -14,7 +14,7 @@ component   table="cbc_products"
 	// need to scope this as a bit until quick fixes the boolean handling
 	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
-	property name="sortOrder" type="numeric" default=0;
+	property name="displayOrder" type="numeric" default=0;
 	// an external reference id used for syncing data between systems
 	property name="externalId" type="string";
 

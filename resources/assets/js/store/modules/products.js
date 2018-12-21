@@ -41,6 +41,27 @@ const actions = {
 				} );
 		} );
 	},
+	getCategoryProducts: ({ commit }, categoryId ) => new Promise( (resolve, reject) => {
+		api()
+			.get.products.list( { category : categoryId } )
+			.then(XHR => {
+				const products = Vue.options.filters.denormalize( XHR.data );
+				if (!products || products.length === 0) {
+					throw new Error("No products found");
+				}
+				// Normalize
+				const normProducts = {};
+				products.forEach(p => {
+					normProducts[ p.id ] = p;
+				});
+				commit( 'setProductList', normProducts );
+				resolve( normProducts );
+			})
+			.catch(err => {
+				console.error(err);
+				reject("Error: Could not resolve list of products");
+			});
+	}),
 	getListOfProducts: ({ commit }) =>
 		new Promise((resolve, reject) => {
 			api()

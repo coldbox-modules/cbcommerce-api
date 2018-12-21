@@ -21,7 +21,7 @@ component   table="cbc_SKUs"
 	property name="packagingZ" type="numeric";
 	property name="options" type="string" default="{}";
 	property name="conditionDescription" type="string";
-	property name="sortOrder" type="numeric" default=0;
+	property name="displayOrder" type="numeric" default=0;
 	
 	// an external reference id used for syncing data between systems
 	property name="modelNumber" type="string";
