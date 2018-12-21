@@ -7,10 +7,17 @@
  *
  **/
  component{
+
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
 
+        // set globalData if not present in prc.
         if( !structKeyExists( prc, "globalData" ) ){
             prc[ "globalData" ] = {};
+        }
+
+        // set assetBag if not present in prc
+        if( !structKeyExists( prc, "assetBag" ) ){
+            prc[ "assetBag" ] = wirebox.getInstance( "AssetBag@coldbox-asset-bag" );
         }
 
         // if logged in, add the authUser to globalData
@@ -22,8 +29,11 @@
     }
 
     function cbui_beforeBodyEnd( event, interceptData, buffer, rc, prc ){
-    	var globalDataScript = "<script>window.cbcGlobalData = " & serializeJSON( prc.globalData ) & ";</script>";
+    	var globalDataScript = "window.cbcGlobalData = " & serializeJSON( prc.globalData ) & ";";
+    	prc.assetBag.addInlineJavascriptToFooter(
+		    globalDataScript
+		).setPriority(1);
 
-        arguments.buffer.append( globalDataScript );
+        arguments.buffer.append( prc.assetBag.renderFooter() );
     }
 }
