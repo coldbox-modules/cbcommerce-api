@@ -21,7 +21,7 @@
 		     			<span v-else>item</span>
 		     				)
 		     		</span><br/>
-		     		<span>${{ subtotal }} </span>
+		     		<span>{{ subtotal | currency }} </span>
 		     	</div>
 		     	<a
 		     		:href="checkoutURL"
