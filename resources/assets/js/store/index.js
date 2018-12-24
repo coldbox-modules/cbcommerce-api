@@ -8,7 +8,6 @@ import wishlists from "@cbCommerce/store/modules/wishlists";
 import cart from "@cbCommerce/store/modules/cart";
 import api from "@cbCommerce/api/index";
 
-
 const vuexLocalStorage = new VuexPersist({
 	key: 'cbCommerce', // The key to store the state on in the storage provider.
 	storage: window.localStorage, // or window.localStorage or localForage
