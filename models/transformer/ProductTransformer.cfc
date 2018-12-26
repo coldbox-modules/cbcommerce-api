@@ -7,7 +7,8 @@ component extends="BaseModelTransformer"{
                 "media",
                 "createdTime",
                 "isActive",
-                "startingPrice"
+                "startingPrice",
+                "reviewSummary"
             ],
             true
         );
@@ -16,7 +17,8 @@ component extends="BaseModelTransformer"{
             variables.availableIncludes,
             [
                 "skus",
-                "categories"
+                "categories",
+                "reviews"
             ],
             true
         );
@@ -71,6 +73,37 @@ component extends="BaseModelTransformer"{
         return collection(
             filteredMedia.getResults(),
             wirebox.getInstance( "MediaTransformer@cbCommerce" ),
+            wirebox.getInstance( collectionSerializer )
+        );
+    }
+
+    function includeReviewSummary( activeEntity ){
+
+        return item(
+            activeEntity,
+            function( activeEntity ){
+                var sql = "SELECT avg( rating ) as avgRating, count( * ) as reviewCount from cbc_productReviews WHERE FK_product = :productId AND isActive = 1 AND isPublished = 1"
+                var q = new query ( sql = sql );
+                q.addParam( name="productId", value=activeEntity.keyValue() );
+                var result = q.execute().getResult();
+                return {
+                    "averageRating" : isNumeric( result.avgRating ) ? result.avgRating : 0,
+                    "reviewCount" : result.reviewCount
+                };
+            }
+        );
+        
+    }
+
+    function includeReviews( activeEntity ){
+
+        var filteredReviews = activeEntity.reviews().where( 'isActive', 1 ).where( 'isPublished', 1 )
+                                .orderBy( 'relevancyScore', 'DESC' )
+                                .orderBy( 'createdTime', 'DESC' );
+
+        return collection(
+            filteredReviews.getResults(),
+            wirebox.getInstance( "ProductReviewTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
     }

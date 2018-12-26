@@ -56,10 +56,11 @@
                                     :show-rating="false"
                                     :item-size="10" 
                                     :read-only="true"
-                                    :rating="avgRating"
+                                    :rating="currentProduct.reviewSummary.averageRating"
                                 ></star-rating>
 
-                                <a href="" class="review">{{ totalReviews }} Reviews</a> 
+                                <a href="" class="review" v-if="currentProduct.reviewSummary.reviewCount">{{ currentProduct.reviewSummary.reviewCount }} Reviews</a>
+                                <span class="review">No Reviews</span> 
                             </div>
 
                             <div class="clearfix">
@@ -354,29 +355,7 @@ export default {
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
-
-            fetch( '/mockData/productDetail.json' )
-                .then(r => r.json())
-                .then(product => {
-                    self.product           = product;
-                    self.productGallery    = product.gallery;
-                    self.productImage      = product.productImage;
-                    self.productImageLarge = product.productImageLarge;
-                    self.productName       = product.productName;
-                    self.userPrice         = product.userPrice;
-                    self.listPrice         = product.listPrice;
-                    self.brand             = product.brand;
-                    self.model             = product.model;
-                    self.features          = product.features;
-                    self.details           = product.details;
-                    self.totalReviews      = product.totalReviews;
-                    self.avgRating         = product.avgRating;
-                    self.cartTotalPrice    = self.userPrice.replace( "$", "" );
-                    self.isLoading         = false;
-                    self.setCurrentProduct( product.id );
-                })
-            
-            console.log( self.getProduct( self.productId ) );
+            self.getProduct( self.productId );
         },
 
         fetchReviews: function(){

@@ -30,10 +30,12 @@
 	                	:key="index"
 	                	class="card_product_image"
 	                	:data-th="sku.product.name">
-	                	<img 
-                			:title="sku.product.name" 
-                			:alt="sku.product.name" 
-                			:src="primaryImage( sku )" />
+							<a :href="`/store/product/${sku.product.id}`">
+								<img 
+									:title="sku.product.name" 
+									:alt="sku.product.name" 
+									:src="primaryImage( sku )" />
+							</a>
 	               	</td>
 
 	            </tr>
@@ -52,7 +54,7 @@
                                 :show-rating="false"
                                 :item-size="10" 
                                 :read-only="true"
-                                :rating="sku.product.avgRating"
+                                :rating="sku.product.reviewSummary.averageRating"
                             ></star-rating>
 
 	                    </div>

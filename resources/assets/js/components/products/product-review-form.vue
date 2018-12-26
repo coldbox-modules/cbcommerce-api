@@ -6,18 +6,16 @@
 	            <div class="form-group">
 	                <label 
 	                	for="inputFirstName" 
-	                	class="control-label">First Name:<span class="text-error">*</span>
+	                	class="control-label">Summary:<span class="text-error">*</span>
 	                </label>
 	                <div>
 	                    <input 
 	                    	type="text" 
 	                    	class="form-control" 
 	                    	id="inputFirstName"
-	                    	v-model="review.name" />
+	                    	v-model="review.summary" />
 	                </div>
 	            </div>
-
-
 	        </div>
 	        <div class="col-md-6">
 	            <div class="form-group">
@@ -43,7 +41,7 @@
 	        </div>
 	        <div class="col-md-12">
 	            <div class="form-group">
-	                <label class="control-label">Your Rate:</label>
+	                <label class="control-label">Your Rating:</label>
 	                <div class="product-rating">
 	                    <star-rating 
 	                    	v-model="review.rating"

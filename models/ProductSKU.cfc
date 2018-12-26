@@ -61,6 +61,10 @@ component   table="cbc_SKUs"
 	function inventory(){
 		return hasMany( "InventoryLocationStock@cbCommerce", "FK_sku" );
 	}
+
+	function reviews(){
+		return hasMany( "ProductSKU@cbCommere", "FK_sku");
+	}
 	
 	/**
 	 * Pre-save Interception

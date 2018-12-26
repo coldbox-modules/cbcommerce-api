@@ -37,4 +37,8 @@ component   table="cbc_products"
 		return hasMany( "ProductMedia@cbCommerce", "FK_product" );
 	}
 
+	function reviews(){
+		return hasMany( "ProductReview@cbCommerce", "FK_product");
+	}
+
 }
