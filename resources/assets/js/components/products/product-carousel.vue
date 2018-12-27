@@ -2,6 +2,8 @@
 
     <div>
 
+        <product-grid-loading :itemsOnStage="itemsOnStage"  v-if="isLoading"></product-grid-loading>
+
         <div :id="carouselId" class="owl-carousel">
             
             <product-item
@@ -12,6 +14,7 @@
 
         </div>
 
+
     </div>
 
 </template>
@@ -21,10 +24,12 @@ import { mapGetters, mapActions } from "vuex";
 import Owl from "owl.carousel";
 import ProductItem from './product-item';
 import ProductItemLoading from './product-item-loading';
+import ProductGridLoading from "@cbCommerce/components/products/product-grid-loading";
 export default {
     components: {
         ProductItemLoading,
-        ProductItem
+        ProductItem,
+        ProductGridLoading
     },
 
     props: {
@@ -71,20 +76,11 @@ export default {
     },
 
     created() {
-        this.isLoading = true;
+        var self = this;
+        self.isLoading = true;
         // Fetch the products
         this.fetchProducts();
     },
-    mounted() {
-        // This should be within the response callback 
-        // from the API call to fetch the items
-        this.$nextTick( function(){
-            // this.installOwlCarousel();
-        } );
-    },
-
-    destroyed() {},
-
     computed: {
         ...mapGetters(
             [
@@ -139,7 +135,7 @@ export default {
             const self = this;
             Promise.resolve( this.getListOfProducts() )
             .then( () => {
-                self.isLoading = false;
+                Vue.set( self, "isLoading", false );
                 self.installOwlCarousel();
             } )
             .catch( err => console.error(err) );
