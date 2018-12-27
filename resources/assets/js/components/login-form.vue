@@ -1,6 +1,5 @@
 <template>
 	<div class="login-box block-form">
-		<h2>Sign In to your BSR Online Account</h2>
 		<div class="login-box-body ">
 			<div class="form-group">
 				<div><label for="email">Email:</label></div>

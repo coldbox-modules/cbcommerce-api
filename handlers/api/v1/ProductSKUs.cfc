@@ -36,7 +36,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/skus
-	function create( event, rc, prc ) secured="ProductSKUs:Manage"{
+	function create( event, rc, prc ) secured="Product:Edit"{
 		
 		prc.sku = entityService.newEntity().fill( rc );
 
@@ -80,7 +80,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/skus/:id
-	function update( event, rc, prc ) secured="ProductSKUs:Edit"{
+	function update( event, rc, prc ) secured="Product:Edit"{
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 
 		prc.sku.fill( rc );
@@ -106,7 +106,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/skus/:id
-	function delete( event, rc, prc ) secured="ProductSKUs:Manage"{
+	function delete( event, rc, prc ) secured="Product:Edit"{
 
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 		prc.sku.delete();

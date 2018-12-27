@@ -117,6 +117,10 @@ component {
         // Resource Routes ( auto-magic method conventions )
         router
             .resources(
+                resource   = "api/v1/products/:productId/reviews",
+                handler    = "API.v1.ProductReviews"
+            )
+            .resources(
                 resource   = "api/v1/products",
                 handler    = "API.v1.Products"
             )
@@ -175,8 +179,11 @@ component {
             router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
-            router.route( "checkoutLogin" ).to( "Checkout.login" );
+            router.route( "checkout/login" ).to( "Checkout.login" );
             router.route( "checkout" ).to( "Checkout.index" );
+            router.route( "account/create" ).to( "Account.create" );
+            router.route( "account/login" ).to( "Account.login" );
+            router.route( "account" ).to( "Account.index" );
 
             /**
              * Display routing

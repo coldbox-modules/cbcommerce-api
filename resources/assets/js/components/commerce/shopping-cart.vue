@@ -103,7 +103,7 @@ export default {
         	if( this.isLoggedIn ){
         		return '/store/checkout'
         	} else {
-        		return '/store/checkoutLogin'
+        		return '/store/checkout/login'
         	}
         }
     },

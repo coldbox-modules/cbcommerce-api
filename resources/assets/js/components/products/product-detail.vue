@@ -1,8 +1,9 @@
 <template>
 
-    <div v-if="currentProduct">
+    <div>
+        <product-detail-loading v-if="!currentProduct"></product-detail-loading>
 
-        <div class="col-md-12 productDetailHeader">
+        <div class="col-md-12 productDetailHeader" v-if="currentProduct">
 
             <h1 
                 class="wow fadeInRight animated animated" 
@@ -10,7 +11,7 @@
 
         </div>
         
-        <div class="col-md-9">
+        <div class="col-md-9" v-if="currentProduct">
 
             <div class="block-product-detail">
 
@@ -107,7 +108,7 @@
                 <ul class="nav nav-pills nav-justified">
                     <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
                     <li><a href="#additional" data-toggle="tab">Additional</a></li>
-                    <li><a href="#review" @click="fetchReviews" data-toggle="tab">Review</a></li>
+                    <li><a href="#review" data-toggle="tab">Review</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -134,9 +135,9 @@
                     </div>
                     <div class="tab-pane" id="review">
                         <br>
-                        <div class="row">
+                        <div class="row" v-if="currentProductReviews.length">
                             <div class="col-md-12">
-                                <h3>Clients review</h3>
+                                <h3>Reviews</h3>
                                 <hr>
                                 <product-review
                                     v-for="(review, index) in currentProductReviews"
@@ -149,10 +150,16 @@
                         
                         <!-- Product review form -->
                         <product-review-form
+                            v-if="authUser"
                             v-on:reviewSubmission="reviewSubmissionReaction"
                         ></product-review-form>
                         <!-- End product review form -->
-
+                        <div class="row" v-else>
+                            <div class="col-xs-12">
+                                <h3>Sign in to Review This Product</h3>
+                                <login-form></login-form>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -222,6 +229,7 @@ import ProductReview from './product-review';
 import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
+import ProductDetailLoading from './product-detail-loading';
 export default {
     components: {
         StarRating,
@@ -229,7 +237,8 @@ export default {
         QuantityControl,
         ProductReview,
         ProductReviewForm,
-        RelatedProductCarousel
+        RelatedProductCarousel,
+        ProductDetailLoading
     },
     directives: {
         imagesLoaded
@@ -262,14 +271,9 @@ export default {
     },
 
     mounted() {
-        // TODO: this can be removed once the API and persistence is in place
-        this.fetchProducts();
-        // Mocking an API delay
-        window.setTimeout(
-            this.fetchProductDetail,
-            1000
-        );
-
+        this.fetchRelatedProducts();
+        this.fetchProductDetail();
+        this.getProductReviews( this.productId );
     },
 
     destroyed() {},
@@ -277,6 +281,7 @@ export default {
     computed: {
 
         ...mapGetters([
+            "authUser",
             "currentProduct",
             "cartProducts",
             "wishlistItems",
@@ -318,12 +323,12 @@ export default {
             "addItemToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",
-            "getCurrentProductReviews",
+            "getProductReviews",
             "getProduct"
         ]),
 
         // TODO: this can be removed once the API and persistence is in place
-        fetchProducts(){
+        fetchRelatedProducts(){
             const self = this;
             Promise.resolve( this.getListOfProducts() )
             .then(() => {
@@ -356,13 +361,6 @@ export default {
             var self    = this;
             self.isLoading = true;
             self.getProduct( self.productId );
-        },
-
-        fetchReviews: function(){
-            const self = this;
-            Promise.resolve( this.getCurrentProductReviews() )
-            .then(() => {})
-            .catch(err => console.error(err));
         },
 
         imageProgress: function( instance, image ){

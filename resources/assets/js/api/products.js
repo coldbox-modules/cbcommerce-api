@@ -5,15 +5,15 @@ export const createProduct = api => ( data ) => {
 };
 
 export const getProduct = api => ( id ) => {
-  return api.get( '/products/' + id, { params : { includes : "skus" } } )
+  return api.get( '/products/' + id, { params : { includes : "skus" } } );
 };
 
 export const getProductReviews = api => ( id, params ) => {
-    return fetch( '/mockData/productReviews.json' );
+  return api.get( '/products/' + id + '/reviews', { params : params || null } );
 };
 
 export const getSkuWithProduct = api => ( sku ) => {
-  return api.get( '/skus/' + sku, { params : { includes : "product" } } )
+  return api.get( '/skus/' + sku, { params : { includes : "product" } } );
 };
 
 export const products = api => ( {

@@ -85,17 +85,17 @@ const actions = {
 					reject("Error: Could not resolve list of products");
 				});
 		}),
-	getCurrentProductReviews: ({ commit }) =>
+	getProductReviews: ( context, productId ) =>
 		new Promise((resolve, reject) => {
 			api()
-				.get.reviews.list(productId)
+				.get.reviews.list( productId )
 				.then(XHR => {
 					let list = XHR.data;
-					const reviews = list;
+					const reviews = Vue.options.filters.denormalize( list );
 					if (!reviews || reviews.length === 0) {
 						throw new Error("No reviews found");
 					}
-					commit("setProductReviewListItems", reviews);
+					context.commit( "setCurrentProductReviews", reviews);
 					resolve(reviews);
 				})
 				.catch(err => {
@@ -112,20 +112,20 @@ const actions = {
 };
 
 const mutations = {
-	setActiveProduct( state, product ){
+	setActiveProduct(state, product) {
 		state.currentProductID = product.id;
 		state.activeProduct = product;
 	},
-	setProductList( state, list ){
+	setProductList(state, list) {
 		state.productsList = list;
 	},
-	setCurrentProduct( state, productID ){
+	setCurrentProduct(state, productID) {
 		state.currentProductID = productID;
 	},
-	clearCurrentProduct( state ){
+	clearCurrentProduct(state) {
 		state.currentProductID = null;
 	},
-	setProductReviewListItems( state, list ){
+	setCurrentProductReviews(state, list) {
 		state.currentProductReviews = list;
 	}
 };
