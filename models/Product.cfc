@@ -11,6 +11,7 @@ component   table="cbc_products"
 	property name="shortDescription" type="string" default="";
 	property name="description" type="string" default="";
 	property name="manufacturer" type="string" default="";
+    property name="isFeatured" type="boolean" default=0;
 	// need to scope this as a bit until quick fixes the boolean handling
 	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
@@ -40,5 +41,23 @@ component   table="cbc_products"
 	function reviews(){
 		return hasMany( "ProductReview@cbCommerce", "FK_product");
 	}
+
+    function scopeHasUsedSKU( query ){
+        return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.where( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+                        .join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
+                        .where( 'cbc_productConditions.name', '!=', 'New' );
+            }
+        );
+	}
+	
+	function filterSearch(
+		required struct searchCollection, 
+		required QueryBuilder builder
+	 ){
+
+	 }
 
 }

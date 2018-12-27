@@ -10,6 +10,7 @@ component   table="cbc_SKUs"
 	property name="isVirtual" type="boolean" default=0;
 	property name="isConsigned" type="boolean" default=0;
 	property name="allowBackorder" type="boolean" default=0;
+    property name="isFeatured" type="boolean" default=0;
 	property name="cost" type="numeric";
 	property name="basePrice" type="numeric";
 	property name="minimumPrice" type="numeric";

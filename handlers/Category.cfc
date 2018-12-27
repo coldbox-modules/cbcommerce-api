@@ -15,4 +15,13 @@ component {
         event.setView( "category/detail" );
     }
 
+    // ( GET ) /store/category/used
+    function used( event,rc, prc ){
+        // Tell ColdBox to use the ContentBox theme
+        cbHelper.prepareUIRequest( "modules" );
+        rc[ "condition" ] = 'used';
+        event.setView( "category/index" );
+
+    }
+
 }

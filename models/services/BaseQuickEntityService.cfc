@@ -24,12 +24,6 @@ component{
         arguments[ "entity" ] = newEntity();
 
         var builder = newBuilder( argumentCollection = arguments );
-        
-        if( structKeyExists( searchCollection, "isNull" ) ){
-            listToArray( searchCollection.isNull ).each( function( nullable ){
-                builder.whereNull( nullable );
-            } );
-        }
 
         builder.limit( maxrows )
                 .offset( offset )
@@ -78,6 +72,12 @@ component{
 
         if( structKeyExists( entity, "filterSearch" ) ){
             entity.filterSearch( searchCollection, builder );
+        }
+
+        if( structKeyExists( searchCollection, "isNull" ) ){
+            listToArray( searchCollection.isNull ).each( function( nullable ){
+                builder.whereNull( nullable );
+            } );
         }
 
         return builder;
