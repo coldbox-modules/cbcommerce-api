@@ -167,7 +167,7 @@
                     		<div class="form-group">
                                 <label for="card-name" class="control-label">Name on Card:<span class="text-danger">*</span></label>
                                 <div>
-                                    <input type="text" class="form-control" id="nameOnCard" v-model="selectedPayment.nameOnCard">
+                                    <input type="text" class="form-control" id="nameOnCard" v-model="selectedPayment.nameOnCard" required="true">
                                 </div>
                             </div>
                     	</div>
@@ -361,11 +361,11 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import CartItem from './cart-item';
 
-if( window.cbcGlobalData && window.cbcGlobalData.stripeKey ){
-	const stripe = Stripe( window.cbcGlobalData.stripeKey );
+if( window.cbcGlobalData.stripeKey ){
+	var stripe = Stripe( window.cbcGlobalData.stripeKey );
 	var elements = stripe.elements();
-	var cardNumber = undefined;
 }
+var cardNumber = undefined;
 
 export default {
 	components: {
@@ -402,10 +402,7 @@ export default {
             },
             sameAddress: false,
             selectedPayment: {
-            	nameOnCard: "",
-            	card: "",
-            	expireDate: "",
-            	ccv: ""
+            	nameOnCard: ""
             }
         }
     },
@@ -531,7 +528,7 @@ export default {
         validatePayment(){
         	var isValid = false;
         	for( var i in this.selectedPayment ){
-	    		if( this.selectedPayment[ i ] == ""){
+	    		if( this.selectedPayment[ i ] == "" ){
 		        	return false;
 		        }
 		        isValid = true;
@@ -566,18 +563,15 @@ export default {
 		        element.on( 'change', function ( event ) {
 		            if ( event.error ) {
 		            	self.hasCardErrors = true;
-		                // $( errorMessage ).fadeIn()
-		                // errorMessage.innerText = event.error.message;
 		                self.cardErrorMessage = event.error.message;
 		            } else {
 		            	self.hasCardErrors = false;
-		                // $( errorMessage ).fadeOut();
 		            }
 		        });
 
 		        element.on( 'focus', function ( event ) {
+		            self.hasCardErrors = false;
 		            self.cardErrorMessage = '';
-		            // $( errorMessage ).fadeOut();
 		        });
 
 		    });
@@ -585,14 +579,29 @@ export default {
 		purchase(){
 			let self = this;
 
-			stripe.createToken( cardNumber ).then( function( result ) {
-		      // Access the token with result.token
-		      console.log(result);
-		      	if ( result.error ) {
-      				self.hasCardErrors = true;
-      				self.cardErrorMessage = result.error.message;
-      			}
+			if( self.sameAddress ){
+				var billingData = self.selectedShippingAddress;
+			} else {
+				var billingData = self.selectedBillingAddress;
+			}
+			// Gather additional customer data we may have collected in our form.
+			var additionalData = {
+	            name: self.selectedPayment.nameOnCard ? self.selectedPayment.nameOnCard : undefined,
+	            address_line1: billingData.address1 ? billingData.address1 : undefined,
+	            address_line2: billingData.address2 ? billingData.address1 : undefined,
+	            address_city: billingData.city ? billingData.city : undefined,
+	            address_state: billingData.province ? billingData.province : undefined,
+	            address_zip: billingData.postalCode ? billingData.postalCode : undefined,
+        	};
 
+			stripe.createToken( cardNumber, additionalData ).then( function( result ) {
+		      	// Access the token with result.token
+		      	if ( result.error ) {
+	  				self.hasCardErrors = true;
+	  				self.cardErrorMessage = result.error.message;
+	  			} else {
+	  				console.log( result.token );
+	  			}
 		    });
 		}
 
