@@ -46,9 +46,6 @@ const actions = {
 			.get.products.list( { category : categoryId } )
 			.then(XHR => {
 				const products = Vue.options.filters.denormalize( XHR.data );
-				if (!products || products.length === 0) {
-					throw new Error("No products found");
-				}
 				// Normalize
 				const normProducts = {};
 				products.forEach(p => {

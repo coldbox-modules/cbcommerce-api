@@ -5,14 +5,20 @@
             <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">{{activeCategory.name}}</h1>
             <p v-html="activeCategory.description"></p>
         </div>
-        <div class="col-xs-12 category-products" v-if="activeCategory">
-            <div>
-                <product-carousel
-                    carouselId="owl-carousel-category-products"
-                ></product-carousel>
+        <div class="col-xs-12 category-products" v-if="!isLoading">
+            <div 
+                class="col-md-3 col-sm-2"
+                v-for="(product, index) in this.productsListArray"
+                :key="index"
+            >
+                <product-item :product="product"></product-item>
             </div>
         </div>
-
+        <div class="col-xs-12 category-products" v-else>
+            <div class="col-md-3" v-for="(n, index) in 4" :key="`loading-${index}`">
+                <product-item-loading></product-item-loading>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -20,17 +26,21 @@ import { mapGetters, mapActions } from "vuex";
 import SubCategoryLinks from "@cbCommerce/components/categories/sub-category-links";
 import CategoryGridItem from "@cbCommerce/components/categories/category-grid-item";
 import CategoryGridItemLoading from "@cbCommerce/components/categories/category-grid-item-loading";
-import ProductCarousel from "@cbCommerce/components/products/product-carousel";
+import ProductItem from '@cbCommerce/components/products/product-item';
+import ProductItemLoading from '@cbCommerce/components/products/product-item-loading';
 
 export default{
-    actions: {
-
+    data(){
+        return {
+            isLoading : false
+        };
     },
     components: {
         SubCategoryLinks,
         CategoryGridItem,
         CategoryGridItemLoading,
-        ProductCarousel
+        ProductItem,
+        ProductItemLoading
     },
     computed : {
         ...mapGetters( [
@@ -53,7 +63,8 @@ export default{
     },
     created(){
         var self = this;
-        this.getCategory( self.categoryId ).then( category => self.getCategoryProducts( category.id ) )
+        Vue.set( self, "isLoading", true );
+        this.getCategory( self.categoryId ).then( category => self.getCategoryProducts( category.id ).then( products => { Vue.set( self, "isLoading", false ) } ) )
     }
 
 }

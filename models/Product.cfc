@@ -46,7 +46,7 @@ component   table="cbc_products"
         return query.whereExists(
             function( subQuery ){
 				subQuery.from( 'cbc_SKUs' )
-						.where( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
                         .join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
                         .where( 'cbc_productConditions.name', '!=', 'New' );
             }

@@ -32,8 +32,22 @@ component   table="cbc_productCategories"
 		return hasMany( "ProductCategoryMedia@cbCommerce", "FK_category" );
 	}
 
+	function scopeHasActiveProducts( query ){
+		return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.join( 'cbc_products', 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.join( 'cbc_lookups_products_categories', 'cbc_lookups_products_categories.FK_product', '=', 'cbc_products.id' )
+						.whereColumn( 'cbc_lookups_products_categories.FK_category', '=', 'cbc_productCategories.id' )
+						.where( 'cbc_products.isActive', 1 )
+						.where( 'cbc_SKUs.isActive', 1 );
+            }
+        );
+	}
+
 	function getActiveChildren( limit ){
 		var childQuery = children().where( 'isActive', 1 )
+									.hasActiveProducts()
 									.orderBy( 'isFeatured', 'DESC' )
 									.orderBy( 'displayOrder', 'ASC' )
 									.orderBy( 'name', 'ASC' );

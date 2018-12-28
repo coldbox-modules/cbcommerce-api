@@ -169,7 +169,11 @@
             </div>
 
             <!-- end tab box -->
-            <related-product-carousel></related-product-carousel>
+            <div class="container">
+
+                <related-product-carousel></related-product-carousel>
+
+			</div>
 
         </div>
 
