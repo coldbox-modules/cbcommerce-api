@@ -145,8 +145,8 @@ import moment from "moment";
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
 import { mapGetters, mapActions } from "vuex";
 import { Form } from '@cbCommerce/admin/classes/form';
-import addressDetailsCard from '@cbCommerce/components/admin/address/address-details-card';
-import addressSidebar from '@cbCommerce/components/admin/address/address-sidebar';
+import addressDetailsCard from '@cbCommerce/admin/components/address/address-details-card';
+import addressSidebar from '@cbCommerce/admin/components/address/address-sidebar';
 export default {
 	name: "OrderView",
 

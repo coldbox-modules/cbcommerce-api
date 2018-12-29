@@ -1,29 +1,33 @@
-import get from "lodash/get";
+import Index from "@cbCommerce/admin/components/index";
+import Dashboard from "@cbCommerce/admin/components/dashboard";
+import Orders from "@cbCommerce/admin/components/orders/list";
+import OrderView from "@cbCommerce/admin/components/orders/view";
+import OrderForm from "@cbCommerce/admin/components/orders/form";
+import Categories from "@cbCommerce/admin/components/categories/list";
+import CategoryForm from "@cbCommerce/admin/components/categories/form";
+import Products from "@cbCommerce/admin/components/products/list";
+import ProductForm from "@cbCommerce/admin/components/products/form";
+import Customers from "@cbCommerce/admin/components/customers/list";
+import CustomerForm from "@cbCommerce/admin/components/customers/form";
+import LoginForm from "@cbCommerce/admin/components/auth/login-form";
 
-import Index from "@cbCommerce/components/admin/index";
-import Dashboard from "@cbCommerce/components/admin/dashboard";
-import Orders from "@cbCommerce/components/admin/orders/list";
-import OrderView from "@cbCommerce/components/admin/orders/view";
-import OrderForm from "@cbCommerce/components/admin/orders/form";
-import Categories from "@cbCommerce/components/admin/categories/list";
-import CategoryForm from "@cbCommerce/components/admin/categories/form";
-import Products from "@cbCommerce/components/admin/products/list";
-import ProductForm from "@cbCommerce/components/admin/products/form";
-import Customers from "@cbCommerce/components/admin/customers/list";
-import CustomerForm from "@cbCommerce/components/admin/customers/form";
+import StripeConfig from "@cbCommerce/admin/components/settings/stripe-config";
 
-import StripeConfig from "@cbCommerce/components/admin/settings/stripe-config";
-
-export const createRouter = (Vue, Router) => {
-	Vue.use(Router);
+export const createRouter = ( Vue, Router ) => {
+	Vue.use( Router );
 	return new Router({
 		mode: "history",
-		base: "/store/admin",
+		base: "store/admin/app",
 		routes: [
 			{
 				path: "/",
 				component: Index,
 				children: [
+					{
+						path : "/login",
+						name : "login",
+						component : LoginForm
+					},
 					{
 						path: "",
 						name: "dashboard",

@@ -70,6 +70,10 @@ component {
 					class="cbCommerce.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
             },
+            {
+					class="cbCommerce.interceptors.ContentboxSSO",
+					name="CBCContentboxSSOInterceptor"
+            },
 			{
 					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
@@ -188,7 +192,11 @@ component {
             /**
              * Display routing
              */
-            router.route( "/:action?" )
+            router.route( "admin/app" ).to( "Admin.app" );
+            
+            router.route( "admin" ).toHandler( "Admin" );
+
+            router.route( ":action?" )
                 .toHandler( "Main" );
     }
 
@@ -238,6 +246,15 @@ component {
         ).to( "cbstorages.models.CookieStorage" )
         .initWith(
            settings = storageSettings
+        );
+    
+        // Add our menu item
+        var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
+        menuService.addSubMenu(
+            topMenu=menuService.MODULES,
+            name="cbCommerce",
+            label="Store Admin",
+            href=menuService.buildModuleLink( 'store', 'admin' ) 
         );
 
         // Run any outstanding migrations on module load ( or reinit )

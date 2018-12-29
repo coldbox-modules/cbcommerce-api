@@ -115,8 +115,8 @@
 
 </template>
 <script>
-import AccountInfoFields from '@cbCommerce/components/admin/customers/account-information-fields';
-import addressFormFields from '@cbCommerce/components/admin/address/address-form-fields';
+import AccountInfoFields from '@cbCommerce/admin/components/customers/account-information-fields';
+import addressFormFields from '@cbCommerce/admin/components/address/address-form-fields';
 export default {
 
 	components: {

@@ -211,7 +211,7 @@
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
-import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 export default {
     components: {
         StarRating,

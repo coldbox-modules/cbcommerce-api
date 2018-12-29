@@ -7,8 +7,4 @@ component extends="coldbox.system.EventHandler"{
         return '<div id="app"></div>';
     }
     
-    function admin( event, rc, prc ){
-        event.setLayout( "Admin" );
-	}
-
 }

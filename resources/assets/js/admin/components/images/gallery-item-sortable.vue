@@ -3,7 +3,7 @@
     class="imageGridItem"
     v-bind:class="{ primaryImage: image.isPrimary }">
     <img 
-      :src="image.variations.thumbnail"
+      :src="image.href"
       draggable="false"
       width="100" 
       height="100" 

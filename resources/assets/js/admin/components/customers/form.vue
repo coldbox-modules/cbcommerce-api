@@ -109,8 +109,8 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { Form } from '@cbCommerce/admin/classes/form';
 import AccountInfoFields from './account-information-fields';
-import AddressList from '@cbCommerce/components/admin/address/address-list';
-import addressSidebar from '@cbCommerce/components/admin/address/address-sidebar';
+import AddressList from '@cbCommerce/admin/components/address/address-list';
+import addressSidebar from '@cbCommerce/admin/components/address/address-sidebar';
 export default {
 	name: "CustomerForm",
 

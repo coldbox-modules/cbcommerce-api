@@ -7,15 +7,15 @@ import VTooltip from 'v-tooltip';
 import VueCurrencyFilter from "vue-currency-filter";
 import Vuex from 'vuex';
 
-import createStore from "./store/index";
-import createRouter from "./store/router";
-import createFilters from "./filters/index";
+import createStore from "@cbCommerce/store/index";
+import createRouter from "@cbCommerce/store/router";
+import createFilters from "@cbCommerce/filters/index";
 
-Vue.component( "mediaOwlCarousel", require( "./components/media-owl-carousel" ).default );
-Vue.component( "cbSlickSlider", require( "./components/cb-slick-slider" ).default );
-Vue.component( "cbMediaGallery", require( "./components/cb-media-gallery" ).default );
-Vue.component( "bsrFinanceCalculator", require( "./components/bsr-finance-calculator" ).default );
-Vue.component( "loginForm", require( "./components/login-form" ).default );
+Vue.component( "mediaOwlCarousel", require( "@cbCommerce/components/media-owl-carousel" ).default );
+Vue.component( "cbSlickSlider", require( "@cbCommerce/components/cb-slick-slider" ).default );
+Vue.component( "cbMediaGallery", require( "@cbCommerce/components/cb-media-gallery" ).default );
+Vue.component( "bsrFinanceCalculator", require( "@cbCommerce/components/bsr-finance-calculator" ).default );
+Vue.component( "loginForm", require( "@cbCommerce/components/login-form" ).default );
 
 
 import App from "@cbCommerce/components/App";

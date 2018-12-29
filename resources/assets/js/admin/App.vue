@@ -6,11 +6,11 @@
 
 		<top-search></top-search>
 
-		<b-container fluid>
+		<b-container fluid style="margin-top:40px">
 
 			<b-row>
 
-				<sidebar></sidebar>
+				<sidebar v-if="authUser"></sidebar>
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
@@ -27,15 +27,20 @@
 </template>
 
 <script>
-import TopSearch from "@cbCommerce/components/admin/ui/top-search";
-import Sidebar from "@cbCommerce/components/admin/ui/sidebar";
+import TopSearch from "@cbCommerce/admin/components/ui/top-search";
+import Sidebar from "@cbCommerce/admin/components/ui/sidebar";
+import { mapGetters } from "vuex";
 export default {
 	name    : "app",
 	components: {
 		TopSearch,
 		Sidebar
 	},
-	computed: {},
+	computed: {
+		...mapGetters([
+			"authUser"
+		])
+	},
 	methods : {},
 	watch   : {}
 };

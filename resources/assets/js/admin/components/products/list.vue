@@ -14,9 +14,9 @@
             <b-col md="6" offset-md="6" class="my-1">
                 <b-form-group horizontal class="mb-0">
                     <b-input-group>
-                        <b-form-input v-model="filter" placeholder="Type to Search" />
+                        <b-form-input v-model="searchParams.search" placeholder="Type to Search" />
                         <b-input-group-append>
-                            <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null">Clear</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
@@ -26,7 +26,7 @@
 
         <b-table
             striped
-            :filter="filter"
+            :filter="searchParams.search"
             :items="productsListArray"
             :fields="productsFields"
             :current-page="currentPage"
@@ -41,8 +41,8 @@
                         fluid 
                         :alt="data.item.name" 
                         :title="data.item.name" 
-                        width="50" 
-                        height="50" />
+                        width="80" 
+                        height="80" />
                 </router-link>
             </template>
             <template slot="name" slot-scope="data">
@@ -90,14 +90,14 @@ export default {
     	return {
             isLoading     : true,
             currentPage   : 1,
-            perPage       : 5,
+            perPage       : 25,
             totalRows     : 0,
-            filter        : null,
+            searchParams  : {},
             productsFields: {
                 thumbnail: {
                     formatter: ( value, key, item ) => {
                         const primaryMedia = this.$options.filters.denormalize( item.media ).filter( mediaItem => mediaItem.isPrimary );
-                        return ( primaryMedia.length ) ? primaryMedia[ 0 ].variations.thumbnail : '';
+                        return ( primaryMedia.length ) ? primaryMedia[ 0 ].href : '';
                     }
                 },
                 name: {
@@ -148,9 +148,10 @@ export default {
 
     	fetchProducts(){
     		const self = this;
-    		Promise.resolve(this.getListOfProducts())
+            Vue.set( self, "isLoading", true );
+    		Promise.resolve( this.getListOfProducts( self.searchParams ) )
     		.then(() => {
-    			self.isLoading = false;
+                Vue.set( self, "isLoading", false );
     		})
     		.catch(err => console.error(err));
     	}

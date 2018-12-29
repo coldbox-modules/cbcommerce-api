@@ -27,22 +27,12 @@
 				    	<div class="row">
 
 				    		<div class="col-md-6">
-				    
-								<picture-input
-									ref="pictureInput"
-									@change="onChanged"
-									@remove="onRemoved"
-									:width="200"
-									:removable="false"
-									removeButtonClass="btn btn-danger"
-									:height="200"
-									accept="image/jpeg, image/png, image/gif"
-									buttonClass="btn btn-primary"
-									:customStrings="{
-									upload: '<h1>Upload it!</h1>',
-									drag: 'Browse to find or drag and drop image here'}">
 
-								</picture-input>
+								<vue-dropzone 
+									ref="pictureInput" 
+									id="image-dropzone" 
+									:options="dropzoneOptions"
+								></vue-dropzone>
 
 						    </div>
 
@@ -119,11 +109,12 @@
 </template>
 <script>
 import FormDataPost from '@cbCommerce/admin/classes/upload';
-import pictureInput from 'vue-picture-input';
+import vue2Dropzone from 'vue2-dropzone';
+import "vue2-dropzone/dist/vue2Dropzone.min.css";
 export default {
 
 	components: {
-		pictureInput
+		vueDropzone: vue2Dropzone
 	},
 
 	props: {
@@ -135,13 +126,17 @@ export default {
 
 	data() {
 		return {
-			imageToUpload: null
+			imageToUpload: null,
+			dropzoneOptions: {
+				thumbnailWidth: 150,
+				maxFilesize: 0.5
+			}
 		}
 	},
 
 	methods: {
 
-		onChanged() {
+		onPhotoAdded() {
 			if( this.$refs.pictureInput.file ){
 				this.imageToUpload = this.$refs.pictureInput.file;
 			} else {
@@ -149,11 +144,11 @@ export default {
 			}
 		},
 
-		onRemoved() {
+		onPhotoRemoved() {
 			this.imageToUpload = '';
 		},
 
-		attemptUpload() {
+		uploadPhoto() {
 			if( this.imageToUpload ){
 				console.log( FormDataPost );
 				console.log( this.imageToUpload );

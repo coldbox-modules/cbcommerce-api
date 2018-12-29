@@ -7,9 +7,9 @@
  *
  **/
  component{
+    property name="auth" inject="authenticationService@cbauth";
 
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
-
         // set globalData if not present in prc.
         if( !structKeyExists( prc, "globalData" ) ){
             prc[ "globalData" ] = {};
@@ -21,10 +21,12 @@
         }
 
         // if logged in, add the authUser to globalData
-        if( !isNull( prc.authCBCUser ) ){
-
-            prc.globalData[ "cbcAuthUser" ] = prc.authCBCUser.getMemento();
-
+        if( auth.isLoggedIn() ){
+            prc.globalData[ "cbcAuthUser" ] = getInstance( "Manager@cffractal" )
+                .builder()
+				.item( auth.getUser() )
+				.withTransformer( "UserTransformer@cbCommerce" )
+				.convert();
         }
     }
 

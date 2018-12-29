@@ -25,8 +25,8 @@ component extends="BaseQuickEntityService" singleton{
         if( located.isLoaded() ) return located;
     }
 
-    public function retrieveById( required string id ){
-        return newEntity.find( arguments.id );
+    public function retrieveUserById( required string id ){
+        return newEntity().find( arguments.id );
     }
 
 }

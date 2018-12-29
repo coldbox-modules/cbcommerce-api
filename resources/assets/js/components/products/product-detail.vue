@@ -230,7 +230,7 @@ import { StarRating } from 'vue-rate-it';
 import "ez-plus/src/jquery.ez-plus.js";
 import ProductGalleryThumb from './product-gallery-thumb';
 import ProductReview from './product-review';
-import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
 import ProductDetailLoading from './product-detail-loading';

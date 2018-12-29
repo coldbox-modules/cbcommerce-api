@@ -19,7 +19,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.collection( searchResponse.getResult() )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbCommerce" )
+				.withTransformer( "UserTransformer@cbCommerce" )
 				.withPagination( searchResponse.getPagination() )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
@@ -38,7 +38,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbCommerce" )
+				.withTransformer( "UserTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;
@@ -65,7 +65,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbCommerce" )
+				.withTransformer( "UserTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;
@@ -89,7 +89,7 @@ component extends="BaseAPIHandler"  secured{
 			fractal.builder()
 				.item( prc.user )
 				.withIncludes( rc.includes )
-				.withTransformer( "CustomerTransformer@cbCommerce" )
+				.withTransformer( "UserTransformer@cbCommerce" )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;

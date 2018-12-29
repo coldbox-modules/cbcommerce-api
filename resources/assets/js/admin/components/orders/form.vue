@@ -230,11 +230,11 @@ import { mapGetters, mapActions } from "vuex";
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
 import moment from "moment";
 import { ListSelect } from 'vue-search-select'
-import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
-import EditableNumberField from '@cbCommerce/components/admin/ui/editable-number-field';
+import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
+import EditableNumberField from '@cbCommerce/admin/components/ui/editable-number-field';
 import { Form } from '@cbCommerce/admin/classes/form';
 import NewCustomerSidebar from './new-customer-sidebar';
-import addressFormFields from '@cbCommerce/components/admin/address/address-form-fields';
+import addressFormFields from '@cbCommerce/admin/components/address/address-form-fields';
 export default {
 
 	name: "OrderForm",

@@ -132,9 +132,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import BarChart from "@cbCommerce/components/admin/charts/bar-chart";
-import DoughnutChart from "@cbCommerce/components/admin/charts/doughnut-chart";
-import PieChart from "@cbCommerce/components/admin/charts/pie-chart";
+import BarChart from "@cbCommerce/admin/components/charts/bar-chart";
+import DoughnutChart from "@cbCommerce/admin/components/charts/doughnut-chart";
+import PieChart from "@cbCommerce/admin/components/charts/pie-chart";
 import OrderSummary from "./orders/order-summary";
 export default {
 

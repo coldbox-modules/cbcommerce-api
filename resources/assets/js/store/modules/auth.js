@@ -4,7 +4,7 @@ import api from "@cbCommerce/api/index";
 const initialState = {};
 
 const getters = {
-    authUser: ( state, getters, rootState ) => rootState.globalData.authUser
+    authUser: ( state, getters, rootState ) => rootState.globalData.cbcAuthUser
 };
 const actions = {
     authenticate: ( context, { email, password } ) => {
@@ -34,7 +34,7 @@ const actions = {
 };
 const mutations = {
     setAuthUser( state, { rootState, authUser } ) {
-        Vue.set( rootState.globalData, "authUser", authUser );
+        Vue.set(rootState.globalData, "cbcAuthUser", authUser );
     }
 };
 

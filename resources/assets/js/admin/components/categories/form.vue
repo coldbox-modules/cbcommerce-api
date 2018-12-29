@@ -118,10 +118,10 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import VueImgLoader from 'vue-img-loader';
 import { Form } from '@cbCommerce/admin/classes/form';
-import htmlEditor from '@cbCommerce/components/admin/ui/html-editor';
-import galleryList from '@cbCommerce/components/admin/images/gallery-list';
-import galleryListSortable from '@cbCommerce/components/admin/images/gallery-list-sortable';
-import imageUploadPanel from '@cbCommerce/components/admin/images/image-upload-panel';
+import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
+import galleryList from '@cbCommerce/admin/components/images/gallery-list';
+import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
+import imageUploadPanel from '@cbCommerce/admin/components/images/image-upload-panel';
 export default {
 	name: "CategoryForm",
 

@@ -41,11 +41,11 @@ const actions = {
 				} );
 		} );
 	},
-	getCategoryProducts: ({ commit }, categoryId ) => new Promise( (resolve, reject) => {
+	getCategoryProducts: ({ commit, rootState }, categoryId ) => new Promise( (resolve, reject) => {
 		api()
 			.get.products.list( { category : categoryId } )
 			.then(XHR => {
-				const products = Vue.options.filters.denormalize( XHR.data );
+				const products = rootState.filters.denormalize( XHR.data );
 				// Normalize
 				const normProducts = {};
 				products.forEach(p => {
@@ -59,13 +59,13 @@ const actions = {
 				reject("Error: Could not resolve list of products");
 			});
 	}),
-	getListOfProducts: ({ commit }) =>
+	getListOfProducts: ( context, params ) =>
 		new Promise((resolve, reject) => {
 			api()
-				.get.products.list()
+				.get.products.list( params )
 				.then( XHR => {
 					let list = XHR.data;
-					const products = Vue.options.filters.denormalize( list );
+					const products = context.rootState.filters.denormalize( list );
 					if(!products || products.length === 0){
 						throw new Error("No products found");
 					}
@@ -74,7 +74,7 @@ const actions = {
 					products.forEach(p => {
 						normProducts[p.id] = p;
 					});
-					commit( 'setProductList', normProducts );
+					context.commit( 'setProductList', normProducts );
 					resolve(normProducts);
 				})
 				.catch(err => {
@@ -88,7 +88,7 @@ const actions = {
 				.get.reviews.list( productId )
 				.then(XHR => {
 					let list = XHR.data;
-					const reviews = Vue.options.filters.denormalize( list );
+					const reviews = context.rootState.filters.denormalize( list );
 					if (!reviews || reviews.length === 0) {
 						throw new Error("No reviews found");
 					}

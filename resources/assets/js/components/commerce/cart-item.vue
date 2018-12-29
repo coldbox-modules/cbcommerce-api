@@ -43,7 +43,7 @@
 </template>
 <script type="text/javascript">
 	import { mapGetters, mapActions } from "vuex";
-	import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+	import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 
 	export default{
 		components:{

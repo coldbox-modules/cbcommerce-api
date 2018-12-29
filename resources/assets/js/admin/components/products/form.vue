@@ -38,11 +38,11 @@
 					<b-form-group
 						label="Categories"
 						label-for="categories">
-						<tags-input element-id="categories"
-						    placeholder="Select categories"
-						    v-model="selectedCategories"
-						    :typeahead="true">    
-						</tags-input>
+						<v-select 
+							multiple 
+							v-model="selectedCategories" 
+							:options="options"
+						></v-select>
 					</b-form-group>
 
 		        </b-col>
@@ -201,13 +201,14 @@
 <script>
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
 import { mapGetters, mapActions } from "vuex";
+import vSelect from 'vue-select';
 import moment from "moment";
 import VueImgLoader from 'vue-img-loader';
 import { Form } from '@cbCommerce/admin/classes/form';
-import htmlEditor from '@cbCommerce/components/admin/ui/html-editor';
-import galleryList from '@cbCommerce/components/admin/images/gallery-list';
-import galleryListSortable from '@cbCommerce/components/admin/images/gallery-list-sortable';
-import imageUploadPanel from '@cbCommerce/components/admin/images/image-upload-panel';
+import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
+import galleryList from '@cbCommerce/admin/components/images/gallery-list';
+import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
+import imageUploadPanel from '@cbCommerce/admin/components/images/image-upload-panel';
 import skuFormPanel from './sku-form-panel';
 export default {
 	name: "ProductForm",
@@ -218,7 +219,8 @@ export default {
 		galleryList,
 		galleryListSortable,
 		imageUploadPanel,
-		skuFormPanel
+		skuFormPanel,
+		vSelect
 	},
 
     data() {

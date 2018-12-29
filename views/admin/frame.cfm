@@ -1,0 +1,1 @@
+<iframe id="cbCommerce-admin-frame" src="/store/admin/app" style="height: 800px; width: 100%; border: none; overflow: hidden;" scrolling="no" horizontalscrolling="no" verticalscrolling="no"></iframe>
