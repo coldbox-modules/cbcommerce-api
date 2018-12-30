@@ -27,7 +27,8 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 	),
 	put: Object.assign(
 		wishlists( apiInstance ).put,
-		cart( apiInstance ).put
+		cart( apiInstance ).put,
+		categories( apiInstance ).put
 	),
 	delete: Object.assign(
 		wishlists( apiInstance ).delete,

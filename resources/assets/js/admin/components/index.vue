@@ -31,7 +31,7 @@ export default {
 			"clearCurrentCategory",
 			"setCurrentProduct",
 			"clearCurrentProduct",
-			"getListOfCategories",
+			"getCategories",
 			"setCurrentOrder",
 			"clearCurrentOrder",
 			"clearCurrentCustomer",

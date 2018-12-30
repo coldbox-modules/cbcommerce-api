@@ -12,7 +12,7 @@ component extends="quick.models.BaseEntity"{
 
 	// UUID key type overload
     function keyType() {
-        return variables._wirebox.getInstance( "UUID@quick" );
+        return variables._wirebox.getInstance( "UUIDKeyType@quick" );
 	}
 
     /**

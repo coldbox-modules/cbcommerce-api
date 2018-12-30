@@ -5,7 +5,8 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "media"
+                "media",
+                "isActive"
             ],
             true
         );

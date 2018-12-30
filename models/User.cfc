@@ -12,6 +12,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     property name="primaryPhone";
     property name="secondaryPhone";
 
+    property name="_normalizedPermissions" persistent="false";
 
     function addresses(){
         return hasMany( "CustomerAddress@cbCommerce", "FK_user" );
@@ -35,6 +36,50 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
     function setPassword( value ) {
         return assignAttribute( "password", encryptionService.bCrypt( value ) );
+    }
+
+    function hasPermission( permission ){
+      if( !isLoaded() ) return false;
+      if( this.isInRole( "Administrator" ) ) return true;
+      var hasPermission = false;
+      this.getNormalizedPermissions().each( function( perm ){
+        if( perm == permission ) hasPermission = true;
+      } );
+      return hasPermission;
+    }
+
+    function isInRole( role ){
+        if( !isLoaded() ) return false;
+        var inRole = false;
+        this.getRoles().each( function( userRole ){
+            if( userRole.getName() == role ){
+                inRole = true;
+            }
+        } );
+        return inRole;
+    }
+
+    function getNormalizedPermissions(){
+
+        if( isNull( variables._normalizedPermissions ) ){
+            var permissions = [];
+            this.getRoles().each( function( role ){ 
+                role.getPermissions().each( function( permission ){ 
+                    arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
+                } )
+            } );
+
+            this.getExplicitPermissions().each( function (permission ){
+                arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
+            } );
+
+            variables._normalizedPermissions = [];
+            variables._normalizedPermissions.addAll( 
+                createObject("java", "java.util.HashSet").init( permissions )
+            );
+        }
+
+        return variables._normalizedPermissions;
     }
 
 }

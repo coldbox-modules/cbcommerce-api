@@ -42,8 +42,11 @@ export default {
 
     data() {
     	return {
-    		isLoading: true,
-    		categories: null
+			isLoading: true,
+			filterParams : {
+				isActive : 1,
+				sortOrder : 'displayOrder ASC'
+			}
     	}
     },
 
@@ -64,14 +67,14 @@ export default {
     methods: {
     	
     	...mapActions([
-    		"getListOfCategories",
+    		"getCategories",
     		"setCurrentCategory",
     		"clearCurrentCategory"
     	]),
 
     	fetchCategories(){
     		const self = this;
-    		Promise.resolve(this.getListOfCategories())
+    		Promise.resolve( this.getCategories( this.filterParams ) )
     		.then(() => {
     			self.isLoading = false;
     		})

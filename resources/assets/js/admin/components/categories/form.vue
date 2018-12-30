@@ -4,7 +4,7 @@
 
 		<div v-if="!this.isLoading">
 
-	        <page-header :headerTitle="`Category: ${ form.categoryName }`"></page-header>
+	        <page-header :headerTitle="`Category: ${ form.name }`"></page-header>
 
 			<dismissable-alert v-if="isSent && !isSending"
 				alertText="The item has been updated."
@@ -24,7 +24,7 @@
 		                    	required="required"
 		                    	class="form-control" 
 		                    	id="categoryName"
-		                    	v-model="form.categoryName" />
+		                    	v-model="form.name" />
 						</b-form-group>
 
 			        </b-col>
@@ -71,7 +71,7 @@
 				    				</b-col>
 
 									<gallery-list-sortable 
-										:images="categoryImages"></gallery-list-sortable>
+										:images="form.media"></gallery-list-sortable>
 
 				    			</b-card-body>
 				    		</b-collapse>
@@ -90,8 +90,8 @@
 			             <b-form-group>
 
 						    <b-form-checkbox 
-						    	v-model="form.active" 
-						    	:model.sync="form.active">
+						    	v-model="form.isActive" 
+						    	:model.sync="form.isActive">
 						    	Enable Category
 						    </b-form-checkbox>
 
@@ -101,7 +101,10 @@
 
 			    </b-row>
 
-			    <button type="submit" class="btn btn-secondary btn-lg">Save</button>
+			    <button type="submit" class="btn btn-secondary btn-lg">
+					<i v-if="isSending" class="fa fa-spin fa-spinner"></i> 
+					Save
+				</button>
 
 			    <back-button link="/categories" text="Back to categories"></back-button>
 			    
@@ -114,7 +117,7 @@
 </template>
 <script>
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import moment from "moment";
 import VueImgLoader from 'vue-img-loader';
 import { Form } from '@cbCommerce/admin/classes/form';
@@ -141,60 +144,38 @@ export default {
 			moment        : moment,
 			categoryImage : null,
 			errors        : [],
-			isSending     : false,
 			isSent        : false,
+			isSending     : false,
 			categoryImages: []
         }
     },
 
 	computed: {
 		...mapGetters([
-			"currentCategory",
-			"currentCategoryID",
-			"categoriesList"
+			"activeCategory",
+			"activeCategoryID",
+			"categoriesListArray"
 		])
 	},
 
 	created() {
-		if( !this.currentCategoryID ){
-			this.isLoading = true;
-			return Promise.all([
-				this.getListOfCategories().then(() => {
-					this.setCurrentCategory( parseFloat( this.$route.params.id ) );
-					Object.assign( this.form, this.currentCategory || {} );
-					this.isLoading = false;
-				})
-			]);
-		} else {
-			if( !this.isLoading ){
-				Object.assign( this.form, this.currentCategory || {} );	
-			}	
-		}
+		var self = this;
+		Vue.set( self, "isLoading", true );
+		return Promise.all([
+			this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
+				Vue.set( self, "form", new Form( self.activeCategory ) );
+				// Object.assign( self.form, self.activeCategory );
+				Vue.set( self, "isLoading", false );
+			})
+		]);
 	},
 
 	methods: {
-
 		...mapActions([
-			"setCurrentCategory",
-			"getListOfCategories",
+			"getCategories",
+			"getCategory",
 			"saveCategory"
 		]),
-
-		onChanged() {
-			console.log('new picture loaded');
-			if( this.$refs.pictureInput.file ){
-				this.categoryImage = this.$refs.pictureInput.file;
-				this.form.image    = this.$refs.pictureInput.file;
-			} else {
-				console.log( "Old browser. No support for Filereader API" );
-			}
-		},
-
-		onRemoved() {
-			this.categoryImage = '';
-			this.form.image    = '';
-		},
-
 	    showImageUploadPanel() {
 			vueSlideoutPanelService.show( {
 				component: imageUploadPanel,
@@ -205,8 +186,6 @@ export default {
 				}
 			} );
 	    },
-
-
 		handleSubmit: function(){
 
 			if( this.categoryImage ){
@@ -217,15 +196,11 @@ export default {
 			this.isSending         = true;
 			this.submitContent();
     	},
-
     	submitContent: function(){
-
     		var self = this;
-
 			this.saveCategory( this.form );
-			self.isSent    = true;
-			self.isSending = false;
-
+			Vue.set( self, "isSent", true );
+			Vue.set( self, "isSending", false );
     	}
 
 	}
