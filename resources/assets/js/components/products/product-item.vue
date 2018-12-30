@@ -29,13 +29,13 @@
                                 v-for="mediaItem in product.media"
                                 :key="mediaItem.id"
                                 v-if="isImage( mediaItem )"
-                                :src="mediaItem.href" 
+                                :src="mediaItem.src" 
                                 class="img-overlay img-responsive" 
                                 :alt="mediaItem.title" />
                             
                             <img 
                                 v-if="product.media.length === 1 && isImage( product.media[ 0 ] )"
-                                :src="product.media[ 0 ].href" 
+                                :src="product.media[ 0 ].src" 
                                 class="img-responsive" 
                                 :alt="product.media[ 0 ].title" />
                         </div>
@@ -142,7 +142,7 @@ export default {
             return this.$options.filters.isImage( mediaItem );
         },
         imageProgress: function( instance, image ){
-            var result = image.href ? 'loaded' : 'broken';
+            var result = image.src ? 'loaded' : 'broken';
         }
 
     }

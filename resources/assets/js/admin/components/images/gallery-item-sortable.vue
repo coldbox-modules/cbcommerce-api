@@ -1,13 +1,8 @@
 <template>
   <div 
     class="imageGridItem"
-    v-bind:class="{ primaryImage: image.isPrimary }">
-    <img 
-      :src="image.href"
-      draggable="false"
-      width="100" 
-      height="100" 
-      class="image-responsive" />
+    v-bind:class="{ primaryImage: image.isPrimary }"
+    :style="`background: url(${image.src});background-size:cover;height:150px;width:150px`">
         <div 
           v-if="withButton"
           @click="showImageDetailPanel">

@@ -97,7 +97,7 @@ export default {
                 thumbnail: {
                     formatter: ( value, key, item ) => {
                         const primaryMedia = this.$options.filters.denormalize( item.media ).filter( mediaItem => mediaItem.isPrimary );
-                        return ( primaryMedia.length ) ? primaryMedia[ 0 ].href : '';
+                        return ( primaryMedia.length ) ? primaryMedia[ 0 ].src : '';
                     }
                 },
                 name: {

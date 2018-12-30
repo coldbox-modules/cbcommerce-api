@@ -25,6 +25,11 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -50,6 +55,11 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -70,6 +80,11 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -79,6 +94,7 @@ component extends="BaseAPIHandler"{
 
 	// (PUT|PATCH) /cbc/api/v1/product-categories/:id
 	function update( event, rc, prc ) secured="Products:Edit"{
+
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 
 		prc.category.fill( rc );
@@ -95,6 +111,11 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
 						return transformed;
 					} 
 				)

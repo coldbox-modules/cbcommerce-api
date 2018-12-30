@@ -26,7 +26,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -51,7 +56,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -71,7 +81,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -96,7 +111,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)

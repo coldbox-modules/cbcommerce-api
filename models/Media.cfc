@@ -147,6 +147,12 @@ component   table="cbc_media"
 		}
 	}
 
+	public function delete(){
+		var filePath = expandPath( this.getFileLocation() );
+		fileDelete( filePath );
+		return super.delete();
+	}
+
 	// Media delivery and manipulation functions
 	public function isImage(){
 		if( fileExists( expandPath( getFileLocation() ) ) ) {

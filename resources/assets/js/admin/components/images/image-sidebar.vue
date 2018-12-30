@@ -28,20 +28,20 @@
 
 			    			<div class="card-image">
 						      <b-img 
-						        :src="form.variations.thumbnail" 
-						        :alt="form.title"
-						        :title="form.title"
+						        :src="form.src" 
+						        :alt="form.originalFileName"
+						        :title="form.originalFileName"
 						        fluid />
 						    </div>
 
 			    		</b-col>
 
 			    		<b-col cols="6">
-			    
+
 							<b-form-group
-								label="Title"
-								label-for="imageTitle">
-								<b-form-input id="imageTitle" v-model.trim="form.title"></b-form-input>
+								label="Link"
+								label-for="imageHREF">
+								<a :href="form.src">{{form.src}}</a>
 							</b-form-group>
 
 							<b-form-group
@@ -53,12 +53,6 @@
 									:rows="3"
 									:max-rows="6">
 								</b-form-textarea>
-							</b-form-group>
-
-							<b-form-group
-								label="Link To"
-								label-for="imageHREF">
-								<b-form-input id="imageHREF" v-model.trim="form.href"></b-form-input>
 							</b-form-group>
 
 							<b-form-group>
@@ -130,7 +124,7 @@ export default {
 		},
 
 		saveImageDetails() {
-			console.log( 'nothing happening here yet' );
+			
 			this.closePanel();
 		}
 

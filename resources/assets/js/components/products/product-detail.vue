@@ -27,8 +27,8 @@
                             <img 
                                 v-if="currentProduct.media.length"
                                 id="product-zoom" 
-                                :src="currentProduct.media[ 0 ].href" 
-                                :data-zoom-image="currentProduct.media[ 0 ].href" 
+                                :src="currentProduct.media[ 0 ].src" 
+                                :data-zoom-image="currentProduct.media[ 0 ].src" 
                                 :alt="currentProduct.media[ 0 ].caption" />
 
                             <div id="thumbnailNestedGallery">

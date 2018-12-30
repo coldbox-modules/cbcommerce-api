@@ -100,7 +100,7 @@
 			        </b-col>
 
 			    </b-row>
-
+				
 			    <button type="submit" class="btn btn-secondary btn-lg">
 					<i v-if="isSending" class="fa fa-spin fa-spinner"></i> 
 					Save
@@ -197,8 +197,9 @@ export default {
 			this.submitContent();
     	},
     	submitContent: function(){
-    		var self = this;
-			this.saveCategory( this.form );
+			var self = this;
+			self.form.includes = "children,parent";
+			this.saveCategory( self.form );
 			Vue.set( self, "isSent", true );
 			Vue.set( self, "isSending", false );
     	}

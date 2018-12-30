@@ -125,12 +125,24 @@ component {
                 handler    = "API.v1.ProductReviews"
             )
             .resources(
+                resource = "api/v1/products/:productId/media",
+                handler = "API.v1.ProductMedia"
+            )
+            .resources(
                 resource   = "api/v1/products",
                 handler    = "API.v1.Products"
             )
             .resources(
+                resource = "api/v1/product-skus/:skuId/media",
+                handler = "API.v1.ProductSKUMedia"
+            )
+            .resources(
                 resource = "api/v1/skus",
                 handler  = "API.v1.ProductSKUs"
+            )
+            .resources(
+                resource = "api/v1/product-categories/:categoryId/media",
+                handler = "API.v1.ProductCategoryMedia"
             )
             .resources(
                 resource   = "api/v1/product-categories",

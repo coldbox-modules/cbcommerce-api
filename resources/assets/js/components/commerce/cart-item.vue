@@ -7,7 +7,7 @@
                         <img
                             :title="item.product.name"
                             :alt="item.product.name"
-                            :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
+                            :src="item.sku.image ? item.sku.image.src : item.product.image.src" />
                     </a>
                 </div>
                 <div class="cart-product-text">

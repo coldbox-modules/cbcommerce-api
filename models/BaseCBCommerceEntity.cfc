@@ -15,6 +15,28 @@ component extends="quick.models.BaseEntity"{
         return variables._wirebox.getInstance( "UUIDKeyType@quick" );
 	}
 
+	function fill( attributes ) {
+		var data = {};
+		
+		this.retrieveAttributeNames().each( function( attr ){ 
+			if( structKeyExists( attributes, attr ) ){
+				data[ attr ] = attributes[ attr ];
+			}
+		});
+
+		ensureBits( data );
+
+		return super.fill( data );
+	}
+
+	function ensureBits( attributes ){
+		for( var key in attributes ){
+			if( isBoolean( attributes[ key ] ) ){
+				attributes[ key ] = attributes[ key ] ? 1 : 0;
+			}
+		}
+	}
+
     /**
 	* Retrieves an entity by its primary key.
 	* If the entity doesn't exist, it throws an exception.

@@ -267,9 +267,9 @@ export default {
 			if( !sku ) return;
 
 			if( sku.media.length ){
-				return sku.media[ 0 ].href;
+				return sku.media[ 0 ].src;
 			} else {
-				return sku.product.media[ 0 ].href
+				return sku.product.media[ 0 ].src
 			}
 		},
 		getSkuFromList( sku ){

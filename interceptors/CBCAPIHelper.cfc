@@ -10,7 +10,7 @@ component{
 
     void function preProcess( event, interceptData, buffer, rc, prc ) eventPattern="cbCommerce:API." {
         //timestamps and other auto-generated keys to remove from inbound payloads
-        var contextClear = [ "createdTime", "modifiedTime" ];
+        var contextClear = [ "createdTime", "modifiedTime", "href" ];
         contextClear.each( function( clear ){ structDelete( rc, clear ) } );
 
         event.paramValue( "includes", "" );
