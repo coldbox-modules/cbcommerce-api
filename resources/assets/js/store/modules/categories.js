@@ -53,11 +53,61 @@ const actions = {
                 console.error(err);
                 reject("Error: There was an error retreiving the categories");
             });
-    })
+    }),
+    updateCategoryImage : ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().put.categories.updateMedia( image )
+            .then( XHR => {
+                context.commit( "updateCategoryImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The category image could not be updated");
+            } )
+    } ),
+    createCategoryImage: (context, image) => new Promise((resolve, reject) => {
+        api().post.categories.createMedia( image )
+            .then(XHR => {
+                context.commit( "insertCategoryImage", XHR.data );
+                resolve(XHR.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The category image could not be updated");
+            })
+    }),
+    deleteCategoryImage: ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().delete.categories.deleteMedia( image )
+            .then(XHR => {
+                context.commit( "removeCategoryImage", image.id );
+                resolve();
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The category image could not be deleted");
+            })
+    } )
 };
 const mutations = {
+    clearActiveCategory( state ){
+        Vue.set( state, "activeCategory", null );
+    },
     setActiveCategory( state, categoryData ) {
         Vue.set( state, "activeCategory", categoryData );
+    },
+    updateCategoryImage( state, mediaItem ){
+        let index = state.activeCategory.media.findIndex( item => item.id === mediaItem.id ); 
+        Object.assign(state.activeCategory.media[ index ], mediaItem );
+    },
+    removeCategoryImage( state, itemId ){
+        let index = state.activeCategory.media.findIndex( item => item.id === itemId );
+        if( index > -1 ){
+            state.activeCategory.media.splice( index, 1 );
+        }
+    },
+    insertCategoryImage( state, mediaItem ){
+        state.activeCategory.media.push( mediaItem );
+        state.activeCategory.media.sort( ( a, b ) => b.displayOrder - a.displayOrder );
     },
     setCategories( state, resultsMap ){
         Vue.set( state, "categories", resultsMap );

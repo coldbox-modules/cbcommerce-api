@@ -7,9 +7,9 @@
 	</div>
 
 </template>
-
+``
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 import OrderSummary from "./orders/order-summary";
 export default {
@@ -26,9 +26,11 @@ export default {
 	},
 	methods : {
 
+		...mapMutations([
+			"setActiveCategory",
+			"clearActiveCategory"
+		]),
 		...mapActions([
-			"setCurrentCategory",
-			"clearCurrentCategory",
 			"setCurrentProduct",
 			"clearCurrentProduct",
 			"getCategories",
@@ -45,12 +47,12 @@ export default {
 		$route( to, from ){
 
 			if( to.name === 'categories' ){
-				Promise.resolve( this.clearCurrentCategory() )
+				Promise.resolve( this.clearActiveCategory() )
 					.catch( err => console.error( err ) );
 			}
 
 			if( to.name === 'categoryForm' ){
-				Promise.resolve( this.setCurrentCategory( to.params.id ) )
+				Promise.resolve( this.setActiveCategory( to.params.id ) )
 					.catch( err => console.error( err ) );
 			}
 

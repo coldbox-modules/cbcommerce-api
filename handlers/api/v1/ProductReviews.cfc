@@ -92,7 +92,9 @@ component extends="BaseAPIHandler"{
 	// (PUT|PATCH) /store/api/v1/products/{productId}/reviews/:id
 	function update( event, rc, prc ) secured="Product:Manage"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		prc.review.fill( rc );
 
 		validateModelOrFail( prc.review );

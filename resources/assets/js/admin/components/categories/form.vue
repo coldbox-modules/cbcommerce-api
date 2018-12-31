@@ -71,7 +71,7 @@
 				    				</b-col>
 
 									<gallery-list-sortable 
-										:images="form.media"></gallery-list-sortable>
+										:images="activeCategory.media"></gallery-list-sortable>
 
 				    			</b-card-body>
 				    		</b-collapse>
@@ -161,27 +161,48 @@ export default {
 	created() {
 		var self = this;
 		Vue.set( self, "isLoading", true );
+		Event.$on( "saveImageDetails", function( imageData ){
+			self.updateCategoryImage( imageData );
+		} );
+		Event.$on( "deleteMediaItem", function( imageData ){
+			self.deleteCategoryImage( imageData );
+		} );
+		Event.$on( "mediaUploadSuccess", function( imageData ){
+			console.log( imageData );
+			self.insertCategoryImage( imageData );
+		});
 		return Promise.all([
 			this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
 				Vue.set( self, "form", new Form( self.activeCategory ) );
-				// Object.assign( self.form, self.activeCategory );
 				Vue.set( self, "isLoading", false );
 			})
 		]);
 	},
 
+	beforeDestroy(){
+		Event.$off( "saveImageDetails", this.listener );
+		Event.$off( "deleteMediaItem", this.listener );
+	},
+
 	methods: {
+		...mapMutations([
+			"insertCategoryImage"
+		]),
 		...mapActions([
 			"getCategories",
 			"getCategory",
-			"saveCategory"
+			"saveCategory",
+			"updateCategoryImage",
+			"deleteCategoryImage"
 		]),
 	    showImageUploadPanel() {
+			var self = this;
 			vueSlideoutPanelService.show( {
 				component: imageUploadPanel,
 				width    : '1020px',
 				cssClass : 'slideout-panel-overall',
 				props: {
+					endpoint : '/store/api/v1/product-categories/'+self.activeCategory.id+'/media',
 					sidebarTitle: 'Upload New Category Image'
 				}
 			} );

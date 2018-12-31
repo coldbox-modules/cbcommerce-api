@@ -97,7 +97,9 @@ component extends="BaseAPIHandler"{
 	// (PUT|PATCH) /cbc/api/v1/skus/:id
 	function update( event, rc, prc ) secured="Product:Edit"{
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		prc.sku.fill( rc );
 
 		validateModelOrFail( prc.sku );

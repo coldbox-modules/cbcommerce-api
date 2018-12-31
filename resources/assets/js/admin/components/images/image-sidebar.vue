@@ -1,6 +1,6 @@
 <template>
 
-	<b-container class="mt-2">
+	<b-container class="mt-2 sidebar-panel">
 
 		<b-row>
 
@@ -100,31 +100,34 @@
 
 <script>
 import { Form } from '@cbCommerce/admin/classes/form';
+import { mapActions } from 'vuex';
 export default {
 
 	props: {
 		data: {
 			type    : Object,
 			required: true
+		},
+		saveCallback: {
+			type : Function,
+			required : false
 		}
 	},
 
 	data() {
 		return {
-			form: new Form(),
+			form: new Form( this.data.image ),
 		};
 	},
 
 	methods: {
 
 		closePanel() {
-			this.$emit( 'closePanel', {
-				imageDetails: this.form
-			} );
+			this.$emit( "closePanel", {} );
 		},
-
 		saveImageDetails() {
-			
+			Event.$emit( 'saveImageDetails', this.form );
+			Object.assign( this.data.image, this.form );
 			this.closePanel();
 		}
 

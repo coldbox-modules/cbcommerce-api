@@ -84,6 +84,8 @@ component extends="BaseAPIHandler" secured{
 	// (PUT|PATCH) /cbc/api/v1/wishlists/:id
 	function update( event, rc, prc ){
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
 		
 		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );

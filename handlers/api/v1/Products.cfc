@@ -101,7 +101,9 @@ component extends="BaseAPIHandler"{
 	// (PUT|PATCH) /cbc/api/v1/products/:id
 	function update( event, rc, prc ) { // secured="Products:Edit"
 		prc.product = entityService.newEntity().getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		prc.product.fill( rc );
 
 		validateModelOrFail( prc.product );

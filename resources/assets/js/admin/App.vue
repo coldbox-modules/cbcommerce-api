@@ -6,7 +6,7 @@
 
 		<top-search></top-search>
 
-		<b-container fluid style="margin-top:40px">
+		<b-container fluid>
 
 			<b-row>
 

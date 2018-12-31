@@ -79,7 +79,9 @@ component extends="BaseAPIHandler"  secured{
 	*/
 	function update( event, rc, prc ){
 		prc.user = entityService.newEntity().getOrFail( event.getValue( "id", "" ) );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		prc.user.populate( memento = rc );
 		prc.user.validateOrFail();
 		prc.user.save();

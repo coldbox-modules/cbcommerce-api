@@ -10,7 +10,7 @@
         </div>
         <div 
           v-if="withButton"
-          @click="remove">
+          @click="deleteItem">
             <i class="icon-delete-btn fa fa-trash"></i>
         </div>
     <slot>
@@ -42,13 +42,9 @@ export default {
   },
 
   methods: {
-
-    remove() {
-      this.$emit( 'remove', {
-        index: this.index
-      } );
+    deleteItem() {
+      Event.$emit( 'deleteMediaItem', this.image );
     },
-
     showImageDetailPanel() {
       var thisImage = this.image;
       vueSlideoutPanelService.show( {
@@ -58,7 +54,7 @@ export default {
         props    : {
             data: {
               image: thisImage
-            },
+            }
         }
       } );
     }

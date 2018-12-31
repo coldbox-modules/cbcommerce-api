@@ -78,6 +78,8 @@ component extends="BaseAPIHandler" secured{
 	// (PUT|PATCH) /cbc/api/v1/payments/:id
 	function update( event, rc, prc ) secured="Payments:Edit"{
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
 
 		prc.payment.fill( rc );
 

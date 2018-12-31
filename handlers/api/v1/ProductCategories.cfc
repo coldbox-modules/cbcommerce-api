@@ -96,6 +96,9 @@ component extends="BaseAPIHandler"{
 	function update( event, rc, prc ) secured="Products:Edit"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 
 		prc.category.fill( rc );
 

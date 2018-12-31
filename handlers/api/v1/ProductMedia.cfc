@@ -110,7 +110,9 @@ component extends="BaseAPIHandler"{
 	// (PUT|PATCH) /store/api/v1/products/:productId/media/:id
 	function update( event, rc, prc ) { // secured="Products:Edit"
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		var mediaAttachment = prc.productMedia.getMediaItem();
 
 		mediaAttachment.fill( rc );

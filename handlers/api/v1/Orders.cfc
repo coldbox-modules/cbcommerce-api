@@ -78,6 +78,8 @@ component extends="BaseAPIHandler" { // secured
 	// (PUT|PATCH) /cbc/api/v1/orders/:id
 	function update( event, rc, prc ) secured="Orders:Edit"{
 		prc.order = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
 
 		prc.order.fill( rc );
 

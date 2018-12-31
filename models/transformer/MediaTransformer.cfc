@@ -19,6 +19,9 @@ component extends="BaseModelTransformer"{
         if( structKeyExists( activeEntity, "mediaItem" ) ){
             var mediaItem = activeEntity.getMediaItem();
             var memento = mediaItem.getMemento();
+            // ensure our identifier is correct for subclass memento
+            memento[ "mediaId" ] = memento.id;
+            structDelete( memento, "id" );
             structAppend( memento, activeEntity.getMemento(), true );
             structDelete( memento, "FK_media" );
         } else {

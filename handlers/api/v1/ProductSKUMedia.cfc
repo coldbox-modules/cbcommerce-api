@@ -108,7 +108,9 @@ component extends="BaseAPIHandler"{
 	// (PUT|PATCH) /store/api/v1/product-skus/:skuId/media/:id
 	function update( event, rc, prc ) { // secured="Products:Edit"
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		var mediaAttachment = prc.skuMedia.getMediaItem();
 
 		mediaAttachment.fill( rc );

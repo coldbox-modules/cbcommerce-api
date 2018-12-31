@@ -64,6 +64,9 @@ Vue.use(
 	}
 )
 
+// global event bus
+window.Event = new Vue();
+
 const commerceAdmin = new Vue( {
 	el        : "#app",
 	store     : storeInstance,

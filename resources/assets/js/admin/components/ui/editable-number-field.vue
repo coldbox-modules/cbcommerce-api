@@ -53,7 +53,7 @@ export default {
 			event.preventDefault();
 			this.editField = false;
 			var self = this;
-            this.$emit( 'valueChange', {
+            Event.$emit( 'valueChange', {
 				fieldValue: self.thisValue,
 				parentId  : self.parentId
             } );

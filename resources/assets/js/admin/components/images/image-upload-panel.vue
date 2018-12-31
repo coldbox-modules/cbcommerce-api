@@ -1,6 +1,6 @@
 <template>
 
-<div class="container mt-2">
+<div class="container mt-2 sidebar-panel">
 
 		<div class="row">
 
@@ -28,71 +28,63 @@
 
 				    		<div class="col-md-6">
 
-								<vue-dropzone 
+								<vue-dropzone
+									v-on:vdropzone-sending="onSendFile"
+									v-on:vdropzone-success="onFileUploaded"
+									v-on:vdropzone-queue-complete="onUploadQueueComplete"
 									ref="pictureInput" 
-									id="image-dropzone" 
+									id="dropzone" 
 									:options="dropzoneOptions"
 								></vue-dropzone>
 
 						    </div>
 
 
-						    <div class="col-md-6">
+						    <div class="col-md-6" v-if="imageToUpload">
+									
+								<b-form-group
+									label="Caption"
+									label-for="imageCaption">
+									<b-form-textarea
+										v-model="form.caption"
+										id="imageCaption"
+										:rows="3"
+										:max-rows="6">
+									</b-form-textarea>
+								</b-form-group>
 
-						    	<div v-if="imageToUpload">
 
-							    	<b-form-group
-										label="Title"
-										label-for="imageTitle">
-										<b-form-input id="imageTitle"></b-form-input>
-									</b-form-group>
+								<b-form-group>
 
-									<b-form-group
-										label="Caption"
-										label-for="imageCaption">
-										<b-form-textarea
-											id="imageCaption"
-											:rows="3"
-											:max-rows="6">
-										</b-form-textarea>
-									</b-form-group>
+									<b-form-checkbox id="imageIsActive"
+										v-model="form.isActive"
+										value="true"
+										unchecked-value="false">
+										Enable the image
+									</b-form-checkbox>
 
-									<b-form-group
-										label="Link To"
-										label-for="imageHREF">
-										<b-form-input id="imageHREF"></b-form-input>
-									</b-form-group>
+								</b-form-group>
 
-									<b-form-group>
+								<b-form-group>
 
-										<b-form-checkbox id="imageIsActive"
-											value="true"
-											unchecked-value="false">
-											Enable the image
-										</b-form-checkbox>
+									<b-form-checkbox id="imageIsPrimary"
+										v-model="form.isPrimary"
+										value="true"
+										unchecked-value="false">
+										Set as the primary image
+									</b-form-checkbox>								
 
-									</b-form-group>
+								</b-form-group>
 
-									<b-form-group>
-
-										<b-form-checkbox id="imageIsPrimary"
-											value="true"
-											unchecked-value="false">
-											Set as the primary image
-										</b-form-checkbox>								
-
-									</b-form-group>
-
-									<button 
-										v-if="imageToUpload"
-										@click="attemptUpload"
-										class="btn btn-success">
-										Upload and Save
-									</button>
-
-								</div>
+								<button 
+									v-if="imageToUpload"
+									@click="attemptUpload"
+									class="btn btn-success">
+									Upload and Save
+								</button>
 
 						    </div>
+							<div class="col-md-6" v-else></div>
 
 					    </div>
 
@@ -111,6 +103,7 @@
 import FormDataPost from '@cbCommerce/admin/classes/upload';
 import vue2Dropzone from 'vue2-dropzone';
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
+import { Form } from '@cbCommerce/admin/classes/form';
 export default {
 
 	components: {
@@ -118,6 +111,10 @@ export default {
 	},
 
 	props: {
+		endpoint : {
+			type : String,
+			required : true
+		},
 		sidebarTitle: {
 			type   : String,
 			default: 'Upload Image'
@@ -126,58 +123,31 @@ export default {
 
 	data() {
 		return {
+			form : new Form( { isActive: true, isPrimary: false, caption: "" } ),
 			imageToUpload: null,
 			dropzoneOptions: {
+				url: this.endpoint,
 				thumbnailWidth: 150,
-				maxFilesize: 0.5
+				maxFilesize: 100
 			}
 		}
 	},
-
 	methods: {
-
-		onPhotoAdded() {
-			if( this.$refs.pictureInput.file ){
-				this.imageToUpload = this.$refs.pictureInput.file;
-			} else {
-				console.log( 'Old browser. No support for Filereader API.' );
-			}
+		onSendFile( file, XHR, formData ){
+			Object.assign( formData, self.form );
 		},
-
-		onPhotoRemoved() {
-			this.imageToUpload = '';
+		onFileUploaded( file, response ){
+			Event.$emit( "mediaUploadSuccess", response );
 		},
-
-		uploadPhoto() {
-			if( this.imageToUpload ){
-				console.log( FormDataPost );
-				console.log( this.imageToUpload );
-
-				FormDataPost( 'http://localhost:8001/api/picture/upload', this.image )
-					.then( response => {
-						if( response.data.success ){
-							this.imageToUpload = '';
-							console.log( 'Image uploaded successfully ✨' );
-						}
-					} )
-					.catch( err => {
-						console.error( err );
-					} );
-
-			}
-		},
-
-		closePanel() {
-			this.$emit( 'closePanel', {
-				
-			} );
+		onUploadQueueComplete(){
+			this.$emit( "closePanel" );
 		}
 
 	}
 
 }
 </script>
-<style>
+<style scoped>
 i.closePanelIcon { 
 	cursor: pointer;
 	font-size: 24px;

@@ -67,9 +67,7 @@ export default {
     methods: {
     	
     	...mapActions([
-    		"getCategories",
-    		"setCurrentCategory",
-    		"clearCurrentCategory"
+    		"getCategories"
     	]),
 
     	fetchCategories(){

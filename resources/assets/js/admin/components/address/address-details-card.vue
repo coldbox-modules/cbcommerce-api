@@ -61,7 +61,7 @@ export default {
 		openAddressFormPanel() {
 			var thisAddress = this.address;
 			var thisType    = this.type;
-			this.$emit( 'showAddressFormPanel', {
+			Event.$emit( 'showAddressFormPanel', {
 				address: thisAddress,
 				type   : thisType
 			} );

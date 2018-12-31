@@ -36,23 +36,23 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/product-categories/:categoryId/media
-	function create( event, rc, prc ) {
+	function create( event, rc, prc ) secured="Products:Edit"{
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
 
 		try{
 			var mediaAttachment = getInstance( "Media@cbCommerce" )
 								.loadFile(
-									fileInput="uploadFile",
-									pathExtension="products/" & product.getId()
+									fileInput="file",
+									pathExtension="categories/" & category.getId()
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttchment.save();
+			mediaAttachment.save();
 
-			prc.categoryMedia = getInstance( "ProductMedia@cbCommerce" ).fill( rc );
+			prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).fill( rc );
 			prc.categoryMedia.mediaItem().associate( mediaAttachment );
-			prc.categoryMedia.product().associate( product );
+			prc.categoryMedia.category().associate( category );
 
 			prc.categoryMedia.save();
 
@@ -91,7 +91,7 @@ component extends="BaseAPIHandler"{
 	// (GET) /store/api/v1/product-categories/:categoryId/media/:id
 	function show( event, rc, prc ){
 		
-		prc.categoryMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
+		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 
 		prc.response.setData( 
 			fractal.builder()
@@ -109,20 +109,18 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /store/api/v1/product-categories/:categoryId/media/:id
-	function update( event, rc, prc ) { // secured="Products:Edit"
-		prc.categoryMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
-
-		var mediaAttachment = prc.categoryMedia.getMediaItem();
-
-		mediaAttachment.fill( rc );
-
-		validateModelOrFail( mediaAttachment );
-
+	function update( event, rc, prc ) secured="Products:Edit"{
+		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
 		prc.categoryMedia.fill( rc );
-
 		validateModelOrFail( prc.categoryMedia );
-
 		prc.categoryMedia.save();
+
+		var mediaAttachment = prc.categoryMedia.getMediaItem().update( rc );
+		mediaAttachment.fill( rc );
+		validateModelOrFail( mediaAttachment );
+		mediaAttachment.save();		
 
 		prc.response.setData( 
 			fractal.builder()
@@ -141,9 +139,9 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /store/api/v1/product-categories/:categoryId/media/:id
-	function delete( event, rc, prc ) { // secured="Products:Manage"
+	function delete( event, rc, prc ) secured="Products:Edit"{ 
 
-		prc.categoryMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
+		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		var mediaAttachment = prc.categoryMedia.getMediaItem();
 		prc.categoryMedia.delete();
 		mediaAttachment.delete();

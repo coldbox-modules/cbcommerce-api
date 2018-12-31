@@ -73,7 +73,7 @@ export default {
         setCurrentVal: function( quantity ){
             var self = this;
             this.$refs.quantityInput.value = quantity;
-            this.$emit(
+            Event.$emit(
                 'quantityChange', 
                 {
                     quantity: quantity,

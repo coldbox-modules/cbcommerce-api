@@ -81,7 +81,7 @@ export default {
 	methods: {
 
 		closePanel() {
-			this.$emit( 'closePanel', {
+			Event.$emit( 'closePanel', {
 				addressDetails: this.form
 			} );
 		},

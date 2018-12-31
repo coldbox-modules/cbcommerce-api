@@ -18,7 +18,7 @@ component extends="quick.models.BaseEntity"{
 	function fill( attributes ) {
 		var data = {};
 		
-		this.retrieveAttributeNames().each( function( attr ){ 
+		retrieveAttributeNames().each( function( attr ){ 
 			if( structKeyExists( attributes, attr ) ){
 				data[ attr ] = attributes[ attr ];
 			}
