@@ -14,7 +14,6 @@ component extends="BaseAPIHandler"{
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
 
 		var media = category.media()
-							.orderBy( 'isPrimary', 'DESC')
 							.orderBy( 'displayOrder', 'ASC')
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
@@ -116,7 +115,7 @@ component extends="BaseAPIHandler"{
 		prc.categoryMedia.fill( rc );
 		validateModelOrFail( prc.categoryMedia );
 		prc.categoryMedia.save();
-
+		
 		var mediaAttachment = prc.categoryMedia.getMediaItem().update( rc );
 		mediaAttachment.fill( rc );
 		validateModelOrFail( mediaAttachment );

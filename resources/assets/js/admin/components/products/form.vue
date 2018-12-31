@@ -39,10 +39,13 @@
 						label="Categories"
 						label-for="categories">
 						<v-select 
+							v-if="categoriesListArray.length"
 							multiple 
-							v-model="selectedCategories" 
-							:options="options"
+							v-model="form.categories" 
+							label="name"
+							:options="categoriesListArray"
 						></v-select>
+						<p v-else class="text-center text-muted"><i class="fa fa-spin fa-spinner fa-2x"></i><br> Loading all categories. Please wait...</p>
 					</b-form-group>
 
 		        </b-col>
@@ -107,27 +110,16 @@
 		    	</b-card>
 
 
-		    	<b-card no-body class="mb-1">
+		    	<b-card no-body class="mb-1" v-if="currentProduct">
 
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
 		    			<b-btn block href="#" v-b-toggle.images>Images</b-btn>
 		    		</b-card-header>
 		    		<b-collapse id="images" accordion="product-accordion" role="tabpanel">
 		    			<b-card-body>
-
-		    				<b-col cols="12" class="mb-5">
-		    					<span 
-		    						class="pull-right">
-		    						<a 
-		    							class="btn btn-success uploadNewImageBtn"			    				
-		    							@click="showImageUploadPanel()">
-		    							<i class="fa fa-upload"></i>
-		    						</a>
-		    					</span>
-		    				</b-col>
-
 							<gallery-list-sortable 
-								:images="productImages"></gallery-list-sortable>
+								:endpoint="`/store/api/v1/products/${currentProduct.id}/media`"
+								:images="currentProduct.media"></gallery-list-sortable>
 
 		    			</b-card-body>
 		    		</b-collapse>
@@ -135,7 +127,7 @@
 		    	</b-card>
 
 
-		    	<b-card no-body class="mb-1">
+		    	<b-card no-body class="mb-1" v-if="currentProduct">
 
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
 		    			<b-btn block href="#" v-b-toggle.skus>SKUs</b-btn>
@@ -157,7 +149,7 @@
 		    				<b-col cols="12">
 		    					
 								<b-table
-								    :items="productSKUs"
+								    :items="currentProduct.skus"
 								    :fields="productSKUFields">
 								    <template slot="cost" slot-scope="data">
 								    	{{ data.item.cost | currency }}
@@ -200,7 +192,7 @@
 </template>
 <script>
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import vSelect from 'vue-select';
 import moment from "moment";
 import VueImgLoader from 'vue-img-loader';
@@ -208,7 +200,6 @@ import { Form } from '@cbCommerce/admin/classes/form';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryList from '@cbCommerce/admin/components/images/gallery-list';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
-import imageUploadPanel from '@cbCommerce/admin/components/images/image-upload-panel';
 import skuFormPanel from './sku-form-panel';
 export default {
 	name: "ProductForm",
@@ -218,7 +209,6 @@ export default {
 		VueImgLoader,
 		galleryList,
 		galleryListSortable,
-		imageUploadPanel,
 		skuFormPanel,
 		vSelect
 	},
@@ -251,69 +241,67 @@ export default {
 		...mapGetters([
 			"currentProduct",
 			"currentProductID",
-			"productsList"
+			"productsList",
+			"categoriesListArray"
 		])
 
 	},
 
 	created() {
-		if( !this.currentProductID ){
-			this.isLoading = true;
-			return Promise.all([
-				this.getListOfProducts().then(() => {
-					this.setCurrentProduct( this.$route.params.id );
-					Object.assign( this.form, this.currentProduct || {} );
-					this.fetchCategories();
-					this.fetchProductImages();
-					this.fetchProductSKUs();
-					this.isLoading = false;
-				})
-			]);
-		} else {
-			if( !this.isLoading ){
-				Object.assign( this.form, this.currentProduct || {} );
-				this.fetchCategories();
-				this.fetchProductImages();
-				this.fetchProductSKUs();
-			}
-		}
-	},
+		var self = this;
+		Vue.set( self, "isLoading", true );
+		Event.$on( "saveImageDetails", function( imageData ){
+			self.updateProductImage( imageData );
+		} );
+		Event.$on( "deleteMediaItem", function( imageData ){
+			self.deleteProductImage( imageData );
+		} );
+		Event.$on( "mediaUploadSuccess", function( imageData ){
+			console.log( imageData );
+			self.insertProductImage( imageData );
+		});
+		Event.$on( "onMediaSort", event => {
+			event.items.forEach( eventItem => {
+				console.log( 'sortOrderUpdate', { file: eventItem.item.originalFileName, href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+				this.updateProductImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+			})
+		})
 
+		this.getCategories( { isNotNull : "parent", maxrows : 500 } );
+
+		this.getProduct( { id: this.$route.params.id, includes: "skus,categories" } )
+				.then( product => {
+					Vue.set( self, "form", new Form( product ) );
+					Vue.set( self, "isLoading", false );
+				})
+				.catch( err => {
+					Vue.set( self, "isLoading", false );
+				})
+	},
+	beforeDestroy(){
+		Event.$off( "saveImageDetails", this.listener );
+		Event.$off( "deleteMediaItem", this.listener );
+		Event.$off( "onMediaUploadSuccess", this.listener );
+		Event.$off( "onMediaSort", this.listener );
+	},
 	mounted() {
 		this.isActiveChecked = this.form.isActive;
 	},
 
 	methods: {
-
+		...mapMutations([
+			"insertProductImage"
+		]),
 		...mapActions([
+			"getCategories",
+			"getProduct",
 			"setCurrentProduct",
 			"getListOfProducts",
-			"saveProduct"
+			"saveProduct",
+			"updateProductImage",
+			"deleteProductImage",
+			"updateProductImageField"
 		]),
-
-
-		fetchCategories() {
-			var categories = this.$options.filters.denormalize( this.form.categories );
-			if( categories.length ){
-				categories.forEach( ( category ) => {
-					this.selectedCategories.push( category.name );
-				});
-			}
-		},
-
-		fetchProductImages() {
-			var media = this.$options.filters.denormalize( this.form.media );
-			if( media.length ){
-				this.productImages = media;
-			}
-		},
-
-		fetchProductSKUs() {
-			var skus = this.$options.filters.denormalize( this.form.skus );
-			if( skus.length ){
-				this.productSKUs = skus;
-			}
-		},
 
 		handleSubmit: function(){
 			this.isSending = true;
@@ -326,22 +314,13 @@ export default {
 			
 			console.log( this.form );
 
-			this.saveProduct( this.form );
-			self.isSent    = true;
-			self.isSending = false;
+			this.saveProduct( this.form ).then( response => {
+				Vue.set( self, "form", new Form( response ) );
+				self.isSent    = true;
+				self.isSending = false;
+			});
 
     	},
-
-	    showImageUploadPanel() {
-			vueSlideoutPanelService.show( {
-				component: imageUploadPanel,
-				width    : '1020px',
-				cssClass : 'slideout-panel-overall',
-				props: {
-					sidebarTitle: 'Upload New Product Image'
-				}
-			} );
-	    },
 
 	    showSKUPanel( thisSKU, method ) {
 			vueSlideoutPanelService.show( {

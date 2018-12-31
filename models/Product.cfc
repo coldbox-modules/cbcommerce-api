@@ -42,6 +42,20 @@ component   table="cbc_products"
 		return hasMany( "ProductReview@cbCommerce", "FK_product");
 	}
 
+	// delete overload
+	function delete(){
+		this.getMedia().each( function( productMedia ){
+			var mediaAttachment = productMedia.getMediaItem();
+			productMedia.delete();
+			mediaAttachment.delete();
+		 });
+		this.getSkus().each( function( skuEntity ){
+			skuEntity.delete();
+		} );
+		this.categories().sync([]);
+		return super.delete();
+	}
+
     function scopeHasUsedSKU( query ){
         return query.whereExists(
             function( subQuery ){

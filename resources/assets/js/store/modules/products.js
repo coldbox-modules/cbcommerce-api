@@ -27,10 +27,17 @@ const getters = {
 
 const actions = {
 	getProduct: ( { commit }, id ) => {
+		if( id.id ){
+			var params = id;
+			id = params.id;
+			delete params.id;
+		} else {
+			params = undefined;
+		}
 		commit( "setCurrentProduct", id );
-		return new Promise((resolve, reject) => {
+		return new Promise( (resolve, reject) => {
 			api()
-				.get.products.detail( id )
+				.get.products.detail( id, params )
 				.then( XHR => {
 					commit('setActiveProduct', XHR.data);
 					resolve( XHR.data );
@@ -105,13 +112,57 @@ const actions = {
 	},
 	clearCurrentProduct: ({ commit }) => {
 		commit( 'clearCurrentProduct' );
-	}
+	},
+    updateProductImage : ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().put.products.updateMedia( image )
+            .then( XHR => {
+                context.commit( "updateProductImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The category image could not be updated");
+            } )
+    } ),
+    updateProductImageField : ( context, { href, field, value } ) => new Promise( ( resolve, reject ) => {
+        api().patch.products.updateMediaField( href, field, value )
+            .then( XHR => {
+                context.commit( "updateProductImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The category image could not be updated");
+            } )
+    } ),
+    createProductImage: (context, image) => new Promise((resolve, reject) => {
+        api().post.products.createMedia( image )
+            .then(XHR => {
+                context.commit( "insertProductImage", XHR.data );
+                resolve(XHR.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The category image could not be updated");
+            })
+    }),
+    deleteProductImage: ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().delete.products.deleteMedia( image )
+            .then(XHR => {
+                context.commit( "removeProductImage", image.id );
+                resolve();
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The category image could not be deleted");
+            })
+    } )
 };
 
 const mutations = {
 	setActiveProduct(state, product) {
 		state.currentProductID = product.id;
-		state.activeProduct = product;
+		Vue.set( state, "activeProduct", product );
 	},
 	setProductList(state, list) {
 		state.productsList = list;
@@ -124,6 +175,20 @@ const mutations = {
 	},
 	setCurrentProductReviews(state, list) {
 		state.currentProductReviews = list;
+	},
+	updateProductImage(state, mediaItem) {
+		let index = state.activeProduct.media.findIndex(item => item.id === mediaItem.id);
+		Object.assign(state.activeProduct.media[index], mediaItem);
+	},
+	removeProductImage(state, itemId) {
+		let index = state.activeProduct.media.findIndex(item => item.id === itemId);
+		if (index > -1) {
+			state.activeProduct.media.splice(index, 1);
+		}
+	},
+	insertProductImage(state, mediaItem) {
+		state.activeProduct.media.push(mediaItem);
+		state.activeProduct.media.sort((a, b) => b.displayOrder - a.displayOrder);
 	}
 };
 

@@ -31,7 +31,7 @@ component extends="quick.models.BaseEntity"{
 
 	function ensureBits( attributes ){
 		for( var key in attributes ){
-			if( isBoolean( attributes[ key ] ) ){
+			if( isBoolean( attributes[ key ] ) && !isNumeric( attributes[ key ] ) ){
 				attributes[ key ] = attributes[ key ] ? 1 : 0;
 			}
 		}

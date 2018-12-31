@@ -5,7 +5,6 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "media",
                 "isActive"
             ],
             true
@@ -15,6 +14,7 @@ component extends="BaseModelTransformer"{
             variables.availableIncludes,
             [
                 "products",
+                "media",
                 "parent",
                 "children"
             ],
@@ -50,7 +50,6 @@ component extends="BaseModelTransformer"{
     function includeMedia( activeEntity ){
 
         var filteredMedia = activeEntity.media().where( 'isActive', 1 )
-                .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' );
 

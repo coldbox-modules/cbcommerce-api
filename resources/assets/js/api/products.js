@@ -12,8 +12,8 @@ export const updateProduct = api => ( data ) => {
 
 export const deleteProduct = api => ( id ) => api.delete( '/products/' + id )
 
-export const getProduct = api => ( id ) => {
-  return api.get( '/products/' + id, { params : { includes : "skus" } } );
+export const getProduct = api => ( id, params ) => {
+  return api.get( '/products/' + id, { params : params || { includes : "skus" } } );
 };
 
 export const getProductReviews = api => ( id, params ) => {
@@ -34,8 +34,13 @@ export const getProductMedia = api => (id, params) => api.get('/products/' + id 
 export const updateProductMediaItem = api => (data) => {
   delete data.originalData;
   delete data.FK_product;
-  return api.put(params.href.replace('/store/api/v1', ''), JSON.stringify(data));
+  return api.put(data.href.replace('/store/api/v1', ''), JSON.stringify(data));
 }
+export const updateProductMediaItemField = api => (href, field, fieldValue) => {
+  let payload = {};
+  payload[field] = fieldValue;
+  return api.patch(href.replace('/store/api/v1', ''), JSON.stringify(payload));
+};
 export const deleteProductMediaItem = api => (item) => api.delete(item.href.replace('/store/api/v1', ''));
 
 // Product SKU Media
@@ -44,8 +49,13 @@ export const getSKUMedia = api => (id, params) => api.get('/product-skus/' + id 
 export const updateSKUMediaItem = api => (data) => {
   delete data.originalData;
   delete data.FK_sku;
-  return api.put(params.href.replace('/store/api/v1', ''), JSON.stringify(data));
+  return api.put(data.href.replace('/store/api/v1', ''), JSON.stringify(data));
 }
+export const updateSKUMediaItemField = api => (href, field, fieldValue) => {
+  let payload = {};
+  payload[field] = fieldValue;
+  return api.patch(href.replace('/store/api/v1', ''), JSON.stringify(payload));
+};
 export const deleteSKUMediaItem = api => (item) => api.delete(item.href.replace('/store/api/v1', ''));
 
 
@@ -81,6 +91,14 @@ export const products = api => ( {
     },
     skus : {
       update : updateSKU( api )
+    }
+  },
+  patch: {
+    products: {
+      updateMediaField: updateProductMediaItemField(api)
+    },
+    skus : {
+      updateMediaField : updateSKUMediaItemField(api)
     }
   },
   delete : {

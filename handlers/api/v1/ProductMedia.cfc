@@ -13,7 +13,6 @@ component extends="BaseAPIHandler"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
 		var media = product.media()
-							.orderBy( 'isPrimary', 'DESC')
 							.orderBy( 'displayOrder', 'ASC')
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
@@ -42,12 +41,12 @@ component extends="BaseAPIHandler"{
 		try{
 			var mediaAttachment = getInstance( "Media@cbCommerce" )
 								.loadFile(
-									fileInput="uploadFile",
+									fileInput="file",
 									pathExtension="products/" & product.getId()
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttchment.save();
+			mediaAttachment.save();
 
 			prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).fill( rc );
 			prc.productMedia.mediaItem().associate( mediaAttachment );

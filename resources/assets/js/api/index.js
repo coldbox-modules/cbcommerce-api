@@ -37,6 +37,10 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		cart( apiInstance ).delete,
 		authentication( apiInstance ).delete,
 		categories( apiInstance ).delete
+	),
+	patch : Object.assign(
+		products( apiInstance ).patch,
+		categories( apiInstance ).patch
 	)
 });
 

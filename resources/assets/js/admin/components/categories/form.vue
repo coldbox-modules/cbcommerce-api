@@ -58,20 +58,9 @@
 				    		</b-card-header>
 				    		<b-collapse id="images" accordion="product-accordion" role="tabpanel">
 				    			<b-card-body>
-
-				    				<b-col cols="12" class="mb-5">
-				    					<span 
-				    						class="pull-right">
-				    						<a 
-				    							class="btn btn-success uploadNewImageBtn"			    				
-				    							@click="showImageUploadPanel()">
-				    							<i class="fa fa-upload"></i>
-				    						</a>
-				    					</span>
-				    				</b-col>
-
 									<gallery-list-sortable 
-										:images="activeCategory.media"></gallery-list-sortable>
+										:images="activeCategory.media"
+										:endpoint="`/store/api/v1/product-categories/${activeCategory.id}/media`"></gallery-list-sortable>
 
 				    			</b-card-body>
 				    		</b-collapse>
@@ -124,7 +113,6 @@ import { Form } from '@cbCommerce/admin/classes/form';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryList from '@cbCommerce/admin/components/images/gallery-list';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
-import imageUploadPanel from '@cbCommerce/admin/components/images/image-upload-panel';
 export default {
 	name: "CategoryForm",
 
@@ -132,8 +120,7 @@ export default {
 		htmlEditor,
 		VueImgLoader,
 		galleryList,
-		galleryListSortable,
-		imageUploadPanel,
+		galleryListSortable
 	},
 
     data() {
@@ -171,6 +158,12 @@ export default {
 			console.log( imageData );
 			self.insertCategoryImage( imageData );
 		});
+		Event.$on( "onMediaSort", event => {
+			event.items.forEach( eventItem => {
+				console.log( 'sortOrderUpdate', { file: eventItem.item.originalFileName, href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+				this.updateCategoryImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+			})
+		})
 		return Promise.all([
 			this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
 				Vue.set( self, "form", new Form( self.activeCategory ) );
@@ -182,6 +175,8 @@ export default {
 	beforeDestroy(){
 		Event.$off( "saveImageDetails", this.listener );
 		Event.$off( "deleteMediaItem", this.listener );
+		Event.$off( "onMediaUploadSuccess", this.listener );
+		Event.$off( "onMediaSort", this.listener );
 	},
 
 	methods: {
@@ -193,20 +188,9 @@ export default {
 			"getCategory",
 			"saveCategory",
 			"updateCategoryImage",
-			"deleteCategoryImage"
+			"deleteCategoryImage",
+			"updateCategoryImageField"
 		]),
-	    showImageUploadPanel() {
-			var self = this;
-			vueSlideoutPanelService.show( {
-				component: imageUploadPanel,
-				width    : '1020px',
-				cssClass : 'slideout-panel-overall',
-				props: {
-					endpoint : '/store/api/v1/product-categories/'+self.activeCategory.id+'/media',
-					sidebarTitle: 'Upload New Category Image'
-				}
-			} );
-	    },
 		handleSubmit: function(){
 
 			if( this.categoryImage ){

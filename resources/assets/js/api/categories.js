@@ -20,6 +20,11 @@ export const updateCategoryMediaItem = api => ( data ) => {
   delete data.FK_category;
   return api.put(data.href.replace('/store/api/v1', ''), JSON.stringify(data));
 }
+export const updateCategoryMediaItemField = api => ( href, field, fieldValue ) => {
+  let payload = {};
+  payload[ field ] = fieldValue;
+  return api.patch(href.replace('/store/api/v1', ''), JSON.stringify( payload ) );
+};
 export const deleteCategoryMediaItem = api => (item) => api.delete( item.href.replace('/store/api/v1', '') );
 
 export const categories = api => ({
@@ -40,6 +45,11 @@ export const categories = api => ({
     categories : {
       update : updateCategory(api),
       updateMedia : updateCategoryMediaItem(api)
+    }
+  },
+  patch : {
+    categories : {
+      updateMediaField : updateCategoryMediaItemField(api)
     }
   },
   delete: {

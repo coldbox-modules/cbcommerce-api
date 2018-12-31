@@ -53,6 +53,11 @@ component extends="BaseAPIHandler"{
 
 		prc.product.save();
 
+		// sync categories after our product save
+		if( structKeyExists( rc, "categories" ) ){
+			prc.product.categories().sync( rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } ) );
+		}
+
 		prc.response.setData( 
 			fractal.builder()
 				.item( prc.product )
@@ -109,6 +114,11 @@ component extends="BaseAPIHandler"{
 		validateModelOrFail( prc.product );
 
 		prc.product.save();
+
+		// sync categories after our product save
+		if( structKeyExists( rc, "categories" ) ){
+			prc.product.categories().sync( rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } ) );
+		}
 
 		prc.response.setData( 
 			fractal.builder()

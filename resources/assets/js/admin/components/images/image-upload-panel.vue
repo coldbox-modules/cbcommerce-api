@@ -29,6 +29,7 @@
 				    		<div class="col-md-6">
 
 								<vue-dropzone
+									v-if="false"
 									v-on:vdropzone-sending="onSendFile"
 									v-on:vdropzone-success="onFileUploaded"
 									v-on:vdropzone-queue-complete="onUploadQueueComplete"

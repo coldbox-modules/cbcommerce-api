@@ -65,6 +65,17 @@ const actions = {
 				reject("Error: The category image could not be updated");
             } )
     } ),
+    updateCategoryImageField : ( context, { href, field, value } ) => new Promise( ( resolve, reject ) => {
+        api().patch.categories.updateMediaField( href, field, value )
+            .then( XHR => {
+                context.commit( "updateCategoryImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The category image could not be updated");
+            } )
+    } ),
     createCategoryImage: (context, image) => new Promise((resolve, reject) => {
         api().post.categories.createMedia( image )
             .then(XHR => {
