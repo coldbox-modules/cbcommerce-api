@@ -13,7 +13,7 @@
                 	</a>
                 </li>
 
-                <li v-if="validateStep( 1 )" :class="{ 'active' : activeTab === 'payment' }" id="payment">
+                <li v-if="isValidated.shipping" :class="{ 'active' : activeTab === 'payment' }" id="payment">
                 	<a
                 		href="#payment"
                 		@click.prevent="activateTab('payment')"
@@ -32,7 +32,7 @@
                 	</a>
                 </li>
 
-                <li v-if="validateStep( 2 )" :class="{ 'active' : activeTab === 'review' }" id="review">
+                <li v-if="isValidated.payment" :class="{ 'active' : activeTab === 'review' }" id="review">
                 	<a
                 		href="#review"
                 		@click.prevent="activateTab('review')">
@@ -57,81 +57,152 @@
                     <br>
                     <h3>Shipping Address</h3>
                     <hr>
-                    <form role="form" method="post" action="#">
+                    <form role="form" method="post" action="#" data-vv-scope="form-shipping">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="inputFirstName" class="control-label">First Name:<span class="text-danger">*</span></label>
+                                    <label for="shippingFirstName" class="control-label">First Name:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputFirstName"
+                                        	id="shippingFirstName"
+                                        	name="shippingFirstName"
+                                        	v-validate="'required'"
+                                        	data-vv-as="First Name"
                                         	v-model="selectedShippingAddress.firstName">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingFirstName')">
+
+                                        	{{ errors.first( 'form-shipping.shippingFirstName' ) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputLastName" class="control-label">Last Name:<span class="text-danger">*</span></label>
+                                    <label for="shippingLastName" class="control-label">Last Name:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputLastName"
+                                        	id="shippingLastName"
+                                        	name="shippingLastName"
+                                        	v-validate="'required'"
+                                        	data-vv-as="Last Name"
                                         	v-model="selectedShippingAddress.lastName">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingLastName')">
+
+                                        	{{ errors.first( 'form-shipping.shippingLastName' ) }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputPhone" class="control-label">Phone:<span class="text-danger">*</span></label>
+                                    <label for="shippingPhone" class="control-label">Phone:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputPhone"
+                                        	id="shippingPhone"
+                                        	name="shippingPhone"
+                                        	v-validate="'required|numeric'"
+                                        	data-vv-as="Phone"
                                         	v-model="selectedShippingAddress.phone">
+
+                                    	<span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingPhone')">
+
+                                        	{{ errors.first( 'form-shipping.shippingPhone' ) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-danger">*</span></label>
+                                    <label for="shippingAdress1" class="control-label">Address /1:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputAdress1"
+                                        	id="shippingAdress1"
+                                        	name="shippingAdress1"
+                                        	v-validate="'required'"
+                                        	data-vv-as="Address"
                                         	v-model="selectedShippingAddress.address1">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingAdress1')">
+
+                                        	{{ errors.first( 'form-shipping.shippingAdress1' ) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputAdress2" class="control-label">Address /2:</label>
+                                    <label for="shippingAdress2" class="control-label">Address /2:</label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputAdress2"
+                                        	id="shippingAdress2"
                                         	v-model="selectedShippingAddress.address2">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputCity" class="control-label">City: <span class="text-danger">*</span></label>
+                                    <label for="shippingCity" class="control-label">City:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputCity"
+                                        	id="shippingCity"
+                                        	name="shippingCity"
+                                        	v-validate="'required'"
+                                        	data-vv-as="City"
                                         	v-model="selectedShippingAddress.city">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingCity')">
+
+                                        	{{ errors.first( 'form-shipping.shippingCity' ) }}</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputState" class="control-label">State/Province: <span class="text-danger">*</span></label>
+                                    <label for="shippingState" class="control-label">State/Province:
+                                    	<span class="text-danger">*</span>
+                                    </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputState"
+                                        	id="shippingState"
+                                        	name="shippingState"
+                                        	v-validate="'required'"
+                                        	data-vv-as="State"
                                         	v-model="selectedShippingAddress.province">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingState')">
+
+                                        	{{ errors.first( 'form-shipping.shippingState' ) }}
+                                        </span>
                                     </div>
                                 </div>
 
@@ -141,8 +212,18 @@
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="inputPostCode"
+                                        	id="shippingPostCode"
+                                        	name="shippingPostCode"
+                                        	v-validate="'required'"
+                                        	data-vv-as="Zip Code"
                                         	v-model="selectedShippingAddress.postalCode">
+
+                                        <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-shipping.shippingPostCode')">
+
+                                        	{{ errors.first( 'form-shipping.shippingPostCode' ) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +233,7 @@
                     <a href="/shopping-cart" class="btn-default-1">Back to Cart</a>
                     <a href="#payment"
                     	class="btn btn-default-1"
-                    	:class="{ 'disabled' : !validateStep( 1 ) }"
-                    	@click.prevent="activateTab('payment')">
+                    	@click.prevent="validateStep( 1 )">
 
                     	Next
                     </a>
@@ -162,49 +242,65 @@
                 <div class="tab-pane" :class="{ 'active': activeTab === 'payment' }" id="payment">
                     <br>
                     Pay with your credit card via Stripe
-                    <div class="row">
-                    	<div class="col-md-6 ">
-                    		<div class="form-group">
-                                <label for="card-name" class="control-label">Name on Card:<span class="text-danger">*</span></label>
-                                <div>
-                                    <input type="text" class="form-control" id="nameOnCard" v-model="selectedPayment.nameOnCard" required="true">
-                                </div>
-                            </div>
-                    	</div>
-                    </div>
-                    <div class="row payment-fields">
-                    	<div class="col-md-6 ">
-                    		<div class="fieldset">
-                    			<label for="card-number" data-tid="elements_examples.form.card_label">Card:<span class="text-danger">*</span></label>
-					            <div id="card-number" ref="cardNumber" class="field empty"></div>
-					        </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="card-expiry" class="control-label">Expiration Date:<span class="text-danger">*</span></label>
-                                <div id="card-expiry" ref="cardExpiry" class="field empty"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="card-cvc" class="control-label">CCV:<span class="text-danger">*</span></label>
-                                <div id="card-cvc" ref="cardCvc" class="field empty"></div>
-                            </div>
-                        </div>
-                    </div>
-               		<div class="row">
-               			<div class="col-sm-12">
-               				<transition name="fade">
-	               				<div class="error" role="alert" v-if="hasCardErrors">
-	               				 	<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
-						            	<path class="base" fill="#000" d="M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z"></path>
-						              	<path class="glyph" fill="#FFF" d="M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z"></path>
-						            </svg>
-						            <span class="message">{{ cardErrorMessage }}</span>
+                    <form role="form" method="post" action="#" data-vv-scope="form-payment">
+	                    <div class="row">
+	                    	<div class="col-md-6 ">
+	                    		<div class="form-group">
+	                                <label for="card-name" class="control-label">Name on Card:<span class="text-danger">*</span></label>
+	                                <div>
+	                                    <input
+	                                    	type="text"
+	                                    	class="form-control"
+	                                    	id="nameOnCard"
+	                                    	name="nameOnCard"
+	                                        v-validate="'required'"
+	                                        data-vv-as="Name on Card"
+	                                    	v-model="selectedPayment.nameOnCard">
+
+	                                    <span
+                                        	class="text-danger"
+                                        	v-show="errors.has('form-payment.nameOnCard')">
+
+                                        	{{ errors.first( 'form-payment.nameOnCard' ) }}
+                                        </span>
+	                                </div>
+	                            </div>
+	                    	</div>
+	                    </div>
+	                    <div class="row payment-fields">
+	                    	<div class="col-md-6 ">
+	                    		<div class="fieldset">
+	                    			<label for="card-number" data-tid="elements_examples.form.card_label">Card:<span class="text-danger">*</span></label>
+						            <div id="card-number" ref="cardNumber" class="field empty"></div>
 						        </div>
-						     </transition>
-               			</div>
-               		</div>
+	                        </div>
+	                        <div class="col-md-4">
+	                            <div class="form-group">
+	                                <label for="card-expiry" class="control-label">Expiration Date:<span class="text-danger">*</span></label>
+	                                <div id="card-expiry" ref="cardExpiry" class="field empty"></div>
+	                            </div>
+	                        </div>
+	                        <div class="col-md-2">
+	                            <div class="form-group">
+	                                <label for="card-cvc" class="control-label">CCV:<span class="text-danger">*</span></label>
+	                                <div id="card-cvc" ref="cardCvc" class="field empty"></div>
+	                            </div>
+	                        </div>
+	                    </div>
+	               		<div class="row">
+	               			<div class="col-sm-12">
+	               				<transition name="fade">
+		               				<div class="error" role="alert" v-if="hasCardErrors">
+		               				 	<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17">
+							            	<path class="base" fill="#000" d="M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z"></path>
+							              	<path class="glyph" fill="#FFF" d="M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z"></path>
+							            </svg>
+							            <span class="message">{{ cardErrorMessage }}</span>
+							        </div>
+							     </transition>
+	               			</div>
+	               		</div>
+	               	<!-- </form> -->
                     <div class="row">
                     	<br>
 	                    <h3>Billing Address</h3>
@@ -223,65 +319,184 @@
 	                    	<p>Same as shipping address.</p>
 	                    </div>
 	                    <div v-else>
-		                    <form role="form" method="post" action="#">
-		                        <div class="row">
-		                            <div class="col-md-6">
-		                                <div class="form-group">
-		                                    <label for="inputFirstName" class="control-label">First Name:<span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input
-		                                        	type="text"
-		                                        	class="form-control"
-		                                        	id="inputFirstName"
-		                                        	>
-		                                    </div>
-		                                </div>
-		                                <div class="form-group">
-		                                    <label for="inputLastName" class="control-label">Last Name:<span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputLastName">
-		                                    </div>
-		                                </div>
-		                                <div class="form-group">
-		                                    <label for="inputPhone" class="control-label">Phone:</label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputPhone">
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="col-md-6">
-		                                <div class="form-group">
-		                                    <label for="inputAdress1" class="control-label">Address /1: <span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputAdress1">
-		                                    </div>
-		                                </div>
+		                    <div class="row">
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                    <label for="billingFirstName" class="control-label">
+	                                    	First Name:<span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingFirstName"
+	                                        	name="billingFirstName"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="First Name"
+	                                        	v-model="selectedBillingAddress.billingLastName"
+	                                        	>
 
-		                                <div class="form-group">
-		                                    <label for="inputCity" class="control-label">City: <span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputCity">
-		                                    </div>
-		                                </div>
+	                                        <span
+	                                        	class="text-danger"
+	                                        	v-show="errors.has('form-payment.billingFirstName')">
 
-		                                 <div class="form-group">
-		                                    <label for="inputState" class="control-label">State/Province: <span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputState">
-		                                    </div>
-		                                </div>
+	                                        	{{ errors.first( 'form-payment.billingFirstName' ) }}
+	                                        </span>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="billingLastName" class="control-label">
+	                                    	Last Name:
+	                                    	<span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingLastName"
+	                                        	name="billingLastName"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="Last Name"
+	                                        	v-model="selectedBillingAddress.billingLastName">
 
-		                                <div class="form-group">
-		                                    <label for="inputPostCode" class="control-label">Zip Code: <span class="text-danger">*</span></label>
-		                                    <div>
-		                                        <input type="text" class="form-control" id="inputPostCode">
-		                                    </div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                    </form>
+	                                        	<span
+		                                        	class="text-danger"
+		                                        	v-show="errors.has('form-payment.billingLastName')">
+
+		                                        	{{ errors.first( 'form-payment.billingLastName' ) }}
+		                                        </span>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="billingPhone" class="control-label">Phone:</label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingPhone"
+	                                        	name="billingPhone"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="Phone"
+	                                        	v-model="selectedBillingAddress.billingPhone">
+
+	                                        <span
+		                                        	class="text-danger"
+		                                        	v-show="errors.has('form-payment.billingPhone')">
+
+		                                        	{{ errors.first( 'form-payment.billingPhone' ) }}
+		                                        </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <div class="form-group">
+	                                    <label for="billingAdress1" class="control-label">
+	                                    	Address /1:
+	                                    	<span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingAdress1"
+	                                        	name="billingAdress1"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="Adress"
+	                                        	v-model="selectedBillingAddress.billingAdress1">
+
+	                                        <span
+	                                        	class="text-danger"
+	                                        	v-show="errors.has('form-payment.billingAdress1')">
+
+	                                        	{{ errors.first( 'form-payment.billingAdress1' ) }}
+	                                        </span>
+	                                    </div>
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="billingAdress2" class="control-label">Address /2:</label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingAdress2"
+	                                        	v-model="selectedBillingAddress.billingAdress2">
+	                                    </div>
+	                                </div>
+	                                <div class="form-group">
+	                                    <label for="billingCity" class="control-label">
+	                                    	City: <span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingCity"
+	                                        	name="billingCity"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="City"
+	                                        	v-model="selectedBillingAddress.billingCity">
+
+	                                        <span
+	                                        	class="text-danger"
+	                                        	v-show="errors.has('form-payment.billingCity')">
+
+	                                        	{{ errors.first( 'form-payment.billingCity' ) }}
+	                                        </span>
+	                                    </div>
+	                                </div>
+
+	                                 <div class="form-group">
+	                                    <label for="billingState" class="control-label">
+	                                    	State/Province:
+	                                    	<span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingState"
+	                                        	name="billingState"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="State"
+	                                        	v-model="selectedBillingAddress.billingState">
+
+	                                        <span
+	                                        	class="text-danger"
+	                                        	v-show="errors.has('form-payment.billingState')">
+
+	                                        	{{ errors.first( 'form-payment.billingState' ) }}
+	                                        </span>
+	                                    </div>
+	                                </div>
+
+	                                <div class="form-group">
+	                                    <label for="billingPostCode" class="control-label">
+	                                    	Zip Code:
+	                                    	<span class="text-danger">*</span>
+	                                    </label>
+	                                    <div>
+	                                        <input
+	                                        	type="text"
+	                                        	class="form-control"
+	                                        	id="billingPostCode"
+	                                        	name="billingPostCode"
+	                                        	v-validate="'required'"
+	                                        	data-vv-as="Zip Code"
+	                                        	v-model="selectedBillingAddress.billingPostCode">
+
+	                                        <span
+	                                        	class="text-danger"
+	                                        	v-show="errors.has('form-payment.billingPostCode')">
+
+	                                        	{{ errors.first( 'form-payment.billingPostCode' ) }}
+	                                        </span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
 		                </div>
                     </div>
+                	</form>
                     <hr>
                     <a
                     	href="#shipping"
@@ -293,8 +508,7 @@
                     <a
                     	href="#review"
                     	class="btn btn-default-1"
-                    	:class="{ 'disabled' : !validateStep( 2 ) }"
-                    	@click.prevent="activateTab('review')">
+                    	@click.prevent="validateStep(2)">
 
                     	Next
                     </a>
@@ -365,6 +579,7 @@ if( window.cbcGlobalData.stripeKey ){
 	var stripe = Stripe( window.cbcGlobalData.stripeKey );
 	var elements = stripe.elements();
 }
+
 var cardNumber = undefined;
 
 export default {
@@ -380,6 +595,10 @@ export default {
             hasCardErrors : false,
             cardErrorMessage: "",
             activeTab: 'shipping',
+            isValidated: {
+            	shipping: false,
+            	payment: false
+            },
             selectedShippingAddress: {
             	firstName: "",
             	lastName: "",
@@ -525,30 +744,40 @@ export default {
 	    	}
         	return isValid;
         },
-        validatePayment(){
-        	var isValid = false;
-        	for( var i in this.selectedPayment ){
-	    		if( this.selectedPayment[ i ] == "" ){
-		        	return false;
+        validateShipping(){
+        	var self = this;
+        	this.$validator.validate('form-shipping.*').then((result) => {
+		        if (result) {
+		          self.isValidated.shipping = true;
+		          self.activateTab('payment');
+		        } else {
+		        	self.isValidated.shipping = false;
 		        }
-		        isValid = true;
-	    	}
-        	return isValid;
+		    });
+        },
+        validatePayment(){
+        	var self = this;
+        	this.$validator.validate('form-payment.*').then((result) => {
+		        if (result) {
+		          self.isValidated.payment = true;
+		          self.activateTab('review');
+		        } else {
+		        	self.isValidated.payment = false;
+		        }
+		    });
         },
         validateStep( step ){
 			var proceed = false;
 
 			switch( step ) {
 			    case 1:
-				    proceed = this.validateAddress( this.selectedShippingAddress );
+				    this.validateShipping();
 			    	break;
 			    case 2:
-			    	if(
-			    		( this.sameAddress || this.validateAddress( this.selectedBillingAddress ) )
-			    		&& this.validatePayment()
-			    	   ){
-				        proceed = true;
+			    	if( this.sameAddress ){
+			    		this.selectedBillingAddress = Object.assign({}, this.selectedShippingAddress);
 			    	}
+			    	this.validatePayment();
 			    	break;
 			    default:
 			        proceed = false;
