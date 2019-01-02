@@ -26,6 +26,36 @@ const getters = {
 };
 
 const actions = {
+	saveProduct: (context, product) => new Promise((resolve, reject) => {
+		let payload = Object.assign( {}, product );
+		let sanitize = ["originalData","skus","media"];
+		sanitize.forEach( removal => delete payload[ removal ] );
+		api()
+			.put.products.update( payload )
+			.then(XHR => {
+				commit('setActiveProduct', XHR.data);
+				resolve(XHR.data);
+			})
+			.catch(err => {
+				console.error(err);
+				reject("Error: Could retrieve a product with the id of " + id);
+			});
+	}),
+	saveSKU: (context, product) => new Promise((resolve, reject) => {
+		let payload = Object.assign( {}, product );
+		let sanitize = ["originalData","skus","media"];
+		sanitize.forEach( removal => delete payload[ removal ] );
+		api()
+			.put.skus.update( payload )
+			.then(XHR => {
+				commit('updateSKU', XHR.data);
+				resolve(XHR.data);
+			})
+			.catch(err => {
+				console.error(err);
+				reject("Error: Could retrieve a product with the id of " + id);
+			});
+	}),
 	getProduct: ( { commit }, id ) => {
 		if( id.id ){
 			var params = id;
@@ -189,6 +219,14 @@ const mutations = {
 	insertProductImage(state, mediaItem) {
 		state.activeProduct.media.push(mediaItem);
 		state.activeProduct.media.sort((a, b) => b.displayOrder - a.displayOrder);
+	},
+	updateSku( state, sku ){
+		let skuIndex = state.activeProduct.skus.findIndex( found => found.id === sku.id );
+		if( skuIndex > -1 ){
+			state.activeProduct.skus.slice( skuIndex, 1, sku );
+		} else {
+			state.activeProduct.skus.push( sku );
+		}
 	}
 };
 

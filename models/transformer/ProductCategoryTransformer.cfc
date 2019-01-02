@@ -5,6 +5,7 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
+                "media",
                 "isActive"
             ],
             true
@@ -14,7 +15,6 @@ component extends="BaseModelTransformer"{
             variables.availableIncludes,
             [
                 "products",
-                "media",
                 "parent",
                 "children"
             ],

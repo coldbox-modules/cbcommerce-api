@@ -15,13 +15,19 @@ component extends="BaseAPIHandler"{
 		}
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
+		var transformer = getInstance( "ProductCategoryTransformer@cbCommerce" );
+		listToArray( rc.excludes ).each( function( exclude ){
+			if( arrayContains( transformer.getDefaultIncludes(), exclude ) ){
+				arrayDeleteAt( transformer.getDefaultIncludes(), arrayFind( transformer.getDefaultIncludes(), exclude ) );
+			}
+		} )
 
 		prc.response.setData( 
 			fractal.builder()
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
+				.withTransformer( transformer )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 

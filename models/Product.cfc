@@ -21,8 +21,7 @@ component   table="cbc_products"
 
 	this.constraints = {
 		name = { required : true },
-		hasOptions = { required : true, type : "numeric" },
-		requiredOptions = { required : true, type : "string" }
+		hasOptions = { required : true, type : "numeric" }
 	};
 
 	// Relationships
@@ -73,5 +72,21 @@ component   table="cbc_products"
 	 ){
 
 	 }
+
+	function getRequiredOptions(){
+		if( isSimpleValue( variables.requiredOptions ) ){
+			assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), deserializeJSON( variables.requiredOptions ) );
+		}
+		return variables.requiredOptions;
+	}
+
+	function setRequiredOptions( any options ){
+
+		if( !isSimpleValue( arguments.options ) ){
+			arguments.options = serializeJSON( arguments.options );
+		}
+
+		assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), arguments.options );
+	}
 
 }

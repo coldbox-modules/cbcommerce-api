@@ -133,7 +133,7 @@ export default {
     	...mapGetters([
     		"productsList",
     		"productsListArray",
-    		"currentCategoryID"
+    		"activeCategoryId"
     	])
 
     },

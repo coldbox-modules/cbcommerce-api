@@ -7,6 +7,7 @@
  *
  **/
  component{
+    property name="templateCache" inject="cachebox:template";
     property name="auth" inject="authenticationService@cbauth";
 
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
@@ -19,6 +20,23 @@
         if( !structKeyExists( prc, "assetBag" ) ){
             prc[ "assetBag" ] = wirebox.getInstance( "AssetBag@coldbox-asset-bag" );
         }
+
+        templateCache.clear( "cbCommerce_global_productConditions" );
+        prc.globalData[ "productConditions" ] = templateCache.getOrSet( 
+            "cbCommerce_global_productConditions", 
+            function(){
+                var model = wirebox.getInstance( "ProductCondition@cbCommerce" );
+                var builder = model.newQuery().where( "isActive", 1 );
+                var conditions = model.getEntities();
+
+                return getInstance( "Manager@cffractal" )
+                    .builder()
+                    .collection( conditions )
+                    .withIncludes( "parent" )
+                    .withTransformer( "ProductConditionTransformer@cbCommerce" )
+                    .convert();
+            } 
+        );
 
         // if logged in, add the authUser to globalData
         if( auth.isLoggedIn() ){

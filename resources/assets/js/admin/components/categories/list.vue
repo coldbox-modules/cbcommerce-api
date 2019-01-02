@@ -60,7 +60,7 @@ export default {
     	...mapGetters([
     		"categoriesList",
     		"categoriesListArray",
-    		"currentCategoryID"
+    		"activeCategoryId"
     	])
     },
 

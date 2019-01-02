@@ -7,6 +7,7 @@ const initialState = {
 };
 
 const getters = {
+    activeCategoryId : ( state ) => state.activeCategory ? state.activeCategory.id : undefined,
     activeCategory: (state, getters, rootState) => state.activeCategory,
     categoriesListArray : ( state, getters, rootState ) => rootState.filters.denormalize( state.categories ),
     categoriesMap : ( state, getters, rootState ) => state.categories

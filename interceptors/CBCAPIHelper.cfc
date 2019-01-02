@@ -14,6 +14,7 @@ component{
         contextClear.each( function( clear ){ structDelete( rc, clear ) } );
 
         event.paramValue( "includes", "" );
+        event.paramValue( "excludes", "" );
         event.paramValue( "maxrows", 25 );
         if ( ! isNumeric( rc.maxrows ) ) { rc.maxrows = 25; }
         event.paramValue( "page", 1 );

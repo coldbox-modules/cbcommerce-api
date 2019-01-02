@@ -27,13 +27,33 @@
 			    		<b-col>
 
 							<b-form-group
-								label="Condition"
-								label-for="condition">
+								label="Model Number"
+								label-for="modelNumber">
 								<b-form-input 
 									type="text"
-									id="condition"
+									id="modelNumber"
 									:required=true
-									v-model.trim="form.condition"></b-form-input>
+									v-model.trim="form.modelNumber"></b-form-input>
+							</b-form-group>
+
+							<b-form-group
+								label="Condition"
+								label-for="condition">
+									<v-select  
+										v-model="form.condition" 
+										label="name"
+										:options="parentConditions"
+									></v-select>
+							</b-form-group>
+
+							<b-form-group
+								label="Sub-Condition"
+								label-for="condition">
+									<v-select  
+										v-model="form.subCondition" 
+										label="name"
+										:options="childConditions"
+									></v-select>
 							</b-form-group>
 
 							<b-form-group
@@ -42,17 +62,30 @@
 								<html-editor 
 									height="200" 
 									:model.sync="form.conditionDescription"></html-editor>
+							</b-form-group>	
+
+							<b-form-group
+								label="MSRP"
+								label-for="MSRP">
+								<b-input-group size="lg" prepend="$">
+									<b-form-input 
+										type="number"
+										id="MSRP" 
+										:required="true"
+										v-model.trim="form.MSRP"></b-form-input>
+								</b-input-group>
 							</b-form-group>
 
 							<b-form-group
-								label="Sub-Condition"
-								label-for="subCondition">
-								<b-form-input 
-									type="text"
-									id="subCondition"
-									:required=true
-									v-model.trim="form.subCondition"></b-form-input>
-							</b-form-group>							
+								label="Base Price"
+								label-for="basePrice">
+								<b-input-group size="lg" prepend="$">
+									<b-form-input 
+										type="number"
+										id="basePrice"
+										v-model.trim="form.basePrice"></b-form-input>
+								</b-input-group>
+							</b-form-group>																		
 
 							<b-form-group
 								label="Cost"
@@ -66,43 +99,12 @@
 								</b-input-group>
 							</b-form-group>
 
-							<b-form-group
-								label="Base Price"
-								label-for="basePrice">
-								<b-input-group size="lg" prepend="$">
-									<b-form-input 
-										type="number"
-										id="basePrice"
-										v-model.trim="form.basePrice"></b-form-input>
-								</b-input-group>
-							</b-form-group>												
-
 							<b-form-group>
 
 							    <b-form-checkbox 
 							    	v-model="form.isActive" 
 							    	:model.sync="form.isActive">
-							    	Enable SKU
-							    </b-form-checkbox>
-
-							</b-form-group>
-
-							<b-form-group>
-
-							    <b-form-checkbox 
-							    	v-model="form.isPrimary" 
-							    	:model.sync="form.isPrimary">
-							    	Is primary SKU?
-							    </b-form-checkbox>
-
-							</b-form-group>	
-
-							<b-form-group>
-
-							    <b-form-checkbox 
-							    	v-model="form.isVirtual" 
-							    	:model.sync="form.isVirtual">
-							    	Is this a virtual product?
+							    	Is SKU active?
 							    </b-form-checkbox>
 
 							</b-form-group>
@@ -112,28 +114,29 @@
 							    <b-form-checkbox 
 							    	v-model="form.isConsigned" 
 							    	:model.sync="form.isConsigned">
-							    	Is this consigned?
+							    	Is Consignment Product
 							    </b-form-checkbox>
 
-							</b-form-group>																											
-							<b-form-group
-								label="On Hand"
-								label-for="onHand">
-								<b-form-input 
-									type="text"
-									id="onHand" 
-									:required="true"
-									v-model.trim="form.onHand"></b-form-input>
+							</b-form-group>	
+
+							<b-form-group>
+
+							    <b-form-checkbox 
+							    	v-model="form.isVirtual" 
+							    	:model.sync="form.isVirtual">
+							    	Is this a virtual/downloadable product?
+							    </b-form-checkbox>
+
 							</b-form-group>
 
-							<b-form-group
-								label="MSRP"
-								label-for="MSRP">
-								<b-form-input 
-									type="text"
-									id="MSRP" 
-									:required="true"
-									v-model.trim="form.MSRP"></b-form-input>
+							<b-form-group>
+
+							    <b-form-checkbox 
+							    	v-model="form.allowBackorder" 
+							    	:model.sync="form.allowBackorder">
+							    	Allow backorder?
+							    </b-form-checkbox>
+
 							</b-form-group>							
 
 							<b-form-group
@@ -218,12 +221,15 @@
 <script>
 import Datepicker from 'vuejs-datepicker';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
+import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
+import { mapState, mapActions } from 'vuex';
 export default {
 
 	components: {
 		Datepicker,
-		htmlEditor
+		htmlEditor,
+		vSelect
 	},
 
 	props: {
@@ -233,6 +239,20 @@ export default {
 		}
 	},
 
+	computed : {
+		sideBarTitle() {
+			return ( this.data.method === 'edit' ) ? `Edit SKU Details` : `Add SKU Details`;
+		},
+		...mapState({
+			parentConditions : state => Vue.options.filters
+													.denormalize( state.globalData.productConditions )
+													.filter( condition => !condition.parent.id ),
+			childConditions : state => Vue.options.filters
+													.denormalize( state.globalData.productConditions )
+													.filter( condition => condition.parent.id )
+		})
+	},
+
 	data() {
 		return {
 			form: new Form(),
@@ -240,7 +260,9 @@ export default {
 	},
 
 	methods: {
-
+		...mapActions([
+			"saveSKU"
+		]),
 		closePanel() {
 			Event.$emit( 'closePanel', {
 				skuDetails: this.form
@@ -248,6 +270,7 @@ export default {
 		},
 
 		saveDetails() {
+			this.saveSKU( this.form );
 			this.closePanel();
 		}
 
@@ -255,14 +278,6 @@ export default {
 
 	created() {
 		Object.assign( this.form, this.data.sku || {} );
-	},
-
-	computed: {
-
-		sideBarTitle() {
-			return ( this.data.method === 'edit' ) ? `Edit SKU Details` : `Add SKU Details`;
-		}
-
 	}
 
 }

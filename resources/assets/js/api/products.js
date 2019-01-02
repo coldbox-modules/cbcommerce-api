@@ -6,8 +6,9 @@ export const createProduct = api => ( data ) => {
 export const updateProduct = api => ( data ) => {
   delete data.media;
   delete data.startingPrice;
-  delete data.reviewSummary
-  return api.put( params.href.replace('/store/api/v1', ''), JSON.stringify( data ) );
+  delete data.reviewSummary;
+  data.includes = data.includes || "skus,categories";
+  return api.put( data.href.replace('/store/api/v1', ''), JSON.stringify( data ) );
 }
 
 export const deleteProduct = api => ( id ) => api.delete( '/products/' + id )
@@ -25,7 +26,14 @@ export const getSkuWithProduct = api => ( sku ) => {
 };
 
 export const createSKU = api => ( productId, data ) => api.post( '/products/'+id+'/skus', JSON.stringify( data ) );
-export const updateSKU = api => ( data ) => api.post( data.href.replace('/store/api/v1', ''), JSON.stringify( data ) );
+export const updateSKU = api => ( data ) => {
+  let payload = Object.assign( {}, data );
+  delete payload.media;
+  delete payload.originalData;
+  delete payload.FK_condition;
+  delete payload.FK_subCondition;
+  return api.put( payload.href.replace('/store/api/v1', ''), JSON.stringify( payload ) ); 
+}
 export const deleteSKU = api => ( id ) => api.delete( '/skus/' + id );
 
 // Product Media

@@ -30,6 +30,18 @@
 		        </b-col>
 
 		    </b-row>
+		    
+		    <b-form-group>
+
+			    <b-form-checkbox 
+			    	v-model="form.isActive" 
+			    	:model.sync="form.isActive"
+					:true-value="1"
+					:false-value="0">
+			    	Enable Product
+			    </b-form-checkbox>
+
+			</b-form-group>
 
 		    <b-row>
 
@@ -51,20 +63,6 @@
 		        </b-col>
 
 		    </b-row>
-
-		    
-		    <b-form-group>
-
-			    <b-form-checkbox 
-			    	v-model="form.isActive" 
-			    	:model.sync="form.isActive"
-					:true-value="1"
-					:false-value="0">
-			    	Enable Product
-			    </b-form-checkbox>
-
-			</b-form-group>
-
 
 		    <div role="tablist">
 
@@ -151,8 +149,11 @@
 								<b-table
 								    :items="currentProduct.skus"
 								    :fields="productSKUFields">
-								    <template slot="cost" slot-scope="data">
-								    	{{ data.item.cost | currency }}
+								    <template slot="modelNumber" slot-scope="data">
+								    	{{ data.item.modelNumber }}
+								    </template>
+								    <template slot="condition" slot-scope="data">
+								    	{{ data.item.FK_condition ? productConditions.resultsMap[ data.item.FK_condition ].name : 'New' }}
 								    </template>
 								    <template slot="basePrice" slot-scope="data">
 								    	{{ data.item.basePrice | currency }}
@@ -192,7 +193,7 @@
 </template>
 <script>
 import { vueSlideoutPanelService } from 'vue2-slideout-panel';
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import vSelect from 'vue-select';
 import moment from "moment";
 import VueImgLoader from 'vue-img-loader';
@@ -227,8 +228,8 @@ export default {
 			productImages     : [],
 			productSKUs       : [],
 			productSKUFields  : {
+				modelNumber : {},
 				condition: {},
-				cost     : {},
 				basePrice: {},
 				isActive : {},
 				actions: {}
@@ -243,7 +244,10 @@ export default {
 			"currentProductID",
 			"productsList",
 			"categoriesListArray"
-		])
+		]),
+		...mapState({
+			productConditions : state => state.globalData.productConditions
+		})
 
 	},
 
@@ -267,7 +271,7 @@ export default {
 			})
 		})
 
-		this.getCategories( { isNotNull : "parent", maxrows : 500 } );
+		this.getCategories( { excludes: "media", isNotNull : "parent", maxrows : 500 } );
 
 		this.getProduct( { id: this.$route.params.id, includes: "skus,categories" } )
 				.then( product => {

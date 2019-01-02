@@ -9,20 +9,13 @@
 </template>
 ``
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 import OrderSummary from "./orders/order-summary";
 export default {
 	name    : "Index",
 	components: {
 		OrderSummary
-	},
-	computed: {
-		...mapGetters([
-			"currentCategoryID",
-			"currentCategory",
-			"currentProduct"
-		])
 	},
 	methods : {
 

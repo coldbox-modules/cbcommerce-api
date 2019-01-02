@@ -43,7 +43,19 @@ component extends="BaseAPIHandler"{
 	// (POST) /cbc/api/v1/skus
 	function create( event, rc, prc ) secured="Product:Edit"{
 		
+		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
+			structDelete( rc, "discontinueOn" );
+		}
+
 		prc.sku = entityService.newEntity().fill( rc );
+
+		if( structKeyExists( rc, "condition" ) ){
+			prc.sku.condition().associate( rc.condition.id );
+		}
+
+		if( structKeyExists( rc, "subCondition" ) ){
+			prc.sku.subCondition().associate( rc.subCondition.id );
+		}
 
 		validateModelOrFail( prc.sku );
 
@@ -99,8 +111,27 @@ component extends="BaseAPIHandler"{
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
+		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
+			var nullDiscontinue = true;
+			structDelete( rc, "discontinueOn" );
+		} else {
+			var nullDiscontinue = false;
+		}
+
 		prc.sku.fill( rc );
+
+		if( nullDiscontinue ){
+			prc.sku.setDiscontinueOn( javacast( "null", 0 ) );
+		}
+
+		if( structKeyExists( rc, "condition" ) ){
+			prc.sku.condition().associate( rc.condition.id );
+		}
+
+		if( structKeyExists( rc, "subCondition" ) ){
+			prc.sku.subCondition().associate( rc.subCondition.id );
+		}
 
 		validateModelOrFail( prc.sku );
 
