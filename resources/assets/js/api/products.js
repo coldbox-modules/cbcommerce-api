@@ -52,8 +52,8 @@ export const updateProductMediaItemField = api => (href, field, fieldValue) => {
 export const deleteProductMediaItem = api => (item) => api.delete(item.href.replace('/store/api/v1', ''));
 
 // Product SKU Media
-export const createSKUMediaItem = api => (id, data) => api.post('/product-skus/' + id + '/media', JSON.stringify(data))
-export const getSKUMedia = api => (id, params) => api.get('/product-skus/' + id + '/media', { params: params || {} })
+export const createSKUMediaItem = api => (id, data) => api.post('/skus/' + id + '/media', JSON.stringify(data))
+export const getSKUMedia = api => (id, params) => api.get('/skus/' + id + '/media', { params: params || {} })
 export const updateSKUMediaItem = api => (data) => {
   delete data.originalData;
   delete data.FK_sku;
@@ -98,7 +98,8 @@ export const products = api => ( {
       updateMedia : updateProductMediaItem( api )
     },
     skus : {
-      update : updateSKU( api )
+      update : updateSKU( api ),
+      updateMedia : updateSKUMediaItem( api )
     }
   },
   patch: {
@@ -115,7 +116,8 @@ export const products = api => ( {
       deleteMedia : deleteProductMediaItem( api )
     },
     skus : {
-      delete : deleteSKU( api )
+      delete : deleteSKU( api ),
+      deleteMedia : deleteSKUMediaItem( api )
     }
   }
 } );

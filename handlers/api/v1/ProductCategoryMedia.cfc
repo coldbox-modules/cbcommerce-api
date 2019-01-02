@@ -112,11 +112,12 @@ component extends="BaseAPIHandler"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
+		
 		prc.categoryMedia.fill( rc );
 		validateModelOrFail( prc.categoryMedia );
 		prc.categoryMedia.save();
 		
-		var mediaAttachment = prc.categoryMedia.getMediaItem().update( rc );
+		var mediaAttachment = prc.categoryMedia.getMediaItem();
 		mediaAttachment.fill( rc );
 		validateModelOrFail( mediaAttachment );
 		mediaAttachment.save();		

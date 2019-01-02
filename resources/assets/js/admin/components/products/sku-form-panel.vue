@@ -73,6 +73,7 @@
 								<b-collapse id="skuImages" accordion="product-accordion" role="tabpanel">
 									<b-card-body>
 										<gallery-list-sortable 
+											:eventPrefix="eventPrefix"
 											:endpoint="`/store/api/v1/skus/${data.sku.id}/media`"
 											:images="data.sku.media"></gallery-list-sortable>
 
@@ -241,7 +242,7 @@ import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
 import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 export default {
 
 	components: {
@@ -275,12 +276,20 @@ export default {
 	data() {
 		return {
 			form: new Form(),
+			eventPrefix : "activeSKU_"
 		};
 	},
 
 	methods: {
 		...mapActions([
-			"saveSKU"
+			"saveSKU",
+			"deleteSKUImage",
+			"updateSKUImage",
+			"updateSKUImageField"
+
+		]),
+		...mapMutations([
+			"insertSKUImage"
 		]),
 		closePanel() {
 			this.$emit( 'closePanel', {
@@ -296,7 +305,29 @@ export default {
 	},
 
 	created() {
+		var self = this;
+		Event.$on( this.eventPrefix + "saveImageDetails", function( imageData ){
+			self.updateSKUImage( imageData );
+		} );
+		Event.$on( this.eventPrefix + "deleteMediaItem", function( imageData ){
+			self.deleteSKUImage( imageData );
+		} );
+		Event.$on( this.eventPrefix + "mediaUploadSuccess", function( imageData ){
+			console.log( imageData );
+			self.insertSKUImage( imageData );
+		});
+		Event.$on( this.eventPrefix + "onMediaSort", event => {
+			event.items.forEach( eventItem => {
+				this.updateSKUImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+			})
+		});
 		Object.assign( this.form, this.data.sku || {} );
+	},
+	beforeDestroy(){
+		Event.$off( this.eventPrefix + "saveImageDetails", this.listener );
+		Event.$off( this.eventPrefix + "deleteMediaItem", this.listener );
+		Event.$off( this.eventPrefix + "onMediaUploadSuccess", this.listener );
+		Event.$off( this.eventPrefix + "onMediaSort", this.listener );
 	}
 
 }

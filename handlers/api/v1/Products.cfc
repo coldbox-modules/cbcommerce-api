@@ -33,7 +33,12 @@ component extends="BaseAPIHandler"{
 						}
 						if( structKeyExists( transformed, "skus" ) ){
 							transformed.skus.each( function( sku ){
-								sku["href"] = '/store/api/v1/skus/' & sku.id
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
 							});
 						}
 						return transformed;
@@ -78,7 +83,12 @@ component extends="BaseAPIHandler"{
 						}
 						if( structKeyExists( transformed, "skus" ) ){
 							transformed.skus.each( function( sku ){
-								sku["href"] = '/store/api/v1/skus/' & sku.id
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
 							});
 						}
 						return transformed;
@@ -108,7 +118,12 @@ component extends="BaseAPIHandler"{
 						}
 						if( structKeyExists( transformed, "skus" ) ){
 							transformed.skus.each( function( sku ){
-								sku["href"] = '/store/api/v1/skus/' & sku.id
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
 							});
 						}
 						return transformed;
@@ -151,7 +166,12 @@ component extends="BaseAPIHandler"{
 						}
 						if( structKeyExists( transformed, "skus" ) ){
 							transformed.skus.each( function( sku ){
-								sku["href"] = '/store/api/v1/skus/' & sku.id
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
 							});
 						}
 						return transformed;

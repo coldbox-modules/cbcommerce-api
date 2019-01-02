@@ -16,8 +16,9 @@
 	      <template slot="cell" slot-scope="props">
 	        <gallery-item-sortable 
 	        	:image="props.item"
-            :index="props.index"
-            :with-button="true" />
+				:index="props.index"
+				:with-button="true"
+				:eventPrefix="eventPrefix" />
 	      </template>
 	    </grid>
 
@@ -58,7 +59,11 @@ export default {
 		endpoint : {
 			type : String,
 			default : null
-		}
+		},
+		eventPrefix : {
+			type : String,
+			default : ""
+		},
 	},
 	components: {
 		vueDropzone: vue2Dropzone,
@@ -76,19 +81,22 @@ export default {
 
 	methods: {
 	    sort( event ){
-				console.log( 'sort', event );
-				Event.$emit( "onMediaSort", event );
-			},
-			onSendFile( file, XHR, formData ){
-				Object.assign( formData, self.form );
-			},
-			onFileUploaded( file, response ){
-				Event.$emit( "mediaUploadSuccess", response );
-				this.$refs.galleryDropzone.removeFile( file );
-			},
-			onUploadQueueComplete(){
-				this.$emit( "closePanel" );
-			}
+			console.log( 'sort', event );
+			Event.$emit( this.eventPrefix + "onMediaSort", event );
+		},
+		onSendFile( file, XHR, formData ){
+			Object.assign( formData, self.form );
+		},
+		onFileUploaded( file, response ){
+			var self = this;
+			Event.$emit( this.eventPrefix + "mediaUploadSuccess", response );
+			setTimeout( function(){
+				self.$refs.galleryDropzone.removeFile( file );
+			}, 800 );
+		},
+		onUploadQueueComplete(){
+			this.$emit( "closePanel" );
+		}
 
  	}
 

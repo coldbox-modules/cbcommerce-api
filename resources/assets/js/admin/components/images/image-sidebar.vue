@@ -111,6 +111,10 @@ export default {
 		saveCallback: {
 			type : Function,
 			required : false
+		},
+		eventPrefix : {
+			type : String,
+			default : ""
 		}
 	},
 
@@ -126,7 +130,7 @@ export default {
 			this.$emit( "closePanel", {} );
 		},
 		saveImageDetails() {
-			Event.$emit( 'saveImageDetails', this.form );
+			Event.$emit( this.eventPrefix + 'saveImageDetails', this.form );
 			Object.assign( this.data.image, this.form );
 			this.closePanel();
 		}

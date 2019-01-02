@@ -38,12 +38,16 @@ export default {
     image: {
       type: Object,
       required: true
+    },
+    eventPrefix : {
+      type : String,
+      default : ""
     }
   },
 
   methods: {
     deleteItem() {
-      Event.$emit( 'deleteMediaItem', this.image );
+      Event.$emit( this.eventPrefix + 'deleteMediaItem', this.image );
     },
     showImageDetailPanel() {
       var thisImage = this.image;
@@ -52,6 +56,7 @@ export default {
         width    : '1020px',
         cssClass : 'slideout-panel-overall',
         props    : {
+            eventPrefix : this.eventPrefix,
             data: {
               image: thisImage
             }

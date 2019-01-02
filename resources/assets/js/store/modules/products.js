@@ -186,6 +186,50 @@ const actions = {
                 console.error(err);
                 reject("Error: The category image could not be deleted");
             })
+    } ),
+    updateSKUImage : ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().put.skus.updateMedia( image )
+            .then( XHR => {
+                context.commit( "updateSKUImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The SKU image could not be updated");
+            } )
+    } ),
+    updateSKUImageField : ( context, { href, field, value } ) => new Promise( ( resolve, reject ) => {
+        api().patch.skus.updateMediaField( href, field, value )
+            .then( XHR => {
+                context.commit( "updateSKUImage", XHR.data );
+                resolve( XHR.data );     
+            } )
+            .catch( err => {
+                console.error(err);
+				reject("Error: The SKU image could not be updated");
+            } )
+    } ),
+    createSKUImage: (context, image) => new Promise((resolve, reject) => {
+        api().post.skus.createMedia( image )
+            .then(XHR => {
+                context.commit( "insertSKUImage", XHR.data );
+                resolve(XHR.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The SKU image could not be updated");
+            })
+    }),
+    deleteSKUImage: ( context, image ) => new Promise( ( resolve, reject ) => {
+        api().delete.skus.deleteMedia( image )
+            .then(XHR => {
+                context.commit( "removeSKUImage", image );
+                resolve();
+            })
+            .catch(err => {
+                console.error(err);
+                reject("Error: The SKU image could not be deleted");
+            })
     } )
 };
 
@@ -219,6 +263,23 @@ const mutations = {
 	insertProductImage(state, mediaItem) {
 		state.activeProduct.media.push(mediaItem);
 		state.activeProduct.media.sort((a, b) => b.displayOrder - a.displayOrder);
+	},
+	updateSKUImage(state, mediaItem) {
+		let skuIndex = state.activeProduct.skus.findIndex(found => found.id === mediaItem.FK_sku);
+		let mediaIndex = state.activeProduct.skus[ skuIndex ].media.findIndex( found => found.id === mediaItem.id );
+		state.activeProduct.skus[skuIndex].media.slice( mediaIndex, 1, mediaItem );
+	},
+	removeSKUImage(state, mediaItem) {
+		let skuIndex = state.activeProduct.skus.findIndex(found => found.id === mediaItem.FK_sku);
+		let mediaIndex = state.activeProduct.skus[skuIndex].media.findIndex(found => found.id === mediaItem.id);
+		if (mediaIndex > -1) {
+			state.activeProduct.skus[skuIndex].media.splice(mediaIndex, 1);
+		}
+	},
+	insertSKUImage(state, mediaItem) {
+		let skuIndex = state.activeProduct.skus.findIndex(found => found.id === mediaItem.FK_sku);
+		state.activeProduct.skus[skuIndex].media.push(mediaItem);
+		state.activeProduct.skus[skuIndex].media.sort((a, b) => b.displayOrder - a.displayOrder);
 	},
 	updateSKU( state, sku ){
 		let skuIndex = state.activeProduct.skus.findIndex( found => found.id === sku.id );
