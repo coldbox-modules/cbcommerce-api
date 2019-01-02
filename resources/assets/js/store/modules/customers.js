@@ -15,10 +15,10 @@ const getters = {
 };
 
 const actions = {
-	getListOfCustomers: ({ commit }) =>
+	getListOfCustomers: ({ commit }, params) =>
 		new Promise((resolve, reject) => {
 			api()
-				.get.customers.list()
+				.get.customers.list( params )
 				.then(list => {
 					const customers = list;
 					if(!customers || customers.length === 0){

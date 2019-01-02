@@ -133,7 +133,7 @@ component {
                 handler    = "API.v1.Products"
             )
             .resources(
-                resource = "api/v1/product-skus/:skuId/media",
+                resource = "api/v1/skus/:skuId/media",
                 handler = "API.v1.ProductSKUMedia"
             )
             .resources(

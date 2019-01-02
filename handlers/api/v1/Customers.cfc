@@ -13,14 +13,14 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (GET) /store/api/v1/customers
 	*/
-	function index( event, rc, prc ){
-		var searchResponse = userService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
+	function index( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+		var searchResponse = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 		prc.response.setData(
 			fractal.builder()
-				.collection( searchResponse.getResult() )
+				.collection( searchResponse.collection )
 				.withIncludes( rc.includes )
 				.withTransformer( "UserTransformer@cbCommerce" )
-				.withPagination( searchResponse.getPagination() )
+				.withPagination( searchResponse.pagination )
 				.withItemCallback( function( transformed ) {
 					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
 					return transformed;
@@ -32,7 +32,7 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (GET) /store/api/v1/customers/:id
 	*/
-	function get( event, rc, prc ){
+	function get( event, rc, prc ) secured="Product:Edit,Order:Edit"{
 		prc.user = entityService.newEntity().getOrFail( event.getValue( "id", "" ) );
 		prc.response.setData(
 			fractal.builder()
@@ -50,8 +50,8 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (POST) /store/api/v1/customers
 	*/
-	function add( event, rc, prc ) {
-		prc.user = userService.new(
+	function add( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+		prc.user = entityService.new(
 			properties = rc,
 			ignoreEmpty = true
 		);
@@ -77,7 +77,7 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (PUT|PATCH) /store/api/v1/customers/:id
 	*/
-	function update( event, rc, prc ){
+	function update( event, rc, prc ) secured="Product:Edit,Order:Edit"{
 		prc.user = entityService.newEntity().getOrFail( event.getValue( "id", "" ) );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -103,7 +103,7 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (DELETE) /store/api/v1/customers/:id
 	*/
-	function delete( event, rc, prc ){
+	function delete( event, rc, prc ) secured="System:Edit"{
 
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 		prc.user.delete();

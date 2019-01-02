@@ -42,17 +42,16 @@ component extends="BaseAPIHandler"{
 		try{
 			var mediaAttachment = getInstance( "Media@cbCommerce" )
 								.loadFile(
-									fileInput="uploadFile",
-									pathExtension="products/" & product.getId()
+									fileInput="file",
+									pathExtension="products/" & sku.getProduct().getId() & "/skus/" & sku.getId()
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttchment.save();
+			mediaAttachment.save();
 
 			prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).fill( rc );
 			prc.skuMedia.mediaItem().associate( mediaAttachment );
 			prc.skuMedia.sku().associate( sku );
-
 			prc.skuMedia.save();
 
 			validateModelOrFail( prc.skuMedia );
@@ -61,7 +60,9 @@ component extends="BaseAPIHandler"{
 		} catch( any e ){
 			if( !isNull( mediaAttachment ) ){
 				var mediaPath = expandPath( mediaAttachment.getFileLocation() );
-				fileDelete( mediaPath );
+				if( fileExists( mediaPath ) ){
+					fileDelete( mediaPath );
+				}
 				if( mediaAttachment.isLoaded() ){
 					mediaAttachment.delete();
 				}

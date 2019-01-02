@@ -64,6 +64,23 @@
 									:model.sync="form.conditionDescription"></html-editor>
 							</b-form-group>	
 
+
+							<b-card no-body class="mb-1" v-if="data.sku.media">
+
+								<b-card-header header-tags="header" class="p-1" role="tab">
+									<b-btn block href="#" v-b-toggle.skuImages>Images</b-btn>
+								</b-card-header>
+								<b-collapse id="skuImages" accordion="product-accordion" role="tabpanel">
+									<b-card-body>
+										<gallery-list-sortable 
+											:endpoint="`/store/api/v1/skus/${data.sku.id}/media`"
+											:images="data.sku.media"></gallery-list-sortable>
+
+									</b-card-body>
+								</b-collapse>
+
+							</b-card>
+
 							<b-form-group
 								label="MSRP"
 								label-for="MSRP">
@@ -158,7 +175,7 @@
 							<hr />
 
 							<b-form-group
-								label="Packaged Weight"
+								label="Packaged Weight (lbs)"
 								label-for="packagedWeight">
 								<b-form-input 
 									type="text"
@@ -168,7 +185,7 @@
 							</b-form-group>							
 
 							<b-form-group
-								label="Packaging Dimensions (X)"
+								label="Packaging Width (in)"
 								label-for="packagingX">
 								<b-form-input 
 									type="text"
@@ -178,7 +195,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Packaging Dimensions (Y)"
+								label="Packaging Height (in)"
 								label-for="packagingY">
 								<b-form-input 
 									type="text"
@@ -188,7 +205,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Packaging Dimensions (Z)"
+								label="Packaging Depth (in)"
 								label-for="packagingZ">
 								<b-form-input 
 									type="text"
@@ -201,7 +218,7 @@
 								id="saveDetails"
 								class="btn btn-success" 
 								@click="saveDetails">
-								Save Details
+								Save SKU
 							</button>
 
 						</b-col>
@@ -221,6 +238,7 @@
 <script>
 import Datepicker from 'vuejs-datepicker';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
+import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
 import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
 import { mapState, mapActions } from 'vuex';
@@ -229,6 +247,7 @@ export default {
 	components: {
 		Datepicker,
 		htmlEditor,
+		galleryListSortable,
 		vSelect
 	},
 
@@ -264,7 +283,7 @@ export default {
 			"saveSKU"
 		]),
 		closePanel() {
-			Event.$emit( 'closePanel', {
+			this.$emit( 'closePanel', {
 				skuDetails: this.form
 			} );
 		},

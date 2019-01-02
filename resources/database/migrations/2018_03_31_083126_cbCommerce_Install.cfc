@@ -350,7 +350,7 @@ component {
 
 			table.uuid( "FK_sku" )
 		    		.references( "id" )
-		    		.onTable( "cbc_skus" );
+		    		.onTable( "cbc_SKUs" );
 
 			table.uuid( "FK_inventoryLocation" )
 		    		.references( "id" )
@@ -506,7 +506,7 @@ component {
 
 			table.uuid( "FK_sku" )
 		    		.references( "id" )
-		    		.onTable( "cbc_skus" )
+		    		.onTable( "cbc_SKUs" )
 					.onDelete( "CASCADE" );
 
 			table.uuid( "FK_wishlist" )
@@ -568,7 +568,7 @@ component {
 
 			table.uuid( "FK_sku" )
 		    		.references( "id" )
-		    		.onTable( "cbc_skus" )
+		    		.onTable( "cbc_SKUs" )
 					.onDelete( "CASCADE" );
 
 		} );

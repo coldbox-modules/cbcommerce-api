@@ -33,7 +33,7 @@ const actions = {
 		api()
 			.put.products.update( payload )
 			.then(XHR => {
-				commit('setActiveProduct', XHR.data);
+				context.commit('setActiveProduct', XHR.data);
 				resolve(XHR.data);
 			})
 			.catch(err => {
@@ -48,7 +48,7 @@ const actions = {
 		api()
 			.put.skus.update( payload )
 			.then(XHR => {
-				commit('updateSKU', XHR.data);
+				context.commit('updateSKU', XHR.data);
 				resolve(XHR.data);
 			})
 			.catch(err => {
@@ -220,7 +220,7 @@ const mutations = {
 		state.activeProduct.media.push(mediaItem);
 		state.activeProduct.media.sort((a, b) => b.displayOrder - a.displayOrder);
 	},
-	updateSku( state, sku ){
+	updateSKU( state, sku ){
 		let skuIndex = state.activeProduct.skus.findIndex( found => found.id === sku.id );
 		if( skuIndex > -1 ){
 			state.activeProduct.skus.slice( skuIndex, 1, sku );

@@ -149,7 +149,9 @@ component   table="cbc_media"
 
 	public function delete(){
 		var filePath = expandPath( this.getFileLocation() );
-		fileDelete( filePath );
+		if( fileExists( filePath ) ){
+			fileDelete( filePath );
+		}
 		return super.delete();
 	}
 

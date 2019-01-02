@@ -33,8 +33,9 @@ component extends="BaseModelTransformer"{
     }
 
     function includeParent( activeEntity ){
+        var parent = activeEntity.getParent(); 
         return item(
-            activeEntity.getParent(),
+            parent.isLoaded() ? parent : javacast( "null", 0 ),
             wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" )
         );
     }
