@@ -261,12 +261,10 @@ export default {
 			self.deleteProductImage( imageData );
 		} );
 		Event.$on( "mediaUploadSuccess", function( imageData ){
-			console.log( imageData );
 			self.insertProductImage( imageData );
 		});
 		Event.$on( "onMediaSort", event => {
 			event.items.forEach( eventItem => {
-				console.log( 'sortOrderUpdate', { file: eventItem.item.originalFileName, href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 				this.updateProductImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 			})
 		})
@@ -315,8 +313,6 @@ export default {
     	submitContent: function(){
 
 			var self = this;
-			
-			console.log( this.form );
 
 			this.saveProduct( this.form ).then( response => {
 				Vue.set( self, "form", new Form( response ) );

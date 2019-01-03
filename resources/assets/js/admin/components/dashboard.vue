@@ -34,39 +34,6 @@
 
 		<b-row>
 
-			<b-col cols="6">
-
-				<b-table
-				    stacked
-				    caption-top
-				    :items="searchTerms">
-				    <template slot="table-caption">Popular Search Terms</template>
-				</b-table>
-
-			</b-col>
-
-			<b-col cols="6">
-
-				<b-table
-				    stacked
-				    :items="productsListArray"
-				    :fields="popularProductsFields">
-				    <template slot="table-caption">Popular Products</template>
-				    <template slot="name" slot-scope="data">
-				        <router-link 
-				            @click.stop
-				            :to="{ name: 'productForm', params: { id: data.item.id } }">
-				            {{ data.item.name }}
-				        </router-link>
-				    </template>
-				</b-table>
-
-			</b-col>
-
-		</b-row>
-
-		<b-row>
-
 			<b-col cols="12">
 				<order-summary></order-summary>
 			</b-col>
@@ -125,6 +92,40 @@
 			</b-col>
 
 		</b-row>
+
+		<!-- <b-row>
+
+			<b-col cols="6">
+
+				<b-table
+				    stacked
+				    caption-top
+				    :items="searchTerms">
+				    <template slot="table-caption">Popular Search Terms</template>
+				</b-table>
+
+			</b-col>
+
+			<b-col cols="6">
+
+				<b-table
+				    stacked
+				    :items="productsListArray"
+				    :fields="popularProductsFields">
+				    <template slot="table-caption">Popular Products</template>
+				    <template slot="name" slot-scope="data">
+				        <router-link 
+				            @click.stop
+				            :to="{ name: 'productForm', params: { id: data.item.id } }">
+				            {{ data.item.name }}
+				        </router-link>
+				    </template>
+				</b-table>
+
+			</b-col>
+
+		</b-row> -->
+
 
 	</div>
 

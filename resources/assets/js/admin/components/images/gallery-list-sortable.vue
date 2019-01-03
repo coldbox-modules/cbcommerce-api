@@ -81,7 +81,6 @@ export default {
 
 	methods: {
 	    sort( event ){
-			console.log( 'sort', event );
 			Event.$emit( this.eventPrefix + "onMediaSort", event );
 		},
 		onSendFile( file, XHR, formData ){

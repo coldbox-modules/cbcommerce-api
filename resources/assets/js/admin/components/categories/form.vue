@@ -155,12 +155,10 @@ export default {
 			self.deleteCategoryImage( imageData );
 		} );
 		Event.$on( "mediaUploadSuccess", function( imageData ){
-			console.log( imageData );
 			self.insertCategoryImage( imageData );
 		});
 		Event.$on( "onMediaSort", event => {
 			event.items.forEach( eventItem => {
-				console.log( 'sortOrderUpdate', { file: eventItem.item.originalFileName, href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 				this.updateCategoryImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 			})
 		})
@@ -192,12 +190,6 @@ export default {
 			"updateCategoryImageField"
 		]),
 		handleSubmit: function(){
-
-			if( this.categoryImage ){
-				console.log('attempted upload');
-				console.log( this.categoryImage );
-			}
-
 			this.isSending         = true;
 			this.submitContent();
     	},

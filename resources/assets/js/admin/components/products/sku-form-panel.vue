@@ -240,6 +240,7 @@
 import Datepicker from 'vuejs-datepicker';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
+import customerForm from "@cbCommerce/admin/components/customers/form";
 import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
 import { mapState, mapActions, mapMutations } from 'vuex';
@@ -313,7 +314,6 @@ export default {
 			self.deleteSKUImage( imageData );
 		} );
 		Event.$on( this.eventPrefix + "mediaUploadSuccess", function( imageData ){
-			console.log( imageData );
 			self.insertSKUImage( imageData );
 		});
 		Event.$on( this.eventPrefix + "onMediaSort", event => {
