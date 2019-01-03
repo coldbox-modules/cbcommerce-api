@@ -16,6 +16,7 @@ component   table="cbc_products"
 	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
 	property name="displayOrder" type="numeric" default=0;
+	property name="hitCount" type="numeric" default=0;
 	// an external reference id used for syncing data between systems
 	property name="externalId" type="string";
 

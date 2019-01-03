@@ -55,7 +55,8 @@ export default{
     methods : {
         ...mapActions([
             "getCategory",
-            "getCategoryProducts"
+            "getCategoryProducts",
+            "updateCategoryViews"
         ]),
         imageProgress: function( instance, image ){
             var result = image.isLoaded ? 'loaded' : 'broken';
@@ -64,7 +65,10 @@ export default{
     created(){
         var self = this;
         Vue.set( self, "isLoading", true );
-        this.getCategory( self.categoryId ).then( category => self.getCategoryProducts( category.id ).then( products => { Vue.set( self, "isLoading", false ) } ) )
+        this.getCategory( self.categoryId ).then( category => {
+            self.updateCategoryViews( self.categoryId );
+            return self.getCategoryProducts( category.id ).then( products => { Vue.set( self, "isLoading", false ) } )
+        } );
     }
 
 }

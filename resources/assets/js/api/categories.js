@@ -12,6 +12,7 @@ export const updateCategory = api => (data) => {
   return api.put('/product-categories/' + data.id, JSON.stringify(data));
 };
 export const deleteCategory = api => (id) => api.delete('/product-categories/' + id);
+export const trackCategoryView = api => (id) => api.post('/statistics/categories/' + id, JSON.stringify({}));
 // Category Media
 export const createCategoryMediaItem = api => (id, data) => api.post('/product-categories/' + id + '/media', JSON.stringify(data))
 export const getCategoryMedia = api => ( id, params ) => api.get( '/product-categories/' + id + '/media', { params: params || {} } )
@@ -38,7 +39,8 @@ export const categories = api => ({
   post: {
     categories: {
       save: createCategory(api),
-      createMedia: createCategoryMediaItem(api)
+      createMedia: createCategoryMediaItem(api),
+      viewed: trackCategoryView( api )
     }
   },
   put : {

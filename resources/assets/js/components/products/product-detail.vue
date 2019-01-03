@@ -328,7 +328,8 @@ export default {
             "setCurrentProduct",
             "getListOfProducts",
             "getProductReviews",
-            "getProduct"
+            "getProduct",
+            "updateProductViews"
         ]),
 
         // TODO: this can be removed once the API and persistence is in place
@@ -364,7 +365,7 @@ export default {
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
-            self.getProduct( self.productId );
+            self.getProduct( self.productId ).then( product => self.updateProductViews( self.productId ) );
         },
 
         imageProgress: function( instance, image ){

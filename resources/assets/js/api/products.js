@@ -17,6 +17,8 @@ export const getProduct = api => ( id, params ) => {
   return api.get( '/products/' + id, { params : params || { includes : "skus" } } );
 };
 
+export const trackProductView = api => ( id ) => api.post( '/statistics/products/' + id, JSON.stringify({}) );
+
 export const getProductReviews = api => ( id, params ) => {
   return api.get( '/products/' + id + '/reviews', { params : params || null } );
 };
@@ -24,6 +26,7 @@ export const getProductReviews = api => ( id, params ) => {
 export const getSkuWithProduct = api => ( sku ) => {
   return api.get( '/skus/' + sku, { params : { includes : "product" } } );
 };
+
 
 export const createSKU = api => ( productId, data ) => api.post( '/products/'+id+'/skus', JSON.stringify( data ) );
 export const updateSKU = api => ( data ) => {
@@ -85,7 +88,8 @@ export const products = api => ( {
   post: {
     products: {
       save: createProduct( api ),
-      createMedia : createProductMediaItem( api )
+      createMedia : createProductMediaItem( api ),
+      viewed: trackProductView( api )
     },
     skus : {
       create : createSKU( api ),

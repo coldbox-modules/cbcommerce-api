@@ -26,6 +26,7 @@ const getters = {
 };
 
 const actions = {
+	updateProductViews: ( {}, id ) => api().post.products.viewed(id),
 	saveProduct: (context, product) => new Promise((resolve, reject) => {
 		let payload = Object.assign( {}, product );
 		let sanitize = ["originalData","skus","media"];

@@ -13,6 +13,7 @@ const getters = {
     categoriesMap : ( state, getters, rootState ) => state.categories
 };
 const actions = {
+	updateCategoryViews: ( {}, id ) => api().post.categories.viewed(id),
     getCategories: ({ commit, rootState }, params) => new Promise( ( resolve, reject ) => {
         api().get.categories.list( params )
             .then(XHR => {

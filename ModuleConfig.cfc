@@ -20,7 +20,8 @@ component {
         "cffractal",
         "cbstorages",
         "cbsecurity",
-        "BCrypt"
+        "BCrypt",
+        "cbcsrf"
     ];
 
 	/**
@@ -123,6 +124,10 @@ component {
                     "GET" : "get"
                 })
                 .toHandler( "API.v1.Cart" );
+
+        //statistical routes
+        router.route( "api/v1/statistics/products/:id" ).withAction({ "POST" : "productView" } ).toHandler( "API.v1.Statistics");
+        router.route( "api/v1/statistics/categories/:id" ).withAction({ "POST" : "categoryView" } ).toHandler( "API.v1.Statistics");
 
         // Resource Routes ( auto-magic method conventions )
         router

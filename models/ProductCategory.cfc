@@ -11,6 +11,7 @@ component   table="cbc_productCategories"
 	property name="description" type="string" default="";
 	property name="displayOrder" type="numeric" default=0;
     property name="isFeatured" type="boolean" default=0;
+	property name="hitCount" type="numeric" default=0;
 
 	//Foreign Keys
 	property name="FK_parent";
