@@ -32,7 +32,7 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (GET) /store/api/v1/customers/:id
 	*/
-	function get( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+	function get( event, rc, prc ) secured{
 		prc.user = entityService.newEntity().getOrFail( event.getValue( "id", "" ) );
 		prc.response.setData(
 			fractal.builder()
@@ -50,7 +50,7 @@ component extends="BaseAPIHandler"  secured{
 	/**
 	* (POST) /store/api/v1/customers
 	*/
-	function add( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+	function add( event, rc, prc ){
 		prc.user = entityService.new(
 			properties = rc,
 			ignoreEmpty = true

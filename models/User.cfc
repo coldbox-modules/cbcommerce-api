@@ -38,6 +38,13 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
         return assignAttribute( "password", encryptionService.bCrypt( value ) );
     }
 
+    this.constraints = {
+		firstName : { required : true },
+		lastName : { required : true },
+        password : { required : true },
+        email : { required : true, validator : "UniqueUserValidator@cbCommerce" }
+	};
+
     function hasPermission( permission ){
       if( !isLoaded() ) return false;
       if( this.isInRole( "Administrator" ) ) return true;
