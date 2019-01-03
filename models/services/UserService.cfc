@@ -58,8 +58,7 @@ component extends="BaseQuickEntityService" singleton{
     }
 
     public function retrieveUserByUsername( required string username ){
-        var located = newEntity().where( 'email', arguments.username ).first();
-        if( located.isLoaded() ) return located;
+        return newEntity().where( 'email', arguments.username ).first();
     }
 
     public function retrieveUserById( required string id ){

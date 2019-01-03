@@ -13,12 +13,12 @@ component{
                                                 .where( 'email', sessionUser.getEmail() )
                                                 .first();
 
-                if( cbCommerceUser.isLoaded() ){
+                if( !isNull( cbCommerceUser ) ){
                     auth.login( cbCommerceUser );
                 } else {
                     var adminRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Administrator" ).first();
                     
-                    if( !adminRole.isLoaded() ){
+                    if( isNull( adminRole ) ){
                         throw(
                             type = "cbCommerce.MissingRoleException",
                             message = "An administrator role could not be found in the cbCommerce database"

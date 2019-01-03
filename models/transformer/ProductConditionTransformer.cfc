@@ -15,9 +15,8 @@ component extends="BaseModelTransformer"{
     }
 
     function includeParent( activeEntity ){
-        var parent = activeEntity.getParent()
         return item(
-            parent.isLoaded() ? parent : javacast( "null", 0 ),
+            activeEntity.getParent(),
             wirebox.getInstance( "ProductConditionTransformer@cbCommerce" )
         );
     }

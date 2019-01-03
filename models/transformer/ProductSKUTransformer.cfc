@@ -32,9 +32,8 @@ component extends="BaseModelTransformer"{
     }
 
     function includeConsignee( activeEntity ){
-        var consignee = activeEntity.getConsignee();
         return item(
-            consignee.isLoaded() ? consignee : javacast( "null", 0 ),
+            activeEntity.getConsignee(),
             wirebox.getInstance( "UserTransformer@cbCommerce" )
         );
     }
@@ -86,17 +85,15 @@ component extends="BaseModelTransformer"{
     }
 
     function includeCondition( activeEntity ){
-        var condition = activeEntity.getCondition();
         return item(
-            condition.isLoaded() ? condition : javacast( "null", 0 ),
+            activeEntity.getCondition(),
             wirebox.getInstance( "ProductConditionTransformer@cbCommerce" )
         );
     }
 
     function includeSubCondition( activeEntity ){
-        var condition = activeEntity.getSubCondition();
         return item(
-            condition.isLoaded() ? condition : javacast( "null", 0 ),
+            activeEntity.getSubCondition(),
             wirebox.getInstance( "ProductConditionTransformer@cbCommerce" )
         );
     }
