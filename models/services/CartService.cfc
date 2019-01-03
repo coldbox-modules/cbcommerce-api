@@ -155,8 +155,8 @@ component extends="BaseQuickEntityService" singleton{
         }
 
         //persist the user if the cart was created before assigning
-        if( auth.isLoggedIn() && isNull( activeCart.getUser() ) ){
-            activeCart.setUser( auth.user() );
+        if( auth.isLoggedIn() && isNull( activeCart.getCustomer() ) ){
+            activeCart.customer().associate( auth.user() );
             activeCart.save();
         }
 
