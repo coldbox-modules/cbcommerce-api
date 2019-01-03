@@ -44,6 +44,7 @@
     "tiny-cookie": "^2.1.2",
     "v-tooltip": "^2.0.0-rc.31",
     "v-viewer": "^1.0.1",
+    "vee-validate": "^2.0.9",
     "vue": "^2.4.2",
     "vue-currency-filter": "^2.2.6",
     "vue-images-loaded": "^1.1.2",
