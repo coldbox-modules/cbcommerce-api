@@ -7,8 +7,7 @@ component {
 
         prc.assetBag.addJavascriptToFooter("https://js.stripe.com/v3/");
 
-        prc.globalData.stripeKey = getModuleSettings( "stripecfml" ).publishableKey;
-
+        prc.globalData[ "stripeKey" ] = getModuleSettings( "stripecfml" ).publishableKey;
         event.setView( "checkout/index" );
     }
 
