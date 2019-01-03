@@ -233,7 +233,7 @@
                     <a href="/shopping-cart" class="btn-default-1">Back to Cart</a>
                     <a href="#payment"
                     	class="btn btn-default-1"
-                    	@click.prevent="validateStep( 1 )">
+                    	@click.prevent="validateShipping()">
 
                     	Next
                     </a>
@@ -504,7 +504,7 @@
                     <a
                     	href="#review"
                     	class="btn btn-default-1"
-                    	@click.prevent="validateStep(2)">
+                    	@click.prevent="validatePayment()">
 
                     	Next
                     </a>
@@ -524,14 +524,14 @@
 					</div>
 
                     <hr>
-                    <a href="#" class="btn-default-1">Place Order</a>
+                    <a href="#" class="btn-default-1" @click="purchase">Place Order</a>
                 </div>
             </div>
     	</div>
 
     	<div class="col-sm-3">
 	     	<div class="cart-buy-box">
-	     		<button class="btn btn-animate btn-fluid" @click="purchase">Place Order</button><br/><br/>
+	     		<button class="btn btn-animate btn-fluid" @click="purchase" :disabled="!isValidated.payment && !isValidated.payment">Place Order</button><br/><br/>
 	     		<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
 
 		     	<div class="cart-summary">
@@ -568,6 +568,7 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import api from "@cbCommerce/api/index";
 import imagesLoaded from 'vue-images-loaded';
 import CartItem from './cart-item';
 
@@ -618,7 +619,32 @@ export default {
             sameAddress: false,
             selectedPayment: {
             	nameOnCard: ""
-            }
+            },
+            token: null
+        }
+    },
+    computed: {
+    	...mapState( {
+    		globalData   : 'globalData'
+    	}),
+        ...mapGetters([
+            "cartProducts"
+        ]),
+        subtotal: function(){
+        	var subTotal = 0;
+        	for( var i in this.cartProducts ){
+        		let itemPrice = this.cartProducts[ i ].sku.basePrice;
+        		let qty = this.cartProducts[ i ].quantity;
+
+        		subTotal = subTotal + ( itemPrice * qty )
+        	}
+        	return subTotal;
+        },
+        shippingCost: function(){
+        	return 0;
+        },
+        tax: function(){
+        	return 0;
         }
     },
 
@@ -643,30 +669,7 @@ export default {
 
     destroyed() {},
 
-    computed: {
-    	...mapState( {
-    		globalData   : 'globalData'
-    	}),
-        ...mapGetters([
-            "cartProducts"
-        ]),
-        subtotal(){
-        	var subTotal = 0;
-        	for( var i in this.cartProducts ){
-        		let itemPrice = this.cartProducts[ i ].sku.basePrice;
-        		let qty = this.cartProducts[ i ].quantity;
 
-        		subTotal = subTotal + ( itemPrice * qty )
-        	}
-        	return subTotal;
-        },
-        shippingCost(){
-        	return 0;
-        },
-        tax(){
-        	return 0;
-        }
-    },
 
     methods: {
 
@@ -678,9 +681,6 @@ export default {
             "addProductToWishlist",
             "addProductToComparisonList"
         ]),
-        buildPaymentForm( stripe ){
-        	console.log( elements );
-        },
         getStripe(){
         	return Stripe( this.globalData.stripeKey );
         },
@@ -730,16 +730,6 @@ export default {
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';
         },
-        validateAddress( address ){
-        	var isValid = false;
-        	for( var i in address ){
-	    		if( address[ i ] == "" && i != "address2"){
-		        	return false;
-		        }
-		        isValid = true;
-	    	}
-        	return isValid;
-        },
         validateShipping(){
         	var self = this;
         	this.$validator.validate('form-shipping.*').then((result) => {
@@ -753,36 +743,44 @@ export default {
         },
         validatePayment(){
         	var self = this;
-        	this.$validator.validate('form-payment.*').then((result) => {
-		        if (result) {
-		          self.isValidated.payment = true;
-		          self.activateTab('review');
-		        } else {
-		        	self.isValidated.payment = false;
-		        }
+
+        	if( self.sameAddress ){
+	    		self.selectedBillingAddress = Object.assign({}, self.selectedShippingAddress);
+	    	}
+
+	    	var billingData = self.selectedBillingAddress;
+
+			// Gather additional customer data we may have collected in our form.
+			var additionalData = {
+	            name: self.selectedPayment.nameOnCard ? self.selectedPayment.nameOnCard : undefined,
+	            address_line1: billingData.address1 ? billingData.address1 : undefined,
+	            address_line2: billingData.address2 ? billingData.address1 : undefined,
+	            address_city: billingData.city ? billingData.city : undefined,
+	            address_state: billingData.province ? billingData.province : undefined,
+	            address_zip: billingData.postalCode ? billingData.postalCode : undefined,
+        	};
+
+        	stripe.createToken( cardNumber, additionalData ).then( function( result ) {
+		      	// Access the token with result.token
+		      	if ( result.error ) {
+	  				self.hasCardErrors = true;
+	  				self.cardErrorMessage = result.error.message;
+	  				self.isValidated.payment = false;
+	  			} else {
+	  				Vue.set( self, 'token', result.token );
+	  				self.$validator.validate('form-payment.*').then((result) => {
+				    	if ( result && self.token != null ) {
+				          self.isValidated.payment = true;
+				          self.activateTab('review');
+				        } else {
+				        	self.isValidated.payment = false;
+				        }
+				    });
+	  			}
 		    });
         },
-        validateStep( step ){
-			var proceed = false;
-
-			switch( step ) {
-			    case 1:
-				    this.validateShipping();
-			    	break;
-			    case 2:
-			    	if( this.sameAddress ){
-			    		this.selectedBillingAddress = Object.assign({}, this.selectedShippingAddress);
-			    	}
-			    	this.validatePayment();
-			    	break;
-			    default:
-			        proceed = false;
-			}
-			return proceed;
-		},
 		registerElements( elements ){
 			let self = this;
-			console.log( elements );
 			// Listen for errors from each Element, and show error messages in the UI.
 		    elements.forEach( function ( element ) {
 		        element.on( 'change', function ( event ) {
@@ -801,14 +799,11 @@ export default {
 
 		    });
 		},
-		purchase(){
+		getToken(){
 			let self = this;
 
-			if( self.sameAddress ){
-				var billingData = self.selectedShippingAddress;
-			} else {
-				var billingData = self.selectedBillingAddress;
-			}
+			var billingData = self.selectedBillingAddress;
+
 			// Gather additional customer data we may have collected in our form.
 			var additionalData = {
 	            name: self.selectedPayment.nameOnCard ? self.selectedPayment.nameOnCard : undefined,
@@ -819,15 +814,35 @@ export default {
 	            address_zip: billingData.postalCode ? billingData.postalCode : undefined,
         	};
 
-			stripe.createToken( cardNumber, additionalData ).then( function( result ) {
+        	stripe.createToken( cardNumber, additionalData ).then( function( result ) {
 		      	// Access the token with result.token
 		      	if ( result.error ) {
 	  				self.hasCardErrors = true;
 	  				self.cardErrorMessage = result.error.message;
 	  			} else {
-	  				console.log( result.token );
+	  				Vue.set( self, 'token', result.token );
 	  			}
 		    });
+
+		},
+		purchase(){
+			let self = this;
+			var payload = {};
+
+	      	if ( self.token != null && isValidated.shipping && isValidated.payment ) {
+  				payload.source = self.token.id;
+  				payload.amount = ( self.subtotal + self.shippingCost + self.tax ) * 100;
+  				new Promise( ( resolve, reject ) => {
+  					api().post.checkout.charge( payload )
+					.then( XHR => {
+						resolve( XHR.data );
+					})
+					.catch(err => {
+						console.error(err);
+						reject("Error" );
+					});
+  				});
+  			}
 		}
 
     }
