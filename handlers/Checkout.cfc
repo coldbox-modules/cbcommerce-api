@@ -4,6 +4,10 @@ component {
 	function index( event, rc, prc ){
         // Tell ColdBox to use the ContentBox theme
         cbHelper.prepareUIRequest( "modules" );
+
+        prc.assetBag.addJavascriptToFooter("https://js.stripe.com/v3/");
+
+        prc.globalData[ "stripeKey" ] = getModuleSettings( "stripecfml" ).publishableKey;
         event.setView( "checkout/index" );
     }
 

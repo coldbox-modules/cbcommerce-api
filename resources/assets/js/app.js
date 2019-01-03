@@ -5,6 +5,7 @@ import 'owl.carousel/dist/owl.carousel.min.js';
 import VueTruncate from 'vue-truncate-filter';
 import VTooltip from 'v-tooltip';
 import VueCurrencyFilter from "vue-currency-filter";
+import VeeValidate from "vee-validate";
 import Vuex from 'vuex';
 
 import createStore from "@cbCommerce/store/index";
@@ -39,6 +40,8 @@ Vue.use( VueCurrencyFilter,
 		symbolSpacing     : false
 	}
 );
+
+Vue.use(VeeValidate);
 
 export default new Vue({
     el: "#app",

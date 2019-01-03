@@ -93,6 +93,12 @@ component {
                 .toHandler( "Media" );
 
         // API Routing
+        router.route( "api/v1/checkout" )
+                .withAction( {
+                    POST : "process"
+                } )
+                .toHandler( "API.v1.Checkout" );
+
         router.route( "api/v1/authentication" )
                 .withAction( {
                     GET : "get",

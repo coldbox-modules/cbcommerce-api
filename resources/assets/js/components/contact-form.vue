@@ -8,10 +8,10 @@
 		            <div class="form-group">
 		                <label for="inputFirstName" class="control-label">Name:<span class="text-error">*</span></label>
 		                <div>
-		                    <input 
+		                    <input
 		                    	required="required"
-		                    	type="text" 
-		                    	class="form-control" 
+		                    	type="text"
+		                    	class="form-control"
 		                    	id="inputName"
 		                    	v-model="form.name" />
 		                </div>
@@ -22,10 +22,10 @@
 		            <div class="form-group">
 		                <label for="inputLastName" class="control-label">Email:<span class="text-error">*</span></label>
 		                <div>
-		                    <input 
+		                    <input
 		                    	required="required"
-		                    	type="email" 
-		                    	class="form-control" 
+		                    	type="email"
+		                    	class="form-control"
 		                    	id="inputEmail"
 		                    	v-model="form.email" />
 		                </div>
@@ -35,10 +35,10 @@
 		            <div class="form-group">
 		                <label for="inputSubject" class="control-label">Phone:<span class="text-error">*</span></label>
 		                <div>
-		                    <input 
+		                    <input
 		                    	required="required"
-		                    	type="text" 
-		                    	class="form-control" 
+		                    	type="text"
+		                    	class="form-control"
 		                    	id="inputPhone"
 		                    	v-model="form.phone" />
 		                </div>
@@ -48,9 +48,9 @@
 		            <div class="form-group">
 		                <label for="inputText" class="control-label">Message:<span class="text-error">*</span></label>
 		                <div>
-		                    <textarea 
-		                    	required="required" 
-		                    	class="form-control" 
+		                    <textarea
+		                    	required="required"
+		                    	class="form-control"
 		                    	id="inputText"
 		                    	v-model="form.message"></textarea>
 		                </div>
@@ -60,13 +60,13 @@
 		    <button type="submit" class="btn btn-secondary btn-lg">Send</button>
 		</form>
 
-		<div 
+		<div
 			v-if="isSending && !isSent"
-			class="progress-bar" 
-			role="progressbar" 
-			aria-valuenow="100" 
-			aria-valuemin="0" 
-			aria-valuemax="100" 
+			class="progress-bar"
+			role="progressbar"
+			aria-valuenow="100"
+			aria-valuemin="0"
+			aria-valuemax="100"
 			style="width: 100%">
 	        <span class="sr-only">Sending your message</span>
 	    </div>
@@ -93,7 +93,7 @@ export default {
 				phone  : '',
 				message: ''
         	},
-			errors   : [],
+			contactErrors   : [],
 			isSending: false,
 			isSent   : false
         }
@@ -135,7 +135,7 @@ export default {
 					console.log( response );
 				} )
 				.catch( ( error ) => {
-					this.errors = error.response.data.message;
+					this.contactErrors = error.response.data.message;
 				} );
 			*/
 
