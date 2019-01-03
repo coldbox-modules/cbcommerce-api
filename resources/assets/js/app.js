@@ -29,7 +29,6 @@ const routerInstance = createRouter(Vue, Router);
 
 sync(storeInstance, routerInstance);
 
-
 Vue.use( VueCurrencyFilter,
 	{
 		symbol            : '$',

@@ -20,8 +20,7 @@ component {
         "cffractal",
         "cbstorages",
         "cbsecurity",
-        "BCrypt",
-        "cbcsrf"
+        "BCrypt"
     ];
 
 	/**
