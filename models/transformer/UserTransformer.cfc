@@ -9,7 +9,8 @@ component extends="BaseModelTransformer"{
                 "shippingAddresses",
                 "billingAddresses",
                 "carts",
-                "orders"
+                "orders",
+                "password"
             ],
             true
         );
@@ -17,6 +18,13 @@ component extends="BaseModelTransformer"{
         return this;
     }
 
+    // we never expose any aspect of the password
+    function includePassword( activeEntity ){
+        return item(
+            activeEntity,
+            function( user ){ return ""; }
+        );
+    }
 
     function includeRoles( activeEntity ){
         return collection(

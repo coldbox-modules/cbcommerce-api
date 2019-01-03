@@ -3,60 +3,20 @@
 
         <div class="col-md-12 productDetailHeader" v-if="activeCategory">
             <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">{{activeCategory.name}}</h1>
+            <p v-html="activeCategory.description"></p>
         </div>
-        <div class="col-md-12" v-if="activeCategory">
-
-            <div class="block-product-detail">
-
-                <div class="row">
-
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-
-                        <div 
-                            v-images-loaded:on.progress="imageProgress"
-                            class="product-image">
-
-                            
-                            <img 
-                                v-if="activeCategory.media.length"
-                                id="product-zoom" 
-                                :src="activeCategory.media[ 0 ].href" 
-                                :data-zoom-image="activeCategory.media[ 0 ].href" 
-                                :alt="activeCategory.media[ 0 ].caption" />
-
-                            <div id="thumbnailNestedGallery">
-
-                                <product-gallery-thumb
-                                    v-for="(mediaItem, index) in activeCategory.media"
-                                    :key="index"
-                                    :galleryItem="mediaItem"
-                                    :totalThumbs="activeCategory.media.length"
-                                    v-on:thumbLoaded="thumbLoadedResponse"
-                                ></product-gallery-thumb>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="product-detail-section">
-                            <p v-html="activeCategory.description"></p>
-                        </div>
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                    <div class="col-xs-12 category-products">
-                        <h2>Products</h2>
-                        <div v-if="productsList.length">
-                            <product-carousel
-                                carouselId="owl-carousel-category-products"
-                            ></product-carousel>
-                        </div>
-                    </div>
-                </div>
+        <div class="col-xs-12 category-products" v-if="!isLoading">
+            <div 
+                class="col-md-3 col-sm-2"
+                v-for="(product, index) in this.productsListArray"
+                :key="index"
+            >
+                <product-item :product="product"></product-item>
+            </div>
+        </div>
+        <div class="col-xs-12 category-products" v-else>
+            <div class="col-md-3" v-for="(n, index) in 4" :key="`loading-${index}`">
+                <product-item-loading></product-item-loading>
             </div>
         </div>
     </div>
@@ -66,19 +26,26 @@ import { mapGetters, mapActions } from "vuex";
 import SubCategoryLinks from "@cbCommerce/components/categories/sub-category-links";
 import CategoryGridItem from "@cbCommerce/components/categories/category-grid-item";
 import CategoryGridItemLoading from "@cbCommerce/components/categories/category-grid-item-loading";
+import ProductItem from '@cbCommerce/components/products/product-item';
+import ProductItemLoading from '@cbCommerce/components/products/product-item-loading';
 
 export default{
-    actions: {
-
+    data(){
+        return {
+            isLoading : false
+        };
     },
     components: {
+        SubCategoryLinks,
         CategoryGridItem,
-        CategoryGridItemLoading
+        CategoryGridItemLoading,
+        ProductItem,
+        ProductItemLoading
     },
     computed : {
         ...mapGetters( [
             "activeCategory",
-            "productsList"
+            "productsListArray"
         ] ),
         categoryId : () => {
             var locationParts = window.location.pathname.split( '/' );
@@ -96,7 +63,8 @@ export default{
     },
     created(){
         var self = this;
-        this.getCategory( self.categoryId ).then( category => self.getCategoryProducts( category.id ) )
+        Vue.set( self, "isLoading", true );
+        this.getCategory( self.categoryId ).then( category => self.getCategoryProducts( category.id ).then( products => { Vue.set( self, "isLoading", false ) } ) )
     }
 
 }

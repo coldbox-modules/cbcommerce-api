@@ -6,6 +6,7 @@
             	<h1>Secure <span>Checkout</span></h1>
             </div>
             <div class="col-sm-6">
+                <h2>Sign In to your BSR Online Account</h2>
             	<login-form></login-form>
             </div>
             <div class="col-sm-6">

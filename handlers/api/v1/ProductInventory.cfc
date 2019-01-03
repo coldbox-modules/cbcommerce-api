@@ -78,6 +78,8 @@ component extends="BaseAPIHandler" secured="InventoryLocationStocks:Manage"{
 	// (PUT|PATCH) /cbc/api/v1/product-inventory/:id
 	function update( event, rc, prc ){
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
 
 		prc.sku.fill( rc );
 

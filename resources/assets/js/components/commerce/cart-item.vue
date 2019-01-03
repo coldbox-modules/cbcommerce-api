@@ -7,7 +7,7 @@
                         <img
                             :title="item.product.name"
                             :alt="item.product.name"
-                            :src="item.sku.image ? item.sku.image.href : item.product.image.href" />
+                            :src="item.sku.image ? item.sku.image.src : item.product.image.src" />
                     </a>
                 </div>
                 <div class="cart-product-text">
@@ -43,7 +43,7 @@
 </template>
 <script type="text/javascript">
 	import { mapGetters, mapActions } from "vuex";
-	import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+	import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 
 	export default{
 		components:{

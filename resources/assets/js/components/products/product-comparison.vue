@@ -30,10 +30,12 @@
 	                	:key="index"
 	                	class="card_product_image"
 	                	:data-th="sku.product.name">
-	                	<img 
-                			:title="sku.product.name" 
-                			:alt="sku.product.name" 
-                			:src="primaryImage( sku )" />
+							<a :href="`/store/product/${sku.product.id}`">
+								<img 
+									:title="sku.product.name" 
+									:alt="sku.product.name" 
+									:src="primaryImage( sku )" />
+							</a>
 	               	</td>
 
 	            </tr>
@@ -52,7 +54,7 @@
                                 :show-rating="false"
                                 :item-size="10" 
                                 :read-only="true"
-                                :rating="sku.product.avgRating"
+                                :rating="sku.product.reviewSummary.averageRating"
                             ></star-rating>
 
 	                    </div>
@@ -209,7 +211,7 @@
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
-import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 export default {
     components: {
         StarRating,
@@ -265,9 +267,9 @@ export default {
 			if( !sku ) return;
 
 			if( sku.media.length ){
-				return sku.media[ 0 ].href;
+				return sku.media[ 0 ].src;
 			} else {
-				return sku.product.media[ 0 ].href
+				return sku.product.media[ 0 ].src
 			}
 		},
 		getSkuFromList( sku ){

@@ -5,7 +5,8 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "media"
+                "media",
+                "isActive"
             ],
             true
         );
@@ -32,8 +33,9 @@ component extends="BaseModelTransformer"{
     }
 
     function includeParent( activeEntity ){
+        var parent = activeEntity.getParent(); 
         return item(
-            activeEntity.getParent(),
+            parent.isLoaded() ? parent : javacast( "null", 0 ),
             wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" )
         );
     }
@@ -49,7 +51,6 @@ component extends="BaseModelTransformer"{
     function includeMedia( activeEntity ){
 
         var filteredMedia = activeEntity.media().where( 'isActive', 1 )
-                .orderBy( 'isPrimary', 'DESC')
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' );
 

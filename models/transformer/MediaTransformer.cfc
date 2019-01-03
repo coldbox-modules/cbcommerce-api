@@ -5,7 +5,7 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "href"
+                "src"
             ],
             true
         );
@@ -19,6 +19,9 @@ component extends="BaseModelTransformer"{
         if( structKeyExists( activeEntity, "mediaItem" ) ){
             var mediaItem = activeEntity.getMediaItem();
             var memento = mediaItem.getMemento();
+            // ensure our identifier is correct for subclass memento
+            memento[ "mediaId" ] = memento.id;
+            structDelete( memento, "id" );
             structAppend( memento, activeEntity.getMemento(), true );
             structDelete( memento, "FK_media" );
         } else {
@@ -27,11 +30,23 @@ component extends="BaseModelTransformer"{
 
         structDelete( memento, "fileLocation" );
 
+        var excludes = duplicate( variables.availableIncludes );
+        
+        arrayAppend( excludes, variables.defaultIncludes, true );
+
+        memento.keyArray().each( function( key ){
+            if( excludes.contains( key ) ){
+                structDelete( memento, key );
+            } else if( ( left( key, 2 ) == "is" || left( key, 3 ) == "has" ) && isNumeric( memento[ key ] ) ){
+                memento[ key ] = javacast( "boolean", memento[ key ] );
+            }
+        } );
+
         return memento;
         
     }
 
-    function includeHref( activeEntity ){
+    function includeSrc( activeEntity ){
 
         if( structKeyExists( activeEntity, "mediaItem" ) ){
             var mediaItem = activeEntity.getMediaItem();

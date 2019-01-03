@@ -46,7 +46,7 @@ const itemStatusToText = (isActive) => {
 
 const isImage = ( mediaItem ) => {
   let imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-  let pathParts = mediaItem.href.split( '.' );
+  let pathParts = mediaItem.src.split( '.' );
   return imageExtensions.indexOf( pathParts[ pathParts.length - 1 ] ) > -1;
 }
 

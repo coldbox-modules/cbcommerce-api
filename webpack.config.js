@@ -1,5 +1,6 @@
 const elixir = require("coldbox-elixir");
 const webpack = require("webpack");
+const path = require("path");
 
 elixir.config.mergeConfig({
     plugins: [
@@ -12,6 +13,11 @@ elixir.config.mergeConfig({
             "window.Vue"   : ["vue/dist/vue.esm.js", "default"]
         })
     ],
+    resolve: {
+        alias: {
+            ["@cbCommerce"]: `${path.dirname(__filename)}/resources/assets/js`
+        }
+    },
     module : {
         rules : [
             {
@@ -57,8 +63,7 @@ module.exports = elixir(function(mix) {
         [
             "resources/assets/sass/admin/vendor.scss",
             "/node_modules/bootstrap/dist/css/bootstrap.css",
-            "/node_modules/bootstrap-vue/dist/bootstrap-vue.css",
-            "node_modules/@voerro/vue-tagsinput/dist/style.css"
+            "/node_modules/bootstrap-vue/dist/bootstrap-vue.css"
 
         ],
         {

@@ -43,9 +43,9 @@ component singleton{
 
 		//Test for both of our file type arguments. If neither is provided, validation will handle the error
 		if( !isNull( arguments.fileInput ) ){
-			loadFile( model=arguments.model, fileInput=arguments.fileInput );
+			mediaItem.loadFile( model=arguments.model, fileInput=arguments.fileInput );
 		} else if( !isNull( arguments.filePath ) ){
-			loadFile( model=arguments.model, filePath=arguments.filePath );
+			mediaItem.loadFile( model=arguments.model, filePath=arguments.filePath );
 		}
 
 		if( persist && mediaItem.isValid() ){

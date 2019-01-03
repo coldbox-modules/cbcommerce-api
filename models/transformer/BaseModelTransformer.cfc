@@ -6,11 +6,10 @@ component extends="cffractal.models.transformers.AbstractTransformer" accessors=
 
     variables.defaultIncludes = [
     	"createdTime",
-    	"modifiedTime"
-    ];
-    variables.availableIncludes = [
+        "modifiedTime",
         "isActive"
     ];
+    variables.availableIncludes = [];
 
     variables.collectionSerializer = 'ResultsMapSerializer@cffractal';
 
@@ -27,6 +26,8 @@ component extends="cffractal.models.transformers.AbstractTransformer" accessors=
         memento.keyArray().each( function( key ){
             if( excludes.contains( key ) ){
                 structDelete( memento, key );
+            } else if( ( left( key, 2 ) == "is" || left( key, 3 ) == "has" || left( key , 5) == "allow" ) && isNumeric( memento[ key ] ) ){
+                memento[ key ] = javacast( "boolean", memento[ key ] );
             }
         } );
 

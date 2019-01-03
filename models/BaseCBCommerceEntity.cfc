@@ -12,7 +12,29 @@ component extends="quick.models.BaseEntity"{
 
 	// UUID key type overload
     function keyType() {
-        return variables._wirebox.getInstance( "UUID@quick" );
+        return variables._wirebox.getInstance( "UUIDKeyType@quick" );
+	}
+
+	function fill( attributes ) {
+		var data = {};
+		
+		retrieveAttributeNames().each( function( attr ){ 
+			if( structKeyExists( attributes, attr ) ){
+				data[ attr ] = attributes[ attr ];
+			}
+		});
+
+		ensureBits( data );
+
+		return super.fill( data );
+	}
+
+	function ensureBits( attributes ){
+		for( var key in attributes ){
+			if( isBoolean( attributes[ key ] ) && !isNumeric( attributes[ key ] ) ){
+				attributes[ key ] = attributes[ key ] ? 1 : 0;
+			}
+		}
 	}
 
     /**

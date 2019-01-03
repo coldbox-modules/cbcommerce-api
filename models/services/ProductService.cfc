@@ -20,18 +20,35 @@ component extends="BaseQuickEntityService" singleton{
 	) {
 
         if( structKeyExists( searchCollection, "category" ) ){
-            var searchResults = categoryService.newEntity().find( searchCollection.category ).getProducts();
-            return {
-                "pagination" : {
-                    "maxrows" : arrayLen( searchResults ),
-                    "offset"  : 0,
-                    "total"   : arrayLen( searchResults )
-                },
-                "collection"  : searchResults
-            };
+            if( searchCollection.category == 'used' ){
+                var searchResults = getActiveUsedProducts();
+            } else {
+                var searchResults = categoryService.newEntity().find( searchCollection.category ).getProducts();
+            }
+            var totalRecords = arrayLen( searchResults );
+            arguments.maxrows = totalRecords;
+
         } else {
             return super.search( argumentCollection = arguments );
         }
 
+        return {
+            "pagination" : {
+                "maxrows" : arguments.maxrows,
+                "offset"  : 0,
+                "total"   : totalRecords
+            },
+            "collection"  : searchResults
+        };
+
+    }
+
+    public function getActiveUsedProducts(){
+        return newEntity()
+                .where( 'isActive', 1 )
+                .hasUsedSKU()
+                .orderBy( 'displayOrder', 'ASC' )
+                .orderBy( 'name', 'ASC' )
+                .getEntities();
     }
 }

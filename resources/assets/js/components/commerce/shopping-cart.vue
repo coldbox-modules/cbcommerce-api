@@ -21,7 +21,7 @@
 		     			<span v-else>item</span>
 		     				)
 		     		</span><br/>
-		     		<span>${{ subtotal }} </span>
+		     		<span>{{ subtotal | currency }} </span>
 		     	</div>
 		     	<a
 		     		:href="checkoutURL"
@@ -103,7 +103,7 @@ export default {
         	if( this.isLoggedIn ){
         		return '/store/checkout'
         	} else {
-        		return '/store/checkoutLogin'
+        		return '/store/checkout/login'
         	}
         }
     },

@@ -8,7 +8,7 @@
 
 				<div class="header-for-light">
 		            <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">
-		            	OUR  <span>Bestseller</span>
+		            	OUR  <span>Bestsellers</span>
 		            </h1>
 
 		            <div class="toolbar-for-light" id="nav-bestseller"></div>

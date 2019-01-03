@@ -11,6 +11,7 @@ component   table="cbc_products"
 	property name="shortDescription" type="string" default="";
 	property name="description" type="string" default="";
 	property name="manufacturer" type="string" default="";
+    property name="isFeatured" type="boolean" default=0;
 	// need to scope this as a bit until quick fixes the boolean handling
 	property name="hasOptions" type="numeric" default=0;
 	property name="requiredOptions" type="string" default="{}";
@@ -20,8 +21,7 @@ component   table="cbc_products"
 
 	this.constraints = {
 		name = { required : true },
-		hasOptions = { required : true, type : "numeric" },
-		requiredOptions = { required : true, type : "string" }
+		hasOptions = { required : true, type : "numeric" }
 	};
 
 	// Relationships
@@ -35,6 +35,58 @@ component   table="cbc_products"
 
 	function media(){
 		return hasMany( "ProductMedia@cbCommerce", "FK_product" );
+	}
+
+	function reviews(){
+		return hasMany( "ProductReview@cbCommerce", "FK_product");
+	}
+
+	// delete overload
+	function delete(){
+		this.getMedia().each( function( productMedia ){
+			var mediaAttachment = productMedia.getMediaItem();
+			productMedia.delete();
+			mediaAttachment.delete();
+		 });
+		this.getSkus().each( function( skuEntity ){
+			skuEntity.delete();
+		} );
+		this.categories().sync([]);
+		return super.delete();
+	}
+
+    function scopeHasUsedSKU( query ){
+        return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+                        .join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
+                        .where( 'cbc_productConditions.name', '!=', 'New' );
+            }
+        );
+	}
+	
+	function filterSearch(
+		required struct searchCollection, 
+		required QueryBuilder builder
+	 ){
+
+	 }
+
+	function getRequiredOptions(){
+		if( isSimpleValue( variables.requiredOptions ) ){
+			assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), deserializeJSON( variables.requiredOptions ) );
+		}
+		return variables.requiredOptions;
+	}
+
+	function setRequiredOptions( any options ){
+
+		if( !isSimpleValue( arguments.options ) ){
+			arguments.options = serializeJSON( arguments.options );
+		}
+
+		assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), arguments.options );
 	}
 
 }

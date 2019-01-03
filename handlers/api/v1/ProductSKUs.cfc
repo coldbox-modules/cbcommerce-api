@@ -26,7 +26,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -36,9 +41,21 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/skus
-	function create( event, rc, prc ) secured="ProductSKUs:Manage"{
+	function create( event, rc, prc ) secured="Product:Edit"{
 		
+		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
+			structDelete( rc, "discontinueOn" );
+		}
+
 		prc.sku = entityService.newEntity().fill( rc );
+
+		if( structKeyExists( rc, "condition" ) ){
+			prc.sku.condition().associate( rc.condition.id );
+		}
+
+		if( structKeyExists( rc, "subCondition" ) ){
+			prc.sku.subCondition().associate( rc.subCondition.id );
+		}
 
 		validateModelOrFail( prc.sku );
 
@@ -51,7 +68,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -71,7 +93,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -80,10 +107,31 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/skus/:id
-	function update( event, rc, prc ) secured="ProductSKUs:Edit"{
+	function update( event, rc, prc ) secured="Product:Edit"{
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
+		//remove this key before population
+		structDelete( rc, "id" );
+
+		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
+			var nullDiscontinue = true;
+			structDelete( rc, "discontinueOn" );
+		} else {
+			var nullDiscontinue = false;
+		}
 
 		prc.sku.fill( rc );
+
+		if( nullDiscontinue ){
+			prc.sku.setDiscontinueOn( javacast( "null", 0 ) );
+		}
+
+		if( structKeyExists( rc, "condition" ) ){
+			prc.sku.condition().associate( rc.condition.id );
+		}
+
+		if( structKeyExists( rc, "subCondition" ) ){
+			prc.sku.subCondition().associate( rc.subCondition.id );
+		}
 
 		validateModelOrFail( prc.sku );
 
@@ -96,7 +144,12 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						} 
 						return transformed;
 					} 
 				)
@@ -106,7 +159,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/skus/:id
-	function delete( event, rc, prc ) secured="ProductSKUs:Manage"{
+	function delete( event, rc, prc ) secured="Product:Edit"{
 
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 		prc.sku.delete();

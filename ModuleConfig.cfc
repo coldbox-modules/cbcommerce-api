@@ -70,6 +70,10 @@ component {
 					class="cbCommerce.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
             },
+            {
+					class="cbCommerce.interceptors.ContentboxSSO",
+					name="CBCContentboxSSOInterceptor"
+            },
 			{
 					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
@@ -123,12 +127,28 @@ component {
         // Resource Routes ( auto-magic method conventions )
         router
             .resources(
+                resource   = "api/v1/products/:productId/reviews",
+                handler    = "API.v1.ProductReviews"
+            )
+            .resources(
+                resource = "api/v1/products/:productId/media",
+                handler = "API.v1.ProductMedia"
+            )
+            .resources(
                 resource   = "api/v1/products",
                 handler    = "API.v1.Products"
             )
             .resources(
+                resource = "api/v1/skus/:skuId/media",
+                handler = "API.v1.ProductSKUMedia"
+            )
+            .resources(
                 resource = "api/v1/skus",
                 handler  = "API.v1.ProductSKUs"
+            )
+            .resources(
+                resource = "api/v1/product-categories/:categoryId/media",
+                handler = "API.v1.ProductCategoryMedia"
             )
             .resources(
                 resource   = "api/v1/product-categories",
@@ -181,13 +201,20 @@ component {
             router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
-            router.route( "checkoutLogin" ).to( "Checkout.login" );
+            router.route( "checkout/login" ).to( "Checkout.login" );
             router.route( "checkout" ).to( "Checkout.index" );
+            router.route( "account/create" ).to( "Account.create" );
+            router.route( "account/login" ).to( "Account.login" );
+            router.route( "account" ).to( "Account.index" );
 
             /**
              * Display routing
              */
-            router.route( "/:action?" )
+            router.route( "admin/app" ).to( "Admin.app" );
+            
+            router.route( "admin" ).toHandler( "Admin" );
+
+            router.route( ":action?" )
                 .toHandler( "Main" );
     }
 
@@ -237,6 +264,15 @@ component {
         ).to( "cbstorages.models.CookieStorage" )
         .initWith(
            settings = storageSettings
+        );
+    
+        // Add our menu item
+        var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
+        menuService.addSubMenu(
+            topMenu=menuService.MODULES,
+            name="cbCommerce",
+            label="Store Admin",
+            href=menuService.buildModuleLink( 'store', 'admin' ) 
         );
 
         // Run any outstanding migrations on module load ( or reinit )

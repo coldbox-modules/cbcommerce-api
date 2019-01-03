@@ -1,8 +1,9 @@
 <template>
 
-    <div v-if="currentProduct">
+    <div>
+        <product-detail-loading v-if="!currentProduct"></product-detail-loading>
 
-        <div class="col-md-12 productDetailHeader">
+        <div class="col-md-12 productDetailHeader" v-if="currentProduct">
 
             <h1 
                 class="wow fadeInRight animated animated" 
@@ -10,7 +11,7 @@
 
         </div>
         
-        <div class="col-md-9">
+        <div class="col-md-9" v-if="currentProduct">
 
             <div class="block-product-detail">
 
@@ -26,8 +27,8 @@
                             <img 
                                 v-if="currentProduct.media.length"
                                 id="product-zoom" 
-                                :src="currentProduct.media[ 0 ].href" 
-                                :data-zoom-image="currentProduct.media[ 0 ].href" 
+                                :src="currentProduct.media[ 0 ].src" 
+                                :data-zoom-image="currentProduct.media[ 0 ].src" 
                                 :alt="currentProduct.media[ 0 ].caption" />
 
                             <div id="thumbnailNestedGallery">
@@ -56,10 +57,11 @@
                                     :show-rating="false"
                                     :item-size="10" 
                                     :read-only="true"
-                                    :rating="avgRating"
+                                    :rating="currentProduct.reviewSummary.averageRating"
                                 ></star-rating>
 
-                                <a href="" class="review">{{ totalReviews }} Reviews</a> 
+                                <a href="" class="review" v-if="currentProduct.reviewSummary.reviewCount">{{ currentProduct.reviewSummary.reviewCount }} Reviews</a>
+                                <span class="review">No Reviews</span> 
                             </div>
 
                             <div class="clearfix">
@@ -106,7 +108,7 @@
                 <ul class="nav nav-pills nav-justified">
                     <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
                     <li><a href="#additional" data-toggle="tab">Additional</a></li>
-                    <li><a href="#review" @click="fetchReviews" data-toggle="tab">Review</a></li>
+                    <li><a href="#review" data-toggle="tab">Review</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -133,9 +135,9 @@
                     </div>
                     <div class="tab-pane" id="review">
                         <br>
-                        <div class="row">
+                        <div class="row" v-if="currentProductReviews.length">
                             <div class="col-md-12">
-                                <h3>Clients review</h3>
+                                <h3>Reviews</h3>
                                 <hr>
                                 <product-review
                                     v-for="(review, index) in currentProductReviews"
@@ -148,10 +150,16 @@
                         
                         <!-- Product review form -->
                         <product-review-form
+                            v-if="authUser"
                             v-on:reviewSubmission="reviewSubmissionReaction"
                         ></product-review-form>
                         <!-- End product review form -->
-
+                        <div class="row" v-else>
+                            <div class="col-xs-12">
+                                <h3>Sign in to Review This Product</h3>
+                                <login-form></login-form>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -161,7 +169,11 @@
             </div>
 
             <!-- end tab box -->
-            <related-product-carousel></related-product-carousel>
+            <div class="container">
+
+                <related-product-carousel></related-product-carousel>
+
+			</div>
 
         </div>
 
@@ -218,9 +230,10 @@ import { StarRating } from 'vue-rate-it';
 import "ez-plus/src/jquery.ez-plus.js";
 import ProductGalleryThumb from './product-gallery-thumb';
 import ProductReview from './product-review';
-import QuantityControl from '@cbCommerce/components/admin/ui/quantity-control';
+import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
+import ProductDetailLoading from './product-detail-loading';
 export default {
     components: {
         StarRating,
@@ -228,7 +241,8 @@ export default {
         QuantityControl,
         ProductReview,
         ProductReviewForm,
-        RelatedProductCarousel
+        RelatedProductCarousel,
+        ProductDetailLoading
     },
     directives: {
         imagesLoaded
@@ -261,14 +275,9 @@ export default {
     },
 
     mounted() {
-        // TODO: this can be removed once the API and persistence is in place
-        this.fetchProducts();
-        // Mocking an API delay
-        window.setTimeout(
-            this.fetchProductDetail,
-            1000
-        );
-
+        this.fetchRelatedProducts();
+        this.fetchProductDetail();
+        this.getProductReviews( this.productId );
     },
 
     destroyed() {},
@@ -276,6 +285,7 @@ export default {
     computed: {
 
         ...mapGetters([
+            "authUser",
             "currentProduct",
             "cartProducts",
             "wishlistItems",
@@ -317,12 +327,12 @@ export default {
             "addItemToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",
-            "getCurrentProductReviews",
+            "getProductReviews",
             "getProduct"
         ]),
 
         // TODO: this can be removed once the API and persistence is in place
-        fetchProducts(){
+        fetchRelatedProducts(){
             const self = this;
             Promise.resolve( this.getListOfProducts() )
             .then(() => {
@@ -354,36 +364,7 @@ export default {
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
-
-            fetch( '/mockData/productDetail.json' )
-                .then(r => r.json())
-                .then(product => {
-                    self.product           = product;
-                    self.productGallery    = product.gallery;
-                    self.productImage      = product.productImage;
-                    self.productImageLarge = product.productImageLarge;
-                    self.productName       = product.productName;
-                    self.userPrice         = product.userPrice;
-                    self.listPrice         = product.listPrice;
-                    self.brand             = product.brand;
-                    self.model             = product.model;
-                    self.features          = product.features;
-                    self.details           = product.details;
-                    self.totalReviews      = product.totalReviews;
-                    self.avgRating         = product.avgRating;
-                    self.cartTotalPrice    = self.userPrice.replace( "$", "" );
-                    self.isLoading         = false;
-                    self.setCurrentProduct( product.id );
-                })
-            
-            console.log( self.getProduct( self.productId ) );
-        },
-
-        fetchReviews: function(){
-            const self = this;
-            Promise.resolve( this.getCurrentProductReviews() )
-            .then(() => {})
-            .catch(err => console.error(err));
+            self.getProduct( self.productId );
         },
 
         imageProgress: function( instance, image ){

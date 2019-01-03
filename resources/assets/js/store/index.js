@@ -7,7 +7,7 @@ import products from "@cbCommerce/store/modules/products";
 import wishlists from "@cbCommerce/store/modules/wishlists";
 import cart from "@cbCommerce/store/modules/cart";
 import api from "@cbCommerce/api/index";
-
+import createFilters from "@cbCommerce/filters/index";
 
 const vuexLocalStorage = new VuexPersist({
 	key: 'cbCommerce', // The key to store the state on in the storage provider.
@@ -18,18 +18,21 @@ const vuexLocalStorage = new VuexPersist({
 	} )
 })
 
+// We need to recreate our filters to use within the stores
+createFilters( Vue );
+
 export const createStore = (Vue, Vuex) => {
 	Vue.use(Vuex);
 	const state = {
-		productComparisonList : []
+		productComparisonList: [],
+		globalData: window.cbcGlobalData || {},
+		filters : Vue.options.filters
 	};
 	const debug =
     process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test";
 
 	return new Vuex.Store({
-		state:{
-			globalData  : window.cbcGlobalData
-		},
+		state: state,
 		modules: {
 			auth,
 			categories,

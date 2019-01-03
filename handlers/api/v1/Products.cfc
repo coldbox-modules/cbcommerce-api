@@ -8,7 +8,7 @@ component extends="BaseAPIHandler"{
 
 	this.APIBaseURL = '/store/api/v1/products'
 	
-	// (GET) /cbc/api/v1/products
+	// (GET) /store/api/v1/products
 	function index( event, rc, prc ){
 		
 		if( rc.sortOrder == 'createdTime DESC' ){
@@ -25,7 +25,22 @@ component extends="BaseAPIHandler"{
 				.withTransformer( "ProductTransformer@cbCommerce" )
 				.withItemCallback( 
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
+						if( structKeyExists( transformed, "skus" ) ){
+							transformed.skus.each( function( sku ){
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -34,7 +49,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /cbc/api/v1/products
+	// (POST) /store/api/v1/products
 	function create( event, rc, prc ) { // secured="Products:Manage"
 
 		var payload = event.getHTTPContent( json=true, xml=false );
@@ -48,6 +63,11 @@ component extends="BaseAPIHandler"{
 
 		prc.product.save();
 
+		// sync categories after our product save
+		if( structKeyExists( rc, "categories" ) ){
+			prc.product.categories().sync( rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } ) );
+		}
+
 		prc.response.setData( 
 			fractal.builder()
 				.item( prc.product )
@@ -56,6 +76,21 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
+						if( structKeyExists( transformed, "skus" ) ){
+							transformed.skus.each( function( sku ){
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -63,7 +98,7 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /cbc/api/v1/products/:id
+	// (GET) /store/api/v1/products/:id
 	function show( event, rc, prc ){
 		
 		prc.product = entityService.newEntity().getOrFail( rc.id );
@@ -76,6 +111,21 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
+						if( structKeyExists( transformed, "skus" ) ){
+							transformed.skus.each( function( sku ){
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -83,15 +133,23 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /cbc/api/v1/products/:id
+	// (PUT|PATCH) /store/api/v1/products/:id
 	function update( event, rc, prc ) { // secured="Products:Edit"
 		prc.product = entityService.newEntity().getOrFail( rc.id );
-
+		//remove this key before population
+		structDelete( rc, "id" );
+		
 		prc.product.fill( rc );
 
 		validateModelOrFail( prc.product );
 
 		prc.product.save();
+
+		// sync categories after our product save
+		if( structKeyExists( rc, "categories" ) ){
+			var categories = rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } );
+			prc.product.categories().sync( categories );
+		}
 
 		prc.response.setData( 
 			fractal.builder()
@@ -101,6 +159,21 @@ component extends="BaseAPIHandler"{
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						if( structKeyExists( transformed, "media" ) ){
+							transformed.media.each( function( mediaItem ){ 
+								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
+							});
+						}
+						if( structKeyExists( transformed, "skus" ) ){
+							transformed.skus.each( function( sku ){
+								sku["href"] = '/store/api/v1/skus/' & sku.id;
+								if( structKeyExists( sku, "media" ) ){
+									sku.media.each( function( mediaItem ){ 
+										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
+									});
+								}
+							});
+						}
 						return transformed;
 					} 
 				)
@@ -109,7 +182,7 @@ component extends="BaseAPIHandler"{
 		
 	}
 
-	// (DELETE) /cbc/api/v1/products/:id
+	// (DELETE) /store/api/v1/products/:id
 	function delete( event, rc, prc ) { // secured="Products:Manage"
 
 		prc.product = entityService.newEntity().getOrFail( rc.id );

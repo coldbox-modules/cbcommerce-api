@@ -1,0 +1,222 @@
+<template>
+
+	<div>
+
+		<div v-if="!this.isLoading">
+
+	        <page-header :headerTitle="`Category: ${ form.name }`"></page-header>
+
+			<dismissable-alert v-if="isSent && !isSending"
+				alertText="The item has been updated."
+				alertType="success">
+			</dismissable-alert>
+
+			<form @submit.prevent="handleSubmit">
+			    
+			    <b-row>
+
+			        <b-col cols="12">
+
+			            <b-form-group
+							label="Category Name"
+							label-for="categoryName">
+							<b-form-input 
+		                    	required="required"
+		                    	class="form-control" 
+		                    	id="categoryName"
+		                    	v-model="form.name" />
+						</b-form-group>
+
+			        </b-col>
+
+			    </b-row>
+
+			    <b-row>
+
+			        <b-col cols="12">
+
+			            <b-form-group
+							label="Category Description"
+							label-for="description">
+		                    <html-editor 
+			            		height="200" 
+			            		:model.sync="form.description"></html-editor>
+						</b-form-group>
+
+			        </b-col>
+
+			    </b-row>
+
+			    <b-row>
+
+			    	<b-col cols="12">
+
+				    	<b-card no-body class="mb-1">
+
+				    		<b-card-header header-tags="header" class="p-1" role="tab">
+				    			<b-btn block href="#" v-b-toggle.images>Images</b-btn>
+				    		</b-card-header>
+				    		<b-collapse id="images" accordion="product-accordion" role="tabpanel">
+				    			<b-card-body>
+									<gallery-list-sortable 
+										:images="activeCategory.media"
+										:endpoint="`/store/api/v1/product-categories/${activeCategory.id}/media`"></gallery-list-sortable>
+
+				    			</b-card-body>
+				    		</b-collapse>
+
+				    	</b-card>
+
+					</b-col>
+
+				</b-row>
+
+
+			    <b-row>
+			        
+			        <b-col cols="12">
+
+			             <b-form-group>
+
+						    <b-form-checkbox 
+						    	v-model="form.isActive" 
+						    	:model.sync="form.isActive">
+						    	Enable Category
+						    </b-form-checkbox>
+
+						</b-form-group>
+
+			        </b-col>
+
+			    </b-row>
+				
+			    <button type="submit" class="btn btn-secondary btn-lg">
+					<i v-if="isSending" class="fa fa-spin fa-spinner"></i> 
+					Save
+				</button>
+
+			    <back-button link="/categories" text="Back to categories"></back-button>
+			    
+			</form>
+
+		</div>
+
+	</div>
+
+</template>
+<script>
+import { vueSlideoutPanelService } from 'vue2-slideout-panel';
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import moment from "moment";
+import VueImgLoader from 'vue-img-loader';
+import { Form } from '@cbCommerce/admin/classes/form';
+import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
+import galleryList from '@cbCommerce/admin/components/images/gallery-list';
+import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
+export default {
+	name: "CategoryForm",
+
+	components: {
+		htmlEditor,
+		VueImgLoader,
+		galleryList,
+		galleryListSortable
+	},
+
+    data() {
+        return {
+			isLoading     : false,
+			form          : new Form(),
+			url           : '', /* The URL to post the submission to */
+			moment        : moment,
+			categoryImage : null,
+			errors        : [],
+			isSent        : false,
+			isSending     : false,
+			categoryImages: []
+        }
+    },
+
+	computed: {
+		...mapGetters([
+			"activeCategory",
+			"activeCategoryID",
+			"categoriesListArray"
+		])
+	},
+
+	created() {
+		var self = this;
+		Vue.set( self, "isLoading", true );
+		Event.$on( "saveImageDetails", function( imageData ){
+			self.updateCategoryImage( imageData );
+		} );
+		Event.$on( "deleteMediaItem", function( imageData ){
+			self.deleteCategoryImage( imageData );
+		} );
+		Event.$on( "mediaUploadSuccess", function( imageData ){
+			console.log( imageData );
+			self.insertCategoryImage( imageData );
+		});
+		Event.$on( "onMediaSort", event => {
+			event.items.forEach( eventItem => {
+				console.log( 'sortOrderUpdate', { file: eventItem.item.originalFileName, href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+				this.updateCategoryImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
+			})
+		})
+		return Promise.all([
+			this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
+				Vue.set( self, "form", new Form( self.activeCategory ) );
+				Vue.set( self, "isLoading", false );
+			})
+		]);
+	},
+
+	beforeDestroy(){
+		Event.$off( "saveImageDetails", this.listener );
+		Event.$off( "deleteMediaItem", this.listener );
+		Event.$off( "onMediaUploadSuccess", this.listener );
+		Event.$off( "onMediaSort", this.listener );
+	},
+
+	methods: {
+		...mapMutations([
+			"insertCategoryImage"
+		]),
+		...mapActions([
+			"getCategories",
+			"getCategory",
+			"saveCategory",
+			"updateCategoryImage",
+			"deleteCategoryImage",
+			"updateCategoryImageField"
+		]),
+		handleSubmit: function(){
+
+			if( this.categoryImage ){
+				console.log('attempted upload');
+				console.log( this.categoryImage );
+			}
+
+			this.isSending         = true;
+			this.submitContent();
+    	},
+    	submitContent: function(){
+			var self = this;
+			self.form.includes = "children,parent";
+			this.saveCategory( self.form );
+			Vue.set( self, "isSent", true );
+			Vue.set( self, "isSending", false );
+    	}
+
+	}
+}
+</script>
+<style>
+a.uploadNewImageBtn {
+	cursor: pointer;
+}
+a.uploadNewImageBtn i.fa {
+	color: #fff;
+}
+</style>

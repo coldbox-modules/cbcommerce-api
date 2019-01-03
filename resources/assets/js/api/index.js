@@ -28,13 +28,21 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		checkout( apiInstance ).post
 	),
 	put: Object.assign(
+		products( apiInstance ).put,
 		wishlists( apiInstance ).put,
-		cart( apiInstance ).put
+		cart( apiInstance ).put,
+		categories( apiInstance ).put
 	),
 	delete: Object.assign(
+		products( apiInstance ).delete,
 		wishlists( apiInstance ).delete,
 		cart( apiInstance ).delete,
-		authentication( apiInstance ).delete
+		authentication( apiInstance ).delete,
+		categories( apiInstance ).delete
+	),
+	patch : Object.assign(
+		products( apiInstance ).patch,
+		categories( apiInstance ).patch
 	)
 });
 

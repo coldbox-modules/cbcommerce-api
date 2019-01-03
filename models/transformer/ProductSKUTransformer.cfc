@@ -6,7 +6,8 @@ component extends="BaseModelTransformer"{
             [
                 "product",
                 "virtualSKUs",
-                "consignee"
+                "consignee",
+                "subCondition"
             ],
             true
         );
@@ -15,7 +16,8 @@ component extends="BaseModelTransformer"{
             variables.defaultIncludes,
             [
                 "onHand",
-                "media"
+                "media",
+                "condition"
             ],
             true
         );
@@ -30,8 +32,9 @@ component extends="BaseModelTransformer"{
     }
 
     function includeConsignee( activeEntity ){
+        var consignee = activeEntity.getConsignee();
         return item(
-            activeEntity.getConsignee(),
+            consignee.isLoaded() ? consignee : javacast( "null", 0 ),
             wirebox.getInstance( "UserTransformer@cbCommerce" )
         );
     }
@@ -79,6 +82,22 @@ component extends="BaseModelTransformer"{
             filteredMedia.getResults(),
             wirebox.getInstance( "MediaTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
+        );
+    }
+
+    function includeCondition( activeEntity ){
+        var condition = activeEntity.getCondition();
+        return item(
+            condition.isLoaded() ? condition : javacast( "null", 0 ),
+            wirebox.getInstance( "ProductConditionTransformer@cbCommerce" )
+        );
+    }
+
+    function includeSubCondition( activeEntity ){
+        var condition = activeEntity.getSubCondition();
+        return item(
+            condition.isLoaded() ? condition : javacast( "null", 0 ),
+            wirebox.getInstance( "ProductConditionTransformer@cbCommerce" )
         );
     }
 }

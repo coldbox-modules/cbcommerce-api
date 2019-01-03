@@ -2,6 +2,7 @@ body {
   font-size: .875rem;
 }
 
+@import './partials/dropzone';
 @import './partials/sidebar';
 @import './partials/content';
 @import './partials/navbar';
