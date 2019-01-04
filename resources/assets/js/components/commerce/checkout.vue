@@ -626,7 +626,9 @@ export default {
             selectedPayment: {
             	nameOnCard: ""
             },
-            token: null
+            token: null,
+            phone: "",
+            email: ""
         }
     },
     computed: {
