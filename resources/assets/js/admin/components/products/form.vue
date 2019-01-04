@@ -76,7 +76,7 @@
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
 		    			<b-btn block href="#" v-b-toggle.content>Content</b-btn>
 		    		</b-card-header>
-		    		<b-collapse id="content" accordion="product-accordion" role="tabpanel">
+		    		<b-collapse id="content" accordion="product-accordion" role="tabpanel" visible>
 		    			<b-card-body>
 
 						    <b-row>
@@ -111,7 +111,16 @@
 		    		</b-collapse>
 
 		    	</b-card>
+				
+				<b-row v-if="isNewProduct">
 
+					<b-col cols="12">
+
+						<p class="alert alert-info text-center">Save your product first to add Images and SKUs</p>
+
+					</b-col>
+
+				</b-row>
 
 		    	<b-card no-body class="mb-1" v-if="currentProduct.id">
 
@@ -135,7 +144,7 @@
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
 		    			<b-btn block href="#" v-b-toggle.skus>SKUs</b-btn>
 		    		</b-card-header>
-		    		<b-collapse id="skus" accordion="product-accordion" role="tabpanel" visible>
+		    		<b-collapse id="skus" accordion="product-accordion" role="tabpanel">
 		    			<b-card-body>
 
 		    				<b-col cols="12" class="mb-5">
@@ -201,7 +210,6 @@ import { vueSlideoutPanelService } from 'vue2-slideout-panel';
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import vSelect from 'vue-select';
 import moment from "moment";
-import VueImgLoader from 'vue-img-loader';
 import { Form } from '@cbCommerce/admin/classes/form';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryList from '@cbCommerce/admin/components/images/gallery-list';
@@ -212,7 +220,6 @@ export default {
 
 	components: {
 		htmlEditor,
-		VueImgLoader,
 		galleryList,
 		galleryListSortable,
 		skuFormPanel,
@@ -289,7 +296,7 @@ export default {
 					});
 		} else {
 			this.setActiveProduct({
-				isActive : true 
+				isActive : true
 			});
 			Vue.set( self, "isLoading", false );
 		}
@@ -328,12 +335,16 @@ export default {
     	submitContent: function(){
 
 			var self = this;
+			self.isSending = true;
+			self.isSent=false;
 
 			var redirectRoute = this.isNewProduct;
 
 			this.saveProduct( this.form ).then( response => {
 				if( redirectRoute ){
 					this.$router.push( { name : 'productForm', params : { id : response.id } } );
+					self.isSent    = true;
+					self.isSending = false;
 				} else {
 					Vue.set( self, "form", new Form( response ) );
 					self.isSent    = true;

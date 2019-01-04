@@ -38,6 +38,7 @@ component{
 
         return {
             "pagination" : {
+                "page"    : javacast( "int", searchCollection.page ),
                 "maxrows" : maxrows,
                 "offset"  : offset,
                 "total"   : newBuilder( argumentCollection=arguments ).count()

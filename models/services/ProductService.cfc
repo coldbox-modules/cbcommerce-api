@@ -28,18 +28,19 @@ component extends="BaseQuickEntityService" singleton{
             var totalRecords = arrayLen( searchResults );
             arguments.maxrows = totalRecords;
 
-        } else {
-            return super.search( argumentCollection = arguments );
-        }
+            return {
+                "pagination" : {
+                    "page"    : javacast( "int", searchCollection.page ),
+                    "maxrows" : maxrows,
+                    "offset"  : offset,
+                    "total"   : totalRecords
+                },
+                "collection"  : searchResults
+            };
 
-        return {
-            "pagination" : {
-                "maxrows" : arguments.maxrows,
-                "offset"  : 0,
-                "total"   : totalRecords
-            },
-            "collection"  : searchResults
-        };
+        } else {
+            return super.search( argumentCollection=arguments );
+        }
 
     }
 

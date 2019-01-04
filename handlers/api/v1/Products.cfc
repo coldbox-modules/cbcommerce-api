@@ -43,14 +43,13 @@ component extends="BaseAPIHandler"{
 						}
 						return transformed;
 					} 
-				)
-				.convert()
+				).convert()
 		);
 
 	}
 
 	// (POST) /store/api/v1/products
-	function create( event, rc, prc ) { // secured="Products:Manage"
+	function create( event, rc, prc ) secured="Products:Manage"{
 
 		var payload = event.getHTTPContent( json=true, xml=false );
 
@@ -134,7 +133,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /store/api/v1/products/:id
-	function update( event, rc, prc ) { // secured="Products:Edit"
+	function update( event, rc, prc ) secured="Products:Edit"{
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -183,7 +182,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /store/api/v1/products/:id
-	function delete( event, rc, prc ) { // secured="Products:Manage"
+	function delete( event, rc, prc ) secured="Products:Manage"{
 
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		prc.product.delete();

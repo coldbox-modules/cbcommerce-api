@@ -71,7 +71,13 @@ component   table="cbc_products"
 		required struct searchCollection, 
 		required QueryBuilder builder
 	 ){
-
+		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
+			var searchTerm = '%' & searchCollection.search & '%';
+            arguments.builder
+                .where( 'name', 'like', searchTerm )
+                .orWhere( 'shortDescription', 'like', searchTerm )
+                .orWhere( 'description', 'like', searchTerm )
+        }
 	 }
 
 	function getRequiredOptions(){

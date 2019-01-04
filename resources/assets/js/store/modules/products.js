@@ -139,7 +139,7 @@ const actions = {
 						normProducts[p.id] = p;
 					});
 					context.commit( 'setProductList', normProducts );
-					resolve(normProducts);
+					resolve( XHR.data );
 				})
 				.catch(err => {
 					console.error(err);

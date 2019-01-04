@@ -58,7 +58,6 @@ export default {
 
     computed: {
     	...mapGetters([
-    		"categoriesList",
     		"categoriesListArray",
     		"activeCategoryId"
     	])
