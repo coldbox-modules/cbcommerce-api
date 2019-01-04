@@ -1,7 +1,7 @@
 <template>
 
 	<div>
-
+        
         <page-header
             headerTitle="Products"
             :displayToolBarButton="true"
@@ -23,7 +23,7 @@
             </b-col>
 
         </b-row>
-
+        
         <b-table
             striped
             ref="productsTable"
@@ -71,6 +71,12 @@
                 </router-link>
             </template>
         </b-table>
+
+        <b-row>
+            <b-col xs="12">
+              <generic-loader v-if="isLoading" message="Loading products. Please wait..."></generic-loader>
+            </b-col>
+        </b-row>
 
         <table-pagination
             :totalRows="totalRows"

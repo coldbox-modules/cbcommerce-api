@@ -17,6 +17,7 @@ Vue.component( "cbSlickSlider", require( "@cbCommerce/components/cb-slick-slider
 Vue.component( "cbMediaGallery", require( "@cbCommerce/components/cb-media-gallery" ).default );
 Vue.component( "bsrFinanceCalculator", require( "@cbCommerce/components/bsr-finance-calculator" ).default );
 Vue.component( "loginForm", require( "@cbCommerce/components/login-form" ).default );
+Vue.component( "generic-loader",  require( "@cbCommerce/components/generic-loader" ).default );
 
 
 import App from "@cbCommerce/components/App";
