@@ -93,11 +93,11 @@ component {
                 .toHandler( "Media" );
 
         // API Routing
-        router.route( "api/v1/checkout" )
+        router.route( "api/v1/payment" )
                 .withAction( {
-                    POST : "process"
+                    POST : "create"
                 } )
-                .toHandler( "API.v1.Checkout" );
+                .toHandler( "API.v1.Payments" );
 
         router.route( "api/v1/authentication" )
                 .withAction( {
@@ -215,7 +215,7 @@ component {
              * Display routing
              */
             router.route( "admin/app" ).to( "Admin.app" );
-            
+
             router.route( "admin" ).toHandler( "Admin" );
 
             router.route( ":action?" )
@@ -269,14 +269,14 @@ component {
         .initWith(
            settings = storageSettings
         );
-    
+
         // Add our menu item
         var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
         menuService.addSubMenu(
             topMenu=menuService.MODULES,
             name="cbCommerce",
             label="Store Admin",
-            href=menuService.buildModuleLink( 'store', 'admin' ) 
+            href=menuService.buildModuleLink( 'store', 'admin' )
         );
 
         // Run any outstanding migrations on module load ( or reinit )
