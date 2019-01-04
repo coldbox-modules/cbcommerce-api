@@ -107,34 +107,34 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="shippingAdress1" class="control-label">Address /1:
+                                    <label for="shippingAddress1" class="control-label">Address /1:
                                     	<span class="text-danger">*</span>
                                     </label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="shippingAdress1"
-                                        	name="shippingAdress1"
+                                        	id="shippingAddress1"
+                                        	name="shippingAddress1"
                                         	v-validate="'required'"
                                         	data-vv-as="Address"
                                         	v-model="selectedShippingAddress.address1">
 
                                         <span
                                         	class="text-danger"
-                                        	v-show="errors.has('form-shipping.shippingAdress1')">
+                                        	v-show="errors.has('form-shipping.shippingAddress1')">
 
-                                        	{{ errors.first( 'form-shipping.shippingAdress1' ) }}
+                                        	{{ errors.first( 'form-shipping.shippingAddress1' ) }}
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="shippingAdress2" class="control-label">Address /2:</label>
+                                    <label for="shippingAddress2" class="control-label">Address /2:</label>
                                     <div>
                                         <input
                                         	type="text"
                                         	class="form-control"
-                                        	id="shippingAdress2"
+                                        	id="shippingAddress2"
                                         	v-model="selectedShippingAddress.address2">
                                     </div>
                                 </div>
@@ -394,7 +394,7 @@
 		                            </div>
 		                            <div class="col-md-6">
 		                                <div class="form-group">
-		                                    <label for="billingAdress1" class="control-label">
+		                                    <label for="billingAddress1" class="control-label">
 		                                    	Address /1:
 		                                    	<span class="text-danger">*</span>
 		                                    </label>
@@ -406,24 +406,24 @@
 		                                        	name="billingAdress1"
 		                                        	v-validate="'required'"
 		                                        	data-vv-as="Adress"
-		                                        	v-model="selectedBillingAddress.billingAdress1">
+		                                        	v-model="selectedBillingAddress.billingAddress1">
 
 		                                        <span
 		                                        	class="text-danger"
-		                                        	v-show="errors.has('form-payment.billingAdress1')">
+		                                        	v-show="errors.has('form-payment.billingAddress1')">
 
-		                                        	{{ errors.first( 'form-payment.billingAdress1' ) }}
+		                                        	{{ errors.first( 'form-payment.billingAddress1' ) }}
 		                                        </span>
 		                                    </div>
 		                                </div>
 		                                <div class="form-group">
-		                                    <label for="billingAdress2" class="control-label">Address /2:</label>
+		                                    <label for="billingAddress2" class="control-label">Address /2:</label>
 		                                    <div>
 		                                        <input
 		                                        	type="text"
 		                                        	class="form-control"
 		                                        	id="billingAdress2"
-		                                        	v-model="selectedBillingAddress.billingAdress2">
+		                                        	v-model="selectedBillingAddress.billingAddress2">
 		                                    </div>
 		                                </div>
 		                                <div class="form-group">
@@ -836,6 +836,10 @@ export default {
 			var payload = {};
 
 	      	if ( self.token != null && self.isValidated.shipping && self.isValidated.payment ) {
+  				// set payload
+  				payload.phone = self.phone;
+  				payload.email = self.email;
+  				payload.shippingAddress = self.selectedShippingAddress;
   				payload.source = self.token.id;
   				payload.amount = ( self.subtotal + self.shippingCost + self.tax ) * 100;
   				new Promise( ( resolve, reject ) => {
