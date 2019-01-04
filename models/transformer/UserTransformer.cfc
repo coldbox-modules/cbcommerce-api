@@ -2,6 +2,11 @@ component extends="BaseModelTransformer"{
     
     function init(){
         arrayAppend( 
+            variables.defaultIncludes,
+            [ "fullName" ],
+            true
+        );
+        arrayAppend( 
             variables.availableIncludes,
             [
                 "roles",
@@ -16,6 +21,15 @@ component extends="BaseModelTransformer"{
         );
 
         return this;
+    }
+
+    function includeFullName( activeEntity ){
+        return item(
+            activeEntity,
+            function( user ){
+                return user.getFirstName() & " " & user.getLastName();
+            }
+        );
     }
 
     // we never expose any aspect of the password

@@ -1,3 +1,4 @@
+export const baseAPIHref = "/store/api/v1";
 export const getProductsList = api => ( params ) => api.get( '/products', { params : params || undefined } );
 export const createProduct = api => ( data ) => {
   const bodyParams = data;
@@ -8,7 +9,7 @@ export const updateProduct = api => ( data ) => {
   delete data.startingPrice;
   delete data.reviewSummary;
   data.includes = data.includes || "skus,categories";
-  return api.put( data.href.replace('/store/api/v1', ''), JSON.stringify( data ) );
+  return api.put( data.href.replace(baseAPIHref, ''), JSON.stringify( data ) );
 }
 
 export const deleteProduct = api => ( id ) => api.delete( '/products/' + id )
@@ -28,14 +29,14 @@ export const getSkuWithProduct = api => ( sku ) => {
 };
 
 
-export const createSKU = api => ( productId, data ) => api.post( '/products/'+id+'/skus', JSON.stringify( data ) );
+export const createSKU = api => ( data ) => api.post( '/skus', JSON.stringify( data ) );
 export const updateSKU = api => ( data ) => {
   let payload = Object.assign( {}, data );
   delete payload.media;
   delete payload.originalData;
   delete payload.FK_condition;
   delete payload.FK_subCondition;
-  return api.put( payload.href.replace('/store/api/v1', ''), JSON.stringify( payload ) ); 
+  return api.put( payload.href.replace(baseAPIHref, ''), JSON.stringify( payload ) ); 
 }
 export const deleteSKU = api => ( id ) => api.delete( '/skus/' + id );
 
@@ -45,14 +46,14 @@ export const getProductMedia = api => (id, params) => api.get('/products/' + id 
 export const updateProductMediaItem = api => (data) => {
   delete data.originalData;
   delete data.FK_product;
-  return api.put(data.href.replace('/store/api/v1', ''), JSON.stringify(data));
+  return api.put(data.href.replace(baseAPIHref, ''), JSON.stringify(data));
 }
 export const updateProductMediaItemField = api => (href, field, fieldValue) => {
   let payload = {};
   payload[field] = fieldValue;
-  return api.patch(href.replace('/store/api/v1', ''), JSON.stringify(payload));
+  return api.patch(href.replace(baseAPIHref, ''), JSON.stringify(payload));
 };
-export const deleteProductMediaItem = api => (item) => api.delete(item.href.replace('/store/api/v1', ''));
+export const deleteProductMediaItem = api => (item) => api.delete(item.href.replace(baseAPIHref, ''));
 
 // Product SKU Media
 export const createSKUMediaItem = api => (id, data) => api.post('/skus/' + id + '/media', JSON.stringify(data))
@@ -60,14 +61,14 @@ export const getSKUMedia = api => (id, params) => api.get('/skus/' + id + '/medi
 export const updateSKUMediaItem = api => (data) => {
   delete data.originalData;
   delete data.FK_sku;
-  return api.put(data.href.replace('/store/api/v1', ''), JSON.stringify(data));
+  return api.put(data.href.replace(baseAPIHref, ''), JSON.stringify(data));
 }
 export const updateSKUMediaItemField = api => (href, field, fieldValue) => {
   let payload = {};
   payload[field] = fieldValue;
-  return api.patch(href.replace('/store/api/v1', ''), JSON.stringify(payload));
+  return api.patch(href.replace(baseAPIHref, ''), JSON.stringify(payload));
 };
-export const deleteSKUMediaItem = api => (item) => api.delete(item.href.replace('/store/api/v1', ''));
+export const deleteSKUMediaItem = api => (item) => api.delete(item.href.replace(baseAPIHref, ''));
 
 
 export const products = api => ( {

@@ -45,7 +45,7 @@ export default {
         },
         itemsOnStage: {             // items on screen
             type   : Number,
-            default: 3
+            default: 4
         },
         loop: {
             type   : Boolean,

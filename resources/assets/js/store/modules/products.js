@@ -46,16 +46,29 @@ const actions = {
 		let payload = Object.assign( {}, product );
 		let sanitize = ["originalData","skus","media"];
 		sanitize.forEach( removal => delete payload[ removal ] );
-		api()
-			.put.skus.update( payload )
-			.then(XHR => {
-				context.commit('updateSKU', XHR.data);
-				resolve(XHR.data);
-			})
-			.catch(err => {
-				console.error(err);
-				reject("Error: Could retrieve a product with the id of " + id);
-			});
+		if( payload.href ){
+			api()
+				.put.skus.update( payload )
+				.then(XHR => {
+					context.commit('updateSKU', XHR.data);
+					resolve(XHR.data);
+				})
+				.catch(err => {
+					console.error(err);
+					reject("Error: Could not save a SKU with an identifier of " + id);
+				});
+		} else {
+			api()
+				.post.skus.create( payload )
+				.then(XHR => {
+					context.commit('updateSKU', XHR.data);
+					resolve(XHR.data);
+				})
+				.catch(err => {
+					console.error(err);
+					reject("Error: Could not create a SKU with an identifier of " + id);
+				});
+		}
 	}),
 	getProduct: ( { commit }, id ) => {
 		if( id.id ){

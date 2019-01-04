@@ -135,7 +135,23 @@
 							    	Is Consignment Product
 							    </b-form-checkbox>
 
-							</b-form-group>	
+							</b-form-group>
+
+							<b-form-group v-if="form.isConsigned">
+								<legend>Consignee</legend>
+								<h5>Select an existing customer</h5>
+								<v-select  
+									label="fullName"
+									v-model="form.consignee"
+									:filterable="false" 
+									:options="consigneesListArray" 
+									@search="onSearchConsignees"
+									:onChange="setConsignee"
+								></v-select>
+								<p v-if="!form.consignee || !form.consignee.id"><em>or</em></p>
+								<h5 v-if="!form.consignee || !form.consignee.id">Create a New Customer</h5>
+								<consignee-form v-if="!form.consignee || !form.consignee.id" :consignee="form.consignee"></consignee-form>
+							</b-form-group>
 
 							<b-form-group>
 
@@ -240,17 +256,20 @@
 import Datepicker from 'vuejs-datepicker';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
-import customerForm from "@cbCommerce/admin/components/customers/form";
+import consigneeForm from "@cbCommerce/admin/components/customers/consignee-form";
 import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+import api from "@cbCommerce/api/index";
+
 export default {
 
 	components: {
 		Datepicker,
 		htmlEditor,
 		galleryListSortable,
-		vSelect
+		vSelect,
+		consigneeForm
 	},
 
 	props: {
@@ -261,6 +280,7 @@ export default {
 	},
 
 	computed : {
+		...mapGetters([ "currentProduct" ] ),
 		sideBarTitle() {
 			return ( this.data.method === 'edit' ) ? `Edit SKU Details` : `Add SKU Details`;
 		},
@@ -271,13 +291,17 @@ export default {
 			childConditions : state => Vue.options.filters
 													.denormalize( state.globalData.productConditions )
 													.filter( condition => condition.parent.id )
-		})
+		}),
+		consigneesListArray(){
+			return Vue.options.filters.denormalize( this.consignees );
+		}
 	},
 
 	data() {
 		return {
 			form: new Form(),
-			eventPrefix : "activeSKU_"
+			eventPrefix : "activeSKU_",
+			consignees : { results : [], resultsMap : {} }
 		};
 	},
 
@@ -292,6 +316,21 @@ export default {
 		...mapMutations([
 			"insertSKUImage"
 		]),
+		onSearchConsignees( search, loading ){
+			var self = this;
+			loading( true );
+			api().get.customers.list( { search : search, role: "Consignee" } )
+						.then( XHR => {
+							var results = XHR.data;
+							results.results.forEach( resultId => {
+								let result = results.resultsMap[ resultId ];
+								result.displayName = result.lastName + ', ' + result.firstName; 
+							} )
+							Object.assign( self.consignees, results );
+							loading( false );
+						} )
+						.catch( err => console.log( err ) )
+		},
 		closePanel() {
 			this.$emit( 'closePanel', {
 				skuDetails: this.form
@@ -299,10 +338,20 @@ export default {
 		},
 
 		saveDetails() {
-			this.saveSKU( this.form );
-			this.closePanel();
-		}
+			var self = this;
+			Vue.set( this.form, "FK_product", this.currentProduct.id );
+			Vue.set( this.form, "includes", "condition,subCondition,consignee" );
+			this.saveSKU( this.form ).then(
+				result => {
+					self.closePanel()
+				}
+			);
+		},
 
+		setConsignee : function (val) {
+			if( !val ) val = {};
+			Vue.set( this.form, "consignee", val );
+		}
 	},
 
 	created() {
@@ -321,7 +370,7 @@ export default {
 				this.updateSKUImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 			})
 		});
-		Object.assign( this.form, this.data.sku || {} );
+		Vue.set( this, "form", new Form( this.data.sku || {} ) );
 	},
 	beforeDestroy(){
 		Event.$off( this.eventPrefix + "saveImageDetails", this.listener );

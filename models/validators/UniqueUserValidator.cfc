@@ -5,7 +5,7 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
 
    property name="userService" inject="UserService@cbCommerce";
    
-    UniqueUserValidtor function init(){
+    UniqueUserValidator function init(){
         variables.name        = "UniqueUserValidator";
         return this;
     }
@@ -19,9 +19,6 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
     * @validationData.hint The validation data the validator was created with
     */
     boolean function validate(required cbvalidation.models.result.IValidationResult validationResult, required any target, required string field, any targetValue, any validationData){
-
-        if( !targetValue )
-            return true;
 
         var recordCount = userService.newEntity().where( 'email', target.getEmail() ).count();
         

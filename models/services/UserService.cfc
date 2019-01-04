@@ -21,7 +21,25 @@ component extends="BaseQuickEntityService" singleton{
 	) {
 
         if( structKeyExists( searchCollection, "role" ) ){
-            var searchResults = roleService.newEntity().where( 'name', searchCollection.role ).get();
+            var role = roleService.newEntity().where( 'name', searchCollection.role ).first();
+            if( !isNull( role ) ){
+                if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
+                    var searchResults = role.users()
+                                            .where( 
+                                                "firstName", 
+                                                "like",
+                                                searchCollection.search 
+                                            ).orWhere( 
+                                                "lastName",
+                                                "like", 
+                                                searchCollection.search 
+                                            ).getResults();
+                } else {
+                    var searchResults = role.getUsers();
+                }
+            } else {
+                var searchResults = [];
+            }
             var totalRecords = arrayLen( searchResults );
             arguments.maxrows = totalRecords;
 

@@ -57,6 +57,23 @@ component extends="BaseAPIHandler"{
 			prc.sku.subCondition().associate( rc.subCondition.id );
 		}
 
+		if( prc.sku.getIsConsigned() ){
+			if( structKeyExists( rc.consignee, "id" ) ){
+				prc.sku.consignee().associate( rc.consignee.id );
+			} else {
+				var consignee = getInstance( "User@cbCommerce" ).fill( rc.consignee );
+				validateModelOrFail( consignee );
+				consignee.save();
+				//attach the user and consignee roles
+				var consigneeRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignee" ).first();
+				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
+				consignee.roles().sync( [ consigneeRole.keyValue(), userRole.keyValue() ] );
+				prc.sku.consignee().associate( consignee );
+			}
+		} else {
+			prc.sku.setFK_consignee( javacast( "null", 0 ) );
+		}
+
 		validateModelOrFail( prc.sku );
 
 		prc.sku.save();
@@ -125,12 +142,31 @@ component extends="BaseAPIHandler"{
 			prc.sku.setDiscontinueOn( javacast( "null", 0 ) );
 		}
 
-		if( structKeyExists( rc, "condition" ) ){
+		if( structKeyExists( rc, "condition" ) && structKeyExists( rc.condition, "id" ) ){
 			prc.sku.condition().associate( rc.condition.id );
 		}
 
-		if( structKeyExists( rc, "subCondition" ) ){
+		if( structKeyExists( rc, "subCondition" ) && structKeyExists( rc.subCondition, "id" ) ){
 			prc.sku.subCondition().associate( rc.subCondition.id );
+		}
+
+		if( prc.sku.getIsConsigned() ){
+			if( structKeyExists( rc.consignee, "id" ) ){
+				prc.sku.consignee().associate( rc.consignee.id );
+			} else {
+				var consignee = getInstance( "User@cbCommerce" ).fill( rc.consignee );
+				//create a bogus password
+				consignee.setPassword( createUUID() );
+				validateModelOrFail( consignee );
+				consignee.save();
+				//attach the user and consignee roles
+				var consigneeRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignee" ).first();
+				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
+				consignee.roles().sync( [ consigneeRole.keyValue(), userRole.keyValue() ] );
+				prc.sku.consignee().associate( consignee );
+			}
+		} else {
+			prc.sku.setFK_consignee( javacast( "null", 0 ) );
 		}
 
 		validateModelOrFail( prc.sku );
