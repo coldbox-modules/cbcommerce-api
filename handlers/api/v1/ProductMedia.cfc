@@ -34,7 +34,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/products/:productId/media
-	function create( event, rc, prc ) { // secured="Products:Manage"
+	function create( event, rc, prc ) secured="Products:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
 
@@ -141,7 +141,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /store/api/v1/products/:productId/media/:id
-	function delete( event, rc, prc ) { // secured="Products:Manage"
+	function delete( event, rc, prc ) secured="Products:Edit"{
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		var mediaAttachment = prc.productMedia.getMediaItem();

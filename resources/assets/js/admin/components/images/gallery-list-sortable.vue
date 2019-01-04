@@ -74,7 +74,8 @@ export default {
 				dropzoneOptions: {
 					url: this.endpoint,
 					thumbnailWidth: 150,
-					maxFilesize: 100
+					maxFilesize: 100,
+					headers : { "CSRF-Token": this.$store.state.globalData[ "@token" ] }
 				}
 			};
 	},

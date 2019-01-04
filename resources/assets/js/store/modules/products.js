@@ -31,16 +31,29 @@ const actions = {
 		let payload = Object.assign( {}, product );
 		let sanitize = ["originalData","skus","media"];
 		sanitize.forEach( removal => delete payload[ removal ] );
-		api()
-			.put.products.update( payload )
-			.then(XHR => {
-				context.commit('setActiveProduct', XHR.data);
-				resolve(XHR.data);
-			})
-			.catch(err => {
-				console.error(err);
-				reject("Error: Could retrieve a product with the id of " + id);
-			});
+		if( payload.href ){
+			api()
+				.put.products.update(payload)
+				.then(XHR => {
+					context.commit('setActiveProduct', XHR.data);
+					resolve(XHR.data);
+				})
+				.catch(err => {
+					console.error(err);
+					reject("Error: Could update a product with the id of " + id);
+				});
+		} else {
+			api()
+				.post.products.create(payload)
+				.then(XHR => {
+					context.commit("setActiveProduct", XHR.data);
+					resolve(XHR.data);
+				})
+				.catch(err => {
+					console.error(err);
+					reject("Error: Could create product");
+				});
+		}
 	}),
 	saveSKU: (context, product) => new Promise((resolve, reject) => {
 		let payload = Object.assign( {}, product );
