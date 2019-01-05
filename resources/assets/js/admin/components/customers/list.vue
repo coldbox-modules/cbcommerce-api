@@ -14,9 +14,9 @@
             <b-col md="6" offset-md="6" class="my-1">
                 <b-form-group horizontal class="mb-0">
                     <b-input-group>
-                        <b-form-input v-model="filter" placeholder="Type to Search" />
+                        <b-form-input v-model="searchParams.search" @change="refreshList" placeholder="Type to Search" />
                         <b-input-group-append>
-                            <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">Clear</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
@@ -26,14 +26,17 @@
 
         <b-table
             striped
-            :filter="filter"
-            :items="customerListArray"
+            ref="usersTable"
+            :items="fetchCustomers"
+            :busy.sync="isLoading"
             :fields="customerFields"
             :current-page="currentPage"
             :per-page="perPage">
+            
             <template slot="createdTime" slot-scope="data">
                 {{ data.item.createdTime | dateToText }}
             </template>
+
             <template slot="actions" slot-scope="data">
                 <router-link 
                     @click.stop
@@ -42,7 +45,14 @@
                     <i class="fa fa-pencil"></i>
                 </router-link>
             </template>
+
         </b-table>
+
+        <b-row>
+            <b-col xs="12">
+              <generic-loader v-if="isLoading" message="Loading customers. Please wait..."></generic-loader>
+            </b-col>
+        </b-row>
 
         <table-pagination
             :totalRows="totalRows"
@@ -66,11 +76,11 @@ export default {
 
     data() {
     	return {
-            isLoading     : true,
+            isLoading     : false,
             currentPage   : 1,
-            perPage       : 5,
+            perPage       : 25,
             totalRows     : 0,
-            filter        : null,
+            searchParams  : {},
             customerFields: {
                 firstName: {
                     sortable: true
@@ -78,7 +88,7 @@ export default {
                 lastName: {
                     sortable: true
                 },
-                emailName: {},
+                email: {},
                 primaryPhone: {},
                 createdTime: {
                     sortable: true
@@ -88,10 +98,6 @@ export default {
                 }
             }
     	}
-    },
-
-    created() {
-    	this.fetchCustomers();
     },
 
     computed: {
@@ -111,14 +117,26 @@ export default {
     		"setCurrentCustomer",
     		"clearCurrentCustomer"
     	]),
-
-    	fetchCustomers(){
+        refreshList( e ){
+            this.$refs.usersTable.refresh();
+        },
+    	fetchCustomers( ctx ){
     		const self = this;
-    		Promise.resolve(this.getListOfCustomers())
-    		.then(() => {
-    			self.isLoading = false;
-    		})
-    		.catch(err => console.error(err));
+            Vue.set( self, "isLoading", true );
+            self.searchParams[ "page" ] = self.currentPage;
+            self.searchParams[ "maxRows" ] = self.perPage;
+            let promise = this.getListOfCustomers( self.searchParams );
+            return promise.then( ( results ) => {
+                self.isLoading = false;
+                self.currentPage = parseInt( results.meta.pagination.page );
+                self.perPage = parseInt( results.meta.pagination.maxrows );
+                self.totalRows = parseInt( results.meta.pagination.total );
+                const customersArray = self.$options.filters.denormalize( results );
+                return( customersArray );
+            })
+            .catch( error => {
+                return [];
+            })
     	}
 
     },

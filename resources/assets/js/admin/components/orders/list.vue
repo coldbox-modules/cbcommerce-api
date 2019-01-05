@@ -50,6 +50,12 @@
             </template>
         </b-table>
 
+        <b-row>
+            <b-col xs="12">
+              <generic-loader v-if="isLoading" message="Loading orders. Please wait..."></generic-loader>
+            </b-col>
+        </b-row>
+
         <table-pagination
             :totalRows="totalRows"
             :perPage="perPage"
