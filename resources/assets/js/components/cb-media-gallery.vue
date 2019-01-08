@@ -16,6 +16,7 @@
 
 <script>
 	import Viewer from 'v-viewer';
+	Vue.use( Viewer );
 
 	export default {
 		props: {
@@ -40,9 +41,6 @@
         created(){
         	this.initiateImages();
         	this.initiateViewer();
-        },
-        components: {
-        	Viewer
         },
 		data() {
 	        return {
