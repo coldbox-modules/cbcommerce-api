@@ -41,7 +41,7 @@ component extends="BaseModelTransformer"{
 
     function includeChildren( activeEntity ){
         return collection(
-            activeEntity.getChildren(),
+            activeEntity.children().where( 'isActive', 1 ).orderBy( "displayOrder", "ASC" ).getResults(),
             wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );

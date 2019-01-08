@@ -48,8 +48,6 @@ component   table="cbc_productCategories"
 
 	function getActiveChildren( limit ){
 		var childQuery = children().where( 'isActive', 1 )
-									.hasActiveProducts()
-									.orderBy( 'isFeatured', 'DESC' )
 									.orderBy( 'displayOrder', 'ASC' )
 									.orderBy( 'name', 'ASC' );
 

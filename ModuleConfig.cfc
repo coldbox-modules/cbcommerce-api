@@ -64,6 +64,16 @@ component {
             // An optional "storage" key may be provided which specifies custom cb storage and matches the settings structure of that module
         };
 
+        interceptorSettings = {
+			customInterceptionPoints = [
+				"onOrderCompleted",
+				"onConsignmentOrderReceived",
+				"onOrderItemReturned",
+                "onOrderItemsShipped",
+                "onEnsureContentboxCategoryMenus"
+			]
+		};
+
         // Custom Declared Interceptors
 		interceptors = [
 			{
@@ -81,6 +91,10 @@ component {
 			{
 					class="cbCommerce.interceptors.GlobalData",
 					name="GlobalDataInterceptor"
+			},
+			{
+					class="cbCommerce.interceptors.CBCMenuHelper",
+					name="CBCMenuHelperInterceptor"
 			}
         ];
         // Forward Media
