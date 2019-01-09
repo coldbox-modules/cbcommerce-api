@@ -127,13 +127,13 @@ component extends="BaseAPIHandler" {
 				prc.order.items().create( tempItem );
 			}
 
-			cartService.getActiveCart().setOrder( prc.order );
+			cartService.getActiveCart().setFK_order( prc.order.getId() );
 
 			// create payment
 			var tempPayment = {};
 			tempPayment.externalTransactionId = stripeResponse.getContent().content.id;
 			tempPayment.amount = stripeResponse.getContent().content.amount / 100;
-			tempPayment.lastFour = stripeResponse.getContent().content.source.lastFour;
+			tempPayment.lastFour = stripeResponse.getContent().content.source.last4;
 			tempPayment.paymentMethod = stripeResponse.getContent().content.source.brand;
 			tempPayment.FK_order = prc.order.getId();
 
