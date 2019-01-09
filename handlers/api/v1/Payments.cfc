@@ -119,11 +119,10 @@ component extends="BaseAPIHandler" {
 
 			for( var i in cartItems ) {
 				var tempItem = {};
-				writeDump( cartItems[ i ] );abort;
-				tempItem.productSnapshot = SerializeJSON( cartItems[ i ].product );
-				tempItem.quantatityOrdered = cartItems[ i ].quantity;
-				tempItem.originalCost = cartItems[ i ].sku.cost;
-				tempItem.originalPrice = cartItems[ i ].sku.MSRP;
+				tempItem.productSnapshot = SerializeJSON( i.product );
+				tempItem.quantatityOrdered = i.quantity;
+				tempItem.originalCost = i.sku.cost;
+				tempItem.originalPrice = i.sku.MSRP;
 
 				prc.order.items().create( tempItem );
 			}
