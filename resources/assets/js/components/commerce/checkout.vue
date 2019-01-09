@@ -5,7 +5,9 @@
     		Processing Your Order
     	</div>
     	<div v-else-if="checkoutStatus == 'complete'">
-    		Thank you for your Order
+    		<h2>Thank you, your order has been placed.</h2>
+    		<p>Please check your email for order confirmation and detailed delivery information.</p>
+
     	</div>
     	<div v-else>
 	    	<div class="col-sm-9 block-form tabs-steps">
