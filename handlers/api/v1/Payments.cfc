@@ -105,6 +105,20 @@ component extends="BaseAPIHandler" {
 
 		prc.order = orderService.newEntity().fill( newOrder ).save();
 
+		// add items to order
+		var cartItems = cartService.getActiveCart().getContents().items;
+		var cartId = cartService.getActiveCart().getId();
+
+		for( var i in cartItems ) {
+			var tempItem = {};
+			tempItem.productSnapshot = SerializeJSON( i );
+			tempItem.quantatityOrdered = i.quantity;
+			tempItem.originalCost = i.sku.cost;
+			tempItem.originalPrice = i.sku.basePrice;
+
+			prc.order.items().create( tempItem );
+		}
+
 		// process payment
 		var stripeResponse = processor.charge(
 					amount = newOrder.total * 100,
@@ -113,21 +127,8 @@ component extends="BaseAPIHandler" {
 				);
 
 		if( !structKeyExists( stripeResponse.getContent().content, "error") ){
-			// add items to order
-			var cartItems = cartService.getActiveCart().getContents().items;
-			var cartId = cartService.getActiveCart().getId();
 
-			for( var i in cartItems ) {
-				var tempItem = {};
-				tempItem.productSnapshot = SerializeJSON( i.product );
-				tempItem.quantatityOrdered = i.quantity;
-				tempItem.originalCost = i.sku.cost;
-				tempItem.originalPrice = i.sku.MSRP;
-
-				prc.order.items().create( tempItem );
-			}
-
-			cartService.getActiveCart().setFK_order( prc.order.getId() );
+			cartService.getActiveCart().setFK_order( prc.order.getId() ).save();
 
 			// create payment
 			var tempPayment = {};
@@ -157,10 +158,19 @@ component extends="BaseAPIHandler" {
 					.convert()
 			).setStatusCode( STATUS.CREATED );
 		} else{
-			// delete all new entities
-				// delete order
-				// if new user delete user
-			// send error
+
+			// delete order
+			prc.order.delete();
+			// delete user if new
+			if( isNewUser ){
+				prc.billingAddress.delete();
+				prc.shippingAddress.delete();
+				prc.user.delete();
+			}
+			// set error response
+			prc.response.setData(
+				SerializeJSON( stripeResponse.getContent().content.error ).setStatusCode( stripeResponse.getContent().status );
+			);
 		}
 
 	}
