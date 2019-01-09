@@ -5,11 +5,10 @@ component {
         var q = new query( sql=sql );
         q.execute();
 
-        sql = "ALTER TABLE `cbc_orders` CHANGE `fulfilledTime` `fulfilledTime` timestamp NULL DEFAULT NULL";
-        q = new query( sql=sql );
-        q.execute();
-
-        sql = "ALTER TABLE `cbc_orders` CHANGE `paidInFull` `paidInFull` timestamp NULL DEFAULT NULL";
+        sql = "ALTER TABLE `cbc_orders`
+        		MODIFY `fulfilledTime` timestamp NULL DEFAULT NULL,
+        		MODIFY `paidInFull` timestamp NULL DEFAULT NULL,
+        		MODIFY `approvalTime` timestamp NULL DEFAULT NULL";
         q = new query( sql=sql );
         q.execute();
     }
