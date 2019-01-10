@@ -13,6 +13,7 @@ component{
     property name="ORMService" inject="entityservice";
 
     void function preProcess( event, interceptData, buffer, rc, prc ) {
+        // templateCache.clear( "cbCommerce_categoriesMenuTree" );
         prc.globalData.categoriesMap = templateCache.getOrSet( "cbCommerce_categoriesMenuTree", function(){
             var topLevelCategories = categoryService.newEntity()
                                                     .where( "isActive", 1 )
@@ -23,7 +24,7 @@ component{
 
             return fractal.builder()
 				.collection( topLevelCategories )
-				.withIncludes( "children,children.children" )
+				.withIncludes( "children.children.children" )
                 .withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.convert()
         } );
@@ -58,7 +59,8 @@ component{
                             "label" : childCategory.name,
                             "url"   : '/store/category/' & childCategory.id,
                             "urlClass" : "cbcommerce-nav-link",
-                            "data"  : 'categoryId=' & childCategory.id
+                            "data"  : 'categoryId=' & childCategory.id,
+                            "target" : "_self"
                         }
                     );
                     childCategory.children.each( function( subCategory ){
@@ -70,13 +72,32 @@ component{
                                 "label" : subCategory.name,
                                 "url"   : '/store/category/' & subCategory.id,
                                 "urlClass" : "cbcommerce-nav-link",
-                                "data"  : 'categoryId=' & subCategory.id
+                                "data"  : 'categoryId=' & subCategory.id,
+                                "target" : "_self"
                             }
                         );
                         subItem.setParent( newItem );
                         subItem.setMenu( tlcMenu );
                         subItem.setActive( true );
                         newItem.addChild( subItem );
+                        subCategory.children.each( function( subSubCategory ){
+                            var entity   = ORMService.get( entityName=provider.getEntityName(), id=0 );
+                            var subSubItem  = menuService.populate(
+                                target=entity, 
+                                memento={
+                                    "title" : subSubCategory.name,
+                                    "label" : subSubCategory.name,
+                                    "url"   : '/store/category/' & subSubCategory.id,
+                                    "urlClass" : "cbcommerce-nav-link",
+                                    "data"  : 'categoryId=' & subSubCategory.id,
+                                    "target" : "_self"
+                                }
+                            );
+                            subSubItem.setParent( subItem );
+                            subSubItem.setMenu( tlcMenu );
+                            subSubItem.setActive( true );
+                            subItem.addChild( subSubItem );
+                        } );
                     } );
                     newItem.setMenu( tlcMenu );
                     newItem.setActive( true );
