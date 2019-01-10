@@ -16,4 +16,10 @@ component {
         cbHelper.prepareUIRequest( "modules" );
         event.setView( "checkout/login" );
     }
+
+    function thankyou( event, rc, prc ){
+        // Tell ColdBox to use the ContentBox theme
+        cbHelper.prepareUIRequest( "modules" );
+        event.setView( "checkout/thankyou" );
+    }
  }
