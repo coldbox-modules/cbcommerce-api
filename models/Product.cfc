@@ -59,18 +59,52 @@ component   table="cbc_products"
     function scopeHasUsedSKU( query ){
         return query.whereExists(
             function( subQuery ){
-				subQuery.from( 'cbc_SKUs' )
+				return subQuery.from( 'cbc_SKUs' )
 						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
                         .join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
                         .where( 'cbc_productConditions.name', '!=', 'New' );
             }
         );
 	}
+
+	function scopeWhereWithinCategory( query, string categoryId ){
+		var categoryIds = listToArray( categoryId );
+		var categories = categories().whereIn( 'id', categoryIds ).getResults();
+		categories.each( function( category ){
+			arrayAppend( categoryIds, category.keyValue() );
+			arrayAppend( categoryIds, getChildCategoryIdentifiers( category ), true );
+		} );
+		return query.whereExists( 
+			function( subQuery ){
+				return subQuery.from( 'cbc_lookups_products_categories' )
+						.whereColumn( 'cbc_products.id', 'cbc_lookups_products_categories.FK_product'  )
+						.whereIn( 'cbc_lookups_products_categories.FK_category', categoryIds );
+			}
+		);
+	}
+
+	private function getChildCategoryIdentifiers( category ){
+		var childIdentifiers = [];
+		category.getChildren().each( function( child ){
+			arrayAppend( childIdentifiers, child.keyValue() );
+			arrayAppend( childIdentifiers, getChildCategoryIdentifiers( child ), true );
+		} );
+		return childIdentifiers;
+	}
 	
 	function filterSearch(
 		required struct searchCollection, 
 		required QueryBuilder builder
 	 ){
+
+		if( structKeyExists( searchCollection, "category" ) ){
+            if( searchCollection.category == 'used' ){
+                this.hasUsedSKU();
+            } else {
+                this.whereWithinCategory( searchCollection.category );
+            }
+        }
+
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
             arguments.builder
