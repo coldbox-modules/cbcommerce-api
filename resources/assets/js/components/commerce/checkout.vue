@@ -4,11 +4,6 @@
     	<div v-if="checkoutStatus == 'pending'">
     		Processing Your Order
     	</div>
-    	<div v-else-if="checkoutStatus == 'complete'">
-    		<h2>Thank you, your order has been placed.</h2>
-    		<p>Please check your email for order confirmation and detailed delivery information.</p>
-
-    	</div>
     	<div v-else>
 	    	<div class="col-sm-9 block-form tabs-steps">
 				<!-- Nav tabs -->
@@ -691,12 +686,6 @@ export default {
     methods: {
 
         ...mapActions([
-            "setCurrentProduct",
-            "clearCurrentProduct",
-            "getListOfProducts",
-            "addProductToCart",
-            "addProductToWishlist",
-            "addProductToComparisonList",
             "setCheckoutStatus"
         ]),
         getStripe(){
@@ -750,10 +739,10 @@ export default {
         },
         validateShipping(){
         	var self = this;
-        	this.$validator.validate('form-shipping.*').then((result) => {
-		        if (result) {
+        	this.$validator.validate( 'form-shipping.*' ).then(( result ) => {
+		        if ( result ) {
 		          self.isValidated.shipping = true;
-		          self.activateTab('payment');
+		          self.activateTab( 'payment' );
 		        } else {
 		        	self.isValidated.shipping = false;
 		        }
@@ -786,10 +775,10 @@ export default {
 	  				self.isValidated.payment = false;
 	  			} else {
 	  				Vue.set( self, 'token', result.token );
-	  				self.$validator.validate('form-payment.*').then((result) => {
+	  				self.$validator.validate( 'form-payment.*' ).then(( result ) => {
 				    	if ( result && self.token != null ) {
 				          self.isValidated.payment = true;
-				          self.activateTab('review');
+				          self.activateTab( 'review' );
 				        } else {
 				        	self.isValidated.payment = false;
 				        }
@@ -863,11 +852,12 @@ export default {
   				new Promise( ( resolve, reject ) => {
   					api().post.checkout.process( payload )
 					.then( XHR => {
+						window.location.replace( '/store/checkout/thankyou/' + XHR.data.id );
 						resolve( XHR.data );
 					})
-					.catch(err => {
-						console.error(err);
-						reject("Error" );
+					.catch( err => {
+						console.error( err );
+						reject( "Error" );
 					});
   				});
   			}
