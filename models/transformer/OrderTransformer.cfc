@@ -1,8 +1,8 @@
 component extends="BaseModelTransformer"{
-    
+
     function init(){
 
-        arrayAppend( 
+        arrayAppend(
             variables.defaultIncludes,
             [
                 "customer",
@@ -24,10 +24,10 @@ component extends="BaseModelTransformer"{
     }
 
     function includeItems( activeEntity ){
-        return collection(
-            activeEntity.getItems(),
-            wirebox.getInstance( "OrderItemTransformer@cbCommerce" )
-
+         return collection(
+        	activeEntity.getItems(),
+            wirebox.getInstance( "OrderItemTransformer@cbCommerce" ),
+            wirebox.getInstance( collectionSerializer )
         )
     }
 
