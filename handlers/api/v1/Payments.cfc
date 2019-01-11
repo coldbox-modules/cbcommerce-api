@@ -72,6 +72,8 @@ component extends="BaseAPIHandler" {
 			newBillingAddress.designation = 'billing';
 
 			prc.billingAddress =  prc.user.addresses().create( newBillingAddress );
+		} else {
+			prc.billingAddress =  prc.user.addresses().find( rc.billingAddress.id );
 		}
 
 		// create shipping address
@@ -89,6 +91,8 @@ component extends="BaseAPIHandler" {
 
 			prc.shippingAddress =  prc.user.addresses().create( newShippingAddress );
 
+		} else {
+			prc.shippingAddress =  prc.user.addresses().find( rc.shippingAddress.id );
 		}
 
 		// create order
@@ -169,8 +173,8 @@ component extends="BaseAPIHandler" {
 			}
 			// set error response
 			prc.response.setData(
-				SerializeJSON( stripeResponse.getContent().content.error ).setStatusCode( stripeResponse.getContent().status );
-			);
+				SerializeJSON( stripeResponse.getContent().content.error )
+			).setStatusCode( stripeResponse.getContent().status );
 		}
 
 	}
