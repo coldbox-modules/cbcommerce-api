@@ -47,21 +47,30 @@
                 v-on:perPageChange="perPageChangeReaction"
                 v-on:sortTypeChange="sortTypeChangeReaction"
                 :isGrid="isGrid"
-                :isList="isList"></filter-bar>
+                :isList="isList"
+                :perPage="perPage"></filter-bar>
 
-            <products-grid 
-                v-if="this.isGrid" 
-                :products="this.productsListArray"
-                :isLoading="isLoading"
-                :fakes="fakes"
-            ></products-grid>
+            <div v-if="!isLoading">
+                <products-grid 
+                    v-if="this.isGrid" 
+                    :products="this.productsListArray"
+                    :isLoading="isLoading"
+                    :fakes="fakes"
+                ></products-grid>
 
-            <products-list 
-                v-if="this.isList" 
-                :products="this.productsListArray"
-                :isLoading="isLoading"
-                :fakes="fakes"
-            ></products-list>
+                <products-list 
+                    v-if="this.isList" 
+                    :products="this.productsListArray"
+                    :isLoading="isLoading"
+                    :fakes="fakes"
+                ></products-list>
+            </div>
+
+            <div v-else>
+                <div class="col-md-4" v-for="(n, index) in 25" :key="`loading-${index}`">
+                    <product-item-loading></product-item-loading>
+                </div>
+            </div>
 
             <div class="block-pagination" v-if="!isLoading">
 
@@ -97,26 +106,33 @@ export default {
         ProductsList,
         ProductItemLoading
     },
+    props: {
+        initialParams : {
+            type : Object,
+            required : false
+        }
+    },
     data() {
         return {
             fakes    : 3,
             products : null,
-            isLoading: false,
+            isLoading: true,
             isGrid   : true,
             isList   : false,
             sortBy   : 'price:asc',
-            perPage  : 5,
+            perPage  : 15,
+            currentPage : 1,
             minPrice : 0,
             maxPrice : 1000,
-            pageCount: 10
+            pageCount: 10,
+            searchParams : {}
         }
     },
 
     created() {
-        this.isLoading = true;
-    },
-
-    mounted() {
+        if( this.initialParams ){
+            Vue.set( this, "searchParams", this.initialParams );
+        }
         this.fetchProducts();
     },
 
@@ -138,26 +154,32 @@ export default {
         ]),
 
         fetchProducts(){
-            const self = this;
-            Promise.resolve(this.getListOfProducts())
-            .then(() => {
-                self.isLoading = false;
-                self.setPagination();
-            })
-            .catch(err => console.error(err));
+            var self = this;
+            Vue.set( self, "isLoading", true );
+            Object.assign( self.searchParams, { maxrows : self.perPage, page : self.currentPage });
+            self.getListOfProducts( self.searchParams ).then( productsMap => {
+                Vue.set( self, "isLoading", false );
+                self.setPagination( productsMap.meta.pagination );
+            } );
         },
 
         paginationCallback( pageNum ){
-            console.log( pageNum );
+            Vue.set( self, "currentPage", pageNum );
+            this.fetchProducts();
         },
 
-        setPagination(){
-            this.pageCount = this.productsListArray.length / this.perPage;
+        setPagination( pagination ){
+            var self = this;
+            Vue.set( self, "currentPage" , pagination.page );
+            Vue.set( self, "perPage", pagination.maxrows );
+            Vue.set( self, "pageCount", pagination.total / pagination.maxrows );
         },
 
         minPriceRangeChange(){
             if( isNaN( this.minPrice ) ){ 
-                this.minPrice = 0;
+                delete this.searchParams.minimumPrice;
+            } else {
+                this.searchParam.minimumPrice=this.minPrice;
             }
             if( this.minPrice >= this.maxPrice ){
                 this.minPrice = this.maxPrice - 1;
@@ -167,7 +189,9 @@ export default {
 
         maxPriceRangeChange(){
             if( isNaN( this.maxPrice ) || this.maxPrice == 0 ){ 
-                this.maxPrice = 1000;
+                delete this.searchParams.maximumPrice
+            } else {
+                this.searchParams.maximumPrice=this.maxPrice;
             }
             if( this.maxPrice <= this.minPrice ){
                 this.maxPrice = this.minPrice + 1;
@@ -181,7 +205,11 @@ export default {
         },
 
         sortTypeChangeReaction(sortBy){
-            this.sortBy = sortBy;
+            if( !sortBy ){
+                delete this.searchParms.sortBy;
+            } else {
+                this.searchParams.sortBy = sortBy;
+            }
             this.fetchProducts();
         },
 

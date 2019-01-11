@@ -38,12 +38,9 @@
                         <select 
                             name="products-per-page" 
                             class="form-control"
+                            v-model="selected"
                             @change="$emit('perPageChange', $event.target.value)">
-                            <option value="5" selected="selected">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="100">100</option>
+                            <option v-for="(n, index) in [ 15, 30, 50, 75, 100 ]" :key="`option-${index}`" v-bind:value="n">{{n}}</option>
                         </select>
                     </div>
                 </div>
@@ -58,7 +55,8 @@ export default {
     components: {},
     props: [
         'isGrid',
-        'isList'
+        'isList',
+        'perPage'
     ],
     data() {
         return {}

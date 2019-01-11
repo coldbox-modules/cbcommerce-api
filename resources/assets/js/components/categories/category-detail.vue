@@ -6,28 +6,15 @@
             <p v-html="activeCategory.description"></p>
         </div>
         <div class="col-xs-12 category-products" v-if="!isLoading">
-            <div 
-                class="col-md-3 col-sm-2"
-                v-for="(product, index) in this.productsListArray"
-                :key="index"
-            >
-                <product-item :product="product"></product-item>
-            </div>
-        </div>
-        <div class="col-xs-12 category-products" v-else>
-            <div class="col-md-3" v-for="(n, index) in 4" :key="`loading-${index}`">
-                <product-item-loading></product-item-loading>
-            </div>
+            <product-filter-page :initialParams="{category:categoryId}"></product-filter-page>
         </div>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 import SubCategoryLinks from "@cbCommerce/components/categories/sub-category-links";
-import CategoryGridItem from "@cbCommerce/components/categories/category-grid-item";
-import CategoryGridItemLoading from "@cbCommerce/components/categories/category-grid-item-loading";
-import ProductItem from '@cbCommerce/components/products/product-item';
 import ProductItemLoading from '@cbCommerce/components/products/product-item-loading';
+import ProductFilterPage from '@cbCommerce/components/products/product-filter-page';
 
 export default{
     data(){
@@ -37,10 +24,8 @@ export default{
     },
     components: {
         SubCategoryLinks,
-        CategoryGridItem,
-        CategoryGridItemLoading,
-        ProductItem,
-        ProductItemLoading
+        ProductItemLoading,
+        ProductFilterPage
     },
     computed : {
         ...mapGetters( [
@@ -67,7 +52,7 @@ export default{
         Vue.set( self, "isLoading", true );
         this.getCategory( self.categoryId ).then( category => {
             self.updateCategoryViews( self.categoryId );
-            return self.getCategoryProducts( category.id ).then( products => { Vue.set( self, "isLoading", false ) } )
+            Vue.set( self, "isLoading", false );
         } );
     }
 
