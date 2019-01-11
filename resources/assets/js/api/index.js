@@ -17,7 +17,8 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		customers( apiInstance ).get,
 		wishlists( apiInstance ).get,
 		cart( apiInstance ).get,
-		authentication( apiInstance ).get
+		authentication( apiInstance ).get,
+		checkout( apiInstance ).get
 	),
 	post: Object.assign(
 		products( apiInstance ).post,
