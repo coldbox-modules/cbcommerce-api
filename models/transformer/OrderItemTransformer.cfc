@@ -1,17 +1,16 @@
 component extends="BaseModelTransformer"{
-    
+
     function init(){
 
-        arrayAppend( 
+        arrayAppend(
             variables.defaultIncludes,
             [
-                "product",
-                "options"
+               "productSnapshot"
             ],
             true
         );
 
-        arrayAppend( 
+        arrayAppend(
             variables.availableIncludes,
             [
                 "order"
@@ -22,14 +21,7 @@ component extends="BaseModelTransformer"{
         return this;
     }
 
-    function includeOptions( activeEntity ){
-        return item(
-            activeEntity.getSKU(),
-            function( sku ){
-                return deserializeJSON( sku.getOptions() );
-            }
-        );
-    }
+
 
     function includeOrder( activeEntity ){
         return item(
@@ -38,12 +30,21 @@ component extends="BaseModelTransformer"{
         );
     }
 
-    function includeProduct( activeEntity ){
+    function includeProductSnapshot( activeEntity ){
         return item(
-            activeEntity.getSKU().getProduct(),
-            wirebox.getInstance( "ProductTransformer@cbCommerce" )
+            activeEntity,
+            function( orderItem ){
+                return orderItem.getProductSnapshot();
+            }
         );
     }
+
+    // function includeProduct( activeEntity ){
+    //     return item(
+    //         activeEntity.SKU().getProduct(),
+    //         wirebox.getInstance( "ProductTransformer@cbCommerce" )
+    //     );
+    // }
 
 
 }
