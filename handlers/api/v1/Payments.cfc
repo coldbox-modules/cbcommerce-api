@@ -5,6 +5,7 @@
 */
 component extends="BaseAPIHandler" {
 
+	property name="cookieStorage" inject="CookieStorage@cbCommerce";
 	property name="entityService" inject="PaymentService@cbCommerce";
 	property name="userService" inject="UserService@cbCommerce";
 	property name="orderService" inject="OrderService@cbCommerce";
@@ -133,6 +134,7 @@ component extends="BaseAPIHandler" {
 		if( !structKeyExists( stripeResponse.getContent().content, "error") ){
 
 			cartService.getActiveCart().setFK_order( prc.order.getId() ).save();
+			cartService.getActiveCart().setFK_user( prc.user.getId() ).save();
 
 			// create payment
 			var tempPayment = {};
@@ -150,7 +152,9 @@ component extends="BaseAPIHandler" {
 
 			// set order approval time
 			prc.order.setApprovalTime( prc.payment.getCreatedTime() ).save();
-
+			// deactivate cart
+			cartService.getActiveCart().setIsActive( 0 ).save();
+			cookieStorage.deleteVar( "cartId" );
 			prc.response.setData(
 				fractal.builder()
 					.item( prc.payment )
