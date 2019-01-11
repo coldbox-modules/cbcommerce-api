@@ -148,6 +148,9 @@ component extends="BaseAPIHandler" {
 
 			prc.payment.save();
 
+			// set order approval time
+			prc.order.setApprovalTime( prc.payment.getCreatedTime() ).save();
+
 			prc.response.setData(
 				fractal.builder()
 					.item( prc.payment )
