@@ -1,9 +1,7 @@
 <template>
 
     <div >
-    	<div v-if="checkoutStatus == 'pending'">
-    		Processing Your Order
-    	</div>
+    	<generic-loader v-if="checkoutStatus == 'pending'" message="Processing Your Order. Please wait..."></generic-loader>
     	<div v-else>
 	    	<div class="col-sm-9 block-form tabs-steps">
 				<!-- Nav tabs -->
@@ -834,7 +832,7 @@ export default {
 		},
 		purchase(){
 			let self = this;
-			self.setCheckoutStatus = "pending";
+			self.$store.commit('setCheckoutStatus', 'pending' );
 
 			var payload = {};
 
