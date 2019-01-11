@@ -124,10 +124,11 @@ component extends="coldbox.system.EventHandler"{
 			prc.response.addMessage( e.message );
 			routeNotfound( event, rc, prc );
 		} catch ( EntityValidationException e ) {
-			prc.response.setStatusCode( STATUS.NOT_ACCEPTABLE );
 			prc.response.setError( true );
+			prc.response.setStatusCode( STATUS.NOT_ACCEPTABLE );
 			prc.response.addMessage( deserializeJSON( e.message ) );
 		} catch ( AuthorizationException e ) {
+			prc.response.setError( true );
 			prc.response.setStatusCode( STATUS.NOT_AUTHORIZED );
 			prc.response.addMessage( e.message );
 		} catch( Any e ){

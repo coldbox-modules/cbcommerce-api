@@ -18,6 +18,11 @@
                 </tr>
             </thead>
             <tbody>
+				<tr>
+					<td colspan="3">
+						<generic-loader v-if="isLoading" message="Loading categories. Please wait..."></generic-loader>
+					</td>
+				</tr>
                 <table-row
                     v-for="(category, index) in this.categoriesListArray"
                     :key="index"
@@ -58,7 +63,6 @@ export default {
 
     computed: {
     	...mapGetters([
-    		"categoriesList",
     		"categoriesListArray",
     		"activeCategoryId"
     	])

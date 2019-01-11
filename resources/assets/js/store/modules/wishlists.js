@@ -82,6 +82,9 @@ const mutations = {
 			product
 		})
 	},
+	setWishLists( state, resultsMap ){
+		state.wishlists = resultsMap;
+	},
 	setWishlistData( state, data ){
 		Vue.set( state.wishlists.resultMap, data.id, data );
 		

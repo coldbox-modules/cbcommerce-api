@@ -89,5 +89,30 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
         return variables._normalizedPermissions;
     }
 
+    function filterSearch( 
+		required struct searchCollection, 
+        required QueryBuilder builder 
+    ){
+
+        if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
+            builder.where( 
+                        "firstName", 
+                        "like",
+                        searchCollection.search 
+                    ).orWhere( 
+                        "lastName",
+                        "like", 
+                        searchCollection.search 
+                    );
+        }
+        
+        if( structKeyExists( searchCollection, "role" ) ){
+            builder.join( "cbc_lookups_users_roles", "FK_user", "=", "users.id" )
+                    .join( "cbc_userRoles", "cbc_userRoles.id", "=", "cbc_lookups_users_roles.FK_role" )
+                    .where( "cbc_userRoles.name", searchCollection.role );
+        }
+
+    }
+
 }
 

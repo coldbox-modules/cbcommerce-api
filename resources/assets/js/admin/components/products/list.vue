@@ -1,7 +1,7 @@
 <template>
 
 	<div>
-
+        
         <page-header
             headerTitle="Products"
             :displayToolBarButton="true"
@@ -14,20 +14,21 @@
             <b-col md="6" offset-md="6" class="my-1">
                 <b-form-group horizontal class="mb-0">
                     <b-input-group>
-                        <b-form-input v-model="searchParams.search" placeholder="Type to Search" />
+                        <b-form-input v-model="searchParams.search" @change="refreshList" placeholder="Type to Search" />
                         <b-input-group-append>
-                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">Clear</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
             </b-col>
 
         </b-row>
-
+        
         <b-table
             striped
-            :filter="searchParams.search"
-            :items="productsListArray"
+            ref="productsTable"
+            :items="fetchProducts"
+            :busy.sync="isLoading"
             :fields="productsFields"
             :current-page="currentPage"
             :per-page="perPage">
@@ -71,6 +72,12 @@
             </template>
         </b-table>
 
+        <b-row>
+            <b-col xs="12">
+              <generic-loader v-if="isLoading" message="Loading products. Please wait..."></generic-loader>
+            </b-col>
+        </b-row>
+
         <table-pagination
             :totalRows="totalRows"
             :perPage="perPage"
@@ -88,11 +95,14 @@ export default {
 
     data() {
     	return {
-            isLoading     : true,
+            isLoading     : false,
             currentPage   : 1,
             perPage       : 25,
             totalRows     : 0,
-            searchParams  : {},
+            searchParams  : {
+                page : 1,
+                maxrows : 25
+            },
             productsFields: {
                 thumbnail: {
                     formatter: ( value, key, item ) => {
@@ -122,9 +132,7 @@ export default {
     	}
     },
 
-    created() {
-    	this.fetchProducts();
-    },
+    created() {},
 
     mounted() {},
 
@@ -144,16 +152,29 @@ export default {
     		"getListOfProducts",
     		"setCurrentProduct",
     		"clearCurrentProduct"
-    	]),
+        ]),
+        
+        refreshList( e ){
+            this.$refs.productsTable.refresh();
+        },
 
-    	fetchProducts(){
+    	fetchProducts( ctx ){
     		const self = this;
             Vue.set( self, "isLoading", true );
-    		Promise.resolve( this.getListOfProducts( self.searchParams ) )
-    		.then(() => {
-                Vue.set( self, "isLoading", false );
-    		})
-    		.catch(err => console.error(err));
+            self.searchParams[ "page" ] = self.currentPage;
+            self.searchParams[ "maxRows" ] = self.perPage;
+            let promise = this.getListOfProducts( self.searchParams );
+            return promise.then( ( results ) => {
+                self.isLoading = false;
+                self.currentPage = parseInt( results.meta.pagination.page );
+                self.perPage = parseInt( results.meta.pagination.maxrows );
+                self.totalRows = parseInt( results.meta.pagination.total );
+                const productsArray = self.$options.filters.denormalize( results );
+                return( productsArray );
+            })
+            .catch( error => {
+                return [];
+            })
     	}
 
     },

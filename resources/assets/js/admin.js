@@ -51,6 +51,7 @@ Vue.component( 'page-header', PageHeader );
 Vue.component( 'back-button', BackButton );
 Vue.component( 'table-pagination', TablePagination );
 Vue.component( 'dismissable-alert', DismissableAlert );
+Vue.component( "generic-loader",  require( "@cbCommerce/components/generic-loader" ).default );
 
 Vue.use( 
 	VueCurrencyFilter,

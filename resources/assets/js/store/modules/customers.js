@@ -15,22 +15,20 @@ const getters = {
 };
 
 const actions = {
-	getListOfCustomers: ({ commit }, params) =>
+	getListOfCustomers: (context, params) =>
 		new Promise((resolve, reject) => {
 			api()
 				.get.customers.list( params )
-				.then(list => {
-					const customers = list;
-					if(!customers || customers.length === 0){
-						throw new Error("No customers found");
-					}
+				.then( XHR => {
+					let results = XHR.data;
+					const customers = context.rootState.filters.denormalize( results )
 					// Normalize
 					const normCustomers = {};
 					customers.forEach(p => {
 						normCustomers[p.id] = p;
 					});
-					commit( 'setCustomerList', normCustomers );
-					resolve(normCustomers);
+					context.commit( 'setCustomerList', normCustomers );
+					resolve( results );
 				})
 				.catch(err => {
 					console.error(err);

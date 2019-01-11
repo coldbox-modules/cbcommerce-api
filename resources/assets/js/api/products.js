@@ -88,7 +88,7 @@ export const products = api => ( {
   },
   post: {
     products: {
-      save: createProduct( api ),
+      create: createProduct( api ),
       createMedia : createProductMediaItem( api ),
       viewed: trackProductView( api )
     },
