@@ -219,6 +219,7 @@ component {
             router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
+            router.route( "shopping-cart" ).to( "Cart.index" );
             router.route( "checkout/login" ).to( "Checkout.login" );
             router.route( "checkout/thankyou/:id" ).to( "Checkout.thankyou" );
             router.route( "checkout" ).to( "Checkout.index" );
