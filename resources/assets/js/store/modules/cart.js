@@ -3,10 +3,12 @@ import api from "@cbCommerce/api/index";
 
 const initialState = {
 	cart 		  : { "items" : [] },
-	checkoutStatus: null
+	checkoutStatus: null,
+	isLoadingCart : false
 };
 
 const getters = {
+	isLoadingCart: state => state.isLoadingCart,
 	checkoutStatus: state => state.checkoutStatus,
 	cartProducts: state => state.cart.items,
 	cartTotalQuantity: (state, getters) => {
@@ -23,14 +25,17 @@ const getters = {
 
 const actions = {
 	getCart: ( context ) => {
+		context.commit( 'setIsLoadingCart', true );
 		return new Promise( (resolve, reject) => {
 			api().get.cart.get()
 						.then( XHR => {
 							context.commit( 'setCartItems', XHR.data );
+							context.commit( 'setIsLoadingCart', false );
 							resolve( XHR.data );
 						} )
 						.catch( err => {
-							console.error(err);
+							console.error( err );
+							context.commit( 'setIsLoadingCart', false );
 							reject( "Error: An error occurred while retrieving the cart" );
 						});
 		} );
@@ -92,6 +97,9 @@ const mutations = {
 	},
 	setCheckoutStatus( state, status ){
 		state.checkoutStatus = status;
+	},
+	setIsLoadingCart( state, status ){
+		state.isLoadingCart = status;
 	},
 	setCartItems( state, { items } ){
 		Vue.set( state.cart, "items", items );

@@ -1,6 +1,9 @@
 <template>
      <div>
-        <div v-if="cartProducts && !cartProducts.length" class="col-sm-12 text-center">
+     	<div v-if="isLoadingCart" class="overlay">
+     		<generic-loader message="Your cart is loading. Please wait..."></generic-loader>
+     	</div>
+        <div v-else-if="cartProducts && !cartProducts.length" class="col-sm-12 text-center">
             <h3>Your Shopping Cart is empty.</h3>
             <p>Learn what's featuring today.</p>
             <p><a href="./" class="btn btn-lg btn-animate">Go to Homepage</a></p>
@@ -67,7 +70,7 @@ export default {
     		globalData   : 'globalData'
     	}),
         ...mapGetters([
-
+        	"isLoadingCart",
             "currentProduct",
             "productsListArray",
             "productsList",
