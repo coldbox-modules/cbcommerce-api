@@ -1,38 +1,40 @@
 <template>
      <div>
-        <div v-if="cartProducts && cartProducts.length == 0" class="col-sm-12">
+        <div v-if="cartProducts && !cartProducts.length" class="col-sm-12 text-center">
             <h3>Your Shopping Cart is empty.</h3>
-            <p>Continue shopping <a href="/equipment/category">equipment</a>, smallwares or used equipment.</p>
+            <p>Learn what's featuring today.</p>
+            <p><a href="./" class="btn btn-lg btn-animate">Go to Homepage</a></p>
         </div>
-    	<div v-else class="col-sm-9">
-    		<div
-    			v-for="(item, index) in cartProducts"
-    			:key="index">
-    			<cart-item :item= "item"></cart-item>
-    		</div>
-	     </div>
-	     <div class="col-sm-3">
-	     	<div class="cart-buy-box text-center">
-		     	<div class="cart-buy-subtotal">
-		     		<span>Subtotal </span>
-		     		<span class="text-muted">(
-		     			<span>{{ totalItems }}</span>
-		     			<span v-if="totalItems > 1">items</span>
-		     			<span v-else>item</span>
-		     				)
-		     		</span><br/>
-		     		<span>{{ subtotal | currency }} </span>
-		     	</div>
-		     	<a
-		     		:href="checkoutURL"
-		     		class="btn btn-animate btn-lg"
-		     		:class="{ 'disabled': !cartProducts.length }">
+        <div v-else>
+	    	<div class="col-sm-9">
+	    		<div
+	    			v-for="(item, index) in cartProducts"
+	    			:key="index">
+	    			<cart-item :item= "item"></cart-item>
+	    		</div>
+		     </div>
+		     <div class="col-sm-3">
+		     	<div class="cart-buy-box text-center">
+			     	<div class="cart-buy-subtotal">
+			     		<span>Subtotal </span>
+			     		<span class="text-muted">(
+			     			<span>{{ totalItems }}</span>
+			     			<span v-if="totalItems > 1">items</span>
+			     			<span v-else>item</span>
+			     				)
+			     		</span><br/>
+			     		<span>{{ subtotal | currency }} </span>
+			     	</div>
+			     	<a
+			     		:href="checkoutURL"
+			     		class="btn btn-animate btn-lg"
+			     		:class="{ 'disabled': !cartProducts.length }">
 
-		     		Proceed to Checkout
-		     	</a>
+			     		Proceed to Checkout
+			     	</a>
+			    </div>
 		    </div>
-	    </div>
-        <div class="clearfix"></div>
+		</div>
     </div>
 
 </template>
