@@ -107,11 +107,11 @@ component {
                 .toHandler( "Media" );
 
         // API Routing
-        router.route( "api/v1/checkout" )
+        router.route( "api/v1/payment" )
                 .withAction( {
-                    POST : "process"
+                    POST : "create"
                 } )
-                .toHandler( "API.v1.Checkout" );
+                .toHandler( "API.v1.Payments" );
 
         router.route( "api/v1/authentication" )
                 .withAction( {
@@ -219,7 +219,9 @@ component {
             router.route( "product/comparison" ).to( "Product.comparison" );
             router.route( "product/:id" ).to( "Product.detail" );
             router.route( "product" ).to( "Product.index" );
+            router.route( "shopping-cart" ).to( "Cart.index" );
             router.route( "checkout/login" ).to( "Checkout.login" );
+            router.route( "checkout/thankyou/:id" ).to( "Checkout.thankyou" );
             router.route( "checkout" ).to( "Checkout.index" );
             router.route( "account/create" ).to( "Account.create" );
             router.route( "account/login" ).to( "Account.login" );
@@ -229,7 +231,7 @@ component {
              * Display routing
              */
             router.route( "admin/app" ).to( "Admin.app" );
-            
+
             router.route( "admin" ).toHandler( "Admin" );
 
             router.route( ":action?" )
@@ -283,14 +285,14 @@ component {
         .initWith(
            settings = storageSettings
         );
-    
+
         // Add our menu item
         var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
         menuService.addSubMenu(
             topMenu=menuService.MODULES,
             name="cbCommerce",
             label="Store Admin",
-            href=menuService.buildModuleLink( 'store', 'admin' ) 
+            href=menuService.buildModuleLink( 'store', 'admin' )
         );
 
         // Run any outstanding migrations on module load ( or reinit )
