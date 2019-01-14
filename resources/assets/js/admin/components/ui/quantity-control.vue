@@ -4,21 +4,21 @@
 
         <label class="pull-left" v-if="showLabel">{{ label }}</label>
 
-        <a 
+        <a
             @click="decreaseQty"
             class="qtyControl qtyMinus">
             <i class="fa fa-minus"></i>
         </a>
 
-        <input 
+        <input
             ref="quantityInput"
-            type="text" 
-            name="quantity" 
+            type="text"
+            name="quantity"
             disabled="disabled"
-            :value="quantity" 
+            :value="quantity"
             class="qty" />
 
-        <a 
+        <a
             @click="increaseQty"
             class="qtyControl qtyPlus">
             <i class="fa fa-plus"></i>
@@ -73,8 +73,8 @@ export default {
         setCurrentVal: function( quantity ){
             var self = this;
             this.$refs.quantityInput.value = quantity;
-            Event.$emit(
-                'quantityChange', 
+            this.$emit(
+                'quantityChange',
                 {
                     quantity: quantity,
                     sku : self.sku
