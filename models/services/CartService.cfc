@@ -14,7 +14,7 @@ component extends="BaseQuickEntityService" singleton{
         return ensureCart();
     }
 
-    Cart function addItem( required string itemId, quantity = 1 ){
+    Cart function addItem( required string itemId, quantity = 1, targetCart ){
         arguments.append = true;
         return updateItem( argumentCollection = arguments );
     }
@@ -26,8 +26,13 @@ component extends="BaseQuickEntityService" singleton{
      * @quantity the quanitity of items to add (default 1)
      * @append boolean Whether to append or replace the quantity
      */
-    Cart function updateItem( required string itemId, quantity=1, append=false ){
-        var cart = ensureCart();
+    Cart function updateItem( required string itemId, quantity=1, append=false, targetCart ){
+        if( isNull( arguments.targetCart) ){
+        	var cart = ensureCart();
+        } else {
+        	var cart = targetCart;
+        }
+
         var sku = skuEntity().find( itemId );
 
         //take no action if our item was not found
@@ -140,9 +145,12 @@ component extends="BaseQuickEntityService" singleton{
         var cartId = cookieStorage.getVar( "cartId" );
 
         if( isNull( cartId ) && auth.isLoggedIn() ){
-            //check first for an existing active cart
+            //if user is logged in check first for an existing active cart
             var activeCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
-        } else if( !isNull( cartId ) ) {
+        } else if( !isNull( cartId ) && !auth.isLoggedIn()){
+        	//if user is not logged in check for active cart with null user
+        	var activeCart = newEntity().where( 'id', cartId ).whereNull( 'FK_user').first();
+        } else if( !isNull( cartId ) && auth.isLoggedIn() ) {
             var activeCart = newEntity().find( cartId );
         }
 
@@ -156,7 +164,18 @@ component extends="BaseQuickEntityService" singleton{
 
         //persist the user if the cart was created before assigning
         if( auth.isLoggedIn() && isNull( activeCart.getCustomer() ) ){
-            activeCart.customer().associate( auth.user() );
+        	// check if user has previous assigned cart
+        	var userCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
+        	if( !isNull( userCart ) ){
+        		// merge products
+        		for( var i in userCart.getContents().items ){
+        			addItem( itemId=i.sku.id, quantity=i.quantity, targetCart=activeCart );
+        		}
+        		// deactivate old cart
+        		userCart.setIsActive( 0 ).save();
+        	}
+
+        	activeCart.customer().associate( auth.user() );
             activeCart.save();
         }
 
