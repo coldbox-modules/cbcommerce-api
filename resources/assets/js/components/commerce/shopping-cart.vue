@@ -6,7 +6,7 @@
         <div v-else-if="cartProducts && !cartProducts.length" class="col-sm-12 text-center">
             <h3>Your Shopping Cart is empty.</h3>
             <p>Learn what's featuring today.</p>
-            <p><a href="./" class="btn btn-lg btn-animate">Go to Homepage</a></p>
+            <p><a href="/" class="btn btn-lg btn-animate">Go to Homepage</a></p>
         </div>
         <div v-else>
 	    	<div class="col-sm-9">
