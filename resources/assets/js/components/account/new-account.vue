@@ -9,13 +9,13 @@
                         </label>
                         <div>
                             <input
-                            	type="text"
-                            	class="form-control"
                             	id="email"
                             	name="email"
+                            	type="text"
+                            	class="form-control"
                             	v-validate="'required|email'"
                             	data-vv-as="Email"
-                            	v-model="email">
+                            	v-model="formFields.email">
 
                         	<span
                             	class="text-danger"
@@ -31,13 +31,13 @@
                         </label>
                         <div>
                             <input
-                            	type="text"
-                            	class="form-control"
                             	id="firstName"
                             	name="firstName"
+                            	type="text"
+                            	class="form-control"
                             	v-validate="'required'"
                             	data-vv-as="First Name"
-                            	v-model="firstName">
+                            	v-model="formFields.firstName">
 
                             <span
                             	class="text-danger"
@@ -53,13 +53,13 @@
                         </label>
                         <div>
                             <input
-                            	type="text"
-                            	class="form-control"
                             	id="lastName"
                             	name="lastName"
+                            	type="text"
+                            	class="form-control"
                             	v-validate="'required'"
                             	data-vv-as="Last Name"
-                            	v-model="lastName">
+                            	v-model="formFields.lastName">
 
                             <span
                             	class="text-danger"
@@ -74,13 +74,16 @@
 	                    <span class="text-danger">*</span>
 	                    <div>
 							<input
-								type="password"
+								id="password"
 								name="password"
-								v-model="password"
+								ref="password"
+								type="password"
 								class="form-control"
 								autocomplete="false"
-								data-vv-as="password"
-								v-validate="'required|min:8'"/>
+								v-model="formFields.password"
+								v-validate="'verify_password'"
+								data-vv-name="password"
+								/>
 
 							<span
                             	class="text-danger"
@@ -92,28 +95,33 @@
 	                </div>
 	                <div class="form-group">
 	                	<label for="password">Confirm Password:</label>
+	                	<span class="text-danger">*</span>
 	                	<div>
 		                	<input
-		                		name="password_confirmation"
+		                		id="passwordconfirmation"
+								name="passwordconfirmation"
 		                		type="password"
 		                		class="form-control"
-		                		v-validate="'required|confirmed:password'"
+		                		data-vv-name="passwordconfirmation"
+								v-validate="'required|confirmed:password'"
 		                		data-vv-as="password"
+		                		v-model="formFields.password2"
 		                		>
 
 		                	<span
                             	class="text-danger"
-                            	v-show="errors.has('form-account.password_confirmation')">
+                            	v-show="errors.has('form-account.passwordconfirmation')">
 
-                            	{{ errors.first( 'form-account.password_confirmation' ) }}
+                            	{{ errors.first( 'form-account.passwordconfirmation' ) }}
                             </span>
 		                </div>
 		            </div>
+		            <p> When you create an account, you agree to the Terms of Use and consent to the Privacy Policy.</p>
+
 		            <div class="form-group">
 		            	<button
 			     			class="btn btn-animate btn-fluid"
-			     			@click="create"
-			     			:disabled="!isValidated">
+			     			@click.prevent="create">
 
 			     			Create Account
 		     			</button>
@@ -124,19 +132,46 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import { Validator } from 'vee-validate';
+	const validator = new Validator();
+
 	export default{
 		data(){
 			return{
-				isValidated: false,
-				firstName: "",
-				lastName: "",
-				email: "",
-				password: ""
+				formFields: {
+					firstName: "",
+					lastName: "",
+					email: "",
+					password: "",
+					password2: ""
+				}
 			}
+		},
+		created(){
+			Validator.extend( 'verify_password', {
+			    getMessage: field => `The password must contain at least: 1 uppercase letter, 1 lowercase letter, 1 number, one special character (E.g. , . _ & ? etc), and must be at least 8 charcters long.`,
+			    validate: value => {
+			        var strongRegex = new RegExp( "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})" );
+			        return strongRegex.test( value );
+			    }
+			});
+		},
+		computed: {
+
+		},
+		mounted(){
+			validator.attach( {
+				name: 'password',
+				rules: 'required|min:8|verify_password'
+			});
 		},
 		methods: {
 			create(){
-				console.log( 'creating' );
+		      this.$validator.validate().then(result => {
+		        if (!result) {
+		          console.log( result );
+		        }
+     		 });
 			}
 		}
 	}
