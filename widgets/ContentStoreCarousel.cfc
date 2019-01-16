@@ -49,7 +49,7 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 				slide.button2Text = contentResults.content[ x ].getCustomField( "button2Text", "" );
 				slide.button2URL = contentResults.content[ x ].getCustomField( "button2URL", "" );
 
-				slide.title = contentResults.content[ x ].getTitle();
+				slide.title = encodeForHTMLAttribute( REReplace( contentResults.content[ x ].getTitle(), '"', '\"', "all" ) );
 				slide.content = encodeForHTMLAttribute( REReplace( contentResults.content[ x ].getContent(), '"', '\"', "all" ) );
 
 				arrayAppend( slides, slide );
