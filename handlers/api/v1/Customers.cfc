@@ -6,6 +6,7 @@
  **/
 component extends="BaseAPIHandler" {
 	property name="entityService" inject="UserService@cbCommerce";
+	property name="auth" inject="authenticationService@cbauth";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
 	this.API_BASE_URL = "/store/api/v1/customers";
@@ -56,6 +57,10 @@ component extends="BaseAPIHandler" {
 		validateModelOrFail( prc.user );
 
 		prc.user.save();
+
+		if( FindNoCase("account/create", CGI.http_referer ) > 0 ){
+			auth.login( prc.user );
+		}
 
 		prc.response.setStatusCode( STATUS.CREATED );
 		prc.response.setData(
