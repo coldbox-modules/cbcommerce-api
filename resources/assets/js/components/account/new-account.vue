@@ -1,5 +1,8 @@
 <template>
-	<div class="block-form">
+	<div v-if="isLoading" class="overlay">
+     	<generic-loader message="We are creating your account. Please wait..."></generic-loader>
+    </div>
+	<div class="block-form" v-else>
 		<form role="form" method="post" action="#" data-vv-scope="form-account">
 			<div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -105,7 +108,6 @@
 		                		data-vv-name="passwordconfirmation"
 								v-validate="'required|confirmed:password'"
 		                		data-vv-as="password"
-		                		v-model="formFields.password2"
 		                		>
 
 		                	<span
@@ -132,18 +134,20 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import { mapState, mapGetters, mapActions } from "vuex";
 	import { Validator } from 'vee-validate';
+
 	const validator = new Validator();
 
 	export default{
 		data(){
 			return{
+				isLoading: false,
 				formFields: {
 					firstName: "",
 					lastName: "",
 					email: "",
-					password: "",
-					password2: ""
+					password: ""
 				}
 			}
 		},
@@ -166,10 +170,22 @@
 			});
 		},
 		methods: {
+			...mapActions([
+				"saveCustomer"
+			]),
 			create(){
-		      this.$validator.validate().then(result => {
-		        if (!result) {
+			  var self = this;
+
+			  self.isLoading = true;
+		      self.$validator.validate().then(result => {
+		      	if (!result) {
 		          console.log( result );
+		        } else {
+		        	Promise.resolve(  self.saveCustomer( this.formFields ) )
+		        	.then( XHR => {
+		    			self.isLoading = false;
+		    		})
+		    		.catch(	err => console.error( err ) );
 		        }
      		 });
 			}
