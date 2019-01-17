@@ -113,6 +113,12 @@ component {
                 } )
                 .toHandler( "API.v1.Payments" );
 
+        router.route( "api/v1/customers" )
+                .withAction( {
+                    POST : "add"
+                } )
+                .toHandler( "API.v1.Customers" );
+
         router.route( "api/v1/authentication" )
                 .withAction( {
                     GET : "get",

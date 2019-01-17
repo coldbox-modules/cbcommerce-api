@@ -20,17 +20,20 @@ const actions = {
 						});
 		} );
     },
-    logout: (context) => new Promise( (resolve, reject) => {
-        api().post.authentication.logout()
+    logout: ( context ) => {
+    	new Promise( (resolve, reject) => {
+	        api().delete.authentication.logout()
                 .then( XHR => {
                     context.commit( 'setAuthUser', { rootState: context.rootState, authUser : null } );
+                    window.location.replace("./");
                     resolve( XHR.data );
                 } )
                 .catch( err => {
-                    console.error(err);
+                    console.error( err );
 					reject( "Error: An error occurred when attempting to log out the user" );
                 } )
-    } )
+	    } );
+    }
 };
 const mutations = {
     setAuthUser( state, { rootState, authUser } ) {

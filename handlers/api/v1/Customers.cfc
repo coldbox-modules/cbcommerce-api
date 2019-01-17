@@ -4,12 +4,13 @@
  * @description This is the api handler for customers
  * @author Jon Clausen <jclausen@ortussolutions.com>
  **/
-component extends="BaseAPIHandler"  secured{
+component extends="BaseAPIHandler" {
 	property name="entityService" inject="UserService@cbCommerce";
+	property name="auth" inject="authenticationService@cbauth";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
 	this.API_BASE_URL = "/store/api/v1/customers";
-		
+
 	/**
 	* (GET) /store/api/v1/customers
 	*/
@@ -27,7 +28,7 @@ component extends="BaseAPIHandler"  secured{
 				} )
 				.convert()
 		);
-	}	
+	}
 
 	/**
 	* (GET) /store/api/v1/customers/:id
@@ -51,14 +52,15 @@ component extends="BaseAPIHandler"  secured{
 	* (POST) /store/api/v1/customers
 	*/
 	function add( event, rc, prc ){
-		prc.user = entityService.new(
-			properties = rc,
-			ignoreEmpty = true
-		);
+		prc.user = entityService.newEntity().fill( rc );
 
-		prc.user.validateOrFail();
-		
+		validateModelOrFail( prc.user );
+
 		prc.user.save();
+
+		if( FindNoCase("account/create", CGI.http_referer ) > 0 ){
+			auth.login( prc.user );
+		}
 
 		prc.response.setStatusCode( STATUS.CREATED );
 		prc.response.setData(
@@ -72,7 +74,7 @@ component extends="BaseAPIHandler"  secured{
 				} )
 				.convert()
 		);
-	}	
+	}
 
 	/**
 	* (PUT|PATCH) /store/api/v1/customers/:id
@@ -81,7 +83,7 @@ component extends="BaseAPIHandler"  secured{
 		prc.user = entityService.newEntity().getOrFail( event.getValue( "id", "" ) );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		prc.user.populate( memento = rc );
 		prc.user.validateOrFail();
 		prc.user.save();
@@ -98,7 +100,7 @@ component extends="BaseAPIHandler"  secured{
 				} )
 				.convert()
 		);
-	}	
+	}
 
 	/**
 	* (DELETE) /store/api/v1/customers/:id

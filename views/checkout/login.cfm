@@ -12,7 +12,7 @@
             <div class="col-sm-6">
             	<h2>No BSR Online Account?</h2>
             	<a href="/store/checkout" class="btn btn-secondary btn-lg">Checkout as a guest</a>
-            	<a href="##" class="btn btn-primary btn-lg">Create an Account</a>
+            	<a href="/store/account/create" class="btn btn-primary btn-lg">Create an Account</a>
             </div>
         </div>
 

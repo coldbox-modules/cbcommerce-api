@@ -5,8 +5,10 @@
             <span class="hidden-xs">&nbsp; My Account</span>
             <span class="fa fa-caret-down"></span>
         </a>
-        <ul class="list-unstyled account-menu-item" v-if="!authUser">
-            <li><a href="/store/account/login"><i class="fa fa-lock"></i>&nbsp; Log In</a></li>
+        <ul class="list-unstyled account-menu-item" >
+        	<li v-if="!authUser"><a href="/store/account/login"><i class="fa fa-lock"></i>&nbsp; Log In</a></li>
+            <li v-else><a href="#" @click.prevent="logout()"><i class="fa fa-lock"></i>&nbsp; Log Out</a></li>
+            <li v-if="!authUser"><a href="/store/account/create"><i class="fa fa-user-circle"></i>&nbsp; Create Account</a></li>
         </ul>
     </div>
 </template>
@@ -20,6 +22,11 @@ export default {
         accountHref(){
             return this.authUser ? '/store/account' : '/store/account/login'
         }
-	}
+	},
+	 methods: {
+        ...mapActions([
+            "logout"
+        ])
+    }
 }
 </script>
