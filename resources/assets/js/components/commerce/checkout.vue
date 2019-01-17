@@ -542,7 +542,13 @@
 
 	    	<div class="col-sm-3">
 		     	<div class="cart-buy-box">
-		     		<button class="btn btn-animate btn-fluid" @click="purchase" :disabled="!isValidated.payment && !isValidated.payment">Place Order</button><br/><br/>
+		     		<button
+		     			class="btn btn-animate btn-fluid"
+		     			@click="purchase"
+		     			:disabled="!isValidated.payment && !isValidated.shipping">
+
+		     			Place Order
+		     		</button><br/><br/>
 		     		<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
 
 			     	<div class="cart-summary">
