@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div  class="overlay" v-if="isLoading">
+		<div class="overlay" v-if="isLoading">
 			<generic-loader message="We are creating your account. Please wait..."></generic-loader>
 		</div>
 		<div class="block-form">
@@ -178,30 +178,29 @@
 				"saveCustomer"
 			]),
 			create(){
-			  var self = this;
+				var self = this;
 
-			  self.isLoading = true;
+				self.isLoading = true;
 
-			  self.$validator.validate().then(result => {
-				if (!result) {
-				  console.log( result );
-				} else {
-					Promise.resolve(  self.saveCustomer( this.formFields ) )
-					.then( XHR => {
-						if( document.referrer.indexOf( "checkout" ) > -1 ) {
-						   window.location.replace( '/store/checkout' );
-						} else {
-							window.location.replace( 'store/shopping-cart' );
-						}
-						console.log( XHR.data );
-					})
-					.catch( err => {
-						self.isLoading = false;
-						console.error( err );
-					});
-
-				}
-			 });
+				self.$validator.validate().then( result => {
+					if (!result) {
+						console.log( result );
+					} else {
+						Promise.resolve( self.saveCustomer( this.formFields ) )
+						.then( XHR => {
+							if( document.referrer.indexOf( "checkout" ) > -1 ) {
+							   window.location.replace( '/store/checkout' );
+							} else {
+								window.location.replace( 'store/shopping-cart' );
+							}
+							console.log( XHR.data );
+						})
+						.catch( err => {
+							self.isLoading = false;
+							console.error( err );
+						});
+					}
+				});
 			}
 		}
 	}
