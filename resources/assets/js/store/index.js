@@ -2,6 +2,7 @@ import createLogger from "vuex/dist/logger";
 import VuexPersist from "vuex-persist";
 
 import auth from "@cbCommerce/store/modules/auth";
+import customers from "@cbCommerce/store/modules/customers";
 import categories from "@cbCommerce/store/modules/categories";
 import products from "@cbCommerce/store/modules/products";
 import wishlists from "@cbCommerce/store/modules/wishlists";
@@ -35,6 +36,7 @@ export const createStore = (Vue, Vuex) => {
 		state: state,
 		modules: {
 			auth,
+			customers,
 			categories,
 			products,
 			wishlists,
