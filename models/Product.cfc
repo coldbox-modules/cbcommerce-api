@@ -67,6 +67,24 @@ component   table="cbc_products"
         );
 	}
 
+    function scopeWhereInStock( query ){
+        return query.whereExists(
+            function( subQuery ){
+				return subQuery.from( 'cbc_SKUs' )
+						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.whereExists( 
+							function( subSubQuery ){
+								return subSubQuery.from( 'cbc_inventoryLocationStock' )
+												.whereColumn( 'cbc_inventoryLocationStock.FK_sku', '=', 'cbc_SKUs.id' )
+												.where( 'cbc_inventoryLocationStock.isActive', 1 )
+												.where( 'cbc_inventoryLocationStock.available', '>=', 1 );
+							}
+						)
+						.orWhere( 'cbc_SKUs.allowBackorder', 1 );
+            }
+        );
+	}
+
 	function scopeWhereWithinCategory( query, string categoryId ){
 		var categoryIds = listToArray( categoryId );
 		var categories = categories().whereIn( 'id', categoryIds ).getResults();
@@ -111,7 +129,31 @@ component   table="cbc_products"
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
                 .orWhere( 'description', 'like', searchTerm )
-        }
+		}
+		
+		if( structKeyExists( searchCollection, "sortBy") ){
+			switch( listFirst( searchCollection.sortBy, ":") ){
+				case "position":{
+					searchCollection.sortOrder = "displayOrder ASC";
+					break;
+				}
+				case "price":{
+					searchCollection.sortOrder = "displayOrder " & ucase( listLast( searchCollection.sortBy, ":" ) );
+					break;
+				}
+				case "name" :{
+					searchCollection.sortOrder = "cbc_products.name " & ucase( listLast( searchCollection.sortBy, ":" ) );
+					break;
+				}
+				case "inStock":{
+					scopeWhereInStock( builder );
+					break;
+				}
+				default:{
+					searchCollection.sortOrder = listFirst( searchCollection.sortBy, ":" ) & " " & ucase( listLast( searchCollection.sortBy, ":" ) );
+				}
+			}
+		}
 	 }
 
 	function getRequiredOptions(){

@@ -38,6 +38,33 @@
                 </div> 
             </div>
 
+            <div v-if="activeCategory" class="widget-title first-widget">
+                <i class="fa fa-arrow-circle-down"></i> Sub-Categories
+            </div>
+            <div v-if="activeCategory" class="widget-block">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <ul class="subcategory-links list-unstyled">
+                            <li
+                                v-for="category in activeCategory.children"
+                                :key="`subcat_${category.id}`"
+                            >
+                                <input 
+                                    type="checkbox"
+                                    :name="`category_${category.id}`"
+                                    :value="category.id"
+                                    @change="categoriesFilterChange"
+                                /> {{category.name}}
+                                <!-- <a :href="`/store/category/${category.id}`">
+                                    <i class="fa fa-external-link"></i>
+                                </a> -->
+                            </li>
+
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+
         </div>
 
         <div class="col-md-9">
@@ -125,7 +152,8 @@ export default {
             minPrice : 0,
             maxPrice : 1000,
             pageCount: 10,
-            searchParams : {}
+            searchParams : {},
+            filterCategories : []
         }
     },
 
@@ -140,7 +168,8 @@ export default {
         ...mapGetters([
             "productsListArray",
             "productsList",
-            "currentProductID"
+            "currentProductID",
+            "activeCategory"
         ])
     },
 
@@ -173,6 +202,22 @@ export default {
             Vue.set( self, "currentPage" , pagination.page );
             Vue.set( self, "perPage", pagination.maxrows );
             Vue.set( self, "pageCount", pagination.total / pagination.maxrows );
+        },
+
+        categoriesFilterChange( e ){
+            console.log( e.target.value );
+            let categoryId = e.target.value;
+            if( this.filterCategories.indexOf( categoryId ) > -1 ){
+                this.filterCategories.splice( this.filterCategories.indexOf( categoryId ), 1 );
+            } else {
+                this.filterCategories.push( categoryId );
+            }
+            if( this.filterCategories.length ){
+                this.searchParams.category = this.filterCategories.join(',');
+            } else {
+                this.searchParams.category = this.categorId;
+            }
+            this.fetchProducts();
         },
 
         minPriceRangeChange(){

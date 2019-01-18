@@ -25,12 +25,19 @@ component{
 
         var builder = newBuilder( argumentCollection = arguments );
 
+        if( structKeyExists( searchCollection, "sortOrder" ) ){
+            arguments.sortOrder = searchCollection.sortOrder;
+        }
+
         builder.limit( maxrows )
-                .offset( offset )
-                .orderBy(
-                    listFirst( sortOrder, " " ),
-                    listLast( sortOrder, " " )
-                );
+                .offset( offset );
+
+        listToArray( arguments.sortOrder ).each( function( orderBy ){
+            builder.orderBy(
+                listFirst( orderBy, " " ),
+                listLast( orderBy, " " )
+            );
+        } );
 
         var searchResults = arguments.entity.getEntities();
 
@@ -67,7 +74,7 @@ component{
             arguments.entity = newEntity();
         }
 
-        var builder = entity.newQuery();
+        var builder = entity.retrieveQuery();
 
         filterCommonSearchArgs( searchCollection, entity, builder );
 

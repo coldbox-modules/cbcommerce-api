@@ -10,7 +10,7 @@ const initialState = {
 
 const getters = {
 	productsList      : state => state.productsList,
-	productsListArray : state => Object.values(state.productsList),
+	productsListArray : state => Vue.options.filters.denormalize( state.productsList ),
 	currentProductID  : state => state.currentProductID,
 	currentProduct    : state => 
 		state.activeProduct || get(state, ["productsList", state.currentProductID], null),
@@ -109,14 +109,8 @@ const actions = {
 		api()
 			.get.products.list( { category : categoryId } )
 			.then(XHR => {
-				const products = rootState.filters.denormalize( XHR.data );
-				// Normalize
-				const normProducts = {};
-				products.forEach(p => {
-					normProducts[ p.id ] = p;
-				});
-				commit( 'setProductList', normProducts );
-				resolve( normProducts );
+				commit( 'setProductList', XHR.data );
+				resolve( XHR.data );
 			})
 			.catch(err => {
 				console.error(err);
@@ -128,17 +122,7 @@ const actions = {
 			api()
 				.get.products.list( params )
 				.then( XHR => {
-					let list = XHR.data;
-					const products = context.rootState.filters.denormalize( list );
-					if(!products || products.length === 0){
-						throw new Error("No products found");
-					}
-					// Normalize
-					const normProducts = {};
-					products.forEach(p => {
-						normProducts[p.id] = p;
-					});
-					context.commit( 'setProductList', normProducts );
+					context.commit( 'setProductList', XHR.data );
 					resolve( XHR.data );
 				})
 				.catch(err => {
