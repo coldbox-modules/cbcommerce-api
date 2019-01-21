@@ -18,8 +18,33 @@
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div 
+                            v-if="activeSku.media.length"
+                            v-images-loaded:on.progress="imageProgress"
+                            class="product-image">
+                            
+                            <img 
+                                id="product-zoom" 
+                                :src="activeSku.media[ 0 ].src" 
+                                :data-zoom-image="activeSku.media[ 0 ].src" 
+                                :alt="activeSku.media[ 0 ].caption" />
+
+                            <div id="thumbnailNestedGallery" v-if="activeSku.media.length > 1">
+
+                                <product-gallery-thumb
+                                    v-for="(mediaItem, index) in activeSku.media"
+                                    :key="index"
+                                    :galleryItem="mediaItem"
+                                    :totalThumbs="activeSku.media.length"
+                                    v-on:thumbLoaded="thumbLoadedResponse"
+                                ></product-gallery-thumb>
+
+                            </div>
+
+                        </div>
 
                         <div 
+                            v-else
                             v-images-loaded:on.progress="imageProgress"
                             class="product-image">
 
@@ -31,7 +56,7 @@
                                 :data-zoom-image="currentProduct.media[ 0 ].src" 
                                 :alt="currentProduct.media[ 0 ].caption" />
 
-                            <div id="thumbnailNestedGallery">
+                            <div id="thumbnailNestedGallery" v-if="currentProduct.media.length > 1">
 
                                 <product-gallery-thumb
                                     v-for="(mediaItem, index) in currentProduct.media"
@@ -85,21 +110,48 @@
                                     <label class="pull-left">Brand:</label> {{ currentProduct.manufacturer }}
                                 </div>
 
-                                <div class="clearfix"> 
+                                <div v-if="currentProduct.skus.length == 1" class="clearfix"> 
                                     <label class="pull-left">Model:</label> {{ activeSku.modelNumber }}
                                 </div>
 
-                                <div class="clearfix"> 
+                                <div v-else class="clearfix"> 
                                     <label>Summary:</label>
-                                    <p v-html="currentProduct.shortDescription"></p>
+                                    <p 
+                                        v-if="activeSku.shortDescription"
+                                        v-html="activeSku.shortDescription"></p>
+                                    <p 
+                                        v-else
+                                        v-html="currentProduct.shortDescription"></p>
+                                </div>
+
+                                <div v-if="activeSku.condition.name !== 'New'">
+                                    <label>Condition:</label>
+                                    <p>{{activeSku.condition.name}}</p>
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <div v-if="currentProduct.skus.length > 1" class="row sku-options">
+                    <div  
+                        v-for="(sku, index) in currentProduct.skus"
+                        :class="`sku-option${activeSku.id === sku.id ? ' selected' : ''}`"
+                        :key="`sku_select_${sku.id}`"
+                        @click="setActiveSku(sku)"
+                    >
+                        <div
+                            v-if="sku.media.length" 
+                            class="pull-left sku-select-img-wrap"
+                            :style="`background-image: url('${sku.media[0].src}');background-size:cover;`"
+                        ></div>
+                        <div class="sku-option-description">
+                            {{ sku.modelNumber }} <span v-if="sku.condition.name !== 'New'">( {{sku.condition.name}} )</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- tab box -->
 
@@ -114,10 +166,14 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane active" id="description">
+                        <div v-if="activeSku.condition.name !== 'New'">
+                            <h3>Condition: {{activeSku.condition.name}}</h3>
+                            <p>{{activeSku.conditionDescription}}</p>
+                        </div>
                         <br>
                         <h3>Product Details</h3>
                         <hr>
-                        <p>{{ currentProduct.description }}</p>
+                        <p>{{ activeSku.description || currentProduct.description }}</p>
                     </div>
                     <div class="tab-pane" id="additional">
                         <br>
@@ -129,7 +185,8 @@
                                 v-for="(spec, index) in activeSku.options.specifications"
                                 :key="index"
                                 class="description">
-                                {{ spec }}
+                                <strong v-if="spec.label">{{speck.label}}:</strong>
+                                {{ spec.value || spec }}
                             </li>
                         </ul>
                     </div>
@@ -234,6 +291,7 @@ import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
 import ProductDetailLoading from './product-detail-loading';
+import vSelect from 'vue-select';
 export default {
     components: {
         StarRating,
@@ -242,7 +300,8 @@ export default {
         ProductReview,
         ProductReviewForm,
         RelatedProductCarousel,
-        ProductDetailLoading
+        ProductDetailLoading,
+        vSelect
     },
     directives: {
         imagesLoaded
@@ -306,13 +365,9 @@ export default {
         },
         activeSku : function(){
             if( !this.currentProduct ) return;
-            if( !this.activeSkuId ){
-                return this.currentProduct.skus[ 0 ];
-            } else {
-                var self = this;
-                let activeSkus = this.currentProduct.skus.filter( sku => sku.id === self.activeSkuId );
-                if( activeSkus.length ) return activeSkus[ 0 ];
-            }
+            var self = this;
+            let activeSkus = this.currentProduct.skus.filter( sku => sku.id === self.activeSkuId );
+            if( activeSkus.length ) return activeSkus[ 0 ]; 
         },
         cartTotalPrice : function(){
             return this.chosenQuantity * this.activeSku.basePrice;
@@ -335,7 +390,7 @@ export default {
         // TODO: this can be removed once the API and persistence is in place
         fetchRelatedProducts(){
             const self = this;
-            Promise.resolve( this.getListOfProducts() )
+            Promise.resolve( this.getListOfProducts( { relatedTo : self.productId } ) )
             .then(() => {
                 self.isLoading = false;
             })
@@ -365,7 +420,22 @@ export default {
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
-            self.getProduct( self.productId ).then( product => self.updateProductViews( self.productId ) );
+            self.getProduct( self.productId ).then( product => {
+                product.skus.forEach( ( sku, index ) => {
+                    Vue.set( sku, "value", sku.id );
+                    if( sku.condition.name !== 'New' ){
+                        Vue.set( sku, "label", sku.modelNumber + ' (Used)' );
+                    } else {
+                        Vue.set( sku, "label", sku.modelNumber + ' (' + sku.options.specifications.join( ', ' ) + ')' );
+                    }
+                });
+                self.setActiveSku( product.skus[ 0 ] );
+                self.updateProductViews( self.productId )
+            } );
+        },
+
+        setActiveSku( sku ){
+            Vue.set( this, "activeSkuId", sku.value );
         },
 
         imageProgress: function( instance, image ){
