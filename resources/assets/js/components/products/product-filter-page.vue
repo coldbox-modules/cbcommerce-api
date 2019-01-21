@@ -159,7 +159,7 @@ export default {
 
     created() {
         if( this.initialParams ){
-            Vue.set( this, "searchParams", this.initialParams );
+            Object.assign( this.searchParams, this.initialParams );
         }
         this.fetchProducts();
     },
@@ -215,7 +215,7 @@ export default {
             if( this.filterCategories.length ){
                 this.searchParams.category = this.filterCategories.join(',');
             } else {
-                this.searchParams.category = this.categorId;
+                this.searchParams.category = this.initialParams.category;
             }
             this.fetchProducts();
         },

@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <product-detail-loading v-if="!currentProduct"></product-detail-loading>
 
@@ -220,9 +219,6 @@
                     </div>
 
                 </div>
-
-
-
             </div>
 
             <!-- end tab box -->
