@@ -12,7 +12,6 @@
             :class="navItem.urlClass" 
             :data-toggle="navItem.urlClass.indexOf( 'dropdown' ) > -1 ? 'dropdown' : ''" 
             v-html="navItem.label"></a>
-        <span v-else v-html="navItem.label"></span>
         <a 
             v-else-if="navItem.contentSlug" 
             :href="baseHref+navItem.contentSlug" 
