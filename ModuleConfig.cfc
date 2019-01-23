@@ -220,6 +220,7 @@ component {
                     )
                     .toHandler( "API.v1.WishlistItems" );
 
+            router.route( "category/used" ).to( "Category.used" );
             router.route( "category/:id" ).to( "Category.detail" );
             router.route( "category" ).to( "Category.index" );
             router.route( "product/comparison" ).to( "Product.comparison" );

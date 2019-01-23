@@ -14,7 +14,7 @@ component{
 
     void function preProcess( event, interceptData, buffer, rc, prc ) {
         // templateCache.clear( "cbCommerce_categoriesMenuTree" );
-        prc.globalData.categoriesMap = templateCache.getOrSet( "cbCommerce_categoriesMenuTree", function(){
+        prc.globalData["categoriesMap"] = templateCache.getOrSet( "cbCommerce_categoriesMenuTree", function(){
             var topLevelCategories = categoryService.newEntity()
                                                     .where( "isActive", 1 )
                                                     .whereNull( 'FK_parent' )
@@ -28,8 +28,6 @@ component{
                 .withTransformer( "ProductCategoryTransformer@cbCommerce" )
 				.convert()
         } );
-
-        // onEnsureContentboxCategoryMenus( argumentCollection=arguments );
 
     }
 

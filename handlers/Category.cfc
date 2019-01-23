@@ -16,12 +16,10 @@ component {
     }
 
     // ( GET ) /store/category/used
-    function used( event,rc, prc ){
+	function used( event, rc, prc ){
         // Tell ColdBox to use the ContentBox theme
         cbHelper.prepareUIRequest( "modules" );
-        rc[ "condition" ] = 'used';
-        event.setView( "category/index" );
-
+        event.setView( "category/used" );
     }
 
 }

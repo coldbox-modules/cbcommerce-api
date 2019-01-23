@@ -67,6 +67,40 @@ component   table="cbc_products"
         );
 	}
 
+	function scopeWhereCondition( query, condition ){
+		return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' );
+				if( isValid( 'guid', condition ) ){
+					subQuery.where( 'cbc_productConditions.id', condition );
+				} else {
+					subQuery.where( 'cbc_productConditions.name', '=', condition );
+				}
+					
+				return subQuery;
+            }
+        );
+	}
+
+	function scopeWhereSubCondition( query, array subConditions ){
+		return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.whereColumn( 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.join( 'cbc_productConditions', 'cbc_SKUs.FK_subCondition', '=', 'cbc_productConditions.id' );
+				if( isValid( 'guid', subConditions[ 1 ] ) ){
+					subQuery.whereIn( 'cbc_productConditions.id', subConditions );
+				} else {
+					subQuery.whereIn( 'cbc_productConditions.name', subConditions );
+				}
+					
+				return subQuery;
+            }
+        );
+	}
+
     function scopeWhereInStock( query ){
         return query.whereExists(
             function( subQuery ){
@@ -117,18 +151,29 @@ component   table="cbc_products"
 
 		if( structKeyExists( searchCollection, "category" ) ){
             if( searchCollection.category == 'used' ){
-                this.hasUsedSKU();
+                this.scopeHasUsedSKU( arguments.builder );
             } else {
                 this.whereWithinCategory( searchCollection.category );
             }
-        }
+		}
+		
+		if( structKeyExists( searchCollection, "condition" ) ){
+			this.scopeWhereCondition( arguments.builder, searchCollection.condition );
+		}
+
+		if( structKeyExists( searchCollection, "subCondition" ) ){
+			if( isSimpleValue( searchCollection.subCondition ) ){
+				searchCollection.subCondition = listToArray( searchCollection.subCondition );
+			}
+			this.scopeWhereSubCondition( arguments.builder, searchCollection.subCondition );
+		}
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
             arguments.builder
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
-                .orWhere( 'description', 'like', searchTerm )
+                .orWhere( 'description', 'like', searchTerm );
 		}
 		
 		if( structKeyExists( searchCollection, "sortBy") ){
@@ -145,6 +190,7 @@ component   table="cbc_products"
 					searchCollection.sortOrder = "cbc_products.name " & ucase( listLast( searchCollection.sortBy, ":" ) );
 					break;
 				}
+				case "quantity":
 				case "inStock":{
 					scopeWhereInStock( builder );
 					break;

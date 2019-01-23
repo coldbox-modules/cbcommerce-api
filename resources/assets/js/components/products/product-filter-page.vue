@@ -38,7 +38,7 @@
                 </div> 
             </div>
 
-            <div v-if="activeCategory" class="widget-title first-widget">
+            <div v-if="activeCategory" class="widget-title">
                 <i class="fa fa-arrow-circle-down"></i> Sub-Categories
             </div>
             <div v-if="activeCategory" class="widget-block">
@@ -55,9 +55,30 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange"
                                 /> {{category.name}}
-                                <!-- <a :href="`/store/category/${category.id}`">
-                                    <i class="fa fa-external-link"></i>
-                                </a> -->
+                            </li>
+
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+            <div v-if="searchParams.condition" class="widget-title">
+                <i class="fa fa-arrow-circle-down"></i> {{searchParams.condition}} Categories
+            </div>
+            <div v-if="searchParams.condition" class="widget-block">
+                <generic-loader v-if="categoriesLoading" message="Loading categories..."></generic-loader>
+                <div v-else class="row">
+                    <div class="col-xs-12">
+                        <ul class="subcategory-links list-unstyled">
+                            <li
+                                v-for="category in categoriesListArray"
+                                :key="`subcat_${category.id}`"
+                            >
+                                <input 
+                                    type="checkbox"
+                                    :name="`category_${category.id}`"
+                                    :value="category.id"
+                                    @change="categoriesFilterChange"
+                                /> {{category.name}}
                             </li>
 
                         </ul>
@@ -77,7 +98,22 @@
                 :isList="isList"
                 :perPage="perPage"></filter-bar>
 
-            <div v-if="!isLoading">
+
+
+            <div v-if="isLoading">
+                <div class="col-md-4" v-for="(n, index) in 25" :key="`loading-${index}`">
+                    <product-item-loading></product-item-loading>
+                </div>
+            </div>
+
+            <div v-else-if="!this.productsListArrayLength">
+                <div class="text-center alert alert-info">
+                    <h5 class="text-center">There are no products matching the requested criteria</h5>
+                </div>
+
+            </div>
+
+            <div v-else>
                 <products-grid 
                     v-if="this.isGrid" 
                     :products="this.productsListArray"
@@ -91,12 +127,6 @@
                     :isLoading="isLoading"
                     :fakes="fakes"
                 ></products-list>
-            </div>
-
-            <div v-else>
-                <div class="col-md-4" v-for="(n, index) in 25" :key="`loading-${index}`">
-                    <product-item-loading></product-item-loading>
-                </div>
             </div>
 
             <div class="block-pagination" v-if="!isLoading">
@@ -144,6 +174,7 @@ export default {
             fakes    : 3,
             products : null,
             isLoading: true,
+            categoriesLoading: false,
             isGrid   : true,
             isList   : false,
             sortBy   : 'price:asc',
@@ -158,10 +189,21 @@ export default {
     },
 
     created() {
+        var self = this;
         if( this.initialParams ){
             Object.assign( this.searchParams, this.initialParams );
         }
         this.fetchProducts();
+
+        if( self.searchParams.condition ){
+            Vue.set( self, "categoriesLoading", true );
+            this.getCategories( { "productCondition" : self.searchParams.condition } )
+                    .then( 
+                        categoriesMap => {  
+                            Vue.set( self, "categoriesLoading", false );
+                        }
+                    );
+        }
     },
 
     computed: {
@@ -169,7 +211,8 @@ export default {
             "productsListArray",
             "productsList",
             "currentProductID",
-            "activeCategory"
+            "activeCategory",
+            "categoriesListArray"
         ])
     },
 
@@ -179,7 +222,8 @@ export default {
             "getListOfProducts",
             "setCurrentProduct",
             "clearCurrentProduct",
-            "addItemToCart"
+            "addItemToCart",
+            "getCategories"
         ]),
 
         fetchProducts(){

@@ -46,6 +46,21 @@ component   table="cbc_productCategories"
         );
 	}
 
+	function scopeHasProductInCondition( required query, required string condition ){
+		return query.whereExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_SKUs' )
+						.join( 'cbc_products', 'cbc_SKUs.FK_product', '=', 'cbc_products.id' )
+						.join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
+						.join( 'cbc_lookups_products_categories', 'cbc_lookups_products_categories.FK_product', '=', 'cbc_products.id' )
+						.whereColumn( 'cbc_lookups_products_categories.FK_category', '=', 'cbc_productCategories.id' )
+						.where( 'cbc_products.isActive', 1 )
+						.where( 'cbc_SKUs.isActive', 1 )
+						.where( 'cbc_productConditions.name', condition );
+            }
+        );
+	}
+
 	function getActiveChildren( limit ){
 		var childQuery = children().where( 'isActive', 1 )
 									.orderBy( 'displayOrder', 'ASC' )
@@ -74,5 +89,14 @@ component   table="cbc_productCategories"
 			return "";
 		}
 	}
+
+	function filterSearch(
+		required struct searchCollection, 
+		required QueryBuilder builder
+	 ){
+		if( structKeyExists( searchCollection, "productCondition" ) ){
+			this.scopeHasProductInCondition( builder, searchCollection.productCondition );
+		}
+	 }
 
 }
