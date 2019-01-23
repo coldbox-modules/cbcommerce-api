@@ -28,6 +28,7 @@ import { mapState } from 'vuex';
 export default {
     props : {
         prependCategories : {
+            type : Boolean,
             default : false
         }
     },
