@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <div v-else-if="!this.productsListArrayLength">
+            <div v-else-if="!this.productsListArray.length">
                 <div class="text-center alert alert-info">
                     <h5 class="text-center">There are no products matching the requested criteria</h5>
                 </div>

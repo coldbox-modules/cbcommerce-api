@@ -38,7 +38,7 @@
                         <select 
                             name="products-per-page" 
                             class="form-control"
-                            v-model="selected"
+                            :value="perPage"
                             @change="$emit('perPageChange', $event.target.value)">
                             <option v-for="(n, index) in [ 15, 30, 50, 75, 100 ]" :key="`option-${index}`" v-bind:value="n">{{n}}</option>
                         </select>
@@ -71,7 +71,6 @@ export default {
     destroyed() {},
 
     methods: {
-
         productLayoutChange(type){
             this.$emit('productLayoutChange', type);
         }
