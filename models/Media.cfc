@@ -9,6 +9,7 @@ component   table="cbc_media"
 	property name="mediaSettings" inject="coldbox:setting:media@cbCommerce" persistent="false";
 	property name="mediaUtil" inject="MediaUtil@cbCommerce" persistent="false";
 	property name="jLoader" inject="loader@cbjavaloader" persistent="false";
+	property name="log" inject="logbox:logger:{this}";
     // Persistent column properties
 	property name="designation" type="string" default="product";
 	property name="title" type="string" default="";
