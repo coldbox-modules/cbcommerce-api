@@ -15,7 +15,6 @@ import createFilters from "@cbCommerce/filters/index";
 Vue.component( "mediaOwlCarousel", require( "@cbCommerce/components/media-owl-carousel" ).default );
 Vue.component( "cbSlickSlider", require( "@cbCommerce/components/cb-slick-slider" ).default );
 Vue.component( "cbMediaGallery", require( "@cbCommerce/components/cb-media-gallery" ).default );
-Vue.component( "bsrFinanceCalculator", require( "@cbCommerce/components/bsr-finance-calculator" ).default );
 Vue.component( "loginForm", require( "@cbCommerce/components/login-form" ).default );
 Vue.component( "generic-loader",  require( "@cbCommerce/components/generic-loader" ).default );
 Vue.component( "contentbox-nav",  require( "@cbCommerce/components/contentbox-nav" ).default );
