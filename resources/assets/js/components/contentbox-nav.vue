@@ -1,26 +1,40 @@
 <template>
-    <div id="navbar-collapse-1" class="navbar-collapse collapse ">
-        <ul :class="rootMenu.menuClass">
+	<div>
+		<button type="button" class="navbar-main-toggle" @click="toggleNav()">
+	    	<span class="icon-bar"></span>
+	    	<span class="icon-bar"></span>
+	    	<span class="icon-bar"></span>
+	    </button>
+		<nav class="navbar navbar-main" role="navigation" :class="{ 'active' : openNav }">
+			<div class="navbar-main-header">
+				<button type="button" class="navbar-main-close" @click="openNav=false">
+			    	<i class="fa fa-times"></i>
+			    </button>
+		    </div>
+		    <div id="navbar-main-collapse">
+		        <ul :class="rootMenu.menuClass">
 
-            <contentbox-nav-item
-                v-if="prependCategories"
-                v-for="( navItem, index) in categoriesNav"
-                :key="`cbcommerce_nav_item_${index}`"
-                :navItem="navItem"></contentbox-nav-item>
-            
-            <contentbox-nav-item
-                v-for="(navItem, index) in rootMenu.menuItems"
-                :key="`contentbox_nav_item_${index}`"
-                :navItem="navItem"></contentbox-nav-item>
+		            <contentbox-nav-item
+		                v-if="prependCategories"
+		                v-for="( navItem, index) in categoriesNav"
+		                :key="`cbcommerce_nav_item_${index}`"
+		                :navItem="navItem"></contentbox-nav-item>
 
-            <contentbox-nav-item
-                v-if="!prependCategories"
-                v-for="( navItem, index) in categoriesNav"
-                :key="`cbcommerce_nav_item_${index}`"
-                :navItem="navItem"></contentbox-nav-item>
+		            <contentbox-nav-item
+		                v-for="(navItem, index) in rootMenu.menuItems"
+		                :key="`contentbox_nav_item_${index}`"
+		                :navItem="navItem"></contentbox-nav-item>
 
-        </ul>
-    </div>
+		            <contentbox-nav-item
+		                v-if="!prependCategories"
+		                v-for="( navItem, index) in categoriesNav"
+		                :key="`cbcommerce_nav_item_${index}`"
+		                :navItem="navItem"></contentbox-nav-item>
+
+		        </ul>
+		    </div>
+		</nav>
+	</div>
 </template>
 <script>
 import ContentboxNavItem from './contentbox-nav-item';
@@ -32,8 +46,13 @@ export default {
             default : false
         }
     },
-    components:{ 
+    components:{
         ContentboxNavItem
+    },
+    data(){
+    	return{
+    		openNav : false
+    	}
     },
     computed: {
         ...mapState({
@@ -53,41 +72,46 @@ export default {
                         urlClass : cat.children.length ? 'dropdown-toggle' : state.globalData.rootMenu.menuItems[ 0 ].urlClass
                     }, navBase );
                     if( cat.children && cat.children.length ){
-                        cat.children.forEach( 
+                        cat.children.forEach(
                             subCat => {
-                                 
-                                let subCatNav = Object.assign( { 
-                                    label : subCat.name, 
+
+                                let subCatNav = Object.assign( {
+                                    label : subCat.name,
                                     contentSlug : `store/category/${subCat.id}`,
                                     children : [],
                                     urlClass : ''
                                 }, navBase );
 
                                 if( subCat.children ){
-                                    subCat.children.forEach( 
+                                    subCat.children.forEach(
                                         subSubCat => {
-                                            
-                                            let subSubCatNav = Object.assign( { 
-                                                label : subSubCat.name, 
+
+                                            let subSubCatNav = Object.assign( {
+                                                label : subSubCat.name,
                                                 contentSlug : `store/category/${subSubCat.id}`,
-                                                urlClass : '' 
+                                                urlClass : ''
                                             }, navBase );
 
                                             subCatNav.children.push( subSubCatNav );
 
-                                        } 
+                                        }
                                     );
                                 }
 
                                 catNav.children.push( subCatNav )
 
-                            } 
+                            }
                         );
                     }
                     return catNav;
                 } )
             }
         }),
+    },
+    methods: {
+    	toggleNav(){
+    		this.openNav = !this.openNav;
+    	}
     }
 }
 </script>
