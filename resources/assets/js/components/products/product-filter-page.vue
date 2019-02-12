@@ -132,6 +132,7 @@
             <div class="block-pagination" v-if="!isLoading">
 
                 <paginate
+                    :initial-page="currentPage-1"
                     :pageCount="pageCount"
                     :prevText="'Prev'"
                     :nextText="'Next'"
@@ -229,15 +230,16 @@ export default {
         fetchProducts(){
             var self = this;
             Vue.set( self, "isLoading", true );
-            Object.assign( self.searchParams, { maxrows : self.perPage, page : self.currentPage });
+            self.searchParams.maxrows = parseInt( self.perPage );
+            self.searchParams.page = self.currentPage;
             self.getListOfProducts( self.searchParams ).then( productsMap => {
-                Vue.set( self, "isLoading", false );
                 self.setPagination( productsMap.meta.pagination );
+                Vue.set( self, "isLoading", false );
             } );
         },
 
         paginationCallback( pageNum ){
-            Vue.set( self, "currentPage", pageNum );
+            Vue.set( this, "currentPage", pageNum );
             this.fetchProducts();
         },
 
@@ -245,7 +247,7 @@ export default {
             var self = this;
             Vue.set( self, "currentPage" , pagination.page );
             Vue.set( self, "perPage", pagination.maxrows );
-            Vue.set( self, "pageCount", pagination.total / pagination.maxrows );
+            Vue.set( self, "pageCount", Math.ceil( pagination.total / pagination.maxrows ) );
         },
 
         categoriesFilterChange( e ){

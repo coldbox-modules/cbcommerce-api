@@ -146,9 +146,7 @@ component extends="BaseAPIHandler"{
 	function delete( event, rc, prc ) { // secured="Products:Manage"
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
-		var mediaAttachment = prc.skuMedia.getMediaItem();
 		prc.skuMedia.delete();
-		mediaAttachment.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
 	}

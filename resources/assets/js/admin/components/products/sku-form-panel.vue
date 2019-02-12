@@ -95,7 +95,31 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Base Price"
+								label="Minimum Retail Price"
+								label-for="miniumumPrice">
+								<b-input-group size="lg" prepend="$">
+									<b-form-input 
+										type="number"
+										id="minimumPrice" 
+										:required="true"
+										v-model.trim="form.miniumumPrice"></b-form-input>
+								</b-input-group>
+							</b-form-group>
+
+							<b-form-group
+								label="Minimum Advertised Price"
+								label-for="MAP">
+								<b-input-group size="lg" prepend="$">
+									<b-form-input 
+										type="number"
+										id="MAP" 
+										:required="true"
+										v-model.trim="form.MAP"></b-form-input>
+								</b-input-group>
+							</b-form-group>
+
+							<b-form-group
+								label="Selling Price"
 								label-for="basePrice">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 

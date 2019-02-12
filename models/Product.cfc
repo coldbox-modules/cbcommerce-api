@@ -124,7 +124,7 @@ component   table="cbc_products"
 		var categories = categories().whereIn( 'id', categoryIds ).getResults();
 		categories.each( function( category ){
 			arrayAppend( categoryIds, category.keyValue() );
-			arrayAppend( categoryIds, getChildCategoryIdentifiers( category ), true );
+			appendChildCategoryIdentifiers( categoryIds, category );
 		} );
 		return query.whereExists( 
 			function( subQuery ){
@@ -135,13 +135,11 @@ component   table="cbc_products"
 		);
 	}
 
-	private function getChildCategoryIdentifiers( category ){
-		var childIdentifiers = [];
+	private void function appendChildCategoryIdentifiers( required array idArray, required ProductCategory category ){
 		category.getChildren().each( function( child ){
-			arrayAppend( childIdentifiers, child.keyValue() );
-			arrayAppend( childIdentifiers, getChildCategoryIdentifiers( child ), true );
+			arrayAppend( idArray, child.keyValue() );
+			appendChildCategoryIdentifiers( idArray, child );
 		} );
-		return childIdentifiers;
 	}
 	
 	function filterSearch(

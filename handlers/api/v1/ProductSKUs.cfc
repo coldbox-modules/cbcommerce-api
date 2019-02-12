@@ -78,6 +78,12 @@ component extends="BaseAPIHandler"{
 
 		prc.sku.save();
 
+		if( structKeyExists( rc, "options" ) && isArray( rc.options ) ){
+			rc.options.each( function( option ){
+				prc.sku.options().create({ "name" : option.name, "value" : option.value });
+			} );
+		}
+
 		prc.response.setData( 
 			fractal.builder()
 				.item( prc.sku )
@@ -172,6 +178,13 @@ component extends="BaseAPIHandler"{
 		validateModelOrFail( prc.sku );
 
 		prc.sku.save();
+
+		if( structKeyExists( rc, "options" ) && isArray( rc.options ) ){
+			prc.sku.options().delete();
+			rc.options.each( function( option ){
+				prc.sku.options().create( { "name" : option.name, "value" : option.value } );
+			} );
+		}
 
 		prc.response.setData( 
 			fractal.builder()

@@ -11,7 +11,7 @@ component extends="cffractal.models.transformers.AbstractTransformer" accessors=
     ];
     variables.availableIncludes = [];
 
-    variables.collectionSerializer = 'ResultsMapSerializer@cffractal';
+    variables.collectionSerializer = 'SimpleSerializer@cffractal';
 
     function transform( activeEntity ) {
     	

@@ -2,7 +2,6 @@ component {
     
     function up( SchemaBuilder schema, QueryBuilder query ) {
         var wirebox = application.wirebox;
-        var mediaService = wirebox.getInstance( "MediaService@cbCommerce" );
         var mockCategories = wirebox.getInstance( "MockData@MockDataCFC" )
                             .mock(
                                 $num=5,

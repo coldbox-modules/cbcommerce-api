@@ -144,9 +144,7 @@ component extends="BaseAPIHandler"{
 	function delete( event, rc, prc ) secured="Products:Edit"{
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
-		var mediaAttachment = prc.productMedia.getMediaItem();
 		prc.productMedia.delete();
-		mediaAttachment.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
 	}

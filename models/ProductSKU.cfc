@@ -11,16 +11,18 @@ component   table="cbc_SKUs"
 	property name="isConsigned" type="boolean" default=0;
 	property name="allowBackorder" type="boolean" default=0;
     property name="isFeatured" type="boolean" default=0;
+	property name="summary" type="string" default="";
+	property name="description" type="string" default="";
 	property name="cost" type="numeric";
 	property name="basePrice" type="numeric";
 	property name="minimumPrice" type="numeric";
+	property name="MAP" type="numeric";
 	property name="MSRP" type="numeric";
 	property name="discontinueOn" type="date";
 	property name="packagedWeight" type="numeric";
 	property name="packagingX" type="numeric";
 	property name="packagingY" type="numeric";
 	property name="packagingZ" type="numeric";
-	property name="options" type="string" default="{}";
 	property name="conditionDescription" type="string";
 	property name="displayOrder" type="numeric" default=0;
 	
@@ -66,30 +68,20 @@ component   table="cbc_SKUs"
 	function reviews(){
 		return hasMany( "ProductSKU@cbCommere", "FK_sku");
 	}
-	
-	/**
-	 * Pre-save Interception
-	 */
-	function preSave(){
-		if( !isSimpleValue( variables.options ) ){
-			setOptions( variables.options );
-		}
+
+	function options(){
+		return hasMany( "ProductSKUOption@cbCommerce", "FK_sku" ).orderBy( "displayOrder", "ASC" );
 	}
 
-	function getOptions(){
-		if( isSimpleValue( variables.options ) ){
-			assignAttribute( retrieveAliasForColumn( 'options' ), deserializeJSON( variables.options ) );
-		}
-		return variables.options;
-	}
-
-	function setOptions( any options ){
-
-		if( !isSimpleValue( arguments.options ) ){
-			arguments.options = serializeJSON( arguments.options );
-		}
-
-		assignAttribute( retrieveAliasForColumn( 'options' ), arguments.options );
+	function delete(){
+		options().delete();
+		reviews().delete();
+		inventory().delete();
+		virtualSKUs().delete();
+		getMedia().each( function( mediaItem ){
+			mediaItem.delete();
+		} )
+		return super.delete( argumentCollection=arguments );
 	}
 	
 }

@@ -17,7 +17,8 @@ component extends="BaseModelTransformer"{
             [
                 "onHand",
                 "media",
-                "condition"
+                "condition",
+                "options"
             ],
             true
         );
@@ -27,21 +28,9 @@ component extends="BaseModelTransformer"{
 
     function transform( activeEntity ){
         var memento = super.transform( activeEntity );
-        memento.options = len( memento.options) ? deserializeJSON( memento.options ) : {};
         return memento;
     }
 
-    function includeConsignee( activeEntity ){
-        return item(
-            activeEntity.getConsignee(),
-            wirebox.getInstance( "UserTransformer@cbCommerce" )
-        );
-    }
-
-    function includeInventory( activeEntity ){
-        var inventory = wirebox.getInstance( "InventoryLocationStock@cbCommerce" ).newQuery().where( 'FK_sku', activeEntity.getId() );
-        
-    }
 
     function includeOnHand( activeEntity ){
 
@@ -52,6 +41,28 @@ component extends="BaseModelTransformer"{
             function( available ){
                 return javacast( "int", len( available ) ? available : 0 );
             }
+        );
+    }
+
+    function includeOptions( activeEntity ){
+        return collection(
+            activeEntity.getOptions(),
+            wirebox.getInstance( "BaseModelTransformer@cbCommerce" ),
+            wirebox.getInstance( "SimpleSerializer@cffractal")
+        );
+    }
+
+    function includeConsignee( activeEntity ){
+        return item(
+            activeEntity.getConsignee(),
+            wirebox.getInstance( "UserTransformer@cbCommerce" )
+        );
+    }
+
+    function includeInventory( activeEntity ){
+        return collection(
+            activeEntity.getInventory(),
+            wirebox.getInstance( "InventoryLocationStockTransformer@cbCommerce" )
         );
     }
 

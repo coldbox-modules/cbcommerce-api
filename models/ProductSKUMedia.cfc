@@ -21,4 +21,12 @@ component   table="cbc_productSKUMedia"
 		return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );
 	}
 
+
+	function delete(){
+		var mediaItem = getMediaItem();
+		// delete our constrained item first
+		super.delete();
+		return mediaItem.delete();
+	}
+
 }

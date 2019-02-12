@@ -135,7 +135,7 @@
 
                 <div v-if="currentProduct.skus.length > 1" class="row sku-options">
                     <div  
-                        v-for="(sku, index) in currentProduct.skus"
+                        v-for="sku in currentProduct.skus"
                         :class="`sku-option${activeSku.id === sku.id ? ' selected' : ''}`"
                         :key="`sku_select_${sku.id}`"
                         @click="setActiveSku(sku)"
@@ -181,12 +181,32 @@
                         <h4>Specifications:</h4>
                         <ul class="list-unstyled">
                             <li 
-                                v-for="(spec, index) in activeSku.options.specifications"
-                                :key="index"
+                                v-for="spec in activeSku.options"
+                                :key="spec.id"
                                 class="description">
-                                <strong v-if="spec.label">{{speck.label}}:</strong>
-                                {{ spec.value || spec }}
+                                <strong>{{spec.name}}:</strong>
+                                {{ spec.value }}
                             </li>
+                            <li v-if="!activeSku.options.length"><em class="text-muted">No product specifications available</em></li>
+                        </ul>
+                        <h4>Dimensions</h4>
+                        <ul>
+                            <li v-if="activeSku.packagingY">
+                                <strong>Height:</strong> {{activeSku.packagingY}} {{globalData.measurementUnit || 'inches'}}
+                            </li>
+
+                            <li v-if="activeSku.packagingX">
+                                <strong>Width:</strong> {{activeSku.packagingX}} {{globalData.measurementUnit || 'inches'}}
+                            </li>
+
+                            <li v-if="activeSku.packagingZ">
+                                <strong>Depth:</strong> {{activeSku.packagingZ}} {{globalData.measurementUnit || 'inches'}}
+                            </li>
+
+                            <li v-if="activeSku.packagedWeight">
+                                <strong>Weight:</strong> {{activeSku.packagedWeight}} {{globalData.weightUnit || 'pounds'}}
+                            </li>
+
                         </ul>
                     </div>
                     <div class="tab-pane" id="review">
@@ -277,7 +297,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
 import "ez-plus/src/jquery.ez-plus.js";
@@ -338,7 +358,9 @@ export default {
     destroyed() {},
 
     computed: {
-
+        ...mapState([
+            'globalData'
+        ]),
         ...mapGetters([
             "authUser",
             "currentProduct",
@@ -363,15 +385,13 @@ export default {
             if( !this.currentProduct ) return;
             var self = this;
             let activeSkus = this.currentProduct.skus.filter( sku => sku.id === self.activeSkuId );
-            if( activeSkus.length ) return activeSkus[ 0 ]; 
+            if( activeSkus.length ) return this.currentProduct.skus[ 0 ]; 
         },
         cartTotalPrice : function(){
             return this.chosenQuantity * this.activeSku.basePrice;
         }
     },
-
     methods: {
-
         ...mapActions([
             "addItemToCart",
             "addItemToWishlist",
@@ -422,7 +442,7 @@ export default {
                     if( sku.condition.name !== 'New' ){
                         Vue.set( sku, "label", sku.modelNumber + ' (Used)' );
                     } else {
-                        Vue.set( sku, "label", sku.modelNumber + ' (' + sku.options.specifications.join( ', ' ) + ')' );
+                        Vue.set( sku, "label", sku.modelNumber );
                     }
                 });
                 self.setActiveSku( product.skus[ 0 ] );
@@ -431,7 +451,7 @@ export default {
         },
 
         setActiveSku( sku ){
-            Vue.set( this, "activeSkuId", sku.value );
+            Vue.set( this, "activeSkuId", sku.id );
         },
 
         imageProgress: function( instance, image ){
