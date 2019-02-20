@@ -24,7 +24,7 @@
         "BCrypt":"^2.5.0",
         "cbvalidation":"^1.3.1+51",
         "cbauth":"^2.0.0",
-        "quick": "v2.0.0-beta.8",
+        "quick": "v2.0.0-beta.9",
         "cfcollection":"^3.6.1",
         "stripecfml":"^1.1.4",
         "cbjavaloader": "^2.0.0+44"

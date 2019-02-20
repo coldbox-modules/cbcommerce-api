@@ -24,25 +24,13 @@
                             v-tooltip="{ content: 'Add this item to your wishlist' }"
                             class="product-wishlist"><i class="fa fa-heart-o"></i></a>
                         
-                        <div>
-                            <img 
-                                v-for="mediaItem in product.media"
-                                :key="mediaItem.id"
-                                v-if="isImage( mediaItem )"
-                                :src="mediaItem.src" 
-                                class="img-overlay img-responsive" 
-                                :alt="mediaItem.title" />
-                            
-                            <img 
-                                v-if="product.media.length === 1 && isImage( product.media[ 0 ] )"
-                                :src="product.media[ 0 ].src" 
-                                class="img-responsive" 
-                                :alt="product.media[ 0 ].title" />
-                        </div>
+                        
+                        <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
+                        <div class="product-item-image-placeholder" v-else></div>
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
-                            <a href="#" class="product-name">{{ product.name }}</a>
+                            <a href="#" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
 
                             <div v-if="product.startingPrice">
                                 <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
@@ -72,7 +60,7 @@
                     </div>
 
                     <p class="description">
-                        {{ product.description | truncate( 35 ) }}
+                        {{ removeHTML( product.shortDescription, 75 ) }}
                     </p>
 
                 </article>
@@ -129,6 +117,17 @@ export default {
         },
         percentOff(){
             return parseInt( 100 * ( 1 - ( this.product.startingPrice.basePrice / this.product.startingPrice.MSRP ) ) );
+        },
+        productImageSrc(){
+            var self = this;
+            var mediaSrc = '';
+            this.product.media.forEach( mediaItem => {
+                if( !mediaSrc.length && self.isImage( mediaItem ) ){
+                    mediaSrc = mediaItem.src;
+                }
+            });
+
+            return mediaSrc;
         }
     },
 
@@ -143,7 +142,16 @@ export default {
         },
         imageProgress: function( instance, image ){
             var result = image.src ? 'loaded' : 'broken';
+        },
+        removeHTML( html, truncateTo ){
+            let textConversion = $( '<p>' + html + '</p>' ).text();
+            if( truncateTo ){
+                return this.$options.filters.truncate( textConversion, truncateTo );
+            } else {
+                return textConversion;
+            }
         }
+        
 
     }
 }

@@ -6,7 +6,8 @@
 
             <h1 
                 class="wow fadeInRight animated animated" 
-                data-wow-duration="1s">{{ currentProduct.name }}</h1>
+                data-wow-duration="1s"
+                v-html="currentProduct.name"></h1>
 
         </div>
         
@@ -172,7 +173,7 @@
                         <br>
                         <h3>Product Details</h3>
                         <hr>
-                        <p>{{ activeSku.description || currentProduct.description }}</p>
+                        <p v-html="activeSku.description || currentProduct.description"></p>
                     </div>
                     <div class="tab-pane" id="additional">
                         <br>

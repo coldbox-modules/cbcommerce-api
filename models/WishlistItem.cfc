@@ -8,10 +8,13 @@ component   table="cbc_wishlistItems"
 {
 
    property name="baselinePrice" type="numeric";
+   property name="discountPrice" default="0";
+   
 
    //Foreign Keys
 	property name="FK_sku";
-	property name="FK_wishlist";
+   property name="FK_wishlist";
+
 
    function sku(){
        return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );

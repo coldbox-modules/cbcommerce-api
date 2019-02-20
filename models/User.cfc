@@ -40,7 +40,6 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
     this.constraints = {
 		firstName : { required : true },
-		lastName : { required : true },
         password : { required : true },
         email : { required : true, validator : "UniqueUserValidator@cbCommerce" }
 	};
