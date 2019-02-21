@@ -13,6 +13,7 @@ component   table="cbc_productMedia"
 	property name="FK_media";
 	property name="FK_product";
 	
+
 	function mediaItem(){
 		return belongsTo( "Media@cbCommerce", "FK_media" );
 	}
@@ -22,7 +23,7 @@ component   table="cbc_productMedia"
 	}
 
 	function delete(){
-		var mediaItem = getMediaItem();
+		var mediaItem = this.getMediaItem();
 		// delete our constrained item first
 		super.delete();
 		return mediaItem.delete();

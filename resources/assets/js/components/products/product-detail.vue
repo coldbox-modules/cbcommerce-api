@@ -11,67 +11,14 @@
 
         </div>
         
-        <div class="col-md-9" v-if="currentProduct">
+        <div class="col-md-9" v-if="activeSku">
 
             <div class="block-product-detail">
 
                 <div class="row">
-
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <div 
-                            v-if="activeSku.media.length"
-                            v-images-loaded:on.progress="imageProgress"
-                            class="product-image">
-                            
-                            <img 
-                                id="product-zoom" 
-                                :src="activeSku.media[ 0 ].src" 
-                                :data-zoom-image="activeSku.media[ 0 ].src" 
-                                :alt="activeSku.media[ 0 ].caption" />
-
-                            <div id="thumbnailNestedGallery" v-if="activeSku.media.length > 1">
-
-                                <product-gallery-thumb
-                                    v-for="(mediaItem, index) in activeSku.media"
-                                    :key="index"
-                                    :galleryItem="mediaItem"
-                                    :totalThumbs="activeSku.media.length"
-                                    v-on:thumbLoaded="thumbLoadedResponse"
-                                ></product-gallery-thumb>
-
-                            </div>
-
-                        </div>
-
-                        <div 
-                            v-else
-                            v-images-loaded:on.progress="imageProgress"
-                            class="product-image">
-
-                            
-                            <img 
-                                v-if="currentProduct.media.length"
-                                id="product-zoom" 
-                                :src="currentProduct.media[ 0 ].src" 
-                                :data-zoom-image="currentProduct.media[ 0 ].src" 
-                                :alt="currentProduct.media[ 0 ].caption" />
-
-                            <div id="thumbnailNestedGallery" v-if="currentProduct.media.length > 1">
-
-                                <product-gallery-thumb
-                                    v-for="(mediaItem, index) in currentProduct.media"
-                                    :key="index"
-                                    :galleryItem="mediaItem"
-                                    :totalThumbs="currentProduct.media.length"
-                                    v-on:thumbLoaded="thumbLoadedResponse"
-                                ></product-gallery-thumb>
-
-                            </div>
-
-                        </div>
-
+                        <product-images-gallery :media="displayedMedia"></product-images-gallery>
                     </div>
-
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
                         <div class="product-detail-section">
@@ -124,9 +71,8 @@
                                         v-html="currentProduct.shortDescription"></p>
                                 </div>
 
-                                <div v-if="activeSku.condition.name !== 'New'">
-                                    <label>Condition:</label>
-                                    <p>{{activeSku.condition.name}}</p>
+                                <div v-if="activeSku.condition.name !== 'New'" class="clearfix">
+                                    <label>Condition:</label> {{activeSku.condition.name}} <span v-if="activeSku.subCondition.name">( {{activeSku.subCondition.name}} )</span>
                                 </div>
 
                             </div>
@@ -299,10 +245,9 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
 import "ez-plus/src/jquery.ez-plus.js";
-import ProductGalleryThumb from './product-gallery-thumb';
+import ProductImagesGallery from './product-images-gallery';
 import ProductReview from './product-review';
 import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
 import ProductReviewForm from './product-review-form';
@@ -312,16 +257,13 @@ import vSelect from 'vue-select';
 export default {
     components: {
         StarRating,
-        ProductGalleryThumb,
+        ProductImagesGallery,
         QuantityControl,
         ProductReview,
         ProductReviewForm,
         RelatedProductCarousel,
         ProductDetailLoading,
         vSelect
-    },
-    directives: {
-        imagesLoaded
     },
     data() {
         return {
@@ -389,7 +331,12 @@ export default {
             if( activeSkus.length ) return this.currentProduct.skus[ 0 ]; 
         },
         cartTotalPrice : function(){
+            if( !this.activeSku ) return 0;
             return this.chosenQuantity * this.activeSku.basePrice;
+        },
+        displayedMedia : function(){
+            if( ! this.activeSku ) return [];
+            return this.activeSku.media.concat( this.currentProduct.media );
         }
     },
     methods: {
@@ -420,20 +367,6 @@ export default {
             this.currentProductReviews.push( reviewData );
         },
 
-        thumbLoadedResponse: function(){
-            if( !this.productGallery ) return;
-            this.thumbLoadCount++;
-            if( this.thumbLoadCount == this.productGallery.length ){
-                $( '#product-zoom' ).ezPlus( {
-                    zoomType         : "inner",
-                    cursor           : "crosshair",
-                    zoomWindowFadeIn : 500,
-                    zoomWindowFadeOut: 750,
-                    borderSize       : 0
-                } );
-            }
-        },
-
         fetchProductDetail: function(){
             var self    = this;
             self.isLoading = true;
@@ -453,10 +386,6 @@ export default {
 
         setActiveSku( sku ){
             Vue.set( this, "activeSkuId", sku.id );
-        },
-
-        imageProgress: function( instance, image ){
-            var result = image.isLoaded ? 'loaded' : 'broken';
         },
 
         quantityChangeReaction: function( {quantity, sku} ){

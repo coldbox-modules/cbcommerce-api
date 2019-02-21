@@ -81,7 +81,7 @@ export default {
 	},
 
 	methods: {
-	    sort( event ){
+	  sort( event ){
 			Event.$emit( this.eventPrefix + "onMediaSort", event );
 		},
 		onSendFile( file, XHR, formData ){

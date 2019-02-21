@@ -23,7 +23,7 @@ component   table="cbc_productSKUMedia"
 
 
 	function delete(){
-		var mediaItem = getMediaItem();
+		var mediaItem = this.getMediaItem();
 		// delete our constrained item first
 		super.delete();
 		return mediaItem.delete();

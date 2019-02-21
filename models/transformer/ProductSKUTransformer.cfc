@@ -6,8 +6,7 @@ component extends="BaseModelTransformer"{
             [
                 "product",
                 "virtualSKUs",
-                "consignee",
-                "subCondition"
+                "consignee"
             ],
             true
         );
@@ -18,7 +17,8 @@ component extends="BaseModelTransformer"{
                 "onHand",
                 "media",
                 "condition",
-                "options"
+                "options",
+                "subCondition"
             ],
             true
         );

@@ -1,19 +1,20 @@
 <template>
 
     <a
-        v-on:mouseover="mouseover"
+        v-on:click="swap"
         href="javascript:;"
         :data-image="mainImage"
-        :data-zoom-image="zoomImage">
+        :data-zoom-image="zoomImage"
+        class="elevatezoom-gallery">
         <img
-            :src="thumbImage" />
+            :src="thumbImage" 
+        />
     </a>
 
 </template>
 
 
 <script>
-import "ez-plus/src/jquery.ez-plus.js";
 export default {
 
     props: [
@@ -34,20 +35,19 @@ export default {
         this.$emit( 'thumbLoaded' );
     },
 
-    mounted() {
-    },
+    mounted() {},
 
     destroyed() {},
 
     methods: {
 
-        mouseover: function(){
+        swap: function(){
 
             var smallImage = this.$el.getAttribute( 'data-image' );
             var largeImage = this.$el.getAttribute( 'data-zoom-image' );
             
             if( $( '#product-zoom' ).length ){
-                var ez         = $( '#product-zoom' ).data( 'ezPlus' );
+                var ez = $( '#product-zoom' ).data( 'ezPlus' );
                 ez.swaptheimage( smallImage, largeImage );
             }
         },
