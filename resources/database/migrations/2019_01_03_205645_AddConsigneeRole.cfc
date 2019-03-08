@@ -6,7 +6,7 @@ component {
             values = [
 				{
 					"id" : createUUID(),
-					"name" : "Consignee"
+					"name" : "Consignor"
                 }
             ]
         );

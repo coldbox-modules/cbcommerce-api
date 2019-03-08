@@ -6,7 +6,8 @@ component extends="BaseModelTransformer"{
             [
                 "product",
                 "virtualSKUs",
-                "consignee"
+                "consignor",
+                "consignmentBatch"
             ],
             true
         );
@@ -52,9 +53,16 @@ component extends="BaseModelTransformer"{
         );
     }
 
-    function includeConsignee( activeEntity ){
+    function includeConsignor( activeEntity ){
         return item(
-            activeEntity.getConsignee(),
+            activeEntity.getConsignor(),
+            wirebox.getInstance( "UserTransformer@cbCommerce" )
+        );
+    }
+
+    function includeConsignmentBatch( activeEntity ){
+        return item(
+            activeEntity.getConsignmentBatch(),
             wirebox.getInstance( "UserTransformer@cbCommerce" )
         );
     }

@@ -58,20 +58,20 @@ component extends="BaseAPIHandler"{
 		}
 
 		if( prc.sku.getIsConsigned() ){
-			if( structKeyExists( rc.consignee, "id" ) ){
-				prc.sku.consignee().associate( rc.consignee.id );
+			if( structKeyExists( rc.consignor, "id" ) ){
+				prc.sku.consignor().associate( rc.consignor.id );
 			} else {
-				var consignee = getInstance( "User@cbCommerce" ).fill( rc.consignee );
-				validateModelOrFail( consignee );
-				consignee.save();
-				//attach the user and consignee roles
-				var consigneeRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignee" ).first();
+				var consignor = getInstance( "User@cbCommerce" ).fill( rc.consignor );
+				validateModelOrFail( consignor );
+				consignor.save();
+				//attach the user and consignor roles
+				var consignorRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignor" ).first();
 				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
-				consignee.roles().sync( [ consigneeRole.keyValue(), userRole.keyValue() ] );
-				prc.sku.consignee().associate( consignee );
+				consignor.roles().sync( [ consignorRole.keyValue(), userRole.keyValue() ] );
+				prc.sku.consignor().associate( consignor );
 			}
 		} else {
-			prc.sku.setFK_consignee( javacast( "null", 0 ) );
+			prc.sku.setFK_consignor( javacast( "null", 0 ) );
 		}
 
 		validateModelOrFail( prc.sku );
@@ -157,22 +157,22 @@ component extends="BaseAPIHandler"{
 		}
 
 		if( prc.sku.getIsConsigned() ){
-			if( structKeyExists( rc.consignee, "id" ) ){
-				prc.sku.consignee().associate( rc.consignee.id );
+			if( structKeyExists( rc.consignor, "id" ) ){
+				prc.sku.consignor().associate( rc.consignor.id );
 			} else {
-				var consignee = getInstance( "User@cbCommerce" ).fill( rc.consignee );
+				var consignor = getInstance( "User@cbCommerce" ).fill( rc.consignor );
 				//create a bogus password
-				consignee.setPassword( createUUID() );
-				validateModelOrFail( consignee );
-				consignee.save();
-				//attach the user and consignee roles
-				var consigneeRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignee" ).first();
+				consignor.setPassword( createUUID() );
+				validateModelOrFail( consignor );
+				consignor.save();
+				//attach the user and consignor roles
+				var consignorRole = getInstance( "UserRole@cbCommerce" ).where( "name", "consignor" ).first();
 				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
-				consignee.roles().sync( [ consigneeRole.keyValue(), userRole.keyValue() ] );
-				prc.sku.consignee().associate( consignee );
+				consignor.roles().sync( [ consignorRole.keyValue(), userRole.keyValue() ] );
+				prc.sku.consignor().associate( consignor );
 			}
 		} else {
-			prc.sku.setFK_consignee( javacast( "null", 0 ) );
+			prc.sku.setFK_consignor( javacast( "null", 0 ) );
 		}
 
 		validateModelOrFail( prc.sku );

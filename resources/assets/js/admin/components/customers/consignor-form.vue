@@ -7,7 +7,7 @@
 	        	required="required"
 	        	class="form-control" 
 	        	id="firstName"
-	        	v-model="consignee.firstName" />
+	        	v-model="consignor.firstName" />
 		</b-form-group>
 
 		<b-form-group
@@ -17,7 +17,7 @@
 	        	required="required"
 	        	class="form-control" 
 	        	id="lastName"
-	        	v-model="consignee.lastName" />
+	        	v-model="consignor.lastName" />
 		</b-form-group>
 
 		<b-form-group
@@ -28,7 +28,7 @@
 	        	required="required"
 	        	class="form-control" 
 	        	id="emailName"
-	        	v-model="consignee.email" />
+	        	v-model="consignor.email" />
 		</b-form-group>
 
 		<b-form-group
@@ -40,7 +40,7 @@
 	        	required="required"
 	        	class="form-control" 
 	        	id="primaryPhone"
-	        	v-model="consignee.primaryPhone" />
+	        	v-model="consignor.primaryPhone" />
 		</b-form-group>
 
 		<b-form-group
@@ -51,7 +51,7 @@
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
 	        	class="form-control" 
 	        	id="secondaryPhone"
-	        	v-model="consignee.primaryPhone" />
+	        	v-model="consignor.primaryPhone" />
 		</b-form-group>
 
         <b-form-group
@@ -61,7 +61,7 @@
 				type="text"
 				id="address1"
 				:required=true
-				v-model.trim="consignee.address1"></b-form-input>
+				v-model.trim="consignor.address1"></b-form-input>
 		</b-form-group>
 
 		<b-form-group
@@ -70,7 +70,7 @@
 			<b-form-input 
 				type="text"
 				id="address2" 
-				v-model.trim="consignee.address2"></b-form-input>
+				v-model.trim="consignor.address2"></b-form-input>
 		</b-form-group>
 
 		<b-form-group
@@ -80,7 +80,7 @@
 				type="text"
 				id="city"
 				:required=true
-				v-model.trim="consignee.city"></b-form-input>
+				v-model.trim="consignor.city"></b-form-input>
 		</b-form-group>
 
 		<b-form-group
@@ -90,7 +90,7 @@
 				type="text"
 				id="province"
 				:required=true
-				v-model.trim="consignee.province"></b-form-input>
+				v-model.trim="consignor.province"></b-form-input>
 		</b-form-group>
 
 		<b-form-group
@@ -100,7 +100,7 @@
 				type="text"
 				id="postalCode"
 				:required=true
-				v-model.trim="consignee.postalCode"></b-form-input>
+				v-model.trim="consignor.postalCode"></b-form-input>
 		</b-form-group>							
 
 		<b-form-group
@@ -110,7 +110,7 @@
 				type="text"
 				id="country"
 				:required=true
-				v-model.trim="consignee.country"></b-form-input>
+				v-model.trim="consignor.country"></b-form-input>
 		</b-form-group>	
 
 
@@ -120,7 +120,7 @@
     import accountInformationFields from "./account-information-fields";
     export default{
         props : {
-            consignee : {
+            consignor : {
                 required : true
             }
         },

@@ -286,7 +286,7 @@ export default {
 
 		this.getCategories( { excludes: "media", isNotNull : "parent", maxrows : 500 } );
 		if( !this.isNewProduct ){
-			this.getProduct( { id: this.$route.params.id, includes: "skus.condition,skus.subCondition,skus.consignee,categories" } )
+			this.getProduct( { id: this.$route.params.id, includes: "skus.condition,skus.subCondition,skus.consignor,categories" } )
 					.then( product => {
 						Vue.set( self, "form", new Form( product ) );
 						Vue.set( self, "isLoading", false );

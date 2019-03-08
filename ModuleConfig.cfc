@@ -171,6 +171,10 @@ component {
                 handler  = "API.v1.ProductSKUs"
             )
             .resources(
+                resource = "api/v1/consignment-batches",
+                handler  = "API.v1.ConsignmentBatches"
+            )
+            .resources(
                 resource = "api/v1/product-categories/:categoryId/media",
                 handler = "API.v1.ProductCategoryMedia"
             )

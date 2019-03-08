@@ -162,19 +162,19 @@
 							</b-form-group>
 
 							<b-form-group v-if="form.isConsigned">
-								<legend>Consignee</legend>
+								<legend>Consignor</legend>
 								<h5>Select an existing customer</h5>
 								<v-select  
 									label="fullName"
-									v-model="form.consignee"
+									v-model="form.consignor"
 									:filterable="false" 
-									:options="consigneesListArray" 
-									@search="onSearchConsignees"
-									:onChange="setConsignee"
+									:options="consignorsListArray" 
+									@search="onSearchconsignors"
+									:onChange="setconsignor"
 								></v-select>
-								<p v-if="!form.consignee || !form.consignee.id"><em>or</em></p>
-								<h5 v-if="!form.consignee || !form.consignee.id">Create a New Customer</h5>
-								<consignee-form v-if="!form.consignee || !form.consignee.id" :consignee="form.consignee"></consignee-form>
+								<p v-if="!form.consignor || !form.consignor.id"><em>or</em></p>
+								<h5 v-if="!form.consignor || !form.consignor.id">Create a New Customer</h5>
+								<consignor-form v-if="!form.consignor || !form.consignor.id" :consignor="form.consignor"></consignor-form>
 							</b-form-group>
 
 							<b-form-group>
@@ -280,7 +280,7 @@
 import Datepicker from 'vuejs-datepicker';
 import htmlEditor from '@cbCommerce/admin/components/ui/html-editor';
 import galleryListSortable from '@cbCommerce/admin/components/images/gallery-list-sortable';
-import consigneeForm from "@cbCommerce/admin/components/customers/consignee-form";
+import consignorForm from "@cbCommerce/admin/components/customers/consignor-form";
 import vSelect from 'vue-select';
 import { Form } from '@cbCommerce/admin/classes/form';
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
@@ -293,7 +293,7 @@ export default {
 		htmlEditor,
 		galleryListSortable,
 		vSelect,
-		consigneeForm
+		consignorForm
 	},
 
 	props: {
@@ -316,8 +316,8 @@ export default {
 													.denormalize( state.globalData.productConditions )
 													.filter( condition => condition.parent.id )
 		}),
-		consigneesListArray(){
-			return Vue.options.filters.denormalize( this.consignees );
+		consignorsListArray(){
+			return Vue.options.filters.denormalize( this.consignors );
 		}
 	},
 
@@ -325,7 +325,7 @@ export default {
 		return {
 			form: new Form(),
 			eventPrefix : "activeSKU_",
-			consignees : { results : [], resultsMap : {} }
+			consignors : { results : [], resultsMap : {} }
 		};
 	},
 
@@ -340,17 +340,17 @@ export default {
 		...mapMutations([
 			"insertSKUImage"
 		]),
-		onSearchConsignees( search, loading ){
+		onSearchconsignors( search, loading ){
 			var self = this;
 			loading( true );
-			api().get.customers.list( { search : search, role: "Consignee" } )
+			api().get.customers.list( { search : search, role: "consignor" } )
 						.then( XHR => {
 							var results = XHR.data;
 							results.results.forEach( resultId => {
 								let result = results.resultsMap[ resultId ];
 								result.displayName = result.lastName + ', ' + result.firstName; 
 							} )
-							Object.assign( self.consignees, results );
+							Object.assign( self.consignors, results );
 							loading( false );
 						} )
 						.catch( err => console.log( err ) )
@@ -364,7 +364,7 @@ export default {
 		saveDetails() {
 			var self = this;
 			Vue.set( this.form, "FK_product", this.currentProduct.id );
-			Vue.set( this.form, "includes", "condition,subCondition,consignee" );
+			Vue.set( this.form, "includes", "condition,subCondition,consignor" );
 			this.saveSKU( this.form ).then(
 				result => {
 					self.closePanel()
@@ -372,9 +372,9 @@ export default {
 			);
 		},
 
-		setConsignee : function (val) {
+		setconsignor : function (val) {
 			if( !val ) val = {};
-			Vue.set( this.form, "consignee", val );
+			Vue.set( this.form, "consignor", val );
 		}
 	},
 

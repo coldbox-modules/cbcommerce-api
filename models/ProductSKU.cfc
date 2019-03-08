@@ -32,9 +32,10 @@ component   table="cbc_SKUs"
 	
 	//Foreign Keys
 	property name="FK_product";
-	property name="FK_consignee";
+	property name="FK_consignor";
 	property name="FK_condition";
 	property name="FK_subCondition";
+	property name="FK_consignmentBatch";
 	
 
 	function product(){
@@ -49,8 +50,12 @@ component   table="cbc_SKUs"
 		return hasMany( "VirtualSKU@cbCommerce", "FK_sku" );
 	}
 
-	function consignee(){
-		return belongsTo( "User@cbCommerce", "FK_consignee" );
+	function consignor(){
+		return belongsTo( "User@cbCommerce", "FK_consignor" );
+	}
+
+	function consignmentBatch(){
+		return belongsTo( "ConsignmentBatch@cbCommerce", "FK_consignmentBatch" );
 	}
 
 	function condition(){
