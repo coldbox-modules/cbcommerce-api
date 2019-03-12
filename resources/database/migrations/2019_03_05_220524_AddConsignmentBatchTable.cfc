@@ -85,8 +85,10 @@ component {
         schema.create( "cbc_consignmentBatchFees", function( table ){
             table.uuid( "id" ).primaryKey();
 		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-            table.text( "notes" );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.decimal( "amount", 8, 2 ).default( 0 );
+            table.text( "notes" ).nullable();
             table.boolean( "isPaid" ).default( 0 );
 
             table.uuid( "FK_batch" )

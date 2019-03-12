@@ -24,6 +24,9 @@ component table="cbc_consignmentBatches"
 		return hasMany( "ProductSKU@cbCommerce", "FK_consignmentBatch" );
 	}
 
+    function fees(){
+        return hasMany( "ConsignmentBatchFee@cbCommerce", "FK_batch" );
+    }
 
 	function delete(){
         skus().sync([]);
