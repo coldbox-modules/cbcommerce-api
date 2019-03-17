@@ -23,7 +23,6 @@
 
         prc.globalData[ "@token" ] = CSRFGenerateToken( "cbCommerce", false );
 
-        templateCache.clear( "cbCommerce_global_productConditions" );
         prc.globalData[ "productConditions" ] = templateCache.getOrSet( 
             "cbCommerce_global_productConditions", 
             function(){
@@ -39,6 +38,39 @@
                     .convert();
             } 
         );
+
+        
+        // Scope in i18n Resource bundles and format for Vue plugin
+        prc.globalData[ "i18n" ] = templateCache.getOrSet(
+            "cbCommerce_global_i18n",
+            function(){
+                var resourceService = getInstance( "ResourceService@cbi18n");
+                var bundles = resourceService.getBundles();
+                var commerceBundles = structKeyArray( bundles )
+                                        .filter( function( key ){ 
+                                            return left( key, 10 ) == 'cbcommerce';
+                                        } );
+                var i18nGlobals = {};
+                commerceBundles.each( function( bundleName ){
+                    var resource = bundles[ bundleName ];
+                    //loop our languages and create the struct
+                    structKeyArray( resource ).each( function( lang ){
+                        if( !structKeyExists( i18nGlobals, lang ) ){
+                            i18nGlobals[ lang ] = {};
+                        }
+                        if( len( bundleName ) > 10 ){
+                            i18nGlobals[ lang ][ right( bundleName, len( bundleName )-10 ) ] = resource[ lang ];
+                        } else {
+                            i18nGlobals[ lang ] = resource[ lang ];
+                        }
+                    } );
+                } );
+
+                return i18nGlobals;
+            }
+        );
+
+        prc.globalData[ "fwLocale" ] = getfwLocale();
 
         // if logged in, add the authUser to globalData
         if( auth.isLoggedIn() ){
