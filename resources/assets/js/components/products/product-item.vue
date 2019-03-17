@@ -15,14 +15,16 @@
                             v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
                         <a 
-                            @click="addItemToComparisonList( product.startingPrice.SKU )"
-                            v-tooltip="{ content: 'Compare this item' }"
-                            class="product-compare"><i class="fa fa-random"></i></a>
+                            @click="addItemToWishlist( { sku : activeSku.id } )"
+                            v-tooltip="{ content: $t('wishlist_add') }"
+                            :title="$t('Wishlist')"
+                            class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                         <a 
-                            @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
-                            v-tooltip="{ content: 'Add this item to your wishlist' }"
-                            class="product-wishlist"><i class="fa fa-heart-o"></i></a>
+                            @click="addItemToComparisonList( activeSku.id )"
+                            v-tooltip="{ content: $t('compare_this_item') }"
+                            :title="$t('Compare')"
+                            class="product-compare"><i :class="$t('compare_icon')"></i></a>
                         
                         
                         <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
@@ -30,7 +32,7 @@
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
-                            <a href="#" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
+                            <a :href="`/store/product/${product.id}`" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
 
                             <div v-if="product.startingPrice">
                                 <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
@@ -51,7 +53,7 @@
                         <a 
                             @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                             v-tooltip="'Add this item to your cart'"
-                            class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                            class=""><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                     <div v-else class="product-request">
                         <a href="#" 
@@ -156,7 +158,3 @@ export default {
     }
 }
 </script>
-
-<style>
-    
-</style>

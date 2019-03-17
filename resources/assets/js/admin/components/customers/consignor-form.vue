@@ -27,7 +27,7 @@
 				type="email"
 	        	required="required"
 	        	class="form-control" 
-	        	id="emailName"
+	        	id="email"
 	        	v-model="consignor.email" />
 		</b-form-group>
 

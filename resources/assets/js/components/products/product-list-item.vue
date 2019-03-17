@@ -12,30 +12,24 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-4 col-md-4 text-center">
                         <figure class="figure-hover-overlay text-center">                                                                        
-                            <a :href="productLink" class="figure-href"></a>
+                            <a :href="`/store/product/${product.id}`" class="figure-href"></a>
                             <div v-if="this.isNew" class="product-new">new</div>
-                            <div class="product-sale" v-if="this.percentOff">{{ this.percentOff }} <br> off</div>
+                            <div class="product-sale" v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }} <br> off</div>
 
                             <a 
-                                @click="addItemToComparisonList( product.startingPrice.SKU )"
-                                v-tooltip="{ content: 'Compare this item' }"
-                                class="product-compare"><i class="fa fa-random"></i></a>
+                                @click="addItemToWishlist( { sku : activeSku.id } )"
+                                v-tooltip="{ content: $t('wishlist_add') }"
+                                :title="$t('Wishlist')"
+                                class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                             <a 
-                                @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
-                                v-tooltip="{ content: 'Add this item to your wishlist' }"
-                                class="product-wishlist"><i class="fa fa-heart-o"></i></a>
+                                @click="addItemToComparisonList( activeSku.id )"
+                                v-tooltip="{ content: $t('compare_this_item') }"
+                                :title="$t('Compare')"
+                                class="product-compare"><i :class="$t('compare_icon')"></i></a>
 
-                            <div v-images-loaded:on.progress="imageProgress">
-                                <img 
-                                    :src="this.image" 
-                                    class="img-overlay img-responsive" 
-                                    :alt="this.name" />
-                                <img 
-                                    :src="this.image2" 
-                                    class="img-responsive" 
-                                    :alt="this.name" />
-                            </div>
+                            <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
+                            <div class="product-item-image-placeholder" v-else></div>
 
                         </figure>
                     </div>
@@ -43,14 +37,14 @@
                         <div class="product-caption">
                         
                             <div class="block-name">
-                                <a href="#" class="product-name">{{ this.name }}</a>
+                                <a :href="`/store/product/${product.id}`" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
 
-                                <div v-if="this.listPrice">
-                                    <div v-if="this.userPrice" class="priceWithDiscount">
-                                        <span>&dollar;{{ this.listPrice }}</span> &dollar;{{ this.userPrice }}
+                                <div v-if="product.startingPrice">
+                                    <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
+                                        <span>&dollar;{{ product.startingPrice.MSRP }}</span> &dollar;{{ product.startingPrice.basePrice }}
                                     </div>
                                     <div v-else>
-                                        <p class="product-price">&dollar;{{ this.listPrice }}</p>
+                                        <p class="product-price">&dollar;{{ product.startingPrice.basePrice }}</p>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -59,11 +53,7 @@
 
                             </div>
 
-                            <p class="description">
-                                {{ this.description }}
-                            </p>
-
-                            <div v-if="this.listPrice" class="product-cart">
+                            <div v-if="product.startingPrice" class="product-cart">
                                 <a 
                                     @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                                     v-tooltip="'Add this item to your cart'"
@@ -74,6 +64,9 @@
                                     v-tooltip="'Request a quote for this item'"
                                     class="btn"><i class="fa fa-envelope"></i> Request quote</a>
                             </div>
+
+
+                            <p class="description" v-html="product.shortDescription"></p>
 
                         </div>
                     </div>
@@ -90,6 +83,7 @@
 import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import ProductListItemLoading from './product-list-item-loading';
+import moment from "moment";
 export default {
     components: {
         ProductListItemLoading
@@ -100,65 +94,68 @@ export default {
     props: [
         'product'
     ],
-
-    created: function(){
-        this.parseContent();
-    },
-
     data() {
         return {
-            productLink: '/equipment/category/sub-category/test-product',
-            isLoading  : true,
-            name       : null,
-            price      : null,
-            userPrice  : null,
-            percentOff : null,
-            description: null,
-            isNew      : false,
-            image      : null,
-            image2     : null
+            isLoading  : false
         }
     },
 
-    mounted() {},
+    created: function(){
+        this.isLoading = true;
+    },
+
+    mounted() {
+        this.isLoading = false;
+    },
 
     computed: {
         ...mapGetters([
             "cartProducts",
             "wishlistItems",
             "comparisonItems"
-        ])
+        ]),
+        isNew(){
+            return moment( new Date( this.product.createdTime ) ) < moment( new Date() ).add( "30 days" );
+        },
+        percentOff(){
+            return parseInt( 100 * ( 1 - ( this.product.startingPrice.basePrice / this.product.startingPrice.MSRP ) ) );
+        },
+        productImageSrc(){
+            var self = this;
+            var mediaSrc = '';
+            this.product.media.forEach( mediaItem => {
+                if( !mediaSrc.length && self.isImage( mediaItem ) ){
+                    mediaSrc = mediaItem.src;
+                }
+            });
+
+            return mediaSrc;
+        }
     },
 
     methods: {
-
         ...mapActions([
             "addItemToCart",
             "addItemToWishlist",
             "addItemToComparisonList"
         ]),
-
-        parseContent: function(){
-            var self          = this;
-            var parsedContent = self.product;
-            self.name         = parsedContent.productName;
-            self.listPrice    = parsedContent.listPrice;
-            self.userPrice    = parsedContent.userPrice;
-            self.percentOff   = parsedContent.percentOff;
-            self.description  = parsedContent.description;
-            self.isNew        = parsedContent.isNew;
-            self.image        = parsedContent.image;
-            self.image2       = parsedContent.image2;
-            self.isLoading    = false;
+        isImage: function( mediaItem ){
+            return this.$options.filters.isImage( mediaItem );
         },
-
         imageProgress: function( instance, image ){
-            var result = image.isLoaded ? 'loaded' : 'broken';
+            var result = image.src ? 'loaded' : 'broken';
+        },
+        removeHTML( html, truncateTo ){
+            let textConversion = $( '<p>' + html + '</p>' ).text();
+            if( truncateTo ){
+                return this.$options.filters.truncate( textConversion, truncateTo );
+            } else {
+                return textConversion;
+            }
         }
+        
 
-    },
-
-    computed: {}
+    }
 }
 </script>
 

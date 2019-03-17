@@ -47,7 +47,7 @@
 					<account-info-fields
 						:firstName="form.firstName"
 						:lastName="form.lastName"
-						:emailName="form.emailName">
+						:email="form.email">
 					</account-info-fields>
 
 				</b-tab>

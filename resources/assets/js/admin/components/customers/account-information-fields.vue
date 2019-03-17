@@ -25,13 +25,13 @@
 
 		<b-form-group
 			label="Email"
-			label-for="emailName">
+			label-for="email">
 			<b-form-input 
 				type="email"
 	        	required="required"
 	        	class="form-control" 
-	        	id="emailName"
-	        	v-model="emailName" />
+	        	id="email"
+	        	v-model="email" />
 		</b-form-group>
 
 	</div>
@@ -49,7 +49,7 @@ export default {
 		lastName: {
 			type: String
 		},
-		emailName: {
+		email: {
 			type: String
 		}
 	},
