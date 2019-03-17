@@ -20,13 +20,15 @@ component {
         "cffractal",
         "cbstorages",
         "cbsecurity",
-        "BCrypt"
+        "BCrypt",
+        "cbi18n"
     ];
 
 	/**
 	 * Configure Module
 	 */
     function configure() {
+
         settings = {
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases
@@ -105,19 +107,17 @@ component {
                     }
                 )
                 .toHandler( "Media" );
+        
+        // Contact Forms
+        router.route( "api/v1/contact-forms" )
+                .withAction(
+                    {
+                        "post" : "send"
+                    }
+                )
+                .toHandler( "ContactForms" );
 
         // API Routing
-        router.route( "api/v1/payment" )
-                .withAction( {
-                    POST : "create"
-                } )
-                .toHandler( "API.v1.Payments" );
-
-        router.route( "api/v1/customers" )
-                .withAction( {
-                    POST : "add"
-                } )
-                .toHandler( "API.v1.Customers" );
 
         router.route( "api/v1/authentication" )
                 .withAction( {
@@ -252,6 +252,16 @@ component {
     function onLoad() {
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
+
+
+        i18n = {
+            // Extra resource bundles to load
+            resourceBundles = {
+                "cbCommerce" : "/cbCommerce/includes/i18n/cbCommerce",
+                "cbCommerceAdmin" : "/cbCommerce/includes/i18n/cbCommerceAdmin",
+                "cbCommerceOrders" : "/cbCommerce/includes/i18n/cbCommerceOrders"
+            }
+        };
 
         //change our binder mapping
         if( settings.products.externalModel ){
