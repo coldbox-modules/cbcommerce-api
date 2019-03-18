@@ -52,7 +52,7 @@ const actions = {
 			.get.wishlists.list()
 			.then(XHR => {
 				commit( "setAuthenticated", true );
-				commit( "setWishlists", XHR.data );
+				commit( "setWishLists", XHR.data );
 				resolve(XHR.data);
 			})
 			.catch(err => {

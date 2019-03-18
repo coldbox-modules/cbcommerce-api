@@ -57,7 +57,7 @@ component extends="BaseAPIHandler" {
 
 			}
 		} else {
-			prc.user = prc.authenticatedUser.getUser();
+			prc.user = prc.authenticatedUser;
 		}
 		// create billing addresses
 		if( isNull( rc.billingAddress.id ) || rc.billingAddress.id == ''){

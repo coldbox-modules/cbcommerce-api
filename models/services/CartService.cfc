@@ -157,7 +157,7 @@ component extends="BaseQuickEntityService" singleton{
         if( isNull( activeCart ) ){
             activeCart = newEntity();
             if( auth.isLoggedIn() ){
-                activeCart.setUser( auth.user() );
+                activeCart.customer().associate( auth.user() );
             }
             activeCart.save();
         }

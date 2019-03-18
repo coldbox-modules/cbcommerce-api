@@ -1,6 +1,6 @@
 <template>
 
-    <div >
+    <div>
     	<generic-loader v-if="checkoutStatus == 'pending'" message="Processing Your Order. Please wait..."></generic-loader>
     	<div v-else>
 	    	<div class="col-sm-9 block-form tabs-steps">
@@ -222,6 +222,10 @@
 	                <div class="tab-pane" :class="{ 'active': activeTab === 'payment' }" id="payment">
 	                    <br>
 	                    Pay with your credit card via Stripe
+
+						<p v-if="!globalData.stripeKey" class="alert alert-danger">
+							<strong>Warning</strong> : The Stripe integration for this site is not configured correctly.  Checkout will be unavailable until the correct configuration is provided.
+						</p>
 	                    <form role="form" method="post" action="#" data-vv-scope="form-payment">
 		                    <div class="row">
 		                    	<div class="col-md-6 ">
@@ -649,7 +653,8 @@ export default {
     	}),
         ...mapGetters([
             "cartProducts",
-            "checkoutStatus"
+			"checkoutStatus",
+			"authUser"
         ]),
         subtotal: function(){
         	var subTotal = 0;
@@ -673,7 +678,16 @@ export default {
         this.isLoading = true;
     },
      mounted() {
-        this.isLoading = false;
+		// scope in our global data user
+		if( this.authUser ){
+			Vue.set( this.selectedShippingAddress, "firstName", this.authUser.firstName );
+			Vue.set( this.selectedShippingAddress, "lastName", this.authUser.lastName );
+			Vue.set( this.selectedBillingAddress, "firstName", this.authUser.firstName );
+			Vue.set( this.selectedBillingAddress, "lastName", this.authUser.lastName );
+			Vue.set( this, "email", this.authUser.email );
+			Vue.set( this, "phone", this.authUser.primaryPhone );
+		}
+		this.isLoading = false;
 
         if( window.cbcGlobalData && window.cbcGlobalData.stripeKey ){
 	        cardNumber = elements.create('cardNumber', { style: this.getBaseStyles(), classes: this.getElementClasses() });
@@ -853,17 +867,14 @@ export default {
   				payload.shippingCost = self.shippingCost;
   				payload.tax = self.tax;
 
-  				new Promise( ( resolve, reject ) => {
-  					api().post.checkout.process( payload )
+  				api().post.checkout.process( payload )
 					.then( XHR => {
 						window.location.replace( '/store/checkout/thankyou/' + XHR.data.id );
-						resolve( XHR.data );
 					})
 					.catch( err => {
 						console.error( err );
-						reject( "Error" );
+						reject( err );
 					});
-  				});
   			}
 		}
 

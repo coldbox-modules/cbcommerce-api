@@ -22,6 +22,12 @@
 <script>
 	import { mapGetters, mapActions } from "vuex";
 	export default {
+		props: {
+			successUrl : {
+				required : false,
+				type : String
+			}
+		},
 		data(){
 			return {
 	            email: "",
@@ -30,12 +36,19 @@
 	        }
 		},
 		methods: {
+			...mapGetters([ "authUser" ] ),
 			...mapActions( [
 				"authenticate"
 			] ),
 			loginUser( e ){
 				var self = this;
 				this.authenticate( { email: this.email, password: this.password } )
+						.then( xhr => {
+							self.$emit( 'cbCommerce.onAuthenticationSuccess' );
+							if( self.successUrl ){
+								window.location.replace( self.successUrl );
+							}
+						})
 						.catch( err => {
 							self.$emit( "cbCommerce.onAuthenticationFailure" );
 						} );
@@ -43,6 +56,14 @@
 		},
 		created(){
 			var self = this;
+
+			if( self.authUser ){
+				self.$emit( 'cbCommerce.onAuthenticationSuccess' );
+				if( self.successUrl ){
+					window.location.replace( self.successUrl );
+				}
+			}
+
 			this.$on( "cbCommerce.onAuthenticationFailure", ( err ) => {
 				Vue.set( self, "showAuthFailure", true );
 			} )

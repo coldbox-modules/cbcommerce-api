@@ -1,4 +1,4 @@
-export const process = api => ( payload ) => api.post( '/payment', JSON.stringify( payload ) );
+export const process = api => ( payload ) => api.post( '/payments', JSON.stringify( payload ) );
 export const getPayment = api  => ( id ) => api.get( '/payments/' + id );
 
 export const checkout = api => ({

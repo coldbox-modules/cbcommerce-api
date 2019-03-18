@@ -7,7 +7,7 @@
             </div>
             <div class="col-sm-6">
                 <h2>Sign In to your BSR Online Account</h2>
-            	<login-form></login-form>
+            	<login-form success-url="/store/checkout"></login-form>
             </div>
             <div class="col-sm-6">
             	<h2>No BSR Online Account?</h2>
