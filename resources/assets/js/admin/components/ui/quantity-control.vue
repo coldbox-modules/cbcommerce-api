@@ -44,6 +44,10 @@ export default {
             default: 1,
             type: Number
         },
+        maxQuantity : {
+            required : false,
+            type : Number
+        },
         showLabel: {
             default: true,
             type: Boolean
@@ -72,14 +76,16 @@ export default {
 
         setCurrentVal: function( quantity ){
             var self = this;
-            this.$refs.quantityInput.value = quantity;
-            this.$emit(
-                'quantityChange',
-                {
-                    quantity: quantity,
-                    sku : self.sku
-                }
-            );
+            if( !self.maxQuantity || quantity <= self.maxQuantity ){
+                this.$refs.quantityInput.value = quantity;
+                this.$emit(
+                    'quantityChange',
+                    {
+                        quantity: quantity,
+                        sku : self.sku
+                    }
+                );
+            }
         },
 
         increaseQty: function(){

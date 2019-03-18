@@ -17,15 +17,15 @@
                             <div class="product-sale" v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }} <br> off</div>
 
                             <a 
-                                @click="addItemToWishlist( { sku : activeSku.id } )"
+                                @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
                                 v-tooltip="{ content: $t('wishlist_add') }"
-                                :title="$t('Wishlist')"
+                                :title="$t('wishlist_add')"
                                 class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                             <a 
-                                @click="addItemToComparisonList( activeSku.id )"
+                                @click="addItemToComparisonList( product.startingPrice.SKU )"
                                 v-tooltip="{ content: $t('compare_this_item') }"
-                                :title="$t('Compare')"
+                                :title="$t('compare_this_item')"
                                 class="product-compare"><i :class="$t('compare_icon')"></i></a>
 
                             <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>

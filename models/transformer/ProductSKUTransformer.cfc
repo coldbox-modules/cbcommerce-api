@@ -35,12 +35,14 @@ component extends="BaseModelTransformer"{
 
     function includeOnHand( activeEntity ){
 
+        var sql = "SELECT SUM( available ) - SUM( unaccounted ) as onHand FROM cbc_inventoryLocationStock WHERE FK_sku = :skuId";
+        var q = new query( sql = sql );
+        q.addParam( name="skuID", cfsqltype="cf_sql_varchar", value=activeEntity.keyValue() );
+
         return item(
-            wirebox.getInstance( "InventoryLocationStock@cbCommerce" )
-                    .where( "FK_sku", activeEntity.getId() )
-                    .sum( 'available' ),
-            function( available ){
-                return javacast( "int", len( available ) ? available : 0 );
+            q.execute().getResult(),
+            function( result ){
+                return javacast( "int", len( result.onHand ) ? result.onHand : 0 );
             }
         );
     }

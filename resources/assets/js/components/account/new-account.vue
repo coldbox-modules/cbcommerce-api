@@ -4,7 +4,7 @@
 			<generic-loader message="We are creating your account. Please wait..."></generic-loader>
 		</div>
 		<div class="block-form">
-			<form role="form" method="post" action="#" data-vv-scope="form-account">
+			<form role="form" action="javascript:void(0)" data-vv-scope="form-account">
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">
 						<div class="form-group">
@@ -120,14 +120,18 @@
 							</div>
 						</div>
 						<p> When you create an account, you agree to the Terms of Use and consent to the Privacy Policy.</p>
-
+						<p v-if="errorMessage" class="alert alert-danger">
+							{{ errorMessage }}
+						</p>
 						<div class="form-group">
-							<button
+							<a
+								href="javascript:;"
 								class="btn btn-animate btn-fluid"
-								@click.prevent="create">
+								@click="create">
 
 								Create Account
-							</button>
+							</a>
+							
 						</div>
 					</div>
 				</div>
@@ -142,14 +146,22 @@
 	const validator = new Validator();
 
 	export default{
+		props : {
+			postProcessLogin : {
+				type : Boolean,
+				default : true
+			}
+		},
 		data(){
 			return{
 				isLoading: false,
+				errorMessage : null,
 				formFields: {
 					firstName: "",
 					lastName: "",
 					email: "",
-					password: ""
+					password: "",
+					autologin : this.postProcessLogin
 				}
 			}
 		},
@@ -177,27 +189,28 @@
 			...mapActions([
 				"saveCustomer"
 			]),
-			create(){
+			create( e ){
 				var self = this;
-
 				self.isLoading = true;
-
+				self.errorMessage = null;
 				self.$validator.validate().then( result => {
 					if (!result) {
 						console.log( result );
 					} else {
-						Promise.resolve( self.saveCustomer( this.formFields ) )
+						self.saveCustomer( self.formFields )
 						.then( XHR => {
-							if( document.referrer.indexOf( "checkout" ) > -1 ) {
-							   window.location.replace( '/store/checkout' );
-							} else {
-								window.location.replace( 'store/shopping-cart' );
-							}
 							console.log( XHR.data );
+							if( document.referrer.indexOf( "checkout" ) > -1 ) {
+							   window.location.assign( '/store/checkout' );
+							} else {
+								window.location.assign( '/store/shopping-cart' );
+							}
 						})
 						.catch( err => {
 							self.isLoading = false;
-							console.error( err );
+							if( err.response && err.response.data ){
+								self.errorMessage = "An account not be created.  The message received was: " + err.response.data.messages.join( '. ' );
+							}
 						});
 					}
 				});

@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-3 col-md-offset-1 col-sm-6">
             	<h2>No BSR Online Account?</h2>
-            	<a href="##" class="btn btn-primary btn-lg">Create an Account</a>
+            	<a href="/store/account/create" class="btn btn-primary btn-lg">Create an Account</a>
             </div>
         </div>
 

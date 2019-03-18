@@ -2,8 +2,8 @@ import Vue from "vue";
 
 const getLocationHostname = () => window.location.hostname;
 const errorHandler = () => (err) => {
-  if (err && err.response.body.error) {
-    return err.response.body.messages.join(", ");
+  if (err && err.response.data.error) {
+    return err.response.body.messages;
   } else if (err) {
     // all other error types we handle generically
     return err;

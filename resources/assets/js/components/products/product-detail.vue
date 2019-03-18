@@ -203,6 +203,7 @@
 
                 <quantity-control 
                     :showLabel="false"
+                    :maxQuantity="activeSku.allowBackorder ? null : activeSku.onHand"
                     v-if="isAvailable"
                     v-on:quantityChange="quantityChangeReaction"
                 ></quantity-control>
@@ -224,12 +225,12 @@
                     <a 
                         @click="addItemToWishlist( { sku : activeSku.id } )"
                         v-tooltip="{ content: $t('wishlist_add') }"
-                        :title="$t('Wishlist')"><i :class="$t('wishlist_icon')"></i></a>
+                        :title="$t('wishlist_add')"><i :class="$t('wishlist_icon')"></i></a>
 
                     <a 
                         @click="addItemToComparisonList( activeSku.id )"
                         v-tooltip="{ content: $t('compare_this_item') }"
-                        :title="$t('Compare')"><i :class="$t('compare_icon')"></i></a>
+                        :title="$t('compare_this_item')"><i :class="$t('compare_icon')"></i></a>
 
                 </div>
 

@@ -1,8 +1,5 @@
 export const getCustomerList = api => ( params ) => api.get('/customers', { params : params} );
-export const createCustomer = api => (data) => {
-  const bodyParams = data;
-  return api.post('/customers', JSON.stringify(bodyParams) );
-};
+export const createCustomer = api => ( data ) => api.post('/customers', JSON.stringify(data) );
 
 export const customers = api => ({
   get: {

@@ -7,6 +7,7 @@ import VTooltip from 'v-tooltip';
 import VueCurrencyFilter from "vue-currency-filter";
 import VeeValidate from "vee-validate";
 import Vuex from 'vuex';
+import VueI18n from "vue-i18n";
 
 import createStore from "@cbCommerce/store/index";
 import createRouter from "@cbCommerce/store/router";
@@ -43,8 +44,18 @@ Vue.use( VueCurrencyFilter,
 
 Vue.use(VeeValidate);
 
+Vue.use(VueI18n);
+
+// Create VueI18n instance with options
+const messages = window.cbcGlobalData.i18n;
+const i18n = new VueI18n({
+    locale: window.cbcGlobalData.fwLocale, // set locale
+    messages, // set locale messages
+});
+
 export default new Vue({
     el: "#app",
+    i18n,
     store: storeInstance,
     router: routerInstance,
     filters: createFilters(Vue),

@@ -57,8 +57,6 @@ const actions = {
 			})
 			.catch(err => {
 				commit( "setAuthenticated", false );
-				console.error( err );
-				reject( "Error: Could not retrieve wishlists" );
 			});
 	})
 };
