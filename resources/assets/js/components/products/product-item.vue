@@ -53,7 +53,7 @@
                         <a 
                             @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                             v-tooltip="'Add this item to your cart'"
-                            class=""><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                            class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                     <div v-else class="product-request">
                         <a href="#" 
