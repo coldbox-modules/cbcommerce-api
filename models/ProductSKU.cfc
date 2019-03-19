@@ -92,7 +92,7 @@ component   table="cbc_SKUs"
 	
 
 	function scopeWhereUsed( query ){
-		return.join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
-            	.where( 'cbc_productConditions.name', '!=', 'New' );
+		return join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
+            		.where( 'cbc_productConditions.name', '!=', 'New' );
 	}
 }
