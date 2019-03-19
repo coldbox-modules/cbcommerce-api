@@ -13,8 +13,7 @@
 
 		            <div class="toolbar-for-light" id="nav-bestseller"></div>
 		        </div>
-
-				<product-carousel></product-carousel>
+				<product-carousel :list-params='{ condition : "New", sortOrder : "hitCount DESC" }'></product-carousel>
 
 			</div>
 

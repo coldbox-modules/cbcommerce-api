@@ -65,6 +65,10 @@ export default {
             type   : Boolean,
             default: false
         },
+        listParams: {
+            type : Object,
+            required : false
+        }
     },
 
     data() {
@@ -76,8 +80,7 @@ export default {
     },
 
     created() {
-        var self = this;
-        self.isLoading = true;
+        this.isLoading = true;
         // Fetch the products
         this.fetchProducts();
     },
@@ -133,7 +136,7 @@ export default {
 
         fetchProducts(){
             const self = this;
-            Promise.resolve( this.getListOfProducts() )
+            Promise.resolve( this.getListOfProducts( this.listParams ) )
             .then( () => {
                 Vue.set( self, "isLoading", false );
                 self.installOwlCarousel();
