@@ -7,6 +7,7 @@ import customers from "./customers";
 import wishlists from "./wishlists";
 import cart from "./cart";
 import checkout from "./checkout";
+import util from './util';
 
 export const finalAPI = (apiInstance = defaultAPI) => ({
 	get: Object.assign(
@@ -26,7 +27,8 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		customers( apiInstance ).post,
 		wishlists( apiInstance ).post,
 		authentication( apiInstance ).post,
-		checkout( apiInstance ).post
+		checkout( apiInstance ).post,
+		util( apiInstance ).post
 	),
 	put: Object.assign(
 		products( apiInstance ).put,

@@ -49,6 +49,7 @@ module.exports = function (mix) {
         .vue("app.js")
         .vue("admin.js")
         .sass("app.scss")
+        .sass("email.scss")
         .sass("admin/app.scss")
         .sass(
             [

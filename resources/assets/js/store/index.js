@@ -44,7 +44,8 @@ export const createStore = (Vue, Vuex) => {
 		},
 		getters: {
 			comparisonItems : state => state.productComparisonList,
-			baseHref : state => window.location.origin + '/'
+			baseHref : state => window.location.origin + '/',
+			apiInstance : () => api()
 		},
 		mutations: {
 			setComparisonListItems(state, items ) {

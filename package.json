@@ -23,6 +23,7 @@
     "coldbox-elixir": "^3.0.0-beta.18",
     "ez-plus": "^1.2.1",
     "font-awesome-sass": "^4.7.0",
+    "foundation-emails": "^2.2.1",
     "iframe-resizer": "^3.6.3",
     "jquery": "^3.2.1",
     "jquery.scrollto": "^2.1.2",

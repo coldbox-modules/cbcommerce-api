@@ -2,7 +2,7 @@
 
 	<div>
 
-		<form @submit.prevent="handleSubmit" v-if="!isSent && !isSending">
+		<form @submit.prevent="handleSubmit">
 		    <div class="row">
 		        <div class="col-md-6">
 		            <div class="form-group">
@@ -13,7 +13,7 @@
 		                    	type="text"
 		                    	class="form-control"
 		                    	id="inputName"
-		                    	v-model="form.name" />
+		                    	v-model="formData.name" />
 		                </div>
 		            </div>
 
@@ -27,7 +27,7 @@
 		                    	type="email"
 		                    	class="form-control"
 		                    	id="inputEmail"
-		                    	v-model="form.email" />
+		                    	v-model="formData.email" />
 		                </div>
 		            </div>
 		        </div>
@@ -40,10 +40,16 @@
 		                    	type="text"
 		                    	class="form-control"
 		                    	id="inputPhone"
-		                    	v-model="form.phone" />
+		                    	v-model="formData.phone" />
 		                </div>
 		            </div>
 		        </div>
+				<div class="col-md-12 fm-hp">
+					<div class="form-group">
+						<label for="hpInfo">Do not enter text in to the following field</label>
+						<input type="text" id="hpInfo" v-model="formData.hpInfo"/>
+					</div>
+				</div>
 		        <div class="col-md-12">
 		            <div class="form-group">
 		                <label for="inputText" class="control-label">Message:<span class="text-error">*</span></label>
@@ -52,12 +58,23 @@
 		                    	required="required"
 		                    	class="form-control"
 		                    	id="inputText"
-		                    	v-model="form.message"></textarea>
+								rows="15"
+		                    	v-model="formData.message"></textarea>
 		                </div>
 		            </div>
 		        </div>
 		    </div>
-		    <button type="submit" class="btn btn-secondary btn-lg">Send</button>
+
+			<div v-if="!isSending && isSent">
+				<p class="alert alert-danger alert-dismissable" v-if="contactErrors.length">
+					There was an error sending your messages.  The reponse received was: {{ contactErrors.join( '. ' ) }}
+				</p>
+				<p v-else class="alert alert-success alert-dismissable">
+					Thank you, your message has been sent!
+				</p>
+			</div>
+			<div class="clearfix"></div>
+		    <button type="submit" class="pull-right btn btn-secondary btn-lg">Send</button>
 		</form>
 
 		<div
@@ -71,9 +88,6 @@
 	        <span class="sr-only">Sending your message</span>
 	    </div>
 
-		<div class="alert alert-success alert-dismissable" v-if="!isSending && isSent">
-			<p>Thank you, your message has been sent.</p>
-		</div>
 
 	</div>
 
@@ -81,63 +95,88 @@
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
 export default {
 
     data() {
         return {
 			url   : '', /* The URL to post the submission to */
 			moment: moment,
-			form  : {
+			formData  : {
 				name   : '',
 				email  : '',
 				phone  : '',
-				message: ''
+				message: '',
+				hpInfo : '' //Spam honeypot field - should never be transmitted with data
         	},
 			contactErrors   : [],
 			isSending: false,
 			isSent   : false
         }
-    },
+	},
+	
+	props : {
+		contactSubject : {
+			type : String,
+			required : false
+		}
+	},
 
-    created: function(){},
+	computed : {
+		...mapGetters( [ 'apiInstance' ] )
+	},
 
-    mounted() {},
-
-    destroyed() {},
+	mounted(){
+		// Hide our SPAM honeypot
+		$( '.fm-hp', $( this.$el ) ).css( 'display', 'none' );
+	},
 
     methods: {
 
     	handleSubmit: function(){
 			const currDateTime     = moment( new Date() );
-			this.form.fullDateTime = currDateTime;
-			this.form.date         = moment( currDateTime ).format( 'DD/MM/YYYY' );
+			this.formData.fullDateTime = currDateTime;
+			this.formData.date         = moment( currDateTime ).format( 'DD/MM/YYYY' );
 			this.isSending         = true;
 			this.submitContent();
     	},
 
     	submitContent: function(){
 
-    		var self = this;
+			var self = this;
+			if( self.contactSubject ){
+				self.formData.subject = self.contactSubject;
+			}
 
-    		// Mocking sending the form data
-    		// Axios below will handle it in real life
-	        window.setTimeout(
-	            function(){
+			Vue.set( self, "contactErrors", [] );
+			
+			self.apiInstance.post.contactForm( self.formData )
+				.then( XHR => {
 					self.isSent    = true;
 					self.isSending = false;
-	            },
-	            500
-	        );
+					Vue.set( 
+						self, 
+						"formData", 
+						{
+							name    : '',
+							email   : '',
+							phone   : '',
+							message : '',
+							hpInfo  : ''
+						}
+					);
+				})
+				.catch(err => {
+					if( err.response.data.messages.length ){
+						self.contactErrors.push( err.response.data.messages[ 0 ] );
+					} else {
+						self.contactErrors.push( "An error occurred while attempting to send your message" );
+					}
+					self.isSent    = true;
+					self.isSending = false;
+				});
 
-	        /*
-			axios.post( this.url , this.form )
-				.then( ( response ) => {
-					console.log( response );
-				} )
-				.catch( ( error ) => {
-					this.contactErrors = error.response.data.message;
-				} );
-			*/
+	        
 
     	}
 

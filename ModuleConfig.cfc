@@ -115,7 +115,7 @@ component {
                         "post" : "send"
                     }
                 )
-                .toHandler( "ContactForms" );
+                .toHandler( "API.v1.ContactForms" );
 
         // API Routing
 
