@@ -36,11 +36,11 @@
                                 <span class="review">No Reviews</span> 
                             </div>
 
-                            <div class="clearfix">
+                            <div class="clearfix" v-if="activeSku.showPricing">
                                 <p class="product-price">{{ activeSku.basePrice | currency }}</p>
                             </div>
 
-                            <div class="clearfix">
+                            <div class="clearfix" v-if="activeSku.showPricing">
                                 <label class="pull-left">List Price:</label>
                                 <p class="product-list-price">{{ activeSku.MSRP | currency }}</p>
                             </div>
@@ -85,7 +85,7 @@
                         v-for="sku in currentProduct.skus"
                         :class="`sku-option${activeSku.id === sku.id ? ' selected' : ''}`"
                         :key="`sku_select_${sku.id}`"
-                        @click="setActiveSku(sku)"
+                        @click="setactiveSku(sku)"
                     >
                         <div
                             v-if="sku.media.length" 
@@ -200,25 +200,30 @@
         <div class="col-md-3 product-detail-sidebar-section">
 
             <div class="product-information" v-if="!isLoading">
+                <div v-if="activeSku.showPricing">
+                    <quantity-control 
+                        :showLabel="false"
+                        :maxQuantity="activeSku.allowBackorder ? null : activeSku.onHand"
+                        v-if="isAvailable"
+                        v-on:quantityChange="quantityChangeReaction"
+                    ></quantity-control>
 
-                <quantity-control 
-                    :showLabel="false"
-                    :maxQuantity="activeSku.allowBackorder ? null : activeSku.onHand"
-                    v-if="isAvailable"
-                    v-on:quantityChange="quantityChangeReaction"
-                ></quantity-control>
+                    <div class="product-cart-total-price clearfix">
+                        <label class="pull-left">Total:</label>
+                        <p>&dollar;{{cartTotalPrice}}</p>
+                    </div>
 
-                <div class="product-cart-total-price clearfix">
-                    <label class="pull-left">Total:</label>
-                    <p>&dollar;{{cartTotalPrice}}</p>
+                    <div v-if="isAvailable" class="shopping-cart-buttons">
+                        <a 
+                            @click="addItemToCart( { sku: activeSku.id, quantity: chosenQuantity } )"
+                            v-tooltip="'Add this item to your cart'"
+                            class="addToCart"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                    </div>
                 </div>
 
-                <div v-if="isAvailable" class="shopping-cart-buttons">
-                    <a 
-                        @click="addItemToCart( { sku: activeSku.id, quantity: chosenQuantity } )"
-                        v-tooltip="'Add this item to your cart'"
-                        class="addToCart"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                </div>
+                <h3 v-if="!activeSku.showPricing">
+                    <span class="heading-highlight" v-html="$t('pricing_disabled_message')"></span>
+                </h3>
 
                 <div class="shopping-cart-buttons mt-20">
 
@@ -380,12 +385,12 @@ export default {
                         Vue.set( sku, "label", sku.modelNumber );
                     }
                 });
-                self.setActiveSku( product.skus[ 0 ] );
+                self.setactiveSku( product.skus[ 0 ] );
                 self.updateProductViews( self.productId )
             } );
         },
 
-        setActiveSku( sku ){
+        setactiveSku( sku ){
             Vue.set( this, "activeSkuId", sku.id );
         },
 

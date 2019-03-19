@@ -26,7 +26,7 @@ component extends="cffractal.models.transformers.AbstractTransformer" accessors=
         memento.keyArray().each( function( key ){
             if( excludes.contains( key ) ){
                 structDelete( memento, key );
-            } else if( ( left( key, 2 ) == "is" || left( key, 3 ) == "has" || left( key , 5) == "allow" ) && isNumeric( memento[ key ] ) ){
+            } else if( ( left( key, 2 ) == "is" || left( key, 3 ) == "has" || left( key , 5) == "allow" ||  left( key , 4) == "show" ) && isNumeric( memento[ key ] ) ){
                 memento[ key ] = javacast( "boolean", memento[ key ] );
             }
         } );

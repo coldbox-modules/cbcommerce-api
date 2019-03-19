@@ -44,13 +44,17 @@ component extends="BaseModelTransformer"{
         return item(
             activeEntity,
             function( product ){
-                var sql = "SELECT id, basePrice, MSRP from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY basePrice ASC LIMIT 1"; 
+                var sql = "SELECT id, basePrice, showPricing, MSRP from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY isFeatured DESC, basePrice ASC LIMIT 1"; 
                 var q = new query( sql=sql ).execute().getResult();
-                return {
-                    "SKU" : q.id,
-                    "basePrice" : q.basePrice,
-                    "MSRP" : q.MSRP
-                };
+                if( !q.showPricing ){
+                    return false;
+                } else {
+                    return {
+                        "SKU" : q.id,
+                        "basePrice" : q.basePrice,
+                        "MSRP" : q.MSRP
+                    };
+                }
             }
         );
     }
