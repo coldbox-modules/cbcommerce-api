@@ -74,7 +74,6 @@ const apiAxios = Axios.create({
 });
 
 
-const finalAPI =
-  process.env.NODE_ENV === "development" ? useLoggers(apiAxios) : apiAxios;
+const finalAPI = apiAxios;
 
 export default finalAPI;

@@ -115,7 +115,7 @@ export default {
             "comparisonItems"
         ]),
         isNew(){
-            return moment( new Date( this.product.createdTime ) ) < moment( new Date() ).add( "30 days" );
+            return moment( new Date( this.product.createdTime ) ) > moment( new Date() ).subtract( "30 days" );
         },
         percentOff(){
             return parseInt( 100 * ( 1 - ( this.product.startingPrice.basePrice / this.product.startingPrice.MSRP ) ) );

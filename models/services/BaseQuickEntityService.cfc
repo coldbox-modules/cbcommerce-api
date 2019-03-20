@@ -56,6 +56,21 @@ component{
     }
 
     /**
+	* Performs a simple count of results for a give search collection
+	*
+	* @searchCollection 		struct 		The collection of arguments for the search ( e.g. - the public request collection  )
+	**/
+	public any function count(
+		required searchCollection
+	) {
+
+        var builder = newBuilder( searchCollection = searchCollection );
+        return builder.count();
+    }
+
+    
+
+    /**
 	* @searchCollection 		struct 		The collection of arguments for the search ( e.g. - the public request collection  )
 	* @maxrows					[numeric] 	The max rows to be returned ( default=25 )
 	* @offset					[numeric] 	The offset for the query ( default=0 )

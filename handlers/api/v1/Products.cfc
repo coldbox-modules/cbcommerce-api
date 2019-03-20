@@ -7,7 +7,6 @@ component extends="BaseAPIHandler"{
 	property name="entityService" inject="ProductService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/products'
-	
 	// (GET) /store/api/v1/products
 	function index( event, rc, prc ){
 		
@@ -190,6 +189,14 @@ component extends="BaseAPIHandler"{
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
 	}
+
+	// (GET) /store/api/v1/products/count
+	function count( event, rc, prc ){
+		prc.response.setData( 
+			{ "count" : entityService.count( rc ) }
+		);
+	}
+	
 
 	
 }

@@ -148,6 +148,12 @@ component {
         router.route( "api/v1/statistics/products/:id" ).withAction({ "POST" : "productView" } ).toHandler( "API.v1.Statistics");
         router.route( "api/v1/statistics/categories/:id" ).withAction({ "POST" : "categoryView" } ).toHandler( "API.v1.Statistics");
 
+        router.route( "api/v1/products/count" )
+                .withAction({
+                    "GET" : "count"
+                })
+                .toHandler( "API.v1.Products" );
+
         // Resource Routes ( auto-magic method conventions )
         router
             .resources(
