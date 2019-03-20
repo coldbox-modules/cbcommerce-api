@@ -58,7 +58,7 @@
 		                    	required="required"
 		                    	class="form-control"
 		                    	id="inputText"
-								rows="15"
+								:rows="messageHeight"
 		                    	v-model="formData.message"></textarea>
 		                </div>
 		            </div>
@@ -120,6 +120,10 @@ export default {
 		contactSubject : {
 			type : String,
 			required : false
+		},
+		messageHeight : {
+			type : Number,
+			default : 15
 		}
 	},
 
