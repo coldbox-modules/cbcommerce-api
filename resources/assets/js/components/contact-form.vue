@@ -46,8 +46,8 @@
 		        </div>
 				<div class="col-md-12 fm-hp">
 					<div class="form-group">
-						<label for="hpInfo">Do not enter text in to the following field</label>
-						<input type="text" id="hpInfo" v-model="formData.hpInfo"/>
+						<label>Do not enter text in to the following field</label>
+						<input type="text" v-model="formData.hpInfo"/>
 					</div>
 				</div>
 		        <div class="col-md-12">

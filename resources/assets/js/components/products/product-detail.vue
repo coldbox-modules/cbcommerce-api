@@ -33,7 +33,7 @@
                                 ></star-rating>
 
                                 <a href="" class="review" v-if="currentProduct.reviewSummary.reviewCount">{{ currentProduct.reviewSummary.reviewCount }} Reviews</a>
-                                <span class="review">No Reviews</span> 
+                                <span class="review">No Reviews</span>
                             </div>
 
                             <div class="clearfix" v-if="activeSku.showPricing">
