@@ -53,6 +53,11 @@
                                         v-bind:class="{ active: isAvailable }">{{ availabilityText }}</p>
                                 </div>
 
+                                <slot 
+                                    name="beforeDetailSnapshot" 
+                                    v-bind:product="currentProduct" 
+                                    v-bind:activeSku="activeSku"></slot>
+
                                 <div class="clearfix"> 
                                     <label class="pull-left">Brand:</label> {{ currentProduct.manufacturer }}
                                 </div>

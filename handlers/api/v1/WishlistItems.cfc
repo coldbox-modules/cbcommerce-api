@@ -6,6 +6,7 @@
 component extends="BaseAPIHandler" secured{
 	property name="entityService" inject="WishlistItemService@cbCommerce";
 	property name="wishlistService" inject="WishlistService@cbCommerce";
+	property name="skuService" inject="ProductSKUService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/wishlists/{wishlist}/items'
 	
@@ -40,10 +41,21 @@ component extends="BaseAPIHandler" secured{
 		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
-		
-		prc.wishlistItem = entityService.newEntity().fill( rc );
 
-		prc.wishlistItem.associate( wishlist );
+		event.paramValue( "sku", "" );
+		var skuEntity = skuService.newEntity().getOrFail( rc.sku );
+
+		if( isNull( skuEntity ) ){
+			return prc.response.addMessage( "A SKU was not provided for addition to the wishlist. Could not continue" )
+									.setError( true )
+									.setStatus( STATUS.BAD_REQUEST );
+		}
+
+		prc.wishlistItem = entityService.newEntity().fill( {
+			"baselinePrice" : skuEntity.getBasePrice(),
+			"FK_sku" : skuEntity.keyValue(),
+			"FK_wishlist" : wishlist.keyValue()
+		} );
 
 		validateModelOrFail( prc.wishlistItem );
 

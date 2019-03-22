@@ -14,7 +14,7 @@ export default {
 
 	created() {
 		this.getCart();
-		this.getWishlists();
+		this.getWishlists( { includes : "items" } );
 	},
 	computed: {
 		...mapGetters([

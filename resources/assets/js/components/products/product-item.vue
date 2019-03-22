@@ -12,18 +12,20 @@
                         <div v-if="isNew" class="product-new">new</div>
                         <div 
                             class="product-sale" 
-                            v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
+                            v-if="hasPricing && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
                         <a 
-                            @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
+                            v-if="product.startingPrice"
+                            :data-sku="product.startingPrice.SKU"
+                            @click="onAddWishlistItem"
                             v-tooltip="{ content: $t('wishlist_add') }"
-                            :title="$t('Wishlist')"
+                            :title="$t('wishlist_add')"
                             class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                         <a 
                             @click="addItemToComparisonList( product.startingPrice.SKU )"
                             v-tooltip="{ content: $t('compare_this_item') }"
-                            :title="$t('Compare')"
+                            :title="$t('compare_this_item')"
                             class="product-compare"><i :class="$t('compare_icon')"></i></a>
                         
                         
@@ -34,7 +36,7 @@
                         <div class="block-name">
                             <a :href="`/store/product/${product.id}`" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
 
-                            <div v-if="product.startingPrice">
+                            <div v-if="hasPricing">
                                 <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
                                     <span>&dollar;{{ product.startingPrice.MSRP }}</span> &dollar;{{ product.startingPrice.basePrice }}
                                 </div>
@@ -49,7 +51,7 @@
                         </div>
                     </div>
 
-                    <div v-if="product.startingPrice" class="product-cart">
+                    <div v-if="hasPricing" class="product-cart">
                         <a 
                             @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                             v-tooltip="'Add this item to your cart'"
@@ -84,7 +86,11 @@ import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import ProductItemLoading from './product-item-loading';
 import moment from "moment";
+
+let wishlistsMixin = require( '@cbCommerce/mixins/wishlists-mixin.js' ).default;
+
 export default {
+    mixins : [ wishlistsMixin ],
     components: {
         ProductItemLoading
     },
@@ -111,9 +117,11 @@ export default {
     computed: {
         ...mapGetters([
             "cartProducts",
-            "wishlistItems",
             "comparisonItems"
         ]),
+        hasPricing(){
+            return this.product.startingPrice && this.product.startingPrice.basePrice;
+        },
         isNew(){
             return moment( new Date( this.product.createdTime ) ) > moment( new Date() ).subtract( "30 days" );
         },
@@ -136,7 +144,6 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
-            "addItemToWishlist",
             "addItemToComparisonList"
         ]),
         isImage: function( mediaItem ){

@@ -1,6 +1,5 @@
 import get from "lodash/get";
 import api from "@cbCommerce/api/index";
-import { isContext } from "vm";
 
 const initialState = {
 	isAuthenticated : false,
@@ -25,66 +24,52 @@ const getters = {
 };
 
 const actions = {
-	addItemToWishlist: ({ state, commit, getters }, { sku, wishlist }) => {
-		if( !state.isAuthenticated ) {
+	addItemToWishlist: ({ state, commit, getters }, { sku, wishlist } ) => {
+		if( !getters.authUser) {
 			return;
 		}
-		if( !wishlist ) wishlist = getters.defaultWishList; 
-		const wishlistItem = wishlist.items.find( item => item.id === sku.id );
+		if( !wishlist ) wishlist = state.wishlists.resultsMap[ getters.defaultWishList ];
+		
+		const wishlistItem = wishlist.items.find( item => item.id === sku );
+
+		console.log( sku );
 		
 		if (!wishlistItem) {
 			api()
-				.put.wishlists.update( wishlist.id, { sku : sku } )
+				.post.wishlists.addItem( wishlist.id, { sku : sku } )
 				.then(XHR => {
-					commit( "setWishlistData", XHR.data );
+					commit( "addItemToWishlist", XHR.data );
 				})
 				.catch(err => {
 					console.error( err );
-					reject( "Error: Could not update a wishlist with the id " + sku );
 				});
-			if( !wishlistItem ){
-				commit( 'addItemToWishlist', { product: product, id: sku.id } );
-			}
 		}
 	},
-	getWishlists: ({ state, commit }) => new Promise((resolve, reject) => {
-		api()
-			.get.wishlists.list()
+	getWishlists: ({ state, commit, getters }, params ) => {
+		if( !getters.authUser ) return;
+		return api()
+			.get.wishlists.list( params )
 			.then(XHR => {
-				commit( "setAuthenticated", true );
 				commit( "setWishLists", XHR.data );
-				resolve(XHR.data);
 			})
 			.catch(err => {
-				commit( "setAuthenticated", false );
-			});
-	})
+
+			})
+	}
 };
 
 const mutations = {
-	addItemToWishlist( state, { id, product } ){
-		state.activeWishlist.push({
-			id,
-			product
-		})
-	},
 	setWishlistItems( state, { items } ){
 		state.activeWishlist = items;
 	},
-	setAuthenticated( state, authenticated ){
-		state.isAuthenticated = authenticated;
-	},
-	addItemToWishlist( state, { id, product } ){
-		state.comparisonList.push({
-			id,
-			product
-		})
+	addItemToWishlist( state, data ){
+		state.wishlists.resultsMap[ data.FK_wishlist ].items.push( data );
 	},
 	setWishLists( state, resultsMap ){
 		state.wishlists = resultsMap;
 	},
 	setWishlistData( state, data ){
-		Vue.set( state.wishlists.resultMap, data.id, data );
+		Vue.set( state.wishlists.resultsMap, data.id, data );
 		
 		if (state.wishlists.results.indexOf(data.id) === -1) {
 			state.wishlists.results.push(data.id);

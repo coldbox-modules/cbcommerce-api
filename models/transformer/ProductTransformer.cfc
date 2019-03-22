@@ -47,7 +47,9 @@ component extends="BaseModelTransformer"{
                 var sql = "SELECT id, basePrice, showPricing, MSRP from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY isFeatured DESC, basePrice ASC LIMIT 1"; 
                 var q = new query( sql=sql ).execute().getResult();
                 if( !q.showPricing ){
-                    return false;
+                    return {
+                        "SKU" : q.id
+                    };
                 } else {
                     return {
                         "SKU" : q.id,

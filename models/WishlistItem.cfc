@@ -2,7 +2,7 @@
 * cboxCommerce Wishlist Entity
 */
 component   table="cbc_wishlistItems" 
-			extends="quick.models.BaseEntity" 
+			extends="BaseCBCommerceEntity" 
 			accessors="true"
 			quick
 {

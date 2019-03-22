@@ -35,8 +35,10 @@
 				showAuthFailure: false
 	        }
 		},
+		computed : {
+			...mapGetters([ "authUser" ] )
+		},	
 		methods: {
-			...mapGetters([ "authUser" ] ),
 			...mapActions( [
 				"authenticate"
 			] ),
@@ -54,9 +56,9 @@
 						} );
 			}
 		},
-		created(){
+		mounted(){
 			var self = this;
-
+	
 			if( self.authUser ){
 				self.$emit( 'cbCommerce.onAuthenticationSuccess' );
 				if( self.successUrl ){

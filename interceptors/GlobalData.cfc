@@ -21,7 +21,7 @@
             prc[ "assetBag" ] = wirebox.getInstance( "AssetBag@coldbox-asset-bag" );
         }
 
-        prc.globalData[ "@token" ] = CSRFGenerateToken( "cbCommerce", false );
+        prc.globalData[ "@token" ] = CSRFGenerateToken( "cbCommerce" );
 
         prc.globalData[ "productConditions" ] = templateCache.getOrSet( 
             "cbCommerce_global_productConditions", 

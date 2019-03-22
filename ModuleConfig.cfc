@@ -203,10 +203,6 @@ component {
             .resources(
                 resource   = "api/v1/payments",
                 handler    = "API.v1.Payments"
-            )
-            .resources(
-                resource   = "api/v1/wishlists",
-                handler    = "API.v1.Wishlists"
             );
 
             // Wishlist Item Routes
@@ -230,6 +226,13 @@ component {
                     )
                     .toHandler( "API.v1.WishlistItems" );
 
+            // Core wishlist resource routes
+            router.resources(
+                resource   = "api/v1/wishlists",
+                handler    = "API.v1.Wishlists"
+            );
+
+
             router.route( "category/used" ).to( "Category.used" );
             router.route( "category/:id" ).to( "Category.detail" );
             router.route( "category" ).to( "Category.index" );
@@ -240,6 +243,8 @@ component {
             router.route( "checkout/login" ).to( "Checkout.login" );
             router.route( "checkout/thankyou/:id" ).to( "Checkout.thankyou" );
             router.route( "checkout" ).to( "Checkout.index" );
+            router.route( "wishlist/:id" ).to( "Wishlist.detail" );
+            router.route( "wishlists" ).to( "Wishlist.index" );
             router.route( "account/create" ).to( "Account.create" );
             router.route( "account/login" ).to( "Account.login" );
             router.route( "account" ).to( "Account.index" );

@@ -17,6 +17,7 @@
                             <div class="product-sale" v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }} <br> off</div>
 
                             <a 
+                                v-if="product.startingPrice"
                                 @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
                                 v-tooltip="{ content: $t('wishlist_add') }"
                                 :title="$t('wishlist_add')"
@@ -39,7 +40,7 @@
                             <div class="block-name">
                                 <a :href="`/store/product/${product.id}`" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
 
-                                <div v-if="product.startingPrice">
+                                <div v-if="product.startingPrice && product.startingPrice.basePrice">
                                     <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
                                         <span>&dollar;{{ product.startingPrice.MSRP }}</span> &dollar;{{ product.startingPrice.basePrice }}
                                     </div>
@@ -53,7 +54,7 @@
 
                             </div>
 
-                            <div v-if="product.startingPrice" class="product-cart">
+                            <div v-if="product.startingPrice && product.startingPrice.basePrice" class="product-cart">
                                 <a 
                                     @click="addItemToCart( { sku: product.startingPrice.SKU, quantity: 1 } )"
                                     v-tooltip="'Add this item to your cart'"
@@ -114,6 +115,9 @@ export default {
             "wishlistItems",
             "comparisonItems"
         ]),
+        hasPricing(){
+            return this.product.startingPrice && this.product.startingPrice.basePrice;
+        },
         isNew(){
             return moment( new Date( this.product.createdTime ) ) > moment( new Date() ).subtract( "30 days" );
         },

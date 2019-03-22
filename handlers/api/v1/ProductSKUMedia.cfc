@@ -35,7 +35,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/skus/:skuId/media
-	function create( event, rc, prc ) { // secured="Products:Manage"
+	function create( event, rc, prc ) secured="Products:Edit"{
 
 		var sku = productSKUService.newEntity().getOrFail( rc.skuId );
 
@@ -143,7 +143,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /store/api/v1/skus/:skuId/media/:id
-	function delete( event, rc, prc ) { // secured="Products:Manage"
+	function delete( event, rc, prc ) secured="Products:Edit"{
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.skuMedia.delete();

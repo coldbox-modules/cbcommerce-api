@@ -14,6 +14,18 @@ component extends="BaseAPIHandler" secured{
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
+		if( !searchResults.pagination.total ){
+			entityService.newEntity().create(
+				{
+					"name" : $r( 'default_wishlist_title@cbCommerce', "My List" ),
+					"isDefault" : 1,
+					"isPublic" : 0,
+					"FK_user" : rc.FK_user
+				}
+			);
+			searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
+		}
+		
 		prc.response.setData( 
 			fractal.builder()
 				.collection( searchResults.collection )

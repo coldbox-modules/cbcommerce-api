@@ -27,7 +27,7 @@ component{
         event.paramValue( "isActive", 1 );
 
         if( auth.isLoggedIn() ){
-            prc["authenticatedUser"] = auth.getUser();
+            prc[ "authenticatedUser" ] = auth.getUser();
         }
     }
     
