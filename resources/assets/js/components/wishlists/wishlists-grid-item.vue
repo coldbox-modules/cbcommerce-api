@@ -6,18 +6,17 @@
                 <strong>Updated:</strong> {{ lastUpdateDisplay }}
             </span>
         </div>
+        
         <div v-else class="btn light-header-callout">
             <span class="pull-right">
                 <strong>Updated:</strong> {{ lastUpdateDisplay }}
             </span>
         </div>
-        <figure class="figure-hover-overlay">
-            <img 
-                :src="primaryImage"
-                :alt="wishlist.name"
-                class="img-responsive" 
-            />
 
+        <figure class="figure-hover-overlay">
+            <a :href="`/store/wishlist/${wishlist.id}`">
+                <div class="wishlist-item-image" v-if="primaryImage" :style="`background-image:url(${primaryImage})`"></div>
+            </a>
         </figure>
 
         <div class="wishlist-caption">
@@ -43,7 +42,7 @@ export default{
     computed : {
         ...mapState({
             primaryImage( state ){
-                return this.wishlist.image || state.globalData.placeholderImage;
+                return this.wishlist.items.length ? this.wishlist.items[ 0 ].image : state.globalData.placeholderImage;
             }
         }),
         lastUpdateDisplay(){

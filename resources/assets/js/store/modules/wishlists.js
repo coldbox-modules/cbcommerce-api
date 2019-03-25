@@ -45,6 +45,8 @@ const actions = {
 				});
 		}
 	},
+	saveWishlistItem: ( context, params ) => api().put.wishlists.updateItem( params ),
+	deleteWishlistItem: ( context, params ) => api().delete.wishlists.deleteItem( params.FK_wishlist, params.id ),
 	getWishlists: ({ state, commit, getters }, params ) => {
 		if( !getters.authUser ) return;
 		return api()
@@ -55,6 +57,16 @@ const actions = {
 			.catch(err => {
 
 			})
+	},
+	fetchWishlist : ({ state }, params ) => {
+		if( !params.id ){
+			var id = params;
+			params = undefined;
+		} else {
+			var id = params.id;
+			delete params.id;
+		}
+		return api().get.wishlists.get( id, params )
 	},
 	saveWishlist: ( { state, commit, getters }, data ) => !data.id 
 															? api().post.wishlists.create( data ) 

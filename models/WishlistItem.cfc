@@ -7,6 +7,7 @@ component   table="cbc_wishlistItems"
 			quick
 {
 
+	property name="quantity" type="numeric" default=1;
    property name="baselinePrice" type="numeric";
    property name="discountPrice" default="0";
    
