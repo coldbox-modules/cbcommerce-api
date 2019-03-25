@@ -25,7 +25,7 @@ const actions = {
 	        api().delete.authentication.logout()
                 .then( XHR => {
                     context.commit( 'setAuthUser', { rootState: context.rootState, authUser : null } );
-                    window.location.replace("./");
+                    window.location.reload();
                     resolve( XHR.data );
                 } )
                 .catch( err => {

@@ -5,7 +5,8 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-                "sku"
+                "sku",
+                "image"
             ],
             true
         );
@@ -24,6 +25,21 @@ component extends="BaseModelTransformer"{
             activeEntity.getSKU(),
             wirebox.getInstance( "ProductSKUTransformer@cbCommerce" )
         );
+    }
+
+    function includeImage( activeEntity ){
+        return item( 
+            activeEntity.getSku(),
+            function( skuEntity ){
+                if( arrayLen( skuEntity.getMedia() ) ){
+                    return skuEntity.getMedia()[ 1 ].getMediaItem().url();
+                } else if( arrayLen( skuEntity.getProduct().getMedia() ) ) {
+                    return skuEntity.getProduct().getMedia()[ 1 ].getMediaItem().url();
+                } else {
+                    return "";
+                }
+            }
+        ); 
     }
 
 }

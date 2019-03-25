@@ -35,7 +35,10 @@ component   table="cbc_products"
 	}
 
 	function media(){
-		return hasMany( "ProductMedia@cbCommerce", "FK_product" );
+		return hasMany( "ProductMedia@cbCommerce", "FK_product" )
+				.orderBy( 'isPrimary', 'DESC')
+				.orderBy( 'displayOrder', 'ASC')
+				.orderBy( 'createdTime', 'ASC' );
 	}
 
 	function reviews(){

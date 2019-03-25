@@ -19,8 +19,8 @@
                             <a 
                                 v-if="product.startingPrice"
                                 @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
-                                v-tooltip="{ content: $t('wishlist_add') }"
-                                :title="$t('wishlist_add')"
+                                v-tooltip="{ content: $t('wishlist_add_item') }"
+                                :title="$t('wishlist_add_item')"
                                 class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                             <a 

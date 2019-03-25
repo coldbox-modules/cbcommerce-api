@@ -9,11 +9,15 @@
  component{
     property name="templateCache" inject="cachebox:template";
     property name="auth" inject="authenticationService@cbauth";
+    property name="mediaConfig" inject="coldbox:setting:media@cbCommerce";
 
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
         // set globalData if not present in prc.
         if( !structKeyExists( prc, "globalData" ) ){
-            prc[ "globalData" ] = {};
+            prc[ "globalData" ] = {
+                "placeholderImage" : mediaConfig.placeholderImage,
+                "fwLocale" : getFWLocale()
+            };
         }
 
         // set assetBag if not present in prc
@@ -69,8 +73,6 @@
                 return i18nGlobals;
             }
         );
-
-        prc.globalData[ "fwLocale" ] = getfwLocale();
 
         // if logged in, add the authUser to globalData
         if( auth.isLoggedIn() ){

@@ -13,13 +13,8 @@ import createStore from "@cbCommerce/store/index";
 import createRouter from "@cbCommerce/store/router";
 import createFilters from "@cbCommerce/filters/index";
 
-Vue.component( "mediaOwlCarousel", require( "@cbCommerce/components/media-owl-carousel" ).default );
-Vue.component( "cbSlickSlider", require( "@cbCommerce/components/cb-slick-slider" ).default );
-Vue.component( "cbMediaGallery", require( "@cbCommerce/components/cb-media-gallery" ).default );
-Vue.component( "loginForm", require( "@cbCommerce/components/login-form" ).default );
-Vue.component( "generic-loader",  require( "@cbCommerce/components/generic-loader" ).default );
-Vue.component( "contentbox-nav",  require( "@cbCommerce/components/contentbox-nav" ).default );
-
+// Import our cbCommerce components
+import "@cbCommerce/global-components";
 
 import App from "@cbCommerce/components/App";
 import Router from "vue-router";

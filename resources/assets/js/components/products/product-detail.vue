@@ -234,8 +234,8 @@
 
                     <a 
                         @click="addItemToWishlist( { sku : activeSku.id } )"
-                        v-tooltip="{ content: $t('wishlist_add') }"
-                        :title="$t('wishlist_add')"><i :class="$t('wishlist_icon')"></i></a>
+                        v-tooltip="{ content: $t('wishlist_add_item') }"
+                        :title="$t('wishlist_add_item')"><i :class="$t('wishlist_icon')"></i></a>
 
                     <a 
                         @click="addItemToComparisonList( activeSku.id )"

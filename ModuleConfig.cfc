@@ -43,6 +43,7 @@ component {
                 // for local drivers, this would be the path from the root of the site
                 "storageLocation" : "/includes/shared/store",
                 "tempStorageLocation" : "/includes/tmp",
+                "placeholderImage" : "/" & this.entrypoint & "/includes/static/default-placeholder.png",
                 // Only used for s3 driver
                 "s3" : {
                     "key"    :   getEnv('AWS_ACCESS_KEY_ID',     ''),
@@ -244,6 +245,9 @@ component {
             router.route( "checkout/thankyou/:id" ).to( "Checkout.thankyou" );
             router.route( "checkout" ).to( "Checkout.index" );
             router.route( "wishlist/:id" ).to( "Wishlist.detail" );
+            router.route( "wishlists/new" ).to( "Wishlist.edit" );
+            router.route( "wishlists/edit/:id" ).to( "Wishlist.edit" );
+            router.route( "wishlists/:id" ).to( "Wishlist.detail" );
             router.route( "wishlists" ).to( "Wishlist.index" );
             router.route( "account/create" ).to( "Account.create" );
             router.route( "account/login" ).to( "Account.login" );

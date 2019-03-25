@@ -18,8 +18,8 @@
                             v-if="product.startingPrice"
                             :data-sku="product.startingPrice.SKU"
                             @click="onAddWishlistItem"
-                            v-tooltip="{ content: $t('wishlist_add') }"
-                            :title="$t('wishlist_add')"
+                            v-tooltip="{ content: $t('wishlist_add_item') }"
+                            :title="$t('wishlist_add_item')"
                             class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
 
                         <a 

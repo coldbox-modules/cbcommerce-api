@@ -5,13 +5,6 @@ component extends="BaseModelTransformer"{
         arrayAppend( 
             variables.defaultIncludes,
             [
-            ],
-            true
-        );
-
-        arrayAppend( 
-            variables.availableIncludes,
-            [
                 "items"
             ],
             true

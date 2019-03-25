@@ -55,7 +55,11 @@ const actions = {
 			.catch(err => {
 
 			})
-	}
+	},
+	saveWishlist: ( { state, commit, getters }, data ) => !data.id 
+															? api().post.wishlists.create( data ) 
+															: api().put.wishlists.update( data )
+
 };
 
 const mutations = {
@@ -67,6 +71,12 @@ const mutations = {
 	},
 	setWishLists( state, resultsMap ){
 		state.wishlists = resultsMap;
+	},
+	appendWishlist( state, wishlist ){
+		Vue.set( state.wishlists.resultsMap, wishlist.id, wishlist );
+		if( state.wishlists.results.indexOf( wishlist.id ) === -1 ){
+			state.wishlists.results.push( wishlist.id )
+		}
 	},
 	setWishlistData( state, data ){
 		Vue.set( state.wishlists.resultsMap, data.id, data );

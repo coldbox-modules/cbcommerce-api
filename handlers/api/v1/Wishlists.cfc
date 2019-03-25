@@ -12,6 +12,10 @@ component extends="BaseAPIHandler" secured{
 	function index( event, rc, prc ){
 		rc[ "FK_user" ] = prc.authenticatedUser.keyValue();
 
+		if( rc.sortOrder == "createdTime DESC" ){
+			rc.sortOrder = "isDefault DESC, name ASC";
+		}
+
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
 		if( !searchResults.pagination.total ){
@@ -48,7 +52,7 @@ component extends="BaseAPIHandler" secured{
 		
 		prc.wishlist = entityService.newEntity().fill( rc );
 
-		prc.wishlist.associate( prc.authenticatedUser.keyValue() );
+		prc.wishlist.user().associate( prc.authenticatedUser.keyValue() );
 
 		validateModelOrFail( prc.wishlist );
 

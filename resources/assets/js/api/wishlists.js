@@ -30,7 +30,7 @@ export const wishlists = api => (
     },
     post: {
       wishlists: {
-        save : createWishlist( api ),
+        create : createWishlist( api ),
         addItem : addWishlistItem( api )
       }
     },

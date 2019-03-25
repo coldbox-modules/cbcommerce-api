@@ -44,7 +44,10 @@ component   table="cbc_SKUs"
 	}
 
 	function media(){
-		return hasMany( "ProductSkuMedia@cbCommerce", "FK_sku" );
+		return hasMany( "ProductSkuMedia@cbCommerce", "FK_sku" )
+					.orderBy( 'isPrimary', 'DESC')
+					.orderBy( 'displayOrder', 'ASC')
+					.orderBy( 'createdTime', 'ASC' );
 	}
 
 	function virtualSKUs(){
