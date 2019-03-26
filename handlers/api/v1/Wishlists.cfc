@@ -100,6 +100,7 @@ component extends="BaseAPIHandler" secured{
 	// (PUT|PATCH) /cbc/api/v1/wishlists/:id
 	function update( event, rc, prc ){
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
+		
 		//remove this key before population
 		structDelete( rc, "id" );
 		
@@ -137,8 +138,17 @@ component extends="BaseAPIHandler" secured{
 		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
-
-		prc.wishlist.delete();
+		
+		// wrap in transaction to maintain items, in case something goes wrong
+		transaction{
+			try{
+				prc.wishlist.delete();
+				transaction action="commit";
+			} catch( any e ){
+				transaction action="rollback";
+				rethrow;
+			}
+		}
 
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 

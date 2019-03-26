@@ -3,8 +3,8 @@
         <div v-if="isLoading" class="overlay">
      		<generic-loader :message="$t('wishlist_loader_message')"></generic-loader>
      	</div>
-        <div class="col-md-12 productDetailHeader" v-if="wishlist">
-            <h1 class="wow fadeInRight animated animated" data-wow-duration="1s"><span>{{wishlist.name}}</span></h1>
+        <div class="col-md-12 header-for-light" v-if="wishlist">
+            <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">{{ $t( 'Wishlist' ) }}: <span contenteditable="true" @blur="updateWishlistName">{{wishlist.name}}</span></h1>
             <p v-html="wishlist.description"></p>
         </div>
 
@@ -17,20 +17,44 @@
                 v-on:delete-item="onDeleteItem"
                 v-on:save-item="onSaveItem"
             ></wishlist-item>
+            
+            <div 
+                v-if="!wishlist.items.length"
+                class="alert alert-info text-center"
+            >
+                {{ $t( 'wishlist_no_items' ) }}
+                <br><br>
+            </div>
 
         </div>
         <div class="col-md-3 col-sm-4 col-xs-12" v-if="!isLoading">
-            <div class="product-request">
+            <div v-if="wishlist.items.length" class="product-request">
                 <a href="#" 
+                    style="margin-bottom:30px"
                     v-tooltip="'Request a quote for this item'"
-                    class="btn btn-lg btn-secondary"><i class="fa fa-envelope"></i> {{ $t('request_wishlist_quote') }}</a>
+                    class="btn btn-lg btn-secondary btn-fluid"><i class="fa fa-envelope"></i> {{ $t('request_wishlist_quote') }}</a>
             </div>
-            <div v-if="pricingAvailable" class="product-cart">
+
+            <div v-if="wishlist.items.length && pricingAvailable" class="product-cart">
                 <a 
                     @click="addAllToCart"
+                     style="margin-bottom:30px"
                     v-tooltip="$t( 'Add all items to your cart' )"
-                    class="btn btn-lg btn-primary"><i class="fa fa-shopping-cart"></i> {{ $t( 'Add to cart' ) }}</a>
+                    class="btn btn-lg btn-primary btn-fluid"><i class="fa fa-shopping-cart"></i> {{ $t( 'Add to cart' ) }}</a>
             </div>
+
+            <v-popover class="text-center">
+                <button class="tooltip-target btn btn-link text-muted">
+                <i class="fa fa-trash"></i> {{ $t( 'delete_wishlist' ) }}
+                </button>
+                <template slot="popover" class="text-center">
+                    <p class="alert alert-danger text-center">
+                        <i class="fa fa-warning"></i><br>{{$t( 'delete_wishlist_confirm' )}}<br><br>
+                        <button class="btn btn-primary" @click="onDeleteWishlist"><i class="fa fa-trash"></i> {{$t( 'confirmed_proceed' )}}</button>
+                    </p>
+                    <a class="text-muted" v-close-popover><i class="fa fa-undo"></i> Cancel</a>
+                </template>
+            </v-popover>
         </div>
     </div>
 </template>
@@ -65,7 +89,7 @@ export default{
         this.fetchWishlistDetail();
     },
     methods : {
-        ...mapActions( [ "fetchWishlist", "saveWishlist" ] ),
+        ...mapActions( [ "fetchWishlist", "saveWishlist", "deleteWishlist" ] ),
         fetchWishlistDetail: function(){
             var self    = this;
             self.isLoading = true;
@@ -73,6 +97,10 @@ export default{
                 Vue.set( self, "isLoading", false );
                 Vue.set( self, "wishlist", data );
             } );
+        },
+        updateWishlistName( e ){
+            Vue.set( this.wishlist, "name", $( e.target ).html() );
+            this.saveWishlist( { id : this.wishlist.id, name : this.wishlist.name } );
         },
         onDeleteItem( id ){
             var itemIndex = null;
@@ -87,6 +115,17 @@ export default{
         },
         onSaveItem( id ){
             // placeholder function for any future save actions on the global wishlist detail
+        },
+        onDeleteWishlist( e ){
+            var $btn = $( e.currentTarget );
+            $( 'i', $btn ).removeClass( 'fa-trash' ).addClass( 'fa-spin fa-spinner' );
+            this.deleteWishlist( this.wishlist.id )
+                    .then( () =>{
+                        window.location.assign( '/store/wishlists' )
+                    } )
+                    .catch( err => {
+                        console.error( err );
+                    } );
         }
     }
 }

@@ -70,7 +70,8 @@ const actions = {
 	},
 	saveWishlist: ( { state, commit, getters }, data ) => !data.id 
 															? api().post.wishlists.create( data ) 
-															: api().put.wishlists.update( data )
+															: api().put.wishlists.update( data ),
+	deleteWishlist:( context, wishlistId ) => api().delete.wishlists.delete( wishlistId )
 
 };
 

@@ -17,7 +17,7 @@
                         <a 
                             v-if="product.startingPrice"
                             :data-sku="product.startingPrice.SKU"
-                            @click="onAddWishlistItem"
+                            @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
                             v-tooltip="{ content: $t('wishlist_add_item') }"
                             :title="$t('wishlist_add_item')"
                             class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
@@ -144,6 +144,7 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
+            "addItemToWishlist",
             "addItemToComparisonList"
         ]),
         isImage: function( mediaItem ){

@@ -20,6 +20,13 @@ component   table="cbc_wishlists"
 
    function items(){
 	   return hasMany( "WishlistItem@cbCommerce", "FK_wishlist" );
-   }
+	}
+	
+	function delete(){
+		this.getItems().each( function( itemEntity ){
+			itemEntity.delete();
+		} );
+		return super.delete();
+	}
 
 }
