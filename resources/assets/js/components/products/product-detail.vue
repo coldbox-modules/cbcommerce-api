@@ -232,10 +232,7 @@
 
                 <div class="shopping-cart-buttons mt-20">
 
-                    <a 
-                        @click="addItemToWishlist( { sku : activeSku.id } )"
-                        v-tooltip="{ content: $t('wishlist_add_item') }"
-                        :title="$t('wishlist_add_item')"><i :class="$t('wishlist_icon')"></i></a>
+                    <wishlist-add-icon :skuId="activeSku.id"></wishlist-add-icon>
 
                     <a 
                         @click="addItemToComparisonList( activeSku.id )"
@@ -319,7 +316,6 @@ export default {
             "authUser",
             "currentProduct",
             "cartProducts",
-            "wishlistItems",
             "comparisonItems",
             "productsList",
             "productsListArray",
@@ -353,7 +349,6 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
-            "addItemToWishlist",
             "addItemToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",

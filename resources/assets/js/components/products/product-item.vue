@@ -14,13 +14,7 @@
                             class="product-sale" 
                             v-if="hasPricing && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
-                        <a 
-                            v-if="product.startingPrice"
-                            :data-sku="product.startingPrice.SKU"
-                            @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
-                            v-tooltip="{ content: $t('wishlist_add_item') }"
-                            :title="$t('wishlist_add_item')"
-                            class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
+                        <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
 
                         <a 
                             @click="addItemToComparisonList( product.startingPrice.SKU )"

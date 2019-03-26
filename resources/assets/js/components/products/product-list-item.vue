@@ -16,12 +16,7 @@
                             <div v-if="this.isNew" class="product-new">new</div>
                             <div class="product-sale" v-if="product.startingPrice && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }} <br> off</div>
 
-                            <a 
-                                v-if="product.startingPrice"
-                                @click="addItemToWishlist( { sku : product.startingPrice.SKU } )"
-                                v-tooltip="{ content: $t('wishlist_add_item') }"
-                                :title="$t('wishlist_add_item')"
-                                class="product-wishlist"><i :class="$t('wishlist_icon')"></i></a>
+                            <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
 
                             <a 
                                 @click="addItemToComparisonList( product.startingPrice.SKU )"
@@ -112,7 +107,6 @@ export default {
     computed: {
         ...mapGetters([
             "cartProducts",
-            "wishlistItems",
             "comparisonItems"
         ]),
         hasPricing(){
@@ -140,7 +134,6 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
-            "addItemToWishlist",
             "addItemToComparisonList"
         ]),
         isImage: function( mediaItem ){
