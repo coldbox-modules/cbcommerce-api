@@ -6,7 +6,7 @@
                 v-tooltip="{ content: $t('wishlist_add_item') }"
                 :title="$t('wishlist_add_item')"
                 class="product-wishlist tooltip-target">
-                <i :class="$t('wishlist_icon')"></i>
+                <i :class="targetIconClass"></i>
             </a>
 
             <template slot="popover" class="text-center">
@@ -33,7 +33,7 @@
             v-tooltip="{ content: $t('wishlist_add_item') }"
             :title="$t('wishlist_add_item')"
             v-bind:class="{ 'product-wishlist' : true, 'in-wishlist' : inDefaultWishlist }">
-            <i :class="$t('wishlist_icon')"></i>
+            <i :class="targetIconClass"></i>
         </a>
     </span>
 </template>
@@ -46,6 +46,11 @@ export default{
             required : true
         }
     },
+    data(){
+        return{
+            isAdding : false
+        }
+    },
     computed:{
         ...mapState({
             wishlists : state => state.wishlists.wishlists,
@@ -54,30 +59,36 @@ export default{
                 let defaultWishlist = this.wishlists.resultsMap[ this.wishlists.results[ 0 ] ];
                 return defaultWishlist.items.filter( item => item.FK_sku === this.skuId  ).length;
             }
-        })
+        }),
+        targetIconClass(){
+            return this.isAdding ? 'fa fa-spin fa-spinner' : this.$t('wishlist_icon')
+        }
     },
     methods : {
         ...mapActions(["addItemToWishlist"]),
         onAddItem( e ){
-
             if(  $( e.target ).hasClass( 'form-control' ) ){
-                 // close popover
-                $( 'a.text-muted', this.$el ).click();
-                var $actionTarget = $( 'a.product-wishlist', this.$el );
+                // close popover
+                $( 'a.text-muted', self.$el ).click();
+                var $actionTarget = $( 'a.product-wishlist', self.$el );
             } else {
                 var $actionTarget = $( e.currentTarget );
             }
+            Vue.set( this, "isAdding", true );
+            var self = this;
             
-            $( 'i', $actionTarget ).removeClass( this.$t('wishlist_icon') ).addClass( 'fa fa-spin fa-spinner' );
+            // give ourselves a few milliseconds to let the UI update
+            setTimeout( function(){
 
-            let wishlist = $( e.target ).hasClass( 'form-control' ) ? this.wishlists.resultsMap[ $( e.target ).val() ] : this.wishlists.resultsMap[ this.wishlists.results[ 0 ] ];
-            
-            this.addItemToWishlist( { sku : this.skuId, wishlist : wishlist } )
-                    .then( () => {
-                        $( 'i', $actionTarget ).removeClass( 'fa fa-spin fa-spinner' ).addClass( this.$t('wishlist_icon') );
-                        $actionTarget.addClass( 'in-wishlist' );
-                    } )
-                    .catch( err => console.error( err ) )
+                let wishlist = $( e.target ).hasClass( 'form-control' ) ? self.wishlists.resultsMap[ $( e.target ).val() ] : self.wishlists.resultsMap[ self.wishlists.results[ 0 ] ];
+                
+                self.addItemToWishlist( { sku : self.skuId, wishlist : wishlist } )
+                        .then( () => {
+                            Vue.set( self, "isAdding", false );
+                            $actionTarget.addClass( 'in-wishlist' );
+                        } )
+                        .catch( err => console.error( err ) )
+            }, 300 )
         }
     }
 }
