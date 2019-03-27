@@ -13,7 +13,7 @@
         </cfif>
     </p>
     <h5>Message</h5>
-    <p>
+    <blockquote>
         #encodeForHTML( rc.message )#
-    </p>
+    </blockquote>
 </cfoutput>

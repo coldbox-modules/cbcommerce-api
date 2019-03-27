@@ -207,11 +207,13 @@
 							}
 						})
 						.catch( err => {
-							self.isLoading = false;
 							if( err.response && err.response.data ){
 								self.errorMessage = "An account not be created.  The message received was: " + err.response.data.messages.join( '. ' );
 							}
-						});
+						})
+						.then( xhr => { 
+							self.isLoading = false;
+						} );
 					}
 				});
 			}

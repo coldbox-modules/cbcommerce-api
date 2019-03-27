@@ -89,7 +89,7 @@ export default{
         this.fetchWishlistDetail();
     },
     methods : {
-        ...mapActions( [ "fetchWishlist", "saveWishlist", "deleteWishlist" ] ),
+        ...mapActions( [ "fetchWishlist", "saveWishlist", "deleteWishlist", "addItemToCart" ] ),
         fetchWishlistDetail: function(){
             var self    = this;
             self.isLoading = true;
@@ -112,6 +112,12 @@ export default{
             if( itemIndex !== null ){
                 Vue.delete( this.wishlist.items, itemIndex );    
             }
+        },
+        addAllToCart(){
+            var self = this;
+            this.wishlist.items.forEach( item => {
+                self.addItemToCart( { sku : item.FK_sku, quantity: item.quantity } );
+            } );
         },
         onSaveItem( id ){
             // placeholder function for any future save actions on the global wishlist detail

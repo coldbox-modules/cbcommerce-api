@@ -1,5 +1,5 @@
 export const getCart = api => () => api.get( '/cart' );
-export const addItem = api => ( item ) => api.put( '/cart/' + item.sku, JSON.stringify( { quantity : item.quantity } ) );
+export const addItem = api => ( item ) => api.post( '/cart/' + item.sku, JSON.stringify( { quantity : item.quantity } ) );
 export const removeItem = api => ( itemId ) => api.delete( '/cart/' + itemId );
 
 export const cart = api => ({

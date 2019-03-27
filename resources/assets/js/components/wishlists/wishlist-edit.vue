@@ -2,7 +2,7 @@
     <div>
         <div class="header-for-light">
             <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">
-                {{ wishlist.id ? 'Editing ' + wishlist.name :  }}
+                {{ wishlist.id ? 'Editing ' + wishlist.name : 'Create New' }}
             </h1>
         </div>
         <wishlist-form :wishlist="wishlist"></wishlist-form>
