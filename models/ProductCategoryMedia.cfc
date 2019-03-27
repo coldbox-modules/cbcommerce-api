@@ -21,4 +21,11 @@ component   table="cbc_productCategoryMedia"
 		return belongsTo( "ProductCategory@cbCommerce", "FK_category" );
 	}
 
+	function delete(){
+		var mediaItem = this.getMediaItem();
+		// delete our constrained item first
+		super.delete();
+		return mediaItem.delete();
+	}
+
 }

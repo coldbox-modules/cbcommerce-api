@@ -202,6 +202,23 @@ component   table="cbc_products"
 			}
 		}
 	 }
+	
+	 function getPrimaryImageURL(){
+		var productMedia = media()
+							.where( 'FK_product', keyValue() )
+							.where( 'isActive', 1 )
+							.limit( 1 )
+							.orderBy( 'isPrimary', 'DESC' )
+							.orderBy( 'displayOrder', 'ASC' );
+		
+		var results = productMedia.getResults();
+
+		if( arrayLen( results ) ){
+			return results[ 1 ].getMediaItem().url();
+		} else {
+			return "";
+		}
+	}
 
 	function getRequiredOptions(){
 		if( isSimpleValue( variables.requiredOptions ) ){

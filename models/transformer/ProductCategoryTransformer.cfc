@@ -1,5 +1,5 @@
-component extends="BaseModelTransformer"{
- 
+component extends="BaseModelTransformer" accessors="true"{
+    property name="activeChildrenOnly" default=true;
     
     function init(){
         arrayAppend( 
@@ -40,16 +40,28 @@ component extends="BaseModelTransformer"{
     }
 
     function includeChildren( activeEntity ){
+        var q = activeEntity.children().where( 'isActive', 1 );
+
+        if( variables.activeChildrenOnly ){
+            q.hasActiveProducts()
+        }
+        
+        var transformer = wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" );
+        
+        transformer.setActiveChildrenOnly( variables.activeChildrenOnly );
+        
         return collection(
-            activeEntity.children().where( 'isActive', 1 ).orderBy( "displayOrder", "ASC" ).getResults(),
-            wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" ),
+            q.orderBy( "displayOrder", "ASC" ).getResults(),
+            transformer,
             wirebox.getInstance( collectionSerializer )
         );
     }
 
     function includeMedia( activeEntity ){
 
-        var filteredMedia = activeEntity.media().where( 'isActive', 1 )
+        var filteredMedia = activeEntity.media()
+                .where( 'isActive', 1 )
+                .orderBy( 'isPrimary', 'DESC' )
                 .orderBy( 'displayOrder', 'ASC')
                 .orderBy( 'createdTime', 'ASC' );
 
