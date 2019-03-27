@@ -12,6 +12,8 @@ component {
     this.viewParentLookup = true;
     this.layoutParentLookup = true;
     this.dependencies   = [
+        "contentbox",
+        "contentbox-sitemap",
         "cbauth",
         "cbguard",
         "cfcollection",
@@ -114,6 +116,30 @@ component {
                 .withAction(
                     {
                         "post" : "send"
+                    }
+                )
+                .toHandler( "API.v1.ContactForms" );
+
+        router.route( "api/v1/quote-request/wishlist/:wishlistId" )
+                .withAction(
+                    {
+                        "post" : "wishlistQuote"
+                    }
+                )
+                .toHandler( "API.v1.ContactForms" );
+
+        router.route( "api/v1/quote-request/cart/:cartId" )
+                .withAction(
+                    {
+                        "post" : "cartQuote"
+                    }
+                )
+                .toHandler( "API.v1.ContactForms" );
+
+        router.route( "api/v1/quote-request/sku/:skuId" )
+                .withAction(
+                    {
+                        "post" : "skuQuote"
                     }
                 )
                 .toHandler( "API.v1.ContactForms" );
@@ -252,6 +278,7 @@ component {
             router.route( "account/create" ).to( "Account.create" );
             router.route( "account/login" ).to( "Account.login" );
             router.route( "account" ).to( "Account.index" );
+            router.route( "sitemap" ).to( "Sitemap.index");
 
             /**
              * Display routing
@@ -265,6 +292,14 @@ component {
     }
 
     function onLoad() {
+
+        /**
+        * Overload for ContentBox default Sitemap Routing
+        */
+        appRouter.prepend()
+                    .route( "sitemap" )
+                    .to( "cbCommerce:Sitemap.index" );
+
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
 
