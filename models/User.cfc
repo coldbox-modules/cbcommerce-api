@@ -38,6 +38,10 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
         return assignAttribute( "password", encryptionService.bCrypt( value ) );
     }
 
+    function getFullName(){
+        return this.getFirstName() & " " & this.getLastName();
+    }
+
     this.constraints = {
 		firstName : { required : true },
         password : { required : true },

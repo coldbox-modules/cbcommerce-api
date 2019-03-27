@@ -31,7 +31,7 @@
                     <td>#item.getSKU().getModelNumber()#</td>
                     <td>#( len( item.getSKU().getExternalId() ) ? item.getSKU().getExternalId() : 'N/A' )#</td>
                     <td>#item.getQuantity()#</td>
-                    <td>#( item.getSKU().getDisplayPricing() ? LSCurrencyFormat( item.getSKU().getBasePrice() ) : 'Disabled' )#</td>
+                    <td>#( item.getSKU().getShowPricing() ? LSCurrencyFormat( item.getSKU().getBasePrice() ) : 'Disabled' )#</td>
                 </tr>
             </cfloop>
         </tbody>
@@ -39,6 +39,6 @@
 
     <h5>Message/Additional Requests</h5>
     <blockquote>
-        #encodeForHTML( rc.message )#
+        <pre>#encodeForHTML( rc.message )#</pre>
     </blockquote>
 </cfoutput>

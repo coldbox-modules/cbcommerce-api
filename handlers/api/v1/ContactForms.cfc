@@ -38,6 +38,10 @@ component extends="BaseAPIHandler"{
         
         prc.wishlist = getInstance( "Wishlist@CBCommerce" ).getOrFail( rc.wishlistId );
 
+        if( !len( prc.authenticatedUser.getPrimaryPhone() ) ){
+            prc.authenticatedUser.setPrimaryPhone( rc.phone ).save();
+        }
+
         var quoteMail = mailService.newMail(
             to=event.getValue( "recipient", getSetting( "mailSettings" ).to ),
             from=prc.authenticatedUser.getEmail(),

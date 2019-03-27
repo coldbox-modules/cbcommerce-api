@@ -21,7 +21,10 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
     */
     boolean function validate( required cbvalidation.models.result.IValidationResult validationResult, required any target, required string field, any targetValue, any validationData){
 
-        var recordCount = userService.newEntity().where( 'email', target.getEmail() ).count();
+        var recordCount = userService.newEntity()
+                                        .where( 'email', target.getEmail() )
+                                        .where( 'id', '!=', target.keyValue() )
+                                        .count();
         
         if( recordCount ){
             var errorArgs = {

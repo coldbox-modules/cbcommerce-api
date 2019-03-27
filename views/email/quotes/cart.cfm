@@ -39,6 +39,6 @@
 
     <h5>Message/Additional Requests</h5>
     <blockquote>
-        #encodeForHTML( rc.message )#
+        <pre>#encodeForHTML( rc.message )#</pre>
     </blockquote>
 </cfoutput>

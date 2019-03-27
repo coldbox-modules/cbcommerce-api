@@ -1,6 +1,9 @@
 export const util = api => ({
   post: {
-    contactForm : ( data ) => api.post( '/contact-forms', data )
+    contactForm : ( data ) => api.post( '/contact-forms', data ),
+    wishlistQuote : ( wishlistId, data ) => api.post( '/quote-request/wishlist/' + wishlistId, data ),
+    cartQuote : ( cartId, data ) => api.post( '/quote-request/cart/' + cartId, data ),
+    skuQuote : ( skuId, data ) => api.post( '/quote-request/sku/' + skuId, data )
   }
 });
 

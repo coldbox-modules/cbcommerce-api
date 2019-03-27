@@ -29,7 +29,8 @@
         </div>
         <div class="col-md-3 col-sm-4 col-xs-12" v-if="!isLoading">
             <div v-if="wishlist.items.length" class="product-request">
-                <a href="#" 
+                <a  href="javascript:;"
+                    @click="toggleModal" 
                     style="margin-bottom:30px"
                     v-tooltip="'Request a quote for this item'"
                     class="btn btn-lg btn-secondary btn-fluid"><i class="fa fa-envelope"></i> {{ $t('request_wishlist_quote') }}</a>
@@ -56,16 +57,22 @@
                 </template>
             </v-popover>
         </div>
+        <wishlist-quote-modal v-if="showQuoteModal" v-on:quote-modal-close="toggleModal" :wishlist="wishlist"></wishlist-quote-modal>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import WishlistQuoteModal from "@cbCommerce/components/wishlists/wishlist-quote-modal";
 export default{
     data(){
         return {
             isLoading : false,
-            wishlist : null
+            wishlist : null,
+            showQuoteModal : false
         }
+    },
+    components : {
+        WishlistQuoteModal
     },
     computed : {
         ...mapGetters( [ "authUser" ] ),
@@ -90,6 +97,9 @@ export default{
     },
     methods : {
         ...mapActions( [ "fetchWishlist", "saveWishlist", "deleteWishlist", "addItemToCart" ] ),
+        toggleModal(){
+            Vue.set( this, "showQuoteModal", !this.showQuoteModal );
+        },
         fetchWishlistDetail: function(){
             var self    = this;
             self.isLoading = true;
