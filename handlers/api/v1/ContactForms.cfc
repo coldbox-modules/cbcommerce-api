@@ -59,14 +59,14 @@ component extends="BaseAPIHandler"{
 
     }
 
-    //( POST ) /api/v1/quote-request/cart/:cartId
+    //( POST ) /api/v1/quote-request/cart
     function cartQuote( event, rc, prc ){
         paramRequest( argumentCollection = arguments );
         if( prc.response.getError() ) return;
         
-        prc.cart = getInstance( "Cart@CBCommerce" ).getOrFail( rc.cartId );
+        prc.cart = getInstance( "CartService@cbCommerce" ).getActiveCart();
 
-        var subject = !isNull( cart.getCustomer() ) 
+        var subject = !isNull( prc.cart.getCustomer() ) 
                         ? "Custom Quote Request from " & prc.cart.getCustomer().getFullName()
                         : "Custom Quote Request";
 

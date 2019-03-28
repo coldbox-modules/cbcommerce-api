@@ -35,9 +35,19 @@
 
 			     		Proceed to Checkout
 			     	</a>
+					<br>
+					<br>
+					<a  href="javascript:;"
+                    @click="toggleModal" 
+                    style="margin-bottom:30px"
+                    v-tooltip="'Request a quote for your shopping cart'"
+                    class="btn btn-secondary btn-lg">
+						<i class="fa fa-envelope"></i> Request a Quote
+					</a>
 			    </div>
 		    </div>
 		</div>
+		<cart-quote-modal v-if="showQuoteModal" v-on:quote-modal-close="toggleModal"></cart-quote-modal>
     </div>
 
 </template>
@@ -46,17 +56,20 @@
 import { mapState, mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import CartItem from './cart-item';
+import CartQuoteModal from "@cbCommerce/components/commerce/cart-quote-modal";
 
 export default {
 	components: {
-        CartItem
+		CartItem,
+		CartQuoteModal
     },
     directives: {
         imagesLoaded
     },
     data() {
         return {
-        	isLoading: false
+			isLoading: false,
+			showQuoteModal : false
         }
     },
     mounted() {
@@ -114,14 +127,17 @@ export default {
     },
 
     methods: {
-
         ...mapActions([
             "getListOfProducts",
             "addItemToCart",
             "deleteCartItem",
             "addItemToWishlist",
             "addItemToComparisonList"
-        ]),
+		]),
+		
+		toggleModal(){
+            Vue.set( this, "showQuoteModal", !this.showQuoteModal );
+        },
 
         availabilityText( inStock ){
             return ( inStock ) ? 'In Stock' : 'Out Of Stock';

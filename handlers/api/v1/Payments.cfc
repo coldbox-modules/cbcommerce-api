@@ -126,7 +126,7 @@ component extends="BaseAPIHandler" {
 
 		// process payment
 		var stripeResponse = processor.charge(
-					amount = newOrder.total * 100,
+					amount = round( newOrder.total * 100 ),
 					source = rc.source,
 					description = prc.order.getId()
 				);

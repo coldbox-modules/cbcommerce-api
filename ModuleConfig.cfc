@@ -128,7 +128,7 @@ component {
                 )
                 .toHandler( "API.v1.ContactForms" );
 
-        router.route( "api/v1/quote-request/cart/:cartId" )
+        router.route( "api/v1/quote-request/cart" )
                 .withAction(
                     {
                         "post" : "cartQuote"

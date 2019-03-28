@@ -561,23 +561,23 @@
 			     			<tbody>
 			     				<tr>
 			     					<th>Sub Total:</th>
-			     					<td class="text-right">${{ subtotal }}</td>
+			     					<td class="text-right">{{ money( subtotal ) }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Estimated Shipping:</th>
-			     					<td class="text-right">${{ shippingCost }}</td>
+			     					<td class="text-right">{{ money( shippingCost ) }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Total Before Tax: </th>
-			     					<td class="text-right">${{ subtotal + shippingCost }}</td>
+			     					<td class="text-right">{{ money( subtotal + shippingCost ) }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Estimated Tax:</th>
-			     					<td class="text-right">${{ tax }}</td>
+			     					<td class="text-right">{{ money(tax) }}</td>
 			     				</tr>
 			     				<tr class="text-danger">
 			     					<th>Order Total:</th>
-			     					<td class="text-right">${{ subtotal + shippingCost + tax }}</td>
+			     					<td class="text-right">{{ money( subtotal + shippingCost + tax ) }}</td>
 			     				</tr>
 			     			</tbody>
 			     		</table>

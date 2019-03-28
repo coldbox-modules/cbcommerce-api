@@ -1,14 +1,14 @@
 <cfoutput>
     <p>A request for a custom quotation has been received at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
     <h5>Name</h5>
-    <p>#prc.cart.getUser().getFullName()#</p>
+    <p>#prc.cart.getCustomer().getFullName()#</p>
     <h5>Email</h5>
-    <p><a href="mailto:#prc.cart.getUser().getEmail()#">#prc.cart.getUser().getEmail()#</a></p>
+    <p><a href="mailto:#prc.cart.getCustomer().getEmail()#">#prc.cart.getCustomer().getEmail()#</a></p>
     <h5>Phone</h5>
 
     <p>
-        <cfif len( prc.cart.getUser().getPrimaryPhone() )>
-            <a href="tel:#encodeForHTMLAttribute( prc.cart.getUser().getPrimaryPhone() )#">#prc.cart.getUser().getPrimaryPhone()#</a>
+        <cfif len( prc.cart.getCustomer().getPrimaryPhone() )>
+            <a href="tel:#encodeForHTMLAttribute( prc.cart.getCustomer().getPrimaryPhone() )#">#prc.cart.getCustomer().getPrimaryPhone()#</a>
         <cfelse>
             Not Provided
         </cfif>
@@ -25,13 +25,13 @@
             </tr>
         </thead>
         <tbody>
-            <cfloop array="#prc.cart.getItems()#" index="item">
+            <cfloop array="#prc.cart.getContents().items#" index="item">
                 <tr>
-                    <td>#item.getSKU().getProduct().getName()#</td>
-                    <td>#item.getSKU().getModelNumber()#</td>
-                    <td>#( len( item.getSKU().getExternalId() ) ? item.getSKU().getExternalId() : 'N/A' )#</td>
-                    <td>#item.getQuantity()#</td>
-                    <td>#( item.getSKU().getDisplayPricing() ? LSCurrencyFormat( item.getSKU().getBasePrice() ) : 'Disabled' )#</td>
+                    <td>#item.product.name#</td>
+                    <td>#item.sku.modelNumber#</td>
+                    <td>#( len( item.sku.externalId ) ? item.sku.externalId : 'N/A' )#</td>
+                    <td>#item.quantity#</td>
+                    <td>#( item.sku.showPricing ? LSCurrencyFormat( item.sku.basePrice ) : 'Disabled' )#</td>
                 </tr>
             </cfloop>
         </tbody>
