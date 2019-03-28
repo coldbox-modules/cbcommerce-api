@@ -228,6 +228,13 @@
 
                 <h3 v-if="!activeSku.showPricing">
                     <span class="heading-highlight" v-html="$t('pricing_disabled_message')"></span>
+                    <br><br>
+                    <div class="product-request">
+                        <a href="javascript:;"
+                            @click="toggleModal"
+                            v-tooltip="'Request a quote for this item'"
+                            class="btn btn-lg btn-secondary btn-fluid"><i class="fa fa-envelope"></i> Request quote</a>
+                    </div>
                 </h3>
 
                 <div class="shopping-cart-buttons mt-20">
@@ -247,6 +254,8 @@
 
         </div>
 
+        <sku-quote-modal v-if="showQuoteModal" v-on:quote-modal-close="showQuoteModal=false" :skuId="activeSku.id"></sku-quote-modal>
+
     </div>
 
 </template>
@@ -262,7 +271,11 @@ import ProductReviewForm from './product-review-form';
 import RelatedProductCarousel from './related-product-carousel';
 import ProductDetailLoading from './product-detail-loading';
 import vSelect from 'vue-select';
+import WishlistsMixin from '@cbCommerce/mixins/wishlists-mixin';
+import SkuQuoteMixin from '@cbCommerce/mixins/sku-quote-mixin';
+
 export default {
+    mixins : [ WishlistsMixin, SkuQuoteMixin ],
     components: {
         StarRating,
         ProductImagesGallery,

@@ -98,8 +98,6 @@
                 :isList="isList"
                 :perPage="perPage"></filter-bar>
 
-
-
             <div v-if="isLoading">
                 <div class="col-md-4" v-for="(n, index) in 25" :key="`loading-${index}`">
                     <product-item-loading></product-item-loading>
@@ -150,7 +148,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
 import Paginate from 'vuejs-paginate'
 import FilterBar from "./filter-bar";
 import ProductsGrid from './products-grid';

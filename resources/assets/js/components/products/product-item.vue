@@ -52,7 +52,8 @@
                             class="btn"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                     </div>
                     <div v-else class="product-request">
-                        <a href="#" 
+                        <a href="javascript:;"
+                            @click="$emit( 'quote-sku', product.startingPrice.SKU )"
                             v-tooltip="'Request a quote for this item'"
                             class="btn"><i class="fa fa-envelope"></i> Request quote</a>
                     </div>

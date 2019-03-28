@@ -5,7 +5,8 @@ const initialState = {
 	productsList         : [],
 	currentProductID     : null,
 	activeProduct        : null,
-	currentProductReviews: []
+	currentProductReviews: [],
+	quotedSKUId 		 : null
 };
 
 const getters = {
@@ -245,6 +246,9 @@ const actions = {
 };
 
 const mutations = {
+	setQuotedSKUId( state , id ){
+		Vue.set( state, "quotedSKUId", id );
+	},
 	setActiveProduct(state, product) {
 		state.currentProductID = product.id;
 		Vue.set( state, "activeProduct", product );

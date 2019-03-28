@@ -19,7 +19,6 @@
                 <th>Product Name</th>
                 <th>Model Number</th>
                 <th>Identifier ( Tag )</th>
-                <th>Quantity</th>
                 <th>Displayed Price</th>
             </tr>
         </thead>
@@ -28,8 +27,7 @@
                 <td>#prc.sku.getProduct().getName()#</td>
                 <td>#prc.sku.getModelNumber()#</td>
                 <td>#( len( prc.sku.getExternalId() ) ? prc.sku.getExternalId() : 'N/A' )#</td>
-                <td>#item.getQuantity()#</td>
-                <td>#( prc.sku.getDisplayPricing() ? LSCurrencyFormat( prc.sku.getBasePrice() ) : 'Disabled' )#</td>
+                <td>#( prc.sku.getShowPricing() ? LSCurrencyFormat( prc.sku.getBasePrice() ) : 'Disabled' )#</td>
             </tr>
         </tbody>
     </table>
