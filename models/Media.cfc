@@ -36,7 +36,7 @@ component   table="cbc_media"
 		string pathExtension = "products",
 		string mimeAccept = "*"
 	){
-		//the filesPath used for this model - may be overriden by model properties - defaults to the WEATCore setting + model name + identifier
+
 		var filesPath = mediaSettings.storageLocation & "/" & pathExtension;
 
 		//the expanded target directory

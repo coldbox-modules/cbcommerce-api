@@ -51,7 +51,7 @@ component extends="BaseModelTransformer" accessors="true"{
         transformer.setActiveChildrenOnly( variables.activeChildrenOnly );
         
         return collection(
-            q.orderBy( "displayOrder", "ASC" ).getResults(),
+            q.orderBy( "displayOrder", "ASC" ).orderBy( 'name', 'ASC' ).getResults(),
             transformer,
             wirebox.getInstance( collectionSerializer )
         );
