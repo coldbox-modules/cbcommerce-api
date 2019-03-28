@@ -56,6 +56,7 @@ const actions = {
 				});
 		}
 	}),
+	getSKUWithProduct: ( context, skuId ) => api().get.skus.getWithProduct( skuId ),
 	saveSKU: (context, product) => new Promise((resolve, reject) => {
 		let payload = Object.assign( {}, product );
 		let sanitize = ["originalData","skus","media"];

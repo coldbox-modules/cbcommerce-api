@@ -6,7 +6,7 @@
                     <form @submit.prevent="handleSubmit">
 
                         <div class="modal-header header-for-light">
-                            <h1><span>Request a Quote</span></h1>
+                            <h1>Request a Quote for <span v-if="sku" v-html="sku.product.name"></span></h1>
                         </div>
 
                         <div class="modal-body">
@@ -57,6 +57,44 @@
                                             <input type="text" v-model="formData.hpInfo"/>
                                         </div>
                                     </div>
+                                    <article class="product list" v-if="sku">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-4 col-md-4 text-center">
+                                                <figure class="figure-hover-overlay text-center">                                                                        
+                                                    <a :href="`/store/product/${sku.product.id}`" class="figure-href"></a>
+
+                                                    <div class="product-item-image" v-if="skuImageSrc.length" :style="`background-image:url(${skuImageSrc})`"></div>
+                                                    <div class="product-item-image-placeholder" v-else></div>
+
+                                                </figure>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-8 col-md-8">
+                                                <div class="product-caption">
+                                                
+                                                    <div class="block-name">
+                                                        <a :href="`/store/product/${sku.product.id}`" class="product-name">{{ removeHTML( sku.product.name, 100 ) }}</a>
+
+                                                        <div v-if="sku && sku.basePrice">
+                                                            <div v-if="sku.basePrice < sku.MSRP" class="priceWithDiscount">
+                                                                <span>&dollar;{{ sku.MSRP }}</span> &dollar;{{ sku.basePrice }}
+                                                            </div>
+                                                            <div v-else>
+                                                                <p class="product-price">&dollar;{{ sku.basePrice }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <p class="product-price">&nbsp;</p>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <p class="description" v-html="sku.product.shortDescription"></p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="inputText" class="control-label">Message/Additional Items Requested:</label>
@@ -65,7 +103,8 @@
                                                     class="form-control"
                                                     id="inputText"
                                                     :rows="10"
-                                                    v-model="formData.message"></textarea>
+                                                    v-model="formData.message"
+                                                ></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +155,7 @@
 </template>
 <script>
 import moment from "moment";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 export default{
     props : {
         skuId : {
@@ -137,6 +176,7 @@ export default{
             contactErrors   : [],
             isSending: false,
             isSent   : false,
+            sku : null
         };
     },
 
@@ -144,18 +184,41 @@ export default{
         ...mapGetters( [ 'authUser','apiInstance' ] ),
         ...mapState( {
             cart : state => state.cart.cart
-        } )
+        } ),
+        skuImageSrc(){
+            if( ! this.sku ) return '';
+            if( this.sku.media.length ){
+                return this.sku.media[ 0 ].src;
+            } else {
+                return this.sku.product.media[ 0 ].src;
+            }
+        }
     },
 
 	mounted(){
+        var self = this;
 		// Hide our SPAM honeypot
-		$( '.fm-hp', $( this.$el ) ).css( 'display', 'none' );
+        $( '.fm-hp', $( this.$el ) ).css( 'display', 'none' );
+        this.getSKUWithProduct( this.skuId )
+                .then( ( { data } ) => Vue.set( self, "sku", data ) )
+                .catch( ( err ) => console.error( err) );
     },
 
     methods : {
+        ...mapActions( [ "getSKUWithProduct" ] ),
         closeModal(){
             this.$emit( "quote-modal-close" );
         },
+
+        removeHTML( html, truncateTo ){
+            let textConversion = $( '<p>' + html + '</p>' ).text();
+            if( truncateTo ){
+                return this.$options.filters.truncate( textConversion, truncateTo );
+            } else {
+                return textConversion;
+            }
+        },
+
         handleSubmit: function(){
 			const currDateTime     = moment( new Date() );
 			this.formData.fullDateTime = currDateTime;
