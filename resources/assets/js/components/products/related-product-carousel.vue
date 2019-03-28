@@ -16,7 +16,10 @@
                 v-for="(product, index) in this.productsListArray"
                 :key="index"
                 :product="product"
+                 v-on:quote-sku="showSkuQuoteForm"
             ></product-item>
+
+            <sku-quote-modal v-if="quotedSKUId && showQuoteModal" v-on:quote-modal-close="toggleModal" :skuId="quotedSKUId"></sku-quote-modal>
 
         </div>
 
@@ -29,7 +32,9 @@ import { mapGetters, mapActions } from "vuex";
 import Owl from "owl.carousel";
 import ProductItem from './product-item';
 import ProductItemLoading from './product-item-loading';
+import SkuQuoteMixin from '@cbCommerce/mixins/sku-quote-mixin';
 export default {
+    mixins : [ SkuQuoteMixin ],
     components: {
         ProductItemLoading,
         ProductItem
