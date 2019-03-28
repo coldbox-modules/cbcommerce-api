@@ -8,6 +8,7 @@ import { VueSlideoutPanel } from 'vue2-slideout-panel';
 import Grid from 'vue-js-grid';
 import VueCurrencyFilter from 'vue-currency-filter';
 import VueCharts from 'vue-chartjs';
+import VueNestable from "vue-nestable";
 
 // Module components
 import PageHeader from '@cbCommerce/admin/components/ui/page-header';
@@ -45,6 +46,7 @@ Vue.use( PrettyCheckbox );
 Vue.use( BootstrapVue );
 Vue.use( Grid );
 Vue.use( VueCharts );
+Vue.use( VueNestable );
 
 Vue.component( 'slideout-panel', VueSlideoutPanel );
 Vue.component( 'page-header', PageHeader );

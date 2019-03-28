@@ -19,6 +19,7 @@ Vue.use( VueI18n );
 Vue.use( VueTruncate );
 Vue.use( VTooltip );
 
+
 Vue.use( 
     VueScrollTo,
     {
