@@ -67,6 +67,7 @@
 
 	        quantityChangeReaction: function( {quantity, sku} ){
 				if(! quantity ) quantity=1;
+				console.log( quantity );
 				Vue.set( this.item, "quantity", quantity );
 				this.updateCartItem( { sku : sku.id, quantity: quantity } );
 	        }

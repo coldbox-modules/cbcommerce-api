@@ -108,28 +108,22 @@ component extends="BaseQuickEntityService" singleton{
      * @itemId the ProductSKU to remove
      * @quantity the quanitity of items to remove ( default all )
      */
-    Cart function removeItem( required string itemId, quantity=1 ){
+    Cart function removeItem( required string itemId ){
         var cart = ensureCart();
 
         var contents = cart.getContents();
         var items = contents.items;
 
         // prevents scope walking within the `each` method
-        var skuId = arguments.itemId;
         var removeQuantity = arguments.quantity;
 
         var deleteIndex = 0;
 
         for( var i = 1; i <= arrayLen( items ); i++ ){
             var item = items[ i ];
-            if( item.sku.id != skuId ) continue;
-            item.quantity -= removeQuantity;
-            item.updated = dateUtil.toISO8601( now() );
-
-            if( item.quantity <= 0 ){
-                deleteIndex = i;
-                break;
-            }
+            if( item.sku.id != itemId ) continue;
+            deleteIndex = i;
+            break;
         }
 
         if( deleteIndex > 0 ){

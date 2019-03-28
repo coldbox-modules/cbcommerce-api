@@ -28,6 +28,7 @@ export const finalAPI = (apiInstance = defaultAPI) => ({
 		wishlists( apiInstance ).post,
 		authentication( apiInstance ).post,
 		checkout( apiInstance ).post,
+		cart( apiInstance ).post,
 		util( apiInstance ).post
 	),
 	put: Object.assign(

@@ -29,6 +29,7 @@ component extends="BaseAPIHandler"{
 
 	// (PUT|PATCH) /store/api/v1/cart/:itemId
 	function updateItem( event, rc, prc ){
+		rc.append = false;
 		entityService.updateItem( argumentCollection=rc ).save();
 
 		prc.response.setData( 
@@ -39,8 +40,7 @@ component extends="BaseAPIHandler"{
 
 	// (DELETE) /store/api/v1/cart/:itemId
 	function deleteItem( event, rc, prc ){
-		
-		entityService.removeItem( argumentCollection=rc ).save();
+		entityService.removeItem( itemId = rc.itemId ).save();
 
 		prc.response.setData( 
 			entityService.getActiveCart().getContents()
