@@ -73,6 +73,7 @@
   "scripts": {
     "dev": "webpack --hide-modules",
     "watch": "npm run dev -- --watch",
-    "prod": "npm run dev -- -p"
+    "prod": "npm run dev -- -p",
+    "postinstall": "touch ./node_modules/.nosync"
   }
 }
