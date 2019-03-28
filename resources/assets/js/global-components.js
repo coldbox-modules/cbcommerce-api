@@ -9,6 +9,7 @@ import Vuex from "vuex";
 import VueCurrencyFilter from "vue-currency-filter";
 import VeeValidate from "vee-validate";
 import VueI18n from "vue-i18n";
+import VueScrollTo from "vue-scrollto";
 
 /**
  * Vue applications
@@ -17,6 +18,24 @@ Vue.use( VeeValidate );
 Vue.use( VueI18n );
 Vue.use( VueTruncate );
 Vue.use( VTooltip );
+
+Vue.use( 
+    VueScrollTo,
+    {
+        container: "body",
+        duration: 500,
+        easing: "ease",
+        offset: -300,
+        force: true,
+        cancelable: true,
+        onStart: false,
+        onDone: false,
+        onCancel: false,
+        x: false,
+        y: true
+    } 
+);
+
 Vue.use(
     VueCurrencyFilter,
     {

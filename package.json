@@ -53,6 +53,7 @@
     "vue-picture-input": "^2.1.6",
     "vue-rate-it": "^2.1.0",
     "vue-router": "^3.0.1",
+    "vue-scrollto": "^2.15.0",
     "vue-search-select": "^2.6.1",
     "vue-select": "^2.5.1",
     "vue-slick": "^1.1.12",

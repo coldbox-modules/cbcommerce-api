@@ -95,7 +95,7 @@ component extends="BaseAPIHandler"{
 
         prc.sku = getInstance( "ProductSKU@CBCommerce" ).getOrFail( rc.skuId );
 
-        var subject = !structKeyExists( prc, "authenticatedUser" ) 
+        var subject = structKeyExists( prc, "authenticatedUser" ) 
                         ? "Custom Quote Request from " & prc.authenticatedUser.getFullName()
                         : "Custom Quote Request";
         

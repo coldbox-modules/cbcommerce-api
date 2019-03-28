@@ -78,7 +78,7 @@
 	                                        	v-model="selectedShippingAddress.firstName">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingFirstName')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingFirstName' ) }}
@@ -100,7 +100,7 @@
 	                                        	v-model="selectedShippingAddress.lastName">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingLastName')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingLastName' ) }}
@@ -124,7 +124,7 @@
 	                                        	v-model="selectedShippingAddress.address1">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingAddress1')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingAddress1' ) }}
@@ -156,7 +156,7 @@
 	                                        	v-model="selectedShippingAddress.city">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingCity')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingCity' ) }}</span>
@@ -178,7 +178,7 @@
 	                                        	v-model="selectedShippingAddress.province">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingState')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingState' ) }}
@@ -199,7 +199,7 @@
 	                                        	v-model="selectedShippingAddress.postalCode">
 
 	                                        <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-shipping.shippingPostCode')">
 
 	                                        	{{ errors.first( 'form-shipping.shippingPostCode' ) }}
@@ -242,7 +242,7 @@
 		                                    	v-model="selectedPayment.nameOnCard">
 
 		                                    <span
-	                                        	class="text-danger"
+	                                        	class="text-danger error-message"
 	                                        	v-show="errors.has('form-payment.nameOnCard')">
 
 	                                        	{{ errors.first( 'form-payment.nameOnCard' ) }}
@@ -275,7 +275,7 @@
 		               			<div class="col-sm-12">
 		               				<transition name="fade">
 			               				<div class="error" role="alert" v-if="hasCardErrors">
-								            <span class="message text-danger">{{ cardErrorMessage }}</span>
+								            <span class="message text-danger error-message">{{ cardErrorMessage }}</span>
 								        </div>
 								     </transition>
 		               			</div>
@@ -299,7 +299,7 @@
 		                                    	v-model="phone">
 
 		                                	<span
-		                                    	class="text-danger"
+		                                    	class="text-danger error-message"
 		                                    	v-show="errors.has('form-payment.contactPhone')">
 
 		                                    	{{ errors.first( 'form-payment.contactPhone' ) }}
@@ -323,7 +323,7 @@
 		                                    	v-model="email">
 
 		                                	<span
-		                                    	class="text-danger"
+		                                    	class="text-danger error-message"
 		                                    	v-show="errors.has('form-payment.contactEmail')">
 
 		                                    	{{ errors.first( 'form-payment.contactEmail' ) }}
@@ -368,7 +368,7 @@
 			                                        	>
 
 			                                        <span
-			                                        	class="text-danger"
+			                                        	class="text-danger error-message"
 			                                        	v-show="errors.has('form-payment.billingFirstName')">
 
 			                                        	{{ errors.first( 'form-payment.billingFirstName' ) }}
@@ -391,7 +391,7 @@
 			                                        	v-model="selectedBillingAddress.billingLastName">
 
 			                                        	<span
-				                                        	class="text-danger"
+				                                        	class="text-danger error-message"
 				                                        	v-show="errors.has('form-payment.billingLastName')">
 
 				                                        	{{ errors.first( 'form-payment.billingLastName' ) }}
@@ -416,7 +416,7 @@
 			                                        	v-model="selectedBillingAddress.billingAddress1">
 
 			                                        <span
-			                                        	class="text-danger"
+			                                        	class="text-danger error-message"
 			                                        	v-show="errors.has('form-payment.billingAddress1')">
 
 			                                        	{{ errors.first( 'form-payment.billingAddress1' ) }}
@@ -448,7 +448,7 @@
 			                                        	v-model="selectedBillingAddress.billingCity">
 
 			                                        <span
-			                                        	class="text-danger"
+			                                        	class="text-danger error-message"
 			                                        	v-show="errors.has('form-payment.billingCity')">
 
 			                                        	{{ errors.first( 'form-payment.billingCity' ) }}
@@ -472,7 +472,7 @@
 			                                        	v-model="selectedBillingAddress.billingState">
 
 			                                        <span
-			                                        	class="text-danger"
+			                                        	class="text-danger error-message"
 			                                        	v-show="errors.has('form-payment.billingState')">
 
 			                                        	{{ errors.first( 'form-payment.billingState' ) }}
@@ -496,7 +496,7 @@
 			                                        	v-model="selectedBillingAddress.billingPostCode">
 
 			                                        <span
-			                                        	class="text-danger"
+			                                        	class="text-danger error-message"
 			                                        	v-show="errors.has('form-payment.billingPostCode')">
 
 			                                        	{{ errors.first( 'form-payment.billingPostCode' ) }}
@@ -546,38 +546,39 @@
 
 	    	<div class="col-sm-3">
 		     	<div class="cart-buy-box">
-		     		<button
-		     			class="btn btn-animate btn-fluid"
-		     			@click="purchase"
-		     			:disabled="!isValidated.payment && !isValidated.shipping">
+					<div v-if="isValidated.payment && isValidated.shipping">
+						<button
+							class="btn btn-animate btn-fluid"
+							@click="purchase"
+						>
 
-		     			Place Order
-		     		</button><br/><br/>
-		     		<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
-
+							Place Order
+						</button><br/><br/>
+						<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
+					</div>
 			     	<div class="cart-summary">
 			     		<h4>Order Summary</h4>
 			     		<table class="table">
 			     			<tbody>
 			     				<tr>
 			     					<th>Sub Total:</th>
-			     					<td class="text-right">{{ money( subtotal ) }}</td>
+			     					<td class="text-right">{{ subtotal | currency }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Estimated Shipping:</th>
-			     					<td class="text-right">{{ money( shippingCost ) }}</td>
+			     					<td class="text-right">{{ shippingCost | currency }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Total Before Tax: </th>
-			     					<td class="text-right">{{ money( subtotal + shippingCost ) }}</td>
+			     					<td class="text-right">{{ subtotal + shippingCost | currency }}</td>
 			     				</tr>
 			     				<tr>
 			     					<th>Estimated Tax:</th>
-			     					<td class="text-right">{{ money(tax) }}</td>
+			     					<td class="text-right">{{ tax | currency }}</td>
 			     				</tr>
 			     				<tr class="text-danger">
 			     					<th>Order Total:</th>
-			     					<td class="text-right">{{ money( subtotal + shippingCost + tax ) }}</td>
+			     					<td class="text-right">{{ subtotal + shippingCost + tax | currency }}</td>
 			     				</tr>
 			     			</tbody>
 			     		</table>
@@ -762,7 +763,11 @@ export default {
 		          self.isValidated.shipping = true;
 		          self.activateTab( 'payment' );
 		        } else {
-		        	self.isValidated.shipping = false;
+					self.isValidated.shipping = false;
+					let $firstError = $( 'span.text-danger.error-message:visible' ).first();
+					if( $firstError.length ){
+						this.$scrollTo( $firstError[ 0 ], 500, { offset : -200 } );
+					}
 		        }
 		    });
         },
@@ -791,6 +796,10 @@ export default {
 	  				self.hasCardErrors = true;
 	  				self.cardErrorMessage = result.error.message;
 	  				self.isValidated.payment = false;
+					let $firstError = $( 'span.text-danger.error-message:visible' ).first();
+					if( $firstError.length ){
+						self.$scrollTo( $firstError[ 0 ] );
+					}
 	  			} else {
 	  				Vue.set( self, 'token', result.token );
 	  				self.$validator.validate( 'form-payment.*' ).then(( result ) => {
@@ -798,7 +807,11 @@ export default {
 				          self.isValidated.payment = true;
 				          self.activateTab( 'review' );
 				        } else {
-				        	self.isValidated.payment = false;
+							self.isValidated.payment = false;
+							let $firstError = $( 'span.text-danger.error-message:visible' ).first();
+							if( $firstError.length ){
+								self.$scrollTo( $firstError[ 0 ] );
+							}
 				        }
 				    });
 	  			}
