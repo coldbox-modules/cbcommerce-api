@@ -18,11 +18,29 @@
                     <ul class="list-inline">
                         <li>
                             <a 
+                                v-if="item.sku.showPricing"
                                 href="javascript:;"
                                 @click="moveToCart"
                                 v-tooltip="'Add this item to your cart'"
-                                class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                class="btn btn-primary"
+                                style="width:145px;color:#fff"
+                            >
+                                <i class="fa fa-shopping-cart"></i> Add to cart
+                            </a>
+
+                            <a 
+                                v-else
+                                href="javascript:;"
+                                @click="$emit( 'quote-open' )"
+                                v-tooltip="'Request a quote for this item'"
+                                class="btn btn-secondary"
+                                style="width:145px;color:#fff"
+                            >
+                                    <i class="fa fa-envelope"></i> Request quote
+                                </a>
+
                         </li>
+                        
                         <li>
                             <a href="javascript:;" @click="onDeleteItem">{{$t('Remove')}}</a>
                         </li>

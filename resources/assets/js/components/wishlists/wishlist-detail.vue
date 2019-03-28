@@ -16,6 +16,7 @@
                 :item="item"
                 v-on:delete-item="onDeleteItem"
                 v-on:save-item="onSaveItem"
+                v-on:quote-open="toggleModal"
             ></wishlist-item>
             
             <div 

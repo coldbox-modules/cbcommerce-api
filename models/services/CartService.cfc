@@ -114,9 +114,6 @@ component extends="BaseQuickEntityService" singleton{
         var contents = cart.getContents();
         var items = contents.items;
 
-        // prevents scope walking within the `each` method
-        var removeQuantity = arguments.quantity;
-
         var deleteIndex = 0;
 
         for( var i = 1; i <= arrayLen( items ); i++ ){
