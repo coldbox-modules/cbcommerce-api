@@ -17,7 +17,7 @@ export const config = {
       api: {
         base        : '/store/api/v1/',
         token       : "",
-        timeout     : 20000,
+        timeout     : 60000,
         errorHandler: errorHandler(),
       }
     },
@@ -25,7 +25,7 @@ export const config = {
       debug: false,
       api: {
         base        : '/store/api/v1/',
-        timeout     : 20000,
+        timeout     : 60000,
         errorHandler: errorHandler(),
       }
     },
@@ -33,7 +33,7 @@ export const config = {
       debug: false,
       api: {
         base        : '/store/api/v1/',
-        timeout     : 20000,
+        timeout     : 60000,
         errorHandler: errorHandler(),
       }
     }
