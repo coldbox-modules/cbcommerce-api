@@ -30,8 +30,8 @@
 						<div class="col">
 							<strong>{{item.name}}</strong>
 						</div>
-						<div class="col col-7" v-html="item.description"></div>
-						<div class="col col-1">
+						<div class="col col-6" v-html="item.description"></div>
+						<div class="col col-2">
 							<a 
 								href="javascript:;"
 								@click="toggleExpand"
@@ -40,6 +40,19 @@
 							>
 								<i class="fa fa-caret-down fa-2x"></i>
 							</a>
+							
+
+							<a 
+								:href="`/store/category/${item.id}`"
+								target="blank"
+								class="btn btn-link btn-sm float-right"
+								v-if="item.children && item.children.length"
+								v-b-tooltip.hover
+								title="View Category in Site"
+							>
+								<i class="fa fa-globe"></i>
+							</a>
+							
 							<router-link 
 							:to="{ name: 'categoryForm', params: { id: item.id } }" 
 							class="btn btn-default btn-sm float-right">
