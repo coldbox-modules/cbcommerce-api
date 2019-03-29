@@ -89,7 +89,7 @@ component   table="cbc_products"
 				if( isValid( 'guid', condition ) ){
 					subQuery.where( 'cbc_productConditions.id', condition );
 				} else {
-					subQuery.where( 'cbc_productConditions.name', '=', condition );
+					subQuery.whereIn( 'cbc_productConditions.name', listToArray( condition ) );
 				}
 					
 				return subQuery;
@@ -185,6 +185,12 @@ component   table="cbc_products"
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
                 .orWhere( 'description', 'like', searchTerm );
+		}
+		
+		if( structKeyExists( searchCollection, "externalIdSearch" ) && len( searchCollection.externalIdSearch ) ){
+			var searchTerm = '%' & searchCollection.externalIdSearch & '%';
+            arguments.builder
+                .where( 'externalId', 'like', searchTerm );
 		}
 		
 		if( structKeyExists( searchCollection, "sortBy") ){

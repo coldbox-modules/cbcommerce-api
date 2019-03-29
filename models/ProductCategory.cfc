@@ -56,7 +56,7 @@ component   table="cbc_productCategories"
 						.whereColumn( 'cbc_lookups_products_categories.FK_category', '=', 'cbc_productCategories.id' )
 						.where( 'cbc_products.isActive', 1 )
 						.where( 'cbc_SKUs.isActive', 1 )
-						.where( 'cbc_productConditions.name', condition );
+						.whereIn( 'cbc_productConditions.name', listToArray( condition ) );
             }
         );
 	}
