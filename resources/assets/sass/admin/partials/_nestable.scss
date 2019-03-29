@@ -26,6 +26,10 @@
   }
   .nestable-item {
     position: relative;
+    .nestable-item-content{
+      background-color: #efefef;
+      padding: 15px;
+    }
   }
   .nestable-item.is-dragging .nestable-list {
     pointer-events: none;
@@ -59,11 +63,31 @@
     left: 0;
     padding: 0;
     background-color: rgba(106, 127, 233, 0.274);
+    .nestable-list{
+      display:none!important;
+    }
   }
   .nestable [draggable="true"] {
     cursor: move;
   }
   .nestable-handle {
     display: inline;
+  }
+
+  /**
+  * Expandable
+  **/
+  .nested-expandable{
+    .nestable-list {
+      .nestable-item {
+        .nestable-list {
+          .nestable-item {
+             .nestable-list{
+               display:none;
+             }
+          }
+        }
+      }
+    }
   }
   

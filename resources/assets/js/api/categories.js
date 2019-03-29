@@ -8,7 +8,6 @@ export const updateCategory = api => (data) => {
   delete data.originalData;
   delete data.children;
   delete data.media;
-  delete data.FK_parent;
   return api.put('/product-categories/' + data.id, JSON.stringify(data));
 };
 export const deleteCategory = api => (id) => api.delete('/product-categories/' + id);

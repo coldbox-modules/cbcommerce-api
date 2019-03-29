@@ -105,6 +105,10 @@ component extends="BaseAPIHandler"{
 		//remove this key before population
 		structDelete( rc, "id" );
 		
+		if( structKeyExists( rc, "FK_parent" ) && !len( rc.FK_parent ) && len( prc.category.getFK_parent() ) ){
+			prc.category.parent().dissociate();
+			structDelete( rc, "FK_parent" );
+		}
 
 		prc.category.fill( rc );
 

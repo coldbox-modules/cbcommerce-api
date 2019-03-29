@@ -142,7 +142,10 @@ export default {
 			"activeCategory",
 			"activeCategoryID",
 			"categoriesListArray"
-		])
+		]),
+		categoryId(){
+			return self.$route.params.id
+		}
 	},
 
 	created() {
@@ -162,12 +165,17 @@ export default {
 				this.updateCategoryImageField( { href: eventItem.item.href, field: "displayOrder", value : eventItem.sort } );
 			})
 		})
-		return Promise.all([
-			this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
-				Vue.set( self, "form", new Form( self.activeCategory ) );
-				Vue.set( self, "isLoading", false );
-			})
-		]);
+
+		if( self.categoryId ){
+			return Promise.all([
+				this.getCategory( self.$route.params.id, { includes : "parent,children" }  ).then(() => {
+					Vue.set( self, "form", new Form( self.activeCategory ) );
+					Vue.set( self, "isLoading", false );
+				})
+			]);
+		} else {
+			Vue.set( self, "isLoading", false );
+		}
 	},
 
 	beforeDestroy(){

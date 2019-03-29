@@ -70,6 +70,16 @@ component   table="cbc_products"
         );
 	}
 
+	function scopeWhereMissingMedia( query ){
+		return query.whereNotExists(
+            function( subQuery ){
+				subQuery.from( 'cbc_productMedia' )
+						.whereColumn( 'cbc_productMedia.FK_product', '=', 'cbc_products.id' );					
+				return subQuery;
+            }
+        );
+	}
+
 	function scopeWhereCondition( query, condition ){
 		return query.whereExists(
             function( subQuery ){
