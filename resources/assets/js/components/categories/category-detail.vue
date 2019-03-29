@@ -1,12 +1,11 @@
 <template>
     <div class="category-detail">
-
         <div class="col-md-12 productDetailHeader" v-if="activeCategory">
             <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">{{activeCategory.name}}</h1>
             <p v-html="activeCategory.description"></p>
         </div>
         <div class="col-xs-12 category-products" v-if="!isLoading">
-            <product-filter-page :initialParams="{category:categoryId}"></product-filter-page>
+            <product-filter-page :initialParams="initialParams"></product-filter-page>
         </div>
     </div>
 </template>
@@ -19,7 +18,8 @@ import ProductFilterPage from '@cbCommerce/components/products/product-filter-pa
 export default{
     data(){
         return {
-            isLoading : false
+            isLoading : false,
+            initialParams : {}
         };
     },
     components: {
@@ -50,6 +50,14 @@ export default{
     created(){
         var self = this;
         Vue.set( self, "isLoading", true );
+        Vue.set( 
+            self, 
+            "initialParams", 
+            {
+                category : this.categoryId,
+                condition: this.categoryId !== "used" ? "New" : undefined
+            } 
+        );
         this.getCategory( self.categoryId ).then( category => {
             self.updateCategoryViews( self.categoryId );
             Vue.set( self, "isLoading", false );

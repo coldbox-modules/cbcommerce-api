@@ -148,7 +148,7 @@ export default {
 
         fetchRelatedProducts(){
             const self = this;
-            Promise.resolve(this.getListOfProducts())
+            Promise.resolve( this.getListOfProducts() )
             .then(() => {
                 self.isLoading = false;
                 self.installOwlCarousel();

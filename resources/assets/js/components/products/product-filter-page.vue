@@ -61,10 +61,10 @@
                     </div>
                 </div> 
             </div>
-            <div v-if="searchParams.condition" class="widget-title">
+            <div v-if="searchParams.condition && categoriesListArray.length" class="widget-title">
                 <i class="fa fa-arrow-circle-down"></i> {{searchParams.condition}} Categories
             </div>
-            <div v-if="searchParams.condition" class="widget-block">
+            <div v-if="searchParams.condition && categoriesListArray.length" class="widget-block">
                 <generic-loader v-if="categoriesLoading" message="Loading categories..."></generic-loader>
                 <div v-else class="row">
                     <div class="col-xs-12">
@@ -182,7 +182,9 @@ export default {
             minPrice : 0,
             maxPrice : 1000,
             pageCount: 10,
-            searchParams : {},
+            searchParams : {
+                category : "New"
+            },
             filterCategories : []
         }
     },
@@ -194,7 +196,7 @@ export default {
         }
         this.fetchProducts();
 
-        if( self.searchParams.condition ){
+        if( self.searchParams.condition && self.searchParams.condition !== "New"  ){
             Vue.set( self, "categoriesLoading", true );
             this.getCategories( { "productCondition" : self.searchParams.condition } )
                     .then( 
