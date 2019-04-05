@@ -882,11 +882,15 @@ export default {
 
   				api().post.checkout.process( payload )
 					.then( XHR => {
+						self.$store.commit('setCheckoutStatus', 'success' );
 						window.location.replace( '/store/checkout/thankyou/' + XHR.data.id );
 					})
 					.catch( err => {
 						console.error( err );
 						reject( err );
+					})
+					.then( xhr => {
+						self.$store.commit('setCheckoutStatus', 'error' );
 					});
   			}
 		}
