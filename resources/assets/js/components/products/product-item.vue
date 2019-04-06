@@ -28,7 +28,7 @@
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
-                            <a :href="`/store/product/${product.id}`" class="product-name">{{ removeHTML( product.name, 100 ) }}</a>
+                            <a :href="`/store/product/${product.id}`" class="product-name">{{ product.name | removeHTML( 100 ) }}</a>
 
                             <div v-if="hasPricing">
                                 <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
@@ -59,7 +59,7 @@
                     </div>
 
                     <p class="description">
-                        {{ removeHTML( product.shortDescription, 75 ) }}
+                        {{ product.shortDescription | removeHTML( 75 ) }}
                     </p>
 
                 </article>
@@ -147,14 +147,6 @@ export default {
         },
         imageProgress: function( instance, image ){
             var result = image.src ? 'loaded' : 'broken';
-        },
-        removeHTML( html, truncateTo ){
-            let textConversion = $( '<p>' + html + '</p>' ).text();
-            if( truncateTo ){
-                return this.$options.filters.truncate( textConversion, truncateTo );
-            } else {
-                return textConversion;
-            }
         }
         
 

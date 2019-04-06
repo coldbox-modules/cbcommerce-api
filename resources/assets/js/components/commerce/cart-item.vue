@@ -12,7 +12,7 @@
                 </div>
                 <div class="cart-product-text">
 					<div class="cart-product-name">
-						<a :href="'store/product/'+ item.product.id">{{ item.product.name }}</a>
+						<a :href="'store/product/'+ item.product.id">{{ item.product.name | removeHTML }}</a>
 					</div>
 					<div class="cart-product-actions" v-if="showActions">
 						<ul class="list-inline">

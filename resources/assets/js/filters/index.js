@@ -50,6 +50,15 @@ const isImage = ( mediaItem ) => {
   return imageExtensions.indexOf( pathParts[ pathParts.length - 1 ] ) > -1;
 }
 
+const removeHTML = ( html, truncateTo ) => {
+    let textConversion = $( '<p>' + html + '</p>' ).text();
+    if( truncateTo ){
+        return Vue.options.filters.truncate( textConversion, truncateTo );
+    } else {
+        return textConversion;
+    }
+}
+
 export const createFilters = Vue => {
   Vue.filter("formatNumber", formatNumber);
   Vue.filter("formatPercentage", formatPercentage);
@@ -60,6 +69,7 @@ export const createFilters = Vue => {
   Vue.filter("dateToText", dateToText);
   Vue.filter("itemStatusToText", itemStatusToText);
   Vue.filter("isImage", isImage );
+  Vue.filter("removeHTML", removeHTML );
 };
 
 

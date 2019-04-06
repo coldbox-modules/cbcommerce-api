@@ -72,7 +72,7 @@
                                                 <div class="product-caption">
                                                 
                                                     <div class="block-name">
-                                                        <a :href="`/store/product/${sku.product.id}`" class="product-name">{{ removeHTML( sku.product.name, 100 ) }}</a>
+                                                        <a :href="`/store/product/${sku.product.id}`" class="product-name">{{ sku.product.name | removeHTML( 100 ) }}</a>
 
                                                         <div v-if="sku && sku.basePrice">
                                                             <div v-if="sku.basePrice < sku.MSRP" class="priceWithDiscount">
@@ -208,15 +208,6 @@ export default{
         ...mapActions( [ "getSKUWithProduct" ] ),
         closeModal(){
             this.$emit( "quote-modal-close" );
-        },
-
-        removeHTML( html, truncateTo ){
-            let textConversion = $( '<p>' + html + '</p>' ).text();
-            if( truncateTo ){
-                return this.$options.filters.truncate( textConversion, truncateTo );
-            } else {
-                return textConversion;
-            }
         },
 
         handleSubmit: function(){
