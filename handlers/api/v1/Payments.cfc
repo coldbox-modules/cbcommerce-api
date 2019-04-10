@@ -137,7 +137,9 @@ component extends="BaseAPIHandler" {
 			cartService.getActiveCart().setFK_user( prc.user.getId() ).save();
 
 			// create payment
-			var tempPayment = {};
+			var tempPayment = {
+				"isActive" : 1
+			};
 			tempPayment.externalTransactionId = stripeResponse.getContent().content.id;
 			tempPayment.amount = stripeResponse.getContent().content.amount / 100;
 			tempPayment.lastFour = stripeResponse.getContent().content.source.last4;
