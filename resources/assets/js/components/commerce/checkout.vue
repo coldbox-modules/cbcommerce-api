@@ -226,6 +226,7 @@
 						<p v-if="!globalData.stripeKey" class="alert alert-danger">
 							<strong>Warning</strong> : The Stripe integration for this site is not configured correctly.  Checkout will be unavailable until the correct configuration is provided.
 						</p>
+						
 	                    <form role="form" method="post" action="#" data-vv-scope="form-payment">
 		                    <div class="row">
 		                    	<div class="col-md-6 ">
@@ -761,7 +762,8 @@ export default {
         	this.$validator.validate( 'form-shipping.*' ).then(( result ) => {
 		        if ( result ) {
 		          self.isValidated.shipping = true;
-		          self.activateTab( 'payment' );
+				  self.activateTab( 'payment' );
+				  this.$scrollTo( $( '#payment' )[ 0 ] );
 		        } else {
 					self.isValidated.shipping = false;
 					let $firstError = $( 'span.text-danger.error-message:visible' ).first();
@@ -805,7 +807,8 @@ export default {
 	  				self.$validator.validate( 'form-payment.*' ).then(( result ) => {
 				    	if ( result && self.token != null ) {
 				          self.isValidated.payment = true;
-				          self.activateTab( 'review' );
+						  self.activateTab( 'review' );
+						  this.$scrollTo( $( '#review' )[ 0 ] );
 				        } else {
 							self.isValidated.payment = false;
 							let $firstError = $( 'span.text-danger.error-message:visible' ).first();
