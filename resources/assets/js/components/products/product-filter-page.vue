@@ -183,7 +183,7 @@ export default {
             maxPrice : 1000,
             pageCount: 10,
             searchParams : {
-                category : "New"
+                condition : "New"
             },
             filterCategories : []
         }
