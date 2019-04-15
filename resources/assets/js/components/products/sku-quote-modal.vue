@@ -74,7 +74,7 @@
                                                     <div class="block-name">
                                                         <a :href="`/store/product/${sku.product.id}`" class="product-name">{{ sku.product.name | removeHTML( 100 ) }}</a>
 
-                                                        <div v-if="sku && sku.basePrice">
+                                                        <div v-if="sku && sku.basePrice && sku.showPricing">
                                                             <div v-if="sku.basePrice < sku.MSRP" class="priceWithDiscount">
                                                                 <span>&dollar;{{ sku.MSRP }}</span> &dollar;{{ sku.basePrice }}
                                                             </div>
