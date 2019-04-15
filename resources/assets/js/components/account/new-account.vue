@@ -196,6 +196,7 @@
 				self.$validator.validate().then( result => {
 					if (!result) {
 						console.log( result );
+						self.isLoading=false;
 					} else {
 						self.saveCustomer( self.formFields )
 						.then( XHR => {
