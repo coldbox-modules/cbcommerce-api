@@ -38,7 +38,7 @@
     </span>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default{
     props: {
         skuId : {
@@ -52,6 +52,7 @@ export default{
         }
     },
     computed:{
+        ...mapGetters(['authUser']),
         ...mapState({
             wishlists : state => state.wishlists.wishlists,
             inDefaultWishlist( state ){
@@ -77,18 +78,23 @@ export default{
             Vue.set( this, "isAdding", true );
             var self = this;
             
-            // give ourselves a few milliseconds to let the UI update
-            setTimeout( function(){
+            if( !self.authUser ){
+                window.location.assign( '/store/account/login' );
+            }
+            else {
+                // give ourselves a few milliseconds to let the UI update
+                setTimeout( function(){
 
-                let wishlist = $( e.target ).hasClass( 'form-control' ) ? self.wishlists.resultsMap[ $( e.target ).val() ] : self.wishlists.resultsMap[ self.wishlists.results[ 0 ] ];
-                
-                self.addItemToWishlist( { sku : self.skuId, wishlist : wishlist } )
-                        .then( () => {
-                            Vue.set( self, "isAdding", false );
-                            $actionTarget.addClass( 'in-wishlist' );
-                        } )
-                        .catch( err => console.error( err ) )
-            }, 300 )
+                    let wishlist = $( e.target ).hasClass( 'form-control' ) ? self.wishlists.resultsMap[ $( e.target ).val() ] : self.wishlists.resultsMap[ self.wishlists.results[ 0 ] ];
+                    
+                    self.addItemToWishlist( { sku : self.skuId, wishlist : wishlist } )
+                            .then( () => {
+                                Vue.set( self, "isAdding", false );
+                                $actionTarget.addClass( 'in-wishlist' );
+                            } )
+                            .catch( err => console.error( err ) )
+                }, 300 )
+            }
         }
     }
 }
