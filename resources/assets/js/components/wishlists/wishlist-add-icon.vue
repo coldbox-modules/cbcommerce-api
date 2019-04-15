@@ -91,6 +91,9 @@ export default{
                             .then( () => {
                                 Vue.set( self, "isAdding", false );
                                 $actionTarget.addClass( 'in-wishlist' );
+                                $actionTarget.closest( '.product' ).addClass( 'in-wishlist' );
+                                // click outside the popover to close it
+                                $actionTarget.parent().click();
                             } )
                             .catch( err => console.error( err ) )
                 }, 300 )
