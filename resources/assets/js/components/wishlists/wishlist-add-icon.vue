@@ -68,6 +68,7 @@ export default{
     methods : {
         ...mapActions(["addItemToWishlist"]),
         onAddItem( e ){
+            var self = this;
             if(  $( e.target ).hasClass( 'form-control' ) ){
                 // close popover
                 $( 'a.text-muted', self.$el ).click();
@@ -76,7 +77,6 @@ export default{
                 var $actionTarget = $( e.currentTarget );
             }
             Vue.set( this, "isAdding", true );
-            var self = this;
             
             if( !self.authUser ){
                 window.location.assign( '/store/account/login' );
