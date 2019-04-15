@@ -56,8 +56,12 @@ export default{
             {
                 category : this.categoryId,
                 condition: this.categoryId !== "used" ? "New" : undefined
-            } 
+            }
         );
+        let queryParams = new URLSearchParams( window.location.search );
+        queryParams.forEach( ( value, key ) => {
+            self.initialParams[ key ] = value;
+        }  );
         this.getCategory( self.categoryId ).then( category => {
             self.updateCategoryViews( self.categoryId );
             Vue.set( self, "isLoading", false );
