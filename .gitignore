@@ -24,3 +24,5 @@ includes/js
 includes/*.json
 # log files
 logs/**
+/nbproject/private/
+nbproject/

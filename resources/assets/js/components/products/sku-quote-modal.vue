@@ -80,7 +80,7 @@
                                                             </div>
                                                             <div v-else>
                                                                 <p class="product-price">&dollar;{{ sku.basePrice }}</p>
-                                                            </div>
+                                                        </div>
                                                         </div>
                                                         <div v-else>
                                                             <p class="product-price">&nbsp;</p>
