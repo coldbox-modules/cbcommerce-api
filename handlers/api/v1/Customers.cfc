@@ -56,21 +56,21 @@ component extends="BaseAPIHandler"{
 	/**
 	* (POST) /store/api/v1/customers
 	*/
-
 	function create( event, rc, prc ){
- 		if( auth.check() && auth.user().getEmail() == rc.email ){
+		if( auth.check() && auth.user().getEmail() == rc.email ){
 			prc.response.addMessage( "You already have an account under the email #rc.email#" );
 			return onExpectationFailed( argumentCollection=arguments );
-		} 
+		}
 		
 		prc.user = entityService.newEntity().fill( rc );
+
 		validateModelOrFail( prc.user );
 
 		prc.user.save();
 
- 		if( event.getValue( "autologin", true ) ){
+		if( event.getValue( "autologin", true ) ){
 			auth.login( prc.user );
-		} 
+		}
 
 		prc.response.setStatusCode( STATUS.CREATED );
 		prc.response.setData(

@@ -37,8 +37,7 @@
                     class="btn btn-lg btn-secondary btn-fluid"><i class="fa fa-envelope"></i> {{ $t('request_wishlist_quote') }}</a>
             </div>
 
-            <!--<div v-if="wishlist.items.length && pricingAvailable" class="product-cart">-->
-            <div v-if="wishlist.items.length" class="product-cart">
+            <div v-if="wishlist.items.length && pricingAvailable" class="product-cart">
                 <a 
                     @click="addAllToCart"
                      style="margin-bottom:30px"
