@@ -1,5 +1,6 @@
 component extends="BaseModelTransformer" accessors="true"{
     property name="activeChildrenOnly" default=true;
+    property name="newChildrenOnly" default="false";
     
     function init(){
         arrayAppend( 
@@ -45,10 +46,15 @@ component extends="BaseModelTransformer" accessors="true"{
         if( variables.activeChildrenOnly ){
             q.hasActiveProducts()
         }
+
+        if( variables.newChildrenOnly ){
+            q.hasProductInCondition( "New" )
+        }
         
         var transformer = wirebox.getInstance( "ProductCategoryTransformer@cbCommerce" );
         
         transformer.setActiveChildrenOnly( variables.activeChildrenOnly );
+        transformer.setNewChildrenOnly( variables.newChildrenOnly );
         
         return collection(
             q.orderBy( "displayOrder", "ASC" ).orderBy( 'name', 'ASC' ).getResults(),

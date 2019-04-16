@@ -13,20 +13,22 @@ component{
     property name="ORMService" inject="entityservice";
 
     void function preProcess( event, interceptData, buffer, rc, prc ) {
-        // templateCache.clear( "cbCommerce_categoriesMenuTree" );
-        prc.globalData["categoriesMap"] = templateCache.getOrSet( "cbCommerce_categoriesMenuTree", function(){
-            var topLevelCategories = categoryService.newEntity()
-                                                    .where( "isActive", 1 )
-                                                    .whereNull( 'FK_parent' )
-                                                    .orderBy( "displayOrder", "ASC" )
-                                                    .orderBy( "name", "ASC" )
-                                                    .get();
 
+        prc.globalData["categoriesMap"] = templateCache.getOrSet( "cbCommerce_categoriesMenuTree", function(){
+            var transformer = getInstance( "ProductCategoryTransformer@cbCommerce" );
+            transformer.setNewChildrenOnly( true );
+
+            var topLevelCategories = categoryService.newEntity()
+                                                        .where( "isActive", 1 )
+                                                        .whereNull( 'FK_parent' )
+                                                        .orderBy( "displayOrder", "ASC" )
+                                                        .orderBy( "name", "ASC" )
+                                                        .get();
             return fractal.builder()
-				.collection( topLevelCategories )
-				.withIncludes( "children.children.children" )
-                .withTransformer( "ProductCategoryTransformer@cbCommerce" )
-				.convert()
+            .collection( topLevelCategories )
+            .withIncludes( "children.children.children" )
+            .withTransformer( transformer )
+            .convert();
         } );
 
     }
@@ -46,7 +48,8 @@ component{
                     listClass="dropdown-menu cbcommerce-dropdown-nav"
                 } );
                 menuService.save( tlcMenu );
-                category.children.each( function( childCategory ){
+                
+                category.children().hasProductInCondition( 'New' ).get().each( function( childCategory ){
                     var menuItemService = menuService.getMenuItemService();
                     var provider = menuItemService.getProvider( "URL" );
                     var entity   = ORMService.get( entityName=provider.getEntityName(), id=0 );
@@ -61,7 +64,7 @@ component{
                             "target" : "_self"
                         }
                     );
-                    childCategory.children.each( function( subCategory ){
+                    childCategory.children().hasProductInCondition( 'New' ).get().each( function( subCategory ){
                         var entity   = ORMService.get( entityName=provider.getEntityName(), id=0 );
                         var subItem  = menuService.populate(
                             target=entity, 
@@ -78,7 +81,7 @@ component{
                         subItem.setMenu( tlcMenu );
                         subItem.setActive( true );
                         newItem.addChild( subItem );
-                        subCategory.children.each( function( subSubCategory ){
+                        subCategory.children().hasProductInCondition( 'New' ).get().each( function( subSubCategory ){
                             var entity   = ORMService.get( entityName=provider.getEntityName(), id=0 );
                             var subSubItem  = menuService.populate(
                                 target=entity, 
