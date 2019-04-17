@@ -114,8 +114,8 @@ component{
 			);
         }
         // Retreive applicable cbCommerce data
-        prc.categories = categoryService.newEntity().hasActiveProducts().orderBy( 'name', 'ASC' ).get();
-        prc.products = productService.newEntity().whereInStock().orderBy( 'name', 'ASC' ).get();
+        prc.categories = categoryService.newEntity().hasActiveProducts().orderBy( 'name', 'ASC' ).with( 'media' ).get();
+        prc.products = productService.newEntity().whereInStock().orderBy( 'name', 'ASC' ).with( 'media' ).get();
 		
 		// Render it out in specific format
 		switch( rc.format ){
