@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a :href="accountHref" class="secondary-menu-title">
+        <a :href="'#'" class="secondary-menu-title">
             <i class="fa fa-user"></i>
             <span class="hidden-xs">&nbsp; {{$t( "my_account" )}}</span>
             <span class="fa fa-caret-down"></span>
