@@ -115,7 +115,9 @@ component{
         }
         // Retreive applicable cbCommerce data
         prc.categories = categoryService.newEntity().hasActiveProducts().orderBy( 'name', 'ASC' ).with( 'media' ).get();
-        prc.products = productService.newEntity().whereInStock().orderBy( 'name', 'ASC' ).with( 'media' ).get();
+		// disabling the product loop for now
+		// prc.products = productService.newEntity().whereInStock().orderBy( 'name', 'ASC' ).with( 'media' ).get();
+		prc.products = [];
 		
 		// Render it out in specific format
 		switch( rc.format ){
