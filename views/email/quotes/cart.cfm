@@ -1,4 +1,5 @@
 <cfoutput>
+    #renderView( view="email/inc/open", module="cbCommerce" )#
     <p>A request for a custom quotation has been received at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
     <h5>Name</h5>
     <p>#prc.cart.getCustomer().getFullName()#</p>
@@ -41,4 +42,5 @@
     <blockquote>
         <pre>#encodeForHTML( rc.message )#</pre>
     </blockquote>
+    #renderView( view="email/inc/close", module="cbCommerce" )#
 </cfoutput>

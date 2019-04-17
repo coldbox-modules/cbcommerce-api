@@ -11,6 +11,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     property name="password";
     property name="primaryPhone";
     property name="secondaryPhone";
+    property name="resetToken";
 
     property name="_normalizedPermissions" persistent="false";
 

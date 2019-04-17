@@ -15,15 +15,15 @@
             <td>
                 <table class="row">
                     <tr>
-                        <th style="text-align:center" class="small-12 large-6 columns first" valign="top">
+                        <th style="text-align:center" class="small-12 large-8 first" valign="top" style="text-align:center">
                             <cfoutput>
-                            <a href="#event.buildLink( url=cb.linkHome() )#" class="logo-link" style="display:inline-block; margin-top: 20px;">
-                                <img src="#event.buildLink( url=cb.themeSetting( 'headerLogo' ) )#" style="max-height:100px;max-width:100px;" alt="logo" />
+                            <a href="#cb.linkHome()#" class="logo-link" style="display:inline-block; margin-top: 20px;">
+                                <img src="#cb.linkHome()##cb.themeSetting( 'headerLogo' )#" style="max-height:200px;max-width:200px;" alt="logo" />
                             </a>
                             </cfoutput>
                         </th>
                     </tr>
                     <tr>
-                        <td class="small-12 large-6 columns" valign="top">
+                        <td class="small-12 large-8 columns" valign="top">
                             <div class="mail-content">
 <!-- end opening -->

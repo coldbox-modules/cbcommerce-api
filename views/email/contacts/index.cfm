@@ -1,4 +1,5 @@
 <cfoutput>
+    #renderView( view="email/inc/open", module="cbCommerce" )#
     <p>A contact form has been submitted at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
     <h5>Name</h5>
     <p>#rc.name#</p>
@@ -16,4 +17,5 @@
     <blockquote>
         #encodeForHTML( rc.message )#
     </blockquote>
+    #renderView( view="email/inc/close", module="cbCommerce" )#
 </cfoutput>

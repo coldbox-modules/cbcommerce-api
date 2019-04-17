@@ -24,10 +24,8 @@
 					<tbody>
 						<tr v-for="( item, itemIdx ) in order.items" :key="'item-' + item.id">
 							<td>
-								{{ item.productSnapshot.product.name }}<br/>
+								{{ item.productSnapshot.product.name | removeHTML }}<br/>
 								Model: {{ item.productSnapshot.sku.modelNumber}}
-								<!-- <br/>
-								{{ item.productSnapshot.product.shortDescription }} -->
 							</td>
 							<td>{{ item.quantityOrdered }}</td>
 							<td>{{ item.productSnapshot.sku.basePrice }}</td>
