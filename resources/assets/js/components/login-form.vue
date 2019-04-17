@@ -1,10 +1,10 @@
 <template>
 	<div class="login-box block-form">
         <div v-if="authenticating" class="overlay">
-            <generic-loader :message="$( 'authenticating_message' )"></generic-loader>
+            <generic-loader :message="$t( 'authenticating_message' )"></generic-loader>
         </div>
 		<div v-if="authenticated" class="overlay">
-            <generic-loader :message="t$( 'authenticated_message' )"></generic-loader>
+            <generic-loader :message="$t( 'authenticated_message' )"></generic-loader>
         </div>
 		<div class="login-box-body ">
 			<div class="form-group">
@@ -16,7 +16,7 @@
 				<div class="clearfix"></div>
 			</div>
 			<p v-if="showAuthFailure" class="alert alert-warning">
-				{{$( 'authentication_failure_messages' )}}
+				{{$t( 'authentication_failure_message' )}}
 			</p>
 			<p><a href="#">{{ $t( 'forgot_password_prompt' ) }}</a></p>
 			<div class="form-group">
@@ -40,7 +40,7 @@
 				password: "",
 				showAuthFailure: false,
 				authenticating : false,
-				authenticated : false,
+				authenticated : false
 	        }
 		},
 		computed : {
