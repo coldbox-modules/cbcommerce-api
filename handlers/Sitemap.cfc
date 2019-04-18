@@ -28,6 +28,7 @@ component{
 	* Sitemap Wrapper
 	*/
 	function index( event, rc, prc ){
+		
 		// Caching Enabled? Then test if data is in cache.
 		var cacheEnabled = ( 
 			!event.valueExists( "cbCache" )
@@ -112,12 +113,41 @@ component{
 				isPublished 	= true,
 				showInSearch 	= true
 			);
-        }
-        // Retreive applicable cbCommerce data
-        prc.categories = categoryService.newEntity().hasActiveProducts().orderBy( 'name', 'ASC' ).with( 'media' ).get();
-		// disabling the product loop for now
-		// prc.products = productService.newEntity().whereInStock().orderBy( 'name', 'ASC' ).with( 'media' ).get();
-		prc.products = [];
+		}
+		
+		// we are doing this in a query, for speed, because we only need three fields
+		var sql = "
+			SELECT id, modifiedTime, 
+			( SELECT FK_media FROM cbc_productMedia WHERE FK_product = products.id ORDER BY isPrimary DESC, displayOrder ASC, createdTime ASC LIMIT 1 ) as mediaId 
+			FROM cbc_products products
+			WHERE products.isActive = 1
+			AND products.id IN (
+				SELECT FK_product FROM cbc_SKUs WHERE isActive = 1
+			)
+			ORDER BY products.name ASC
+		";
+		var qProducts = new query( sql = sql );
+		prc.siteMapProducts = qProducts.execute().getResult();
+
+		var sql = "
+			SELECT id, modifiedTime, 
+			( SELECT FK_media FROM cbc_productCategoryMedia WHERE FK_category = categories.id ORDER BY isPrimary DESC, displayOrder ASC, createdTime ASC LIMIT 1 ) as mediaId 
+			FROM cbc_productCategories categories
+			WHERE categories.isActive = 1
+			AND categories.id IN (
+				SELECT FK_category from cbc_lookups_products_categories WHERE FK_product IN 
+				(
+					SELECT id FROM cbc_products products
+					WHERE products.isActive = 1
+					AND products.id IN (
+						SELECT FK_product FROM cbc_SKUs WHERE isActive = 1
+					)
+				)
+			)
+			ORDER BY categories.name ASC
+		";
+		var qCategories = new query( sql = sql );
+		prc.siteMapCategories = qCategories.execute().getResult();
 		
 		// Render it out in specific format
 		switch( rc.format ){

@@ -15,29 +15,27 @@
 			</cfif>
 		</url>
 	</cfloop>
-	<cfloop array="#prc.categories#" index="cat">
-		<cfset primaryImage = cat.getPrimaryImageURL()>
+	<cfloop query="#prc.siteMapCategories#">
 		<url>
-			<loc>#xmlFormat( prc.siteBaseURL & 'store/category/' & cat.keyValue() )#</loc>
-			<lastmod>#dateFormat( cat.getModifiedTime(), "yyyy-mm-dd" )#</lastmod>
-			<cfif len( primaryImage )>
+			<loc>#xmlFormat( prc.siteBaseURL & 'store/category/' & id )#</loc>
+			<lastmod>#dateFormat( modifiedTime, "yyyy-mm-dd" )#</lastmod>
+			<cfif len( mediaId )>
 				  <image:image>
-					   <image:loc>#xmlFormat( prc.siteBaseURL & reReplace( primaryImage, "^/", "" ) )#</image:loc>
+					   <image:loc>#xmlFormat( prc.siteBaseURL & "store/media/" & mediaId & ".jpg" )#</image:loc>
 				</image:image>
 			  </cfif>
 		</url>	
 	</cfloop>
-	<cfloop array="#prc.products#" index="prod">
-		<cfset primaryImage = prod.getPrimaryImageURL()>
+	<cfloop query="#prc.siteMapProducts#">
 		<url>
-			<loc>#xmlFormat( prc.siteBaseURL & 'store/product/' & prod.keyValue() )#</loc>
-			<lastmod>#dateFormat( prod.getModifiedTime(), "yyyy-mm-dd" )#</lastmod>
-			<cfif len( primaryImage )>
+			<loc>#xmlFormat( prc.siteBaseURL & 'store/product/' & id )#</loc>
+			<lastmod>#dateFormat( modifiedTime, "yyyy-mm-dd" )#</lastmod>
+			<cfif len( mediaId )>
 				  <image:image>
-					   <image:loc>#xmlFormat( prc.siteBaseURL & reReplace( primaryImage, "^/", "" ) )#</image:loc>
+					   <image:loc>#xmlFormat( prc.siteBaseURL & "store/media/" & mediaId & ".jpg" )#</image:loc>
 				</image:image>
 			  </cfif>
-		</url>
+		</url>	
 	</cfloop>
 	<cfif !prc.disableBlog>				
 		<url>
@@ -55,5 +53,5 @@
 	   		</url>
 		</cfloop>
 	</cfif>
-</urlset> 	
+</urlset>
 </cfoutput>

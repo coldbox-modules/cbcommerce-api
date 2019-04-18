@@ -30,7 +30,11 @@ component   table="cbc_productCategories"
 	}
 
 	function media(){
-		return hasMany( "ProductCategoryMedia@cbCommerce", "FK_category" );
+		return hasMany( "ProductCategoryMedia@cbCommerce", "FK_category" )
+					.with( 'mediaItem' )
+					.orderBy( 'isPrimary', 'DESC')
+					.orderBy( 'displayOrder', 'ASC')
+					.orderBy( 'createdTime', 'ASC' );
 	}
 
 	function scopeHasActiveProducts( query ){
@@ -75,6 +79,7 @@ component   table="cbc_productCategories"
 
 	function getPrimaryImageURL(){
 		var catMediaItem = media()
+							.with( 'mediaItem' )
 							.where( 'FK_category', keyValue() )
 							.where( 'isActive', 1 )
 							.where( 'isPrimary', 1 )

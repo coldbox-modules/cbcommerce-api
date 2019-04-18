@@ -19,4 +19,11 @@ component{
         event.setView( "account/create" );
     }
 
+    // /store/account/reset/:token
+    function reset( event, rc, prc ){
+        var user = getInstance( "User@cbCommerce" ).where( "resetToken", rc.token ).firstOrFail();
+        auth().login( user );
+        relocate( uri="/store/account/" );
+    }
+
 }

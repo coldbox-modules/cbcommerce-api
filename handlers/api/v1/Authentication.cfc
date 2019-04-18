@@ -5,6 +5,7 @@
 */
 component extends="BaseAPIHandler"{
     property name="auth" inject="authenticationService@cbauth";
+    property name="mailService" inject="MailService@cbmailservices";
 
 	this.APIBaseURL = '/store/api/v1/authentication'
     
@@ -42,7 +43,7 @@ component extends="BaseAPIHandler"{
             }
         );
 		
-	}
+    }
 
 
 	// (DELETE) /cbc/api/v1/authentication/:id
@@ -50,6 +51,30 @@ component extends="BaseAPIHandler"{
 		auth.logout();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
-	}
+    }
+    
+    // ( POST ) /cbc/api/v1/authentication/password-reset
+    function passwordReset( event, rc, prc ){
+        if( !event.valueExists( 'email' ) || !len( rc.email ) ){
+            return onExpectationFailed( argumentCollection=arguments );
+        }
+        prc.user = getInstance( "User@cbCommerce" ).where( 'email', rc.email ).firstOrFail();
+        prc.user.setResetToken( getInstance( "EncryptionService@cbCommerce" ).createGenericToken( rc.email ) ).save();
+
+        // Prepare our contentbox objects
+        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+        // reset our layout to none
+        event.noLayout();
+
+        var resetMail = mailService.newMail(
+            to=prc.user.getEmail(),
+            from=getSetting( "mailSettings" ).from,
+            subject="Your Password Reset Request"
+        );
+
+        resetMail.setBody( renderView( view="email/user/reset", module="cbCommerce" ) );
+        mailService.send( resetMail );
+        prc.response.setData( { "success" : true } ).setStatusCode( STATUS.CREATED );
+    }
 	
 }

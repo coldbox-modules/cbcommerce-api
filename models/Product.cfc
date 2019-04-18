@@ -36,6 +36,7 @@ component   table="cbc_products"
 
 	function media(){
 		return hasMany( "ProductMedia@cbCommerce", "FK_product" )
+				.with( 'mediaItem' )
 				.orderBy( 'isPrimary', 'DESC')
 				.orderBy( 'displayOrder', 'ASC')
 				.orderBy( 'createdTime', 'ASC' );
@@ -221,6 +222,7 @@ component   table="cbc_products"
 	
 	 function getPrimaryImageURL(){
 		var productMedia = media()
+							.with( 'mediaItem' )
 							.where( 'FK_product', keyValue() )
 							.where( 'isActive', 1 )
 							.limit( 1 )

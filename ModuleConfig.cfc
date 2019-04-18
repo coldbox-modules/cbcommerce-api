@@ -299,7 +299,6 @@ component {
         appRouter.prepend()
                     .route( "sitemap" )
                     .to( "cbCommerce:Sitemap.index" );
-
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
 

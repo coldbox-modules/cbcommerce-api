@@ -16,7 +16,7 @@ component{
 
         prc.mediaItem = getInstance( "Media@cbCommerce" ).find( rc.id );
 
-        if( isNull( prc.mediaItem ) ){
+        if( isNull( prc.mediaItem ) || !fileExists( expandPath( prc.mediaItem.getFileLocation() ) ) ){
             rc.format="json";
         	return runEvent( event="cbCommerce:api.v1.BaseAPIHandler.routeNotFound", eventArgs=arguments, prePostExempt=true );
         }
