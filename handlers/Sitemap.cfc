@@ -121,8 +121,8 @@ component{
 			( SELECT FK_media FROM cbc_productMedia WHERE FK_product = products.id ORDER BY isPrimary DESC, displayOrder ASC, createdTime ASC LIMIT 1 ) as mediaId 
 			FROM cbc_products products
 			WHERE products.isActive = 1
-			AND products.id IN (
-				SELECT FK_product FROM cbc_SKUs WHERE isActive = 1
+			AND EXISTS (
+				SELECT FK_product FROM cbc_SKUs  WHERE FK_product = products.id AND isActive = 1
 			)
 			ORDER BY products.name ASC
 		";
@@ -139,8 +139,8 @@ component{
 				(
 					SELECT id FROM cbc_products products
 					WHERE products.isActive = 1
-					AND products.id IN (
-						SELECT FK_product FROM cbc_SKUs WHERE isActive = 1
+					AND EXISTS (
+						SELECT FK_product FROM cbc_SKUs WHERE FK_product = products.id AND isActive = 1
 					)
 				)
 			)
