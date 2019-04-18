@@ -358,6 +358,7 @@ component {
 
         // Add our menu item
         var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
+        
         menuService.addSubMenu(
             topMenu=menuService.MODULES,
             name="cbCommerce",

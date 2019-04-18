@@ -15,6 +15,9 @@ export default{
     components: {
         ProductFilterPage
     },
+    title(){
+        return 'Used Products | ' + document.title;
+    },
     data(){
         return {
             searchParams : {

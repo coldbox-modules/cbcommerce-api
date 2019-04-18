@@ -309,6 +309,10 @@ export default {
         }
     },
 
+    title(){
+        return !this.currentProduct ? null : this.$options.filters.removeHTML( this.currentProduct.name ) + ' | ' + document.title;
+    },
+
     created: function(){
         this.isLoading = true;
     },

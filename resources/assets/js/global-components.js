@@ -10,6 +10,7 @@ import VueCurrencyFilter from "vue-currency-filter";
 import VeeValidate from "vee-validate";
 import VueI18n from "vue-i18n";
 import VueScrollTo from "vue-scrollto";
+import titleMixin from '@cbCommerce/mixins/title-mixin';
 
 /**
  * Vue applications
@@ -18,6 +19,7 @@ Vue.use( VeeValidate );
 Vue.use( VueI18n );
 Vue.use( VueTruncate );
 Vue.use( VTooltip );
+Vue.mixin(titleMixin);
 
 
 Vue.use( 

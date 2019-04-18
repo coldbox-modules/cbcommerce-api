@@ -47,6 +47,9 @@ export default{
             var result = image.isLoaded ? 'loaded' : 'broken';
         }
     },
+    title(){
+        return !this.activeCategory ? null : this.activeCategory.name + ' | ' + document.title;
+    },
     created(){
         var self = this;
         Vue.set( self, "isLoading", true );
