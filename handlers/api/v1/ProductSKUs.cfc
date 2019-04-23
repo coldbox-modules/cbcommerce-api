@@ -180,7 +180,9 @@ component extends="BaseAPIHandler"{
 		prc.sku.save();
 
 		if( structKeyExists( rc, "options" ) && isArray( rc.options ) ){
-			prc.sku.options().delete();
+			prc.sku.getOptions().each( function( option ){
+				option.delete();
+			} );
 			rc.options.each( function( option ){
 				prc.sku.options().create( { "name" : option.name, "value" : option.value } );
 			} );
