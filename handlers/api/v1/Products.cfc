@@ -8,7 +8,7 @@ component extends="BaseAPIHandler"{
 
 	this.APIBaseURL = '/store/api/v1/products'
 	// (GET) /store/api/v1/products
-	function index( event, rc, prc ){
+	function index( event, rc, prc ) cache="true" cacheTimeout="1440"{
 		
 		if( rc.sortOrder == 'createdTime DESC' ){
 			rc.sortOrder = 'displayOrder ASC, name ASC';
@@ -16,12 +16,16 @@ component extends="BaseAPIHandler"{
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
+		event.paramValue( "activeSkusOnly", true );
+		var transformer = getInstance( "ProductTransformer@cbCommerce" );
+		transformer.setActiveSkusOnly( rc.activeSKUsOnly );
+
 		prc.response.setData( 
 			fractal.builder()
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbCommerce" )
+				.withTransformer( transformer )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
@@ -61,6 +65,8 @@ component extends="BaseAPIHandler"{
 
 		prc.product.save();
 
+		getCache( "template" ).clearEvent( 'cbCommerce:Products' );
+
 		// sync categories after our product save
 		if( structKeyExists( rc, "categories" ) ){
 			prc.product.categories().sync( rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } ) );
@@ -94,18 +100,24 @@ component extends="BaseAPIHandler"{
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
+		
 	}
 
 	// (GET) /store/api/v1/products/:id
-	function show( event, rc, prc ){
+	function show( event, rc, prc ) cache="true" cacheTimeout="1440"{
 		
 		prc.product = entityService.newEntity().getOrFail( rc.id );
+
+		event.paramValue( "activeSkusOnly", true );
+		var transformer = getInstance( "ProductTransformer@cbCommerce" );
+		transformer.setActiveSkusOnly( rc.activeSKUsOnly );
+
 
 		prc.response.setData( 
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
-				.withTransformer( "ProductTransformer@cbCommerce" )
+				.withTransformer( transformer )
 				.withItemCallback( 
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
@@ -142,6 +154,8 @@ component extends="BaseAPIHandler"{
 		validateModelOrFail( prc.product );
 
 		prc.product.save();
+
+		getCache( "template" ).clearEvent( 'cbCommerce:Products' );
 
 		// sync categories after our product save
 		if( structKeyExists( rc, "categories" ) ){
@@ -185,6 +199,8 @@ component extends="BaseAPIHandler"{
 
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		prc.product.delete();
+
+		getCache( "template" ).clearEvent( 'cbCommerce:Products' );
 
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 

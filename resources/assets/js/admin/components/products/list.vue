@@ -125,7 +125,8 @@ export default {
             searchParams  : {
                 page : 1,
                 maxrows : 25,
-                condition: 'New'
+                condition: 'New',
+                activeSKUsOnly : false
             },
             conditionOptions : [ { text : "New", value : "New" }, {text : "Used", value : "Used" } ],
             productsFields: {

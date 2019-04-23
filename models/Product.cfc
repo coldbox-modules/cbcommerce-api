@@ -27,7 +27,7 @@ component   table="cbc_products"
 
 	// Relationships
 	function skus(){
-		return hasMany( "ProductSKU@cbCommerce", "FK_product" );
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' );
 	}
 
 	function categories(){
@@ -44,6 +44,13 @@ component   table="cbc_products"
 
 	function reviews(){
 		return hasMany( "ProductReview@cbCommerce", "FK_product");
+	}
+
+	// filtered relationships
+	function activeSkus(){
+		return skus()
+				.where( 'isActive', 1 )
+				.whereInStock();
 	}
 
 	// delete overload
@@ -161,6 +168,14 @@ component   table="cbc_products"
 		required QueryBuilder builder
 	 ){
 
+		// with( 'media' );
+
+		// if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
+		// 	with( 'activeSkus' );
+		// } else {
+		// 	with( 'skus' );
+		// }
+
 		if( structKeyExists( searchCollection, "category" ) ){
             if( searchCollection.category == 'used' ){
                 this.scopeHasUsedSKU( arguments.builder );
@@ -227,7 +242,8 @@ component   table="cbc_products"
 							.where( 'isActive', 1 )
 							.limit( 1 )
 							.orderBy( 'isPrimary', 'DESC' )
-							.orderBy( 'displayOrder', 'ASC' );
+							.orderBy( 'displayOrder', 'ASC' )
+							.orderBy( 'createdTime', 'ASC' );
 		
 		var results = productMedia.getResults();
 

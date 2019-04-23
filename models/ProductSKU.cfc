@@ -98,4 +98,19 @@ component   table="cbc_SKUs"
 		return query.join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
             		.where( 'cbc_productConditions.name', '!=', 'New' );
 	}
+
+	function scopeWhereInStock( query ){
+        return query.where( function( subquery ){
+			return subquery.whereExists( 
+				function( subSubQuery ){
+					return subSubQuery.from( 'cbc_inventoryLocationStock' )
+									.whereColumn( 'cbc_inventoryLocationStock.FK_sku', '=', 'cbc_SKUs.id' )
+									.where( 'cbc_inventoryLocationStock.isActive', 1 )
+									.where( 'cbc_inventoryLocationStock.available', '>=', 1 );
+				}
+			)
+			.orWhere( 'cbc_SKUs.allowBackorder', 1 );
+				
+		} );
+	}
 }

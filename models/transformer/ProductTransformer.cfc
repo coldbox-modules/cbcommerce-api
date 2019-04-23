@@ -1,4 +1,6 @@
-component extends="BaseModelTransformer"{
+component extends="BaseModelTransformer" accessors="true"{
+
+    property name="activeSKUsOnly" default="true";
 
     function init(){
     	arrayAppend( 
@@ -34,7 +36,7 @@ component extends="BaseModelTransformer"{
 
     function includeSkus( activeEntity ){
         return collection(
-            activeEntity.getSkus(),
+            variables.activeSKUsOnly ? activeEntity.getActiveSkus() : activeEntity.getSkus(),
             wirebox.getInstance( "ProductSKUTransformer@cbCommerce" ),
             wirebox.getInstance( collectionSerializer )
         );
