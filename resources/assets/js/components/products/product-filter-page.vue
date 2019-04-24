@@ -47,14 +47,13 @@
                         <ul class="subcategory-links list-unstyled">
                             <li
                                 v-for="category in activeCategory.children"
-                                :key="`subcat_${category.id}`"
-                            >
+                                :key="`subcat_${category.id}`">
+                                <label>
                                 <input 
                                     type="checkbox"
                                     :name="`category_${category.id}`"
                                     :value="category.id"
-                                    @change="categoriesFilterChange"
-                                /> {{category.name}}
+                                    @change="categoriesFilterChange"> {{category.name}}</label>
                             </li>
 
                         </ul>
@@ -71,14 +70,13 @@
                         <ul class="subcategory-links list-unstyled">
                             <li
                                 v-for="category in categoriesListArray"
-                                :key="`subcat_${category.id}`"
-                            >
+                                :key="`subcat_${category.id}`">
+                                <label>
                                 <input 
                                     type="checkbox"
                                     :name="`category_${category.id}`"
                                     :value="category.id"
-                                    @change="categoriesFilterChange"
-                                /> {{category.name}}
+                                    @change="categoriesFilterChange">{{category.name}}</label>
                             </li>
 
                         </ul>
