@@ -148,6 +148,26 @@ component   table="cbc_products"
 		);
 	}
 
+	function scopeWherePriceAbove( query, numeric price ){
+		return query.whereExists( 
+			function( subQuery ){
+				return subQuery.from( 'cbc_SKUs highPriceSKU' )
+						.whereColumn( 'cbc_products.id', 'highPriceSKU.FK_product'  )
+						.where( 'highPriceSKU.basePrice' , '>=', price );
+			}
+		);
+	}
+
+	function scopeWherePriceBelow( query, numeric price ){
+		return query.whereExists( 
+			function( subQuery ){
+				return subQuery.from( 'cbc_SKUs highPriceSKU' )
+						.whereColumn( 'cbc_products.id', 'highPriceSKU.FK_product'  )
+						.where( 'highPriceSKU.basePrice' , '<=', price );
+			}
+		);
+	}
+
 	private void function appendChildCategoryIdentifiers( required array idArray, required ProductCategory category ){
 		category.getChildren().each( function( child ){
 			arrayAppend( idArray, child.keyValue() );
@@ -177,6 +197,14 @@ component   table="cbc_products"
 				searchCollection.subCondition = listToArray( searchCollection.subCondition );
 			}
 			this.scopeWhereSubCondition( arguments.builder, searchCollection.subCondition );
+		}
+
+		if( structKeyExists( searchCollection, "minimumPrice" ) && isNumeric( searchCollection.minimumPrice ) ){
+			this.scopeWherePriceAbove( arguments.builder, searchCollection.minimumPrice );
+		}
+
+		if( structKeyExists( searchCollection, "maximumPrice" ) && isNumeric( searchCollection.maximumPrice ) ){
+			this.scopeWherePriceBelow( arguments.builder, searchCollection.maximumPrice );
 		}
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
