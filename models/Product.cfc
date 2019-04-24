@@ -168,13 +168,13 @@ component   table="cbc_products"
 		required QueryBuilder builder
 	 ){
 
-		// with( 'media' );
+		with( 'media' );
 
-		// if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
-		// 	with( 'activeSkus' );
-		// } else {
-		// 	with( 'skus' );
-		// }
+		if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
+			with( 'activeSkus' );
+		} else {
+			with( 'skus' );
+		}
 
 		if( structKeyExists( searchCollection, "category" ) ){
             if( searchCollection.category == 'used' ){
