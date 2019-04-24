@@ -1,5 +1,5 @@
 export const getCustomerList = api => ( params ) => api.get('/customers', { params : params} );
-export const createCustomer = api => ( data ) => api.post('/customers', JSON.stringify(data) );
+export const updateCustomer = api => ( data ) => data.id ? api.put( '/customers/' + data.id, JSON.stringify( data ) ) : api.post('/customers', JSON.stringify(data) );
 
 export const customers = api => ({
   get: {
@@ -9,7 +9,7 @@ export const customers = api => ({
   },
   post: {
     customers: {
-      save: createCustomer(api)
+      save: updateCustomer(api)
     }
   }
 });

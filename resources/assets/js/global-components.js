@@ -60,6 +60,7 @@ import createFilters from "@cbCommerce/filters/index";
 Vue.component( "Checkout", require( "@cbCommerce/components/commerce/checkout" ).default );
 Vue.component( "OrderSummary", require( "@cbCommerce/components/commerce/order-summary" ).default );
 Vue.component( "NewAccount", require( "@cbCommerce/components/account/new-account" ).default );
+Vue.component( "AccountEdit", require( "@cbCommerce/components/account/account-edit" ).default );
 Vue.component( "GenericLoader", require( "@cbCommerce/components/generic-loader" ).default );
 Vue.component( "NavCart", require( "@cbCommerce/components/ui/nav-cart" ).default );
 Vue.component( "NavUser", require( "@cbCommerce/components/ui/nav-user" ).default );

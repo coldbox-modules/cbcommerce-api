@@ -146,6 +146,12 @@ component {
 
         // API Routing
 
+        router.route( "api/v1/authentication/password-reset" )
+                .withAction({
+                    POST : "passwordReset"
+                })
+                .toHandler( "API.v1.Authentication" );
+
         router.route( "api/v1/authentication" )
                 .withAction( {
                     GET : "get",
@@ -275,6 +281,8 @@ component {
             router.route( "wishlists/edit/:id" ).to( "Wishlist.edit" );
             router.route( "wishlists/:id" ).to( "Wishlist.detail" );
             router.route( "wishlists" ).to( "Wishlist.index" );
+            router.route( "account/reset/:token" ).to( "Account.reset" );
+            router.route( "account/edit" ).to( "Account.edit" );
             router.route( "account/create" ).to( "Account.create" );
             router.route( "account/login" ).to( "Account.login" );
             router.route( "account" ).to( "Account.index" );

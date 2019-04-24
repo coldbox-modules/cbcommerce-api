@@ -89,13 +89,16 @@ component extends="BaseAPIHandler"{
 	/**
 	* (PUT|PATCH) /store/api/v1/customers/:id
 	*/
-	function update( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+	function update( event, rc, prc ) secured{
+		if( auth.user().getId() != rc.id  && !auth.user().hasPermission( "Product:Edit,Order:Edit" ) ){
+			return onAuthorizationFailure( argumentCollection=arguments );
+		}
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
 
-		prc.user.populate( memento = rc );
-		prc.user.validateOrFail();
+		prc.user.fill( rc );
+		validateModelOrFail( prc.user );
 		prc.user.save();
 
 		prc.response.setStatusCode( STATUS.SUCCESS );

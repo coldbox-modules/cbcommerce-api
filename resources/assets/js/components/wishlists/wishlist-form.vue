@@ -1,7 +1,7 @@
 <template>
     <div class="wishlist-form form-block">
         <div class="form-group">
-            <label class="col-xs-12 text-left text-muted">{{ $t( 'Wishlist Name' ) }}</label>
+            <label class="col-xs-12 text-left text-muted">{{ $t( 'wishlist_name' ) }}</label>
             <input class="form-control" v-model="wishlist.name"/>            
         </div>
         <div class="form-group">
@@ -10,7 +10,7 @@
         </div>
         <div class="form-group">
             <slot name="exit"></slot>
-            <button class="btn btn-primary" @click="onSaveWishlist"><i class="fa fa-save"></i> {{$t( 'Save Wishlist' )}}</button>
+            <button class="btn btn-primary" @click="onSaveWishlist"><i class="fa fa-save"></i> {{$t( 'save_wishlist' )}}</button>
         </div>
     </div>
 </template>

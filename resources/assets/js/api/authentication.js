@@ -1,6 +1,7 @@
 export const getAuth = api => () => api.get( '/authentication' );
 export const authenticate = api => ( payload ) => api.post( '/authentication', JSON.stringify( payload ) );
 export const logout = api => ( itemId ) => api.delete( '/authentication' );
+export const resetPassword = api => ( email ) => api.post( '/authentication/password-reset', JSON.stringify( { email : email } ) );
 
 export const authentication = api => ({
   get: {
@@ -10,7 +11,8 @@ export const authentication = api => ({
   },
   post: {
     authentication: {
-      login: authenticate( api )
+      login: authenticate( api ),
+      resetPassword : resetPassword( api )
     }
   },
   delete: {
