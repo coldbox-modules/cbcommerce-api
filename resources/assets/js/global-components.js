@@ -72,6 +72,7 @@ Vue.component( "WishlistDetail", require( "@cbCommerce/components/wishlists/wish
 Vue.component( "WishlistItem", require( "@cbCommerce/components/wishlists/wishlist-item" ).default );
 Vue.component( "WishlistForm", require( "@cbCommerce/components/wishlists/wishlist-form" ).default );
 Vue.component( "WishlistAddIcon", require( "@cbCommerce/components/wishlists/wishlist-add-icon" ).default );
+Vue.component( "ComparisonAddIcon", require( "@cbCommerce/components/products/comparison-add-icon" ).default );
 Vue.component( "UsedProducts", require( "@cbCommerce/components/products/used-products" ).default );
 Vue.component( "ProductFilterPage", require( "@cbCommerce/components/products/product-filter-page" ).default );
 Vue.component( "ProductDetail", require( "@cbCommerce/components/products/product-detail" ).default );

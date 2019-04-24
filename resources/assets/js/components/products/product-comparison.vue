@@ -13,7 +13,7 @@
 	                	:key="index"
 	                >
 					<a :href="`/store/product/${sku.product.id}`">
-						{{ sku.product.name }}
+						{{ sku.product.name | removeHTML }}
 					</a>
 				</th>
 	            </tr>
@@ -70,7 +70,7 @@
 	                	class="card_product_price"
 	                	:data-th="sku.product.name">
 						<h4>Description:</h4>
-	                	{{ sku.product.shortDescription }}
+	                	{{ sku.product.shortDescription | removeHTML }}
 						<h4>Specifications:</h4>
                         <ul class="list-unstyled">
                             <li 
@@ -148,10 +148,11 @@
 	                	v-for="(sku, index) in comparisonItems"
 	                	:key="index"
 	                	class="card_product_price"
-	                	:data-th="sku.product.name">
+	                	:data-th="sku.product.name | removeHTML">
 	                    <div class="product">
 	                        <div class="product-caption">
-	                            <p class="product-price">{{ sku.basePrice | currency }}</p>
+	                            <p class="product-price" v-if="sku.showPricing">{{ sku.basePrice | currency }}</p>
+								<p class="text-muted" v-else>Available Upon Request</p>
 	                        </div> 
 	                    </div>
 	                </td>
@@ -172,14 +173,14 @@
 	                        		@click="addItemToCart( { sku: sku.id, quantity: sku.quantity || 1 } )"
 	                        		:data-id="index"
 	                				:data-product-id="sku.product.id"
-	                        		v-if="inStock( sku )"
+	                        		v-if="sku.showPricing && inStock( sku )"
 	                        		class="addToCart">
 	                        		<i class="fa fa-shopping-cart"></i> Add to cart
 	                        	</a>
 
-								<div class="product-request">
+								<div class="product-request" v-else>
 			                    	<a 
-			                    		href="#" 
+			                    		@click="showSkuQuoteForm( sku.id )" 
 			                    		class="btn">
 			                    		<i class="fa fa-envelope"></i> Request quote
 			                    	</a>
@@ -203,6 +204,8 @@
 				</td>
 			</tr>
 		</table>
+
+        <sku-quote-modal v-if="quotedSKUId && showQuoteModal" v-on:quote-modal-close="toggleModal" :skuId="quotedSKUId"></sku-quote-modal>
 	</div>
 
 </template>
@@ -212,7 +215,9 @@ import { mapGetters, mapActions } from "vuex";
 import imagesLoaded from 'vue-images-loaded';
 import { StarRating } from 'vue-rate-it';
 import QuantityControl from '@cbCommerce/admin/components/ui/quantity-control';
+import SkuQuoteMixin from '@cbCommerce/mixins/sku-quote-mixin';
 export default {
+	mixins : [ SkuQuoteMixin ],
     components: {
         StarRating,
         QuantityControl

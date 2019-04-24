@@ -18,11 +18,7 @@
 
                             <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
 
-                            <a 
-                                @click="addItemToComparisonList( product.startingPrice.SKU )"
-                                v-tooltip="{ content: $t('compare_this_item') }"
-                                :title="$t('compare_this_item')"
-                                class="product-compare"><i :class="$t('compare_icon')"></i></a>
+                            <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
 
                             <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
                             <div class="product-item-image-placeholder" v-else></div>
@@ -107,8 +103,7 @@ export default {
 
     computed: {
         ...mapGetters([
-            "cartProducts",
-            "comparisonItems"
+            "cartProducts"
         ]),
         hasPricing(){
             return this.product.startingPrice && this.product.startingPrice.basePrice;
@@ -134,8 +129,7 @@ export default {
 
     methods: {
         ...mapActions([
-            "addItemToCart",
-            "addItemToComparisonList"
+            "addItemToCart"
         ]),
         isImage: function( mediaItem ){
             return this.$options.filters.isImage( mediaItem );

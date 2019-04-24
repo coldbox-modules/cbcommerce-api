@@ -241,11 +241,7 @@
 
                     <wishlist-add-icon :skuId="activeSku.id"></wishlist-add-icon>
 
-                    <a 
-                        @click="addItemToComparisonList( activeSku.id )"
-                        v-tooltip="{ content: $t('compare_this_item') }"
-                        :title="$t('compare_this_item')"><i :class="$t('compare_icon')"></i></a>
-
+                    <comparison-add-icon :skuId="activeSku.id"></comparison-add-icon>
                 </div>
 
                 <hr />
@@ -333,7 +329,6 @@ export default {
             "authUser",
             "currentProduct",
             "cartProducts",
-            "comparisonItems",
             "productsList",
             "productsListArray",
             "currentProductReviews"
@@ -366,7 +361,6 @@ export default {
     methods: {
         ...mapActions([
             "addItemToCart",
-            "addItemToComparisonList",
             "setCurrentProduct",
             "getListOfProducts",
             "getProductReviews",
