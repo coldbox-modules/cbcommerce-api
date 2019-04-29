@@ -43,8 +43,8 @@
             </div>
             <div v-if="activeCategory" class="widget-block">
                 <div class="overlay" v-if="isLoading">
-			        <generic-loader message="Please wait..."></generic-loader>
-		        </div>
+                    <generic-loader message="Please wait..."></generic-loader>
+                </div>
 
                 <div class="row">
                     <div class="col-xs-12">
