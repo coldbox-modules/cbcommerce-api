@@ -3,10 +3,11 @@
     <div>
 
         <div class="header-for-light">
-            <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">
-                {{ headerTitle }}
-            </h1>
-
+            <div>
+                <h1 class="wow fadeInRight animated animated" data-wow-duration="1s">
+                    {{ headerTitle }}
+                </h1>
+            </div>
             <div class="toolbar-for-light" id="nav-related"></div>
         </div>
 
