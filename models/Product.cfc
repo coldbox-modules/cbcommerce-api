@@ -189,7 +189,7 @@ component   table="cbc_products"
 		required struct searchCollection, 
 		required QueryBuilder builder
 	 ){
-
+		with( 'media' )
 		if( structKeyExists( searchCollection, "category" ) ){
             if( searchCollection.category == 'used' ){
                 this.scopeHasUsedSKU( arguments.builder );
@@ -270,6 +270,7 @@ component   table="cbc_products"
 	
 	 function getPrimaryImageURL(){
 		var productMedia = media()
+							.with( 'mediaItem' )
 							.where( 'FK_product', keyValue() )
 							.where( 'isActive', 1 )
 							.limit( 1 )
