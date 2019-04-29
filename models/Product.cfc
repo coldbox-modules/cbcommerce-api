@@ -168,6 +168,16 @@ component   table="cbc_products"
 		);
 	}
 
+	function scopeWhereModelNumber( query, string modelNumber ){
+		return query.whereExists( 
+			function( subQuery ){
+				return subQuery.from( 'cbc_SKUs SKUs' )
+						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
+						.where( 'SKUs.modelNumber' , modelNumber );
+			}
+		);
+	}
+
 	private void function appendChildCategoryIdentifiers( required array idArray, required ProductCategory category ){
 		category.getChildren().each( function( child ){
 			arrayAppend( idArray, child.keyValue() );
@@ -209,10 +219,21 @@ component   table="cbc_products"
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
-            arguments.builder
+			arguments.builder
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
-                .orWhere( 'description', 'like', searchTerm );
+				.orWhere( 'description', 'like', searchTerm )
+				.orwhereExists( 
+					function( subQuery ){
+						return subQuery.from( 'cbc_SKUs SKUs' )
+						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
+						.where( 'SKUs.modelNumber' , searchCollection.search );
+				}
+			);
+		}
+
+		if( structKeyExists( searchCollection, "modelNumber" ) ){
+			this.scopeWhereModelNumber( arguments.builder, searchCollection.modelNumber );
 		}
 		
 		if( structKeyExists( searchCollection, "externalIdSearch" ) && len( searchCollection.externalIdSearch ) ){

@@ -78,11 +78,8 @@
                             {{ data.item.name }}
                         </router-link>
                     </template>
-                    <template slot="createdTime" slot-scope="data">
-                        {{ data.item.createdTime | dateToText }}
-                    </template>
-                    <template slot="fulfilledTime" slot-scope="data">
-                        {{ data.item.fulfilledTime | dateToText }}
+                    <template slot="external ID" slot-scope="data">
+                        {{ data.item.externalId }}
                     </template>
                     <template slot="isActive" slot-scope="data">
                         {{ data.item.isActive | itemStatusToText }}

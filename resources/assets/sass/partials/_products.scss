@@ -155,6 +155,7 @@
     }
   }
   .product-caption {
+    min-height: 125px;
     .product-price, .priceWithDiscount {
       color: rgba(14, 14, 14, 0.9);
       font-size: 15px;

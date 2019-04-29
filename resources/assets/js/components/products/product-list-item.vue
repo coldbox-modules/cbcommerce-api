@@ -48,6 +48,9 @@
                                 </div>
 
                             </div>
+                           <p class="description" >SS{{ activeSku.modelNumber }}</p>
+                           <p class="description" v-html="product.shortDescription"></p>
+
 
                             <div v-if="product.startingPrice && product.startingPrice.basePrice" class="product-cart">
                                 <a 
@@ -61,9 +64,6 @@
                                     v-tooltip="'Request a quote for this item'"
                                     class="btn"><i class="fa fa-envelope"></i> Request quote</a>
                             </div>
-
-
-                            <p class="description" v-html="product.shortDescription"></p>
 
                         </div>
                     </div>
