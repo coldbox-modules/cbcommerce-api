@@ -45,7 +45,6 @@
                         </div>
                     </div>
 
-                    <p class="description" >EE{{ activeSku.modelNumber }}</p>
                     <p class="description">
                         {{ product.shortDescription | removeHTML( 75 ) }}
                     </p>

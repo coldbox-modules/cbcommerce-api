@@ -48,7 +48,6 @@
                                 </div>
 
                             </div>
-                           <p class="description" >SS{{ activeSku.modelNumber }}</p>
                            <p class="description" v-html="product.shortDescription"></p>
 
 
