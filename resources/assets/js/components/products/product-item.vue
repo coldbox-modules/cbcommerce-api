@@ -44,7 +44,6 @@
 
                         </div>
                     </div>
-
                     <p class="description">
                         {{ product.shortDescription | removeHTML( 75 ) }}
                     </p>
