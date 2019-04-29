@@ -27,7 +27,7 @@ component   table="cbc_products"
 
 	// Relationships
 	function skus(){
-		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' );
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" );
 	}
 
 	function categories(){
@@ -36,7 +36,6 @@ component   table="cbc_products"
 
 	function media(){
 		return hasMany( "ProductMedia@cbCommerce", "FK_product" )
-				.with( 'mediaItem' )
 				.orderBy( 'isPrimary', 'DESC')
 				.orderBy( 'displayOrder', 'ASC')
 				.orderBy( 'createdTime', 'ASC' );
@@ -44,13 +43,6 @@ component   table="cbc_products"
 
 	function reviews(){
 		return hasMany( "ProductReview@cbCommerce", "FK_product");
-	}
-
-	// filtered relationships
-	function activeSkus(){
-		return skus()
-				.where( 'isActive', 1 )
-				.whereInStock();
 	}
 
 	// delete overload
@@ -176,6 +168,16 @@ component   table="cbc_products"
 		);
 	}
 
+	function scopeWhereModelNumber( query, string modelNumber ){
+		return query.whereExists( 
+			function( subQuery ){
+				return subQuery.from( 'cbc_SKUs SKUs' )
+						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
+						.where( 'SKUs.modelNumber' , modelNumber );
+			}
+		);
+	}
+
 	private void function appendChildCategoryIdentifiers( required array idArray, required ProductCategory category ){
 		category.getChildren().each( function( child ){
 			arrayAppend( idArray, child.keyValue() );
@@ -187,14 +189,6 @@ component   table="cbc_products"
 		required struct searchCollection, 
 		required QueryBuilder builder
 	 ){
-
-		with( 'media' );
-
-		if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
-			with( 'activeSkus' );
-		} else {
-			with( 'skus' );
-		}
 
 		if( structKeyExists( searchCollection, "category" ) ){
             if( searchCollection.category == 'used' ){
@@ -225,10 +219,21 @@ component   table="cbc_products"
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
-            arguments.builder
+			arguments.builder
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
-                .orWhere( 'description', 'like', searchTerm );
+				.orWhere( 'description', 'like', searchTerm )
+				.orwhereExists( 
+					function( subQuery ){
+						return subQuery.from( 'cbc_SKUs SKUs' )
+						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
+						.where( 'SKUs.modelNumber' , searchCollection.search );
+				}
+			);
+		}
+
+		if( structKeyExists( searchCollection, "modelNumber" ) ){
+			this.scopeWhereModelNumber( arguments.builder, searchCollection.modelNumber );
 		}
 		
 		if( structKeyExists( searchCollection, "externalIdSearch" ) && len( searchCollection.externalIdSearch ) ){
@@ -265,13 +270,11 @@ component   table="cbc_products"
 	
 	 function getPrimaryImageURL(){
 		var productMedia = media()
-							.with( 'mediaItem' )
 							.where( 'FK_product', keyValue() )
 							.where( 'isActive', 1 )
 							.limit( 1 )
 							.orderBy( 'isPrimary', 'DESC' )
-							.orderBy( 'displayOrder', 'ASC' )
-							.orderBy( 'createdTime', 'ASC' );
+							.orderBy( 'displayOrder', 'ASC' );
 		
 		var results = productMedia.getResults();
 

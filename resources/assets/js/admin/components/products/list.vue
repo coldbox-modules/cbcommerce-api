@@ -84,7 +84,7 @@
                             {{ data.item.name }}
                         </router-link>
                     </template>
-                    <template slot="ExternalId" slot-scope="data">
+                    <template slot="externalId" slot-scope="data">
                         {{ data.item.externalId }}
                     </template>
                     <template slot="isActive" slot-scope="data">
@@ -142,12 +142,8 @@ export default {
                 name: {
                     sortable: true
                 },
-                createdTime: {
-                    label   : 'Created',
-                    sortable: true
-                },
-                modifiedTime: {
-                    label   : 'Modified',
+                externalId: {
+                    label   : 'External Id',
                     sortable: true
                 },
                 isActive: {
