@@ -257,6 +257,7 @@ export default {
         paginationCallback( pageNum ){
             Vue.set( this, "currentPage", pageNum );
             document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
             this.fetchProducts();
         },
 
