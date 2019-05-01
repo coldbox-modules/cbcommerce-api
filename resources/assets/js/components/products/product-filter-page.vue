@@ -294,6 +294,7 @@ export default {
 
         perPageChangeReaction(perPage){
             this.perPage = perPage;
+            this.currentPage = 1;
             this.fetchProducts();
         },
 
