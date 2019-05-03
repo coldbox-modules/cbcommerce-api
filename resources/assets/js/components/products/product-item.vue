@@ -40,6 +40,9 @@
 
                         </div>
                     </div>
+                    <p class="description">
+                        {{ product.shortDescription | removeHTML( 75 ) }}
+                    </p>
 
                     <div v-if="hasPricing" class="product-cart">
                         <a 
@@ -53,10 +56,6 @@
                             v-tooltip="'Request a quote for this item'"
                             class="btn"><i class="fa fa-envelope"></i> Request quote</a>
                     </div>
-
-                    <p class="description">
-                        {{ product.shortDescription | removeHTML( 75 ) }}
-                    </p>
 
                 </article>
 
