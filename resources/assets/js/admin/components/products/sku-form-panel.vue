@@ -190,6 +190,17 @@
 							<b-form-group>
 
 							    <b-form-checkbox 
+									id="pick-up-check"
+							    	v-model="form.pickUpInStore" 
+							    	:model.sync="form.pickUpInStore">
+							    	Is Pick-Up In Store Only?
+							    </b-form-checkbox>
+
+							</b-form-group>
+
+							<b-form-group>
+
+							    <b-form-checkbox 
 							    	v-model="form.allowBackorder" 
 							    	:model.sync="form.allowBackorder">
 							    	Allow backorder?

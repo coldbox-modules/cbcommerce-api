@@ -12,6 +12,7 @@ component   table="cbc_SKUs"
 	property name="allowBackorder" type="boolean" default=0;
     property name="isFeatured" type="boolean" default=0;
 	property name="showPricing" type="boolean" default=0;
+	property name="pickUpInStore" type="boolean" default=0;
 	property name="summary" type="string" default="";
 	property name="description" type="string" default="";
 	property name="cost" type="numeric";
@@ -26,7 +27,6 @@ component   table="cbc_SKUs"
 	property name="packagingZ" type="numeric";
 	property name="conditionDescription" type="string";
 	property name="displayOrder" type="numeric" default=0;
-	
 	// an external reference id used for syncing data between systems
 	property name="modelNumber" type="string";
 	property name="externalId" type="string";
