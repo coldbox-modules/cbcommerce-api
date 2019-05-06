@@ -61,7 +61,7 @@
 
                                 <ul class="subcategory-links list-unstyled">
                                     <li
-                                        v-for="categoryc in activeCategory.children.children"
+                                        v-for="categoryc in category.children"
                                         :key="`subcat_${categoryc.id}`">
                                         <label>
                                         <input 
@@ -97,7 +97,6 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange">{{category.name}}</label>
                             </li>
-
                         </ul>
                     </div>
                 </div> 
