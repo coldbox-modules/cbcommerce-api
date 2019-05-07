@@ -42,6 +42,10 @@
                 <i class="fa fa-arrow-circle-down"></i> Sub-Categories
             </div>
             <div v-if="activeCategory" class="widget-block">
+                <div class="overlay" v-if="isLoading">
+                    <generic-loader message="Please wait..."></generic-loader>
+                </div>
+
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="subcategory-links list-unstyled">
