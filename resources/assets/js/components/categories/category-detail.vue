@@ -65,7 +65,7 @@ export default{
         queryParams.forEach( ( value, key ) => {
             self.initialParams[ key ] = value;
         }  );
-        this.getCategory( self.categoryId ).then( category => {
+        this.getCategory( { id: self.categoryId, params : { includes : "children.children.children" } } ).then( category => {
             self.updateCategoryViews( self.categoryId );
             Vue.set( self, "isLoading", false );
         } );
