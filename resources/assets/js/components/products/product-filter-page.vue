@@ -59,20 +59,6 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange"> {{category.name}}</label>
 
-                                <ul class="subcategory-links list-unstyled">
-                                    <li
-                                        v-for="categoryc in category.children"
-                                        :key="`subcat_${categoryc.id}`">
-                                        <label>
-                                        <input 
-                                            type="checkbox"
-                                            :name="`category_${categoryc.id}`"
-                                            :value="categoryc.id"
-                                            @change="categoriesFilterChange"> {{category.name}}</label>
-                            </li>
-
-                        </ul>
-
                             </li>
 
                         </ul>

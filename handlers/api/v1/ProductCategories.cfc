@@ -44,15 +44,6 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	function scopeCategoryesChildrens( query, numeric price ){
-		return query.whereExists( 
-			function( subQuery ){
-				return subQuery.from( 'cbc_productCategories productCategories' )
-						.whereColumn( 'productCategories.id', 'productCategories.FK_product'  );
-			}
-		);
-	}
-
 	// (POST) /cbc/api/v1/product-categories
 	function create( event, rc, prc ) secured="Products:Manage"{
 		
