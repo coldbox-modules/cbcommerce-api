@@ -100,6 +100,20 @@
                 :isList="isList"
                 :perPage="perPage"></filter-bar>
 
+            <div class="block-pagination block-pagination-top" v-if="!isLoading">
+
+                <paginate
+                    :initial-page="currentPage-1"
+                    :pageCount="pageCount"
+                    :prevText="'Prev'"
+                    :nextText="'Next'"
+                    :containerClass="'pagination'"
+                    :click-handler="paginationCallback"
+                    :hide-prev-next="true"
+                ></paginate>
+
+            </div>
+
             <div v-if="isLoading">
                 <div class="col-md-4" v-for="(n, index) in 25" :key="`loading-${index}`">
                     <product-item-loading></product-item-loading>
@@ -242,6 +256,8 @@ export default {
 
         paginationCallback( pageNum ){
             Vue.set( this, "currentPage", pageNum );
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
             this.fetchProducts();
         },
 
