@@ -310,7 +310,10 @@ export default {
 
         perPageChangeReaction(perPage){
             this.perPage = perPage;
+            this.currentPage = 1;
             this.fetchProducts();
+            let url=this.urlPatch(perPage,'perPage');
+            window.history.pushState('perPage', 'perPage', url);
         },
 
         sortTypeChangeReaction(sortBy){
@@ -320,6 +323,8 @@ export default {
                 this.searchParams.sortBy = sortBy;
             }
             this.fetchProducts();
+            let url=this.urlPatch(sortBy,'sortBy');
+            window.history.pushState('sortBy', 'sortBy', url);
         },
 
         productLayoutChangeReaction(type){
@@ -333,8 +338,38 @@ export default {
                     this.isList = true;
                     break;
             }
+        },
+        urlPatch( key,name ){
+            let url = window.location.href.split('?')[0];
+            let params = window.location.href.split('?')[1];
+            if( params != undefined ){
+                params = this.removeParam( key, name, params );
+                url = url + '?' + params;
+            }else{
+                url = url + '?' + name + '=' + key;
+            }
+            return url;
+        },
+        removeParam(key, name, sourceURL) {
+            let param;
+            let val;
+            let rtn;
+            let params_arr = [];
+            if (sourceURL !=undefined && sourceURL !== '') {
+                params_arr = sourceURL.split('&');
+                    for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                        param = params_arr[i].split('=')[0];
+                        val = params_arr[i].split('=')[1];
+                            if (param === name) {
+                                if(val!==key){
+                                    params_arr[i]=name + '=' + key;
+                                }
+                            }
+                    }
+                rtn = params_arr.join('&');
+            }
+        return rtn;
         }
-
     }
 }
 </script>
