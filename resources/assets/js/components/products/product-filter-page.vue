@@ -61,14 +61,14 @@
 
                                 <ul class="subcategory-links list-unstyled">
                                     <li
-                                        v-for="categoryc in activeCategory.children.children"
+                                        v-for="categoryc in activeCategory.children"
                                         :key="`subcat_${categoryc.id}`">
                                         <label>
-                                        <input 
+                                        <input v-if="categoryc.id==category.FK_parent"
                                             type="checkbox"
                                             :name="`category_${categoryc.id}`"
                                             :value="categoryc.id"
-                                            @change="categoriesFilterChange"> {{category.name}}</label>
+                                            @change="categoriesFilterChange"> {{activeCategory.children.FK_parent}}</label>
                             </li>
 
                         </ul>
