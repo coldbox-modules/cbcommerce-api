@@ -143,7 +143,7 @@ export default {
                     sortable: true
                 },
                 externalId: {
-                    label   : 'External Id',
+                    label   : 'Reference Number',
                     sortable: true
                 },
                 isActive: {
