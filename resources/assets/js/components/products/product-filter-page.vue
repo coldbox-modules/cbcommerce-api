@@ -58,6 +58,7 @@
                                     :name="`category_${category.id}`"
                                     :value="category.id"
                                     @change="categoriesFilterChange"> {{category.name}}</label>
+
                             </li>
 
                         </ul>
@@ -82,7 +83,6 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange">{{category.name}}</label>
                             </li>
-
                         </ul>
                     </div>
                 </div> 
