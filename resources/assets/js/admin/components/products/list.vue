@@ -38,6 +38,12 @@
                         <b-form-input v-model="searchParams.externalIdSearch" @change="refreshList" placeholder="Enter a Tag Number to Search" />
                     </b-form-group>
                 </b-row>
+                <b-row>
+                    <b-form-group class="col col-12">
+                        <legend>Search By Model Number</legend>
+                        <b-form-input v-model="searchParams.modelNumber" @change="refreshList" placeholder="Enter a Model Number to Search" />
+                    </b-form-group>
+                </b-row>
             </b-col>
 
             <b-col md="9">
@@ -78,7 +84,7 @@
                             {{ data.item.name }}
                         </router-link>
                     </template>
-                    <template slot="external ID" slot-scope="data">
+                    <template slot="externalId" slot-scope="data">
                         {{ data.item.externalId }}
                     </template>
                     <template slot="isActive" slot-scope="data">
@@ -136,12 +142,8 @@ export default {
                 name: {
                     sortable: true
                 },
-                createdTime: {
-                    label   : 'Created',
-                    sortable: true
-                },
-                modifiedTime: {
-                    label   : 'Modified',
+                externalId: {
+                    label   : 'Reference Number',
                     sortable: true
                 },
                 isActive: {
