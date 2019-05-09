@@ -3,11 +3,16 @@
     <product-detail-loading v-if="!currentProduct"></product-detail-loading>
 
     <div class="col-md-12 productDetailHeader" v-if="currentProduct">
-      <h1
-        class="wow fadeInRight animated animated"
-        data-wow-duration="1s"
-        v-html="currentProduct.name"
-      ></h1>
+      <div class="col-md-1">
+        <a href="javascript:window.history.back()"><img src="/__media/left-arrow.png" alt="back" id="tb-back" width="35" style="margin-top: 30px;"/></a>
+      </div>
+      <div class="col-md-11">
+        <h1
+          class="wow fadeInRight animated animated"
+          data-wow-duration="1s"
+          v-html="currentProduct.name"
+        ></h1>
+      </div>
     </div>
     <div class="col-md-12 col-lg-12">
       <div class="col-md-9" v-if="activeSku">

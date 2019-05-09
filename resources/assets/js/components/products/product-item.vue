@@ -42,7 +42,7 @@
                     </div>
                     <p v-if="product.startingPrice.pickUpInStore" class="pickup" >In Store Pick Up</p>
                     <p class="description">
-                        {{ product.shortDescription | removeHTML( 75 ) }}
+                        {{ product.shortDescription | removeHTML( 65 ) }}
                     </p>
 
                     <div v-if="hasPricing" class="product-cart">
