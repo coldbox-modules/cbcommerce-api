@@ -88,7 +88,9 @@
 
                                                     </div>
                                                     <p v-if="sku.pickUpInStore" class="pickup" >In Store Pick Up</p>
-                                                    <p class="description" v-html="sku.product.shortDescription"></p>
+                                                    <p class="description">
+                                                        {{ product.shortDescription | removeHTML( 60 ) }}
+                                                    </p>
 
                                                 </div>
                                             </div>

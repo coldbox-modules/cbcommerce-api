@@ -45,7 +45,9 @@
 
                             </div>
                             <p v-if="product.startingPrice.pickUpInStore" class="pickup" >In Store Pick Up</p>
-                            <p class="description" v-html="product.shortDescription"></p>
+                            <p class="description">
+                                {{ product.shortDescription | removeHTML( 60 ) }}
+                            </p>
 
 
                             <div v-if="product.startingPrice && product.startingPrice.basePrice" class="product-cart">
