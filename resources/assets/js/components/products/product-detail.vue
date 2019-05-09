@@ -3,11 +3,16 @@
     <product-detail-loading v-if="!currentProduct"></product-detail-loading>
 
     <div class="col-md-12 productDetailHeader" v-if="currentProduct">
-      <h1
-        class="wow fadeInRight animated animated"
-        data-wow-duration="1s"
-        v-html="currentProduct.name"
-      ></h1>
+      <div class="col-md-1">
+        <a href="javascript:window.history.back()"><img src="/__media/left-arrow.png" alt="back" id="tb-back" width="35" style="margin-top: 30px;"/></a>
+      </div>
+      <div class="col-md-11">
+        <h1
+          class="wow fadeInRight animated animated"
+          data-wow-duration="1s"
+          v-html="currentProduct.name"
+        ></h1>
+      </div>
     </div>
     <div class="col-md-12 col-lg-12">
       <div class="col-md-9" v-if="activeSku">
@@ -83,12 +88,13 @@
             </div>
           </div>
 
-          <div v-if="currentProduct.skus.length > 1" class="row sku-options">
+          <div id="model-numbers" v-if="currentProduct.skus.length > 1" class="row sku-options">
             <div
               v-for="sku in currentProduct.skus"
               :class="`sku-option${activeSku.id === sku.id ? ' selected' : ''}`"
+              :id="sku.id"
               :key="`sku_select_${sku.id}`"
-              @click="setactiveSku(sku)"
+              @click="selectActiveSku(sku)"
             >
               <div
                 v-if="sku.media.length"
@@ -412,14 +418,40 @@ export default {
         self.updateProductViews(self.productId);
       });
     },
-
     setactiveSku(sku) {
       Vue.set(this, "activeSkuId", sku.id);
+    },
+    selectActiveSku(sku) {
+      this.setactiveSku(sku);
+      let skus_elements = this.getSKUsElements();
+      for (let index = 0; index < skus_elements.length; index++) { 
+        this.removeSelectedClass(skus_elements[index].id); 
+      } 
+      this.addSelectedClass(sku.id);
     },
 
     quantityChangeReaction: function({ quantity, sku }) {
       if (!quantity) quantity = 1;
       Vue.set(this, "chosenQuantity", quantity);
+    },
+
+    addSelectedClass(id) {
+      let element = document.getElementById(id);
+      element.className += " selected";
+    },
+
+    removeSelectedClass(id){
+      let element = document.getElementById(id);
+      element.classList.remove("selected");
+    },
+    getSKUsElements(){
+      let div = document.getElementById('model-numbers');
+      let divs = div.getElementsByClassName('sku-option');
+      let divArray = [];
+      for (let i = 0; i < divs.length; i += 1) {
+        divArray.push(divs[i]);
+      }
+      return divArray;
     }
   }
 };
