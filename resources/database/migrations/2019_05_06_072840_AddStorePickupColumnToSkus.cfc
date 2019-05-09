@@ -7,7 +7,7 @@ component {
             );
         } );
 
-        sql = "UPDATE `cbc_SKUs` SET `pickUpInStore` = 1 where `FK_condition`='F0879951-958B-45A5-873331E7412A2912'";
+        sql = "UPDATE `cbc_SKUs` SET `pickUpInStore` = 1 where `FK_condition` in (SELECT id from `cbc_productConditions` where `name` ='New')";
         q = new query( sql=sql );
         q.execute();
 
