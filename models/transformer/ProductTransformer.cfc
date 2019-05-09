@@ -46,7 +46,7 @@ component extends="BaseModelTransformer" accessors="true"{
         return item(
             activeEntity,
             function( product ){
-                var sql = "SELECT id, basePrice, showPricing, MSRP from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY isFeatured DESC, basePrice ASC LIMIT 1"; 
+                var sql = "SELECT id, basePrice, showPricing, MSRP, pickUpInStore from cbc_SKUs WHERE FK_Product = '" & activeEntity.keyValue() & "' ORDER BY isFeatured DESC, basePrice ASC LIMIT 1"; 
                 var q = new query( sql=sql ).execute().getResult();
                 if( !q.showPricing ){
                     return {
@@ -56,7 +56,8 @@ component extends="BaseModelTransformer" accessors="true"{
                     return {
                         "SKU" : q.id,
                         "basePrice" : q.basePrice,
-                        "MSRP" : q.MSRP
+                        "MSRP" : q.MSRP,
+                        "pickUpInStore":q.pickUpInStore
                     };
                 }
             }
