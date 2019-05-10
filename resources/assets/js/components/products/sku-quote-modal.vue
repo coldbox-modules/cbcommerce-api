@@ -91,10 +91,10 @@
                                                         <p class="pickup" >In Store Pick Up</p>
                                                     </div>
                                                     <div v-else>
-                                                        <p class="pickup" >&#32;</p>
+                                                        <p class="pickup" >&nbsp;</p>
                                                     </div>
                                                     <p class="description">
-                                                        {{ product.shortDescription | removeHTML( 60 ) }}
+                                                        {{ product.shortDescription }}
                                                     </p>
 
                                                 </div>
