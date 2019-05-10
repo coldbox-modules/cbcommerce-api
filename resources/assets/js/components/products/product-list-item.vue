@@ -48,10 +48,10 @@
                                 <p class="pickup" >In Store Pick Up</p>
                             </div>
                             <div v-else>
-                                <p class="pickup" > </p>
+                                <p class="pickup" >&#32;</p>
                             </div>
                             <p class="description">
-                                {{ product.shortDescription | removeHTML( 65 ) }}
+                                {{ product.shortDescription }}
                             </p>
 
 
