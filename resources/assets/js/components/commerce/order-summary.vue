@@ -28,7 +28,7 @@
 								Model: {{ item.productSnapshot.sku.modelNumber}}
 							</td>
 							<td>{{ item.quantityOrdered }}</td>
-							<td>{{ item.productSnapshot.sku.basePrice }}</td>
+							<td>{{ item.productSnapshot.sku.basePrice | currency }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -39,27 +39,27 @@
 						<tr>
 							<td></td>
 							<td>Subtotal</td>
-							<td>${{ order.subtotal }}</td>
+							<td>{{ order.subtotal | currency}}</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td>tax</td>
-							<td>${{ order.tax }}</td>
+							<td>{{ order.tax | currency}}</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td>shipping</td>
-							<td>${{ order.shipping }}</td>
+							<td>{{ order.shipping | currency}}</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td><strong>Total</strong></td>
-							<td><strong>${{ order.subtotal }}</strong></td>
+							<td><strong>{{ order.subtotal | currency}}</strong></td>
 						</tr>
 						<tr>
 							<td>Payment Method: {{ payment.paymentMethod }}</td>
 							<td>Amount Paid</td>
-							<td class="text-danger">- ${{ payment.amount }}</td>
+							<td class="text-danger">- {{ payment.amount | currency}}</td>
 						</tr>
 					</tbody>
 				</table>

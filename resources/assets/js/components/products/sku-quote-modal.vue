@@ -76,10 +76,10 @@
 
                                                         <div v-if="sku && sku.basePrice && sku.showPricing">
                                                             <div v-if="sku.basePrice < sku.MSRP" class="priceWithDiscount">
-                                                                <span>&dollar;{{ sku.MSRP }}</span> &dollar;{{ sku.basePrice }}
+                                                                <span>{{ sku.MSRP | currency }}</span> {{ sku.basePrice | currency }}
                                                             </div>
                                                             <div v-else>
-                                                                <p class="product-price">&dollar;{{ sku.basePrice }}</p>
+                                                                <p class="product-price">{{ sku.basePrice | currency }}</p>
                                                         </div>
                                                         </div>
                                                         <div v-else>

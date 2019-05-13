@@ -28,10 +28,10 @@
 
                             <div v-if="hasPricing">
                                 <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
-                                    <span>&dollar;{{ product.startingPrice.MSRP }}</span> &dollar;{{ product.startingPrice.basePrice }}
+                                    <span>{{ product.startingPrice.MSRP | currency }}</span> {{ product.startingPrice.basePrice | currency }}
                                 </div>
                                 <div v-else>
-                                    <p class="product-price">&dollar;{{ product.startingPrice.basePrice }}</p>
+                                    <p class="product-price">{{ product.startingPrice.basePrice | currency }}</p>
                                 </div>
                             </div>
                             <div v-else>
