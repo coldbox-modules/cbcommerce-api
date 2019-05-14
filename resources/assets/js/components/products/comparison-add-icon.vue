@@ -5,9 +5,10 @@
             <a 
                 v-tooltip="{ content: $t('compare_this_item') }"
                 :title="$t('compare_this_item')"
-                class="product-compare in-comparison">
+                class="addToCart has-tooltip product-compare in-comparison">
                 <i :class="$t('compare_icon')"></i>
-            </a>
+                {{ $t('compare_this_item') }}
+            </a> 
 
             <template slot="popover" class="text-center">
                 <p class="text-center">
@@ -23,8 +24,9 @@
             @click="addItemToComparisonList( skuId )"
             v-tooltip="{ content: $t('compare_this_item') }"
             :title="$t('compare_this_item')"
-            class="product-compare">
-                <i :class="$t('compare_icon')"></i>
+            class="addToCart has-tooltip product-compare">
+            <i :class="$t('compare_icon')"></i>
+            {{ $t('compare_this_item') }}
         </a>
     </span>
 </template>

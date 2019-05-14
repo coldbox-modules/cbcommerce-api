@@ -5,8 +5,9 @@
             <a 
                 v-tooltip="{ content: $t('wishlist_add_item') }"
                 :title="$t('wishlist_add_item')"
-                class="product-wishlist tooltip-target">
+                class="addToCart has-tooltip product-wishlist tooltip-target">
                 <i :class="targetIconClass"></i>
+                {{ $t('wishlist_add_item') }}
             </a>
 
             <template slot="popover" class="text-center">
@@ -32,9 +33,11 @@
             @click="onAddItem"
             v-tooltip="{ content: $t('wishlist_add_item') }"
             :title="$t('wishlist_add_item')"
-            v-bind:class="{ 'product-wishlist' : true, 'in-wishlist' : inDefaultWishlist }">
+            v-bind:class="{ 'addToCart has-tooltip':true ,'product-wishlist' : true, 'in-wishlist' : inDefaultWishlist }">
             <i :class="targetIconClass"></i>
+            {{ $t('wishlist_add_item') }}
         </a>
+        <br/>
     </span>
 </template>
 <script>
