@@ -40,7 +40,7 @@
 
 	    			</td>
 	    			<td class="card_product_price" data-th="Unit Price">
-	    				{{ product.userPrice }}
+	    				{{ product.userPrice | currency }}
 	    			</td>
 	    			<td class="card_product_add_to_cart" data-th="Add to Cart">
 

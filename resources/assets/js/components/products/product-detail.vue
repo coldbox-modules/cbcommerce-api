@@ -122,7 +122,7 @@
 
               <div class="product-cart-total-price clearfix">
                 <label class="pull-left">Total:</label>
-                <p>&dollar;{{cartTotalPrice}}</p>
+                <p>{{cartTotalPrice | currency}}</p>
               </div>
 
               <div v-if="isAvailable" class="shopping-cart-buttons">

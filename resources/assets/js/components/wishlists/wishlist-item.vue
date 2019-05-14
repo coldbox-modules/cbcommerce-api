@@ -50,7 +50,7 @@
 		</div>
 		<div class="col-sm-2">
 			<div class="wishlist-item-price">
-				<span class="sr-only">unit price</span>${{ item.sku.basePrice }}
+				<span class="sr-only">unit price</span>{{ item.sku.basePrice | currency }}
 			</div>
 		</div>
 		<div class="col-sm-3">
