@@ -3,7 +3,25 @@
     <div>
 
         <div class="col-md-3">
-
+            <div class="widget-title first-widget">
+                <i class="fa fa-search"></i> Refine Search
+            </div>
+            <div class="widget-block">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input 
+                                @keyup.tab="refine()"
+                                @keyup.enter="refine()"
+                                @change="refine()"
+                                type="text" 
+                                id="refine-from" 
+                                class="form-control"
+                                v-model="refine_"/>
+                        </div>
+                    </div>
+                </div> 
+            </div>
             <div class="widget-title first-widget">
                 <i class="fa fa-money"></i> Price range
             </div>
@@ -215,6 +233,7 @@ export default {
             searchParams : {
                 condition : "New"
             },
+            refine_ : "",
             filterCategories : []
         }
     },
@@ -262,6 +281,7 @@ export default {
             Vue.set( self, "isLoading", true );
             self.searchParams.maxrows = parseInt( self.perPage );
             self.searchParams.page = self.currentPage;
+            self.searchParams.refine = self.refine_
             self.getListOfProducts( self.searchParams ).then( productsMap => {
                 self.setPagination( productsMap.meta.pagination );
                 Vue.set( self, "isLoading", false );
@@ -307,6 +327,10 @@ export default {
             if( this.minPrice >= this.maxPrice ){
                 this.minPrice = this.maxPrice - 1;
             }
+            this.fetchProducts();
+        },
+        refine(){
+            //this.searchParam.refine_=this.refine_;
             this.fetchProducts();
         },
 

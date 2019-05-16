@@ -213,6 +213,12 @@ component   table="cbc_products"
                 this.whereWithinCategory( searchCollection.category );
             }
 		}
+
+		if( structKeyExists( searchCollection, "refine" ) && len( searchCollection.refine ) ){
+			var searchTerm = '%' & searchCollection.refine & '%';
+            arguments.builder
+                .where( 'name', 'like', searchTerm );
+		}
 		
 		if( structKeyExists( searchCollection, "condition" ) ){
 			this.scopeWhereCondition( arguments.builder, searchCollection.condition );
