@@ -1,5 +1,7 @@
 import get from "lodash/get";
 import api from "@cbCommerce/api/index";
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
 
 const initialState = {
 	cart 		  : { "items" : [] },
@@ -48,6 +50,12 @@ const actions = {
 						.then(XHR => {
 							context.commit( 'setCartItems', XHR.data );
 							resolve( XHR.data );
+							Swal.fire({
+								type: 'success',
+								title: 'Item Added',
+								showConfirmButton: false,
+								timer: 1500
+							  })
 						})
 						.catch(err => {
 							console.error(err);

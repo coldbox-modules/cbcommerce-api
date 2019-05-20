@@ -94,7 +94,7 @@
                                                         <p class="pickup" >&nbsp;</p>
                                                     </div>
                                                     <p class="description">
-                                                        {{ product.shortDescription }}
+                                                        {{ sku.product.shortDescription }}
                                                     </p>
 
                                                 </div>
@@ -122,7 +122,7 @@
                                         There was an error sending your request.  The reponse received was: {{ contactErrors.join( '. ' ) }}
                                     </p>
                                     <p v-else class="alert alert-success alert-dismissable">
-                                        Thank you, your quote request has been sent!
+                                        Thank you for submitting your request for quote. A sales representative will contact you shorlty!
                                     </p>
                                 </div>
 
