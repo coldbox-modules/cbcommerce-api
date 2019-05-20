@@ -59,7 +59,7 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange"> {{category.name}}</label>
 
-                                <ul :id="`childerns_${category.id}`" v-if="category.children.length" style="display: none;" class="subcategory-links list-unstyled">
+                                <ul :id="`childrens_${category.id}`" v-if="category.children.length" style="display: none;" class="subcategory-links list-unstyled">
                                     <li
                                         v-for="categoryc in category.children"
                                         :key="`subcat_${categoryc.id}`">
@@ -295,8 +295,7 @@ export default {
             } else {
                 this.searchParams.category = this.initialParams.category;
             }
-            let name="#childerns_"+categoryId;
-            console.log(name);
+            let name="#childrens_"+categoryId;
             $(name).toggle();
             this.fetchProducts();
         },
