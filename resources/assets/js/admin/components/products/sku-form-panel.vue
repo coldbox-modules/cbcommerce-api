@@ -201,6 +201,17 @@
 							<b-form-group>
 
 							    <b-form-checkbox 
+									id="pricing-check"
+							    	v-model="form.showPricing" 
+							    	:model.sync="form.showPricing">
+							    	Show Pricing?
+							    </b-form-checkbox>
+
+							</b-form-group>
+
+							<b-form-group>
+
+							    <b-form-checkbox 
 							    	v-model="form.allowBackorder" 
 							    	:model.sync="form.allowBackorder">
 							    	Allow backorder?

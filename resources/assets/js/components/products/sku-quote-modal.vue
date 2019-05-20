@@ -94,6 +94,9 @@
                                                         <p class="pickup" >&nbsp;</p>
                                                     </div>
                                                     <p class="description">
+                                                        {{product.externalId}}
+                                                    </p>
+                                                    <p class="description">
                                                         {{ sku.product.shortDescription }}
                                                     </p>
 

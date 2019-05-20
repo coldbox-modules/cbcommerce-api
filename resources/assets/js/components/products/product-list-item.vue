@@ -51,6 +51,9 @@
                                 <p class="pickup" >&nbsp;</p>
                             </div>
                             <p class="description">
+                                {{product.externalId}}
+                            </p>
+                            <p class="description">
                                 {{ product.shortDescription }}
                             </p>
 

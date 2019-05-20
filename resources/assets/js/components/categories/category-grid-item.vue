@@ -29,7 +29,9 @@
 
                     </div>
                 </div>
-
+                <p class="description">
+                        {{product.externalId}}
+                </p>
                 <p class="description">
                     {{ category.description }}
                 </p>
