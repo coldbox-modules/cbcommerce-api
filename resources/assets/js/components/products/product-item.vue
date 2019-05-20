@@ -19,8 +19,10 @@
                         <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
                         
                         
-                        <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
-                        <div class="product-item-image-placeholder" v-else></div>
+                        <div class="product-item-image" v-if="!productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
+                        <div class="product-item-image-placeholder" v-else>
+                            <p>NO IMAGE AVAILABLE</p>
+                        </div>
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
