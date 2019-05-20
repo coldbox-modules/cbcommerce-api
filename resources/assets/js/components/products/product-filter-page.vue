@@ -330,7 +330,6 @@ export default {
             this.fetchProducts();
         },
         refine(){
-            //this.searchParam.refine_=this.refine_;
             this.fetchProducts();
         },
 
