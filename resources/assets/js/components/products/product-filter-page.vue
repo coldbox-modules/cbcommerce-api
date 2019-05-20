@@ -283,8 +283,8 @@ export default {
             self.searchParams.page = self.currentPage;
             self.searchParams.refine = self.refine_
             self.getListOfProducts( self.searchParams ).then( productsMap => {
-                self.setPagination( productsMap.meta.pagination );
-                Vue.set( self, "isLoading", false );
+            self.setPagination( productsMap.meta.pagination );
+            Vue.set( self, "isLoading", false );
             } );
         },
 
