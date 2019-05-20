@@ -20,8 +20,7 @@
                         
                         
                         <div class="product-item-image" v-if="!productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
-                        <div class="product-item-image-placeholder" v-else>
-                            <p>NO IMAGE AVAILABLE</p>
+                        <div class="product-item-image-placeholder" v-else :style="`background-image:url('../../../../../../../modules/contentbox/modules_user/cbCommerce/includes/static/default-placeholder.png');background-size: 190px;background-repeat: no-repeat;`">
                         </div>
                     </figure>
                     <div class="product-caption">
