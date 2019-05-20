@@ -94,7 +94,7 @@
                                                         <p class="pickup" >&nbsp;</p>
                                                     </div>
                                                     <p class="description">
-                                                        {{ product.shortDescription }}
+                                                        {{ sku.product.shortDescription }}
                                                     </p>
 
                                                 </div>
