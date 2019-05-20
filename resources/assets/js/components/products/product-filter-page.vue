@@ -297,7 +297,6 @@ export default {
             }
             let name="#childrens_"+categoryId;
             $(name).toggle();
-            
             this.fetchProducts();
         },
 
