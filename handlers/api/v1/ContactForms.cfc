@@ -80,7 +80,12 @@ component extends="BaseAPIHandler"{
         // reset our layout to none
         event.noLayout();
 
-        quoteMail.setBody( renderView( view="email/quotes/cart", module="cbCommerce" ) );
+        if(!isNull( prc.cart.getCustomer() ) ){
+            quoteMail.setBody( renderView( view="email/quotes/cart", module="cbCommerce" ) );
+        }else{
+            quoteMail.setBody( renderView( view="email/quotes/cart_anonymous", module="cbCommerce" ) );
+        }
+        
         mailService.send( quoteMail );
 
         prc.response.setStatusCode( status.CREATED ).setData( { "message" : "Your quotation request was successfully sent"} );
