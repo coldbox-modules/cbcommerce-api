@@ -14,9 +14,9 @@
                             class="product-sale" 
                             v-if="hasPricing && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
-                            <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
+                        <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
                         
-                            <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
+                        <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
                         
                         
                         <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
