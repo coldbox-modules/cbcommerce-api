@@ -4,7 +4,7 @@
 
     <div class="col-md-12 productDetailHeader" v-if="currentProduct">
       <div class="col-md-1">
-        <a href="javascript:window.history.back()"><img src="/__media/left-arrow.png" alt="back" id="tb-back" width="35" style="margin-top: 30px;"/></a>
+        <a href="javascript:window.history.back()"><div class="back-button"></div></a>
       </div>
       <div class="col-md-11">
         <h1
