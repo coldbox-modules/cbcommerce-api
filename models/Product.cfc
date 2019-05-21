@@ -213,11 +213,6 @@ component   table="cbc_products"
                 this.whereWithinCategory( searchCollection.category );
             }
 		}
-
-		if( structKeyExists( searchCollection, "refine" ) && len( searchCollection.refine ) ){
-			var searchTerm = '%' & searchCollection.refine & '%';
-            arguments.builder.where( 'name', 'like', searchTerm );
-		}
 		
 		if( structKeyExists( searchCollection, "condition" ) ){
 			this.scopeWhereCondition( arguments.builder, searchCollection.condition );
@@ -240,7 +235,22 @@ component   table="cbc_products"
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
-			arguments.builder
+
+			if( structKeyExists( searchCollection, "refine" ) && len( searchCollection.refine )){
+				var searchTermRef = '%' & searchCollection.refine & '%';
+				arguments.builder
+                .where( 'name', 'like', searchTerm ).andWhere( 'name', 'like', searchTermRef )
+                .orWhere( 'shortDescription', 'like', searchTerm ).andWhere( 'shortDescription', 'like', searchTermRef )
+				.orWhere( 'description', 'like', searchTerm ).andWhere( 'description', 'like', searchTermRef )
+				.orwhereExists( 
+					function( subQuery ){
+						return subQuery.from( 'cbc_SKUs SKUs' )
+						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
+						.where( 'SKUs.modelNumber' , searchCollection.search );	
+				}
+			);
+			}else{
+				arguments.builder
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
 				.orWhere( 'description', 'like', searchTerm )
@@ -251,6 +261,7 @@ component   table="cbc_products"
 						.where( 'SKUs.modelNumber' , searchCollection.search );
 				}
 			);
+			}
 		}
 
 		if( structKeyExists( searchCollection, "modelNumber" ) ){
