@@ -20,7 +20,8 @@
                         
                         
                         <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
-                        <div class="product-item-image-placeholder" v-else></div>
+                        <div class="product-item-image-placeholder" v-else>
+                        </div>
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
