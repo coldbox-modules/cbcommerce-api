@@ -14,13 +14,13 @@
                             class="product-sale" 
                             v-if="hasPricing && product.startingPrice.basePrice < product.startingPrice.MSRP">{{ percentOff }}% <br> off</div>
 
-                        <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
+                            <wishlist-add-icon :skuId="product.startingPrice.SKU"></wishlist-add-icon>
                         
-                        <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
+                            <comparison-add-icon :skuId="product.startingPrice.SKU"></comparison-add-icon>
                         
                         
-                        <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
-                        <div class="product-item-image-placeholder" v-else :style="`background-image:url('../../../../../../../modules/contentbox/modules_user/cbCommerce/includes/static/default-placeholder.png');background-size: 190px;background-repeat: no-repeat;`">
+                        <div class="product-item-image" v-if="!productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
+                        <div class="product-item-image-placeholder" v-else>
                         </div>
                     </figure>
                     <div class="product-caption">
