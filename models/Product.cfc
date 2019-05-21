@@ -238,8 +238,8 @@ component   table="cbc_products"
 
 			if( structKeyExists( searchCollection, "refine" ) && len( searchCollection.refine )){
 				var searchTermRef = '%' & searchCollection.refine & '%';
-				arguments.builder
-                .where( 'name', 'like', searchTerm ).andWhere( 'name', 'like', searchTermRef )
+				arguments.builder.where( 'name', 'like', searchTerm )
+				.andWhere( 'name', 'like', searchTermRef )
                 .orWhere( 'shortDescription', 'like', searchTerm ).andWhere( 'shortDescription', 'like', searchTermRef )
 				.orWhere( 'description', 'like', searchTerm ).andWhere( 'description', 'like', searchTermRef )
 				.orwhereExists( 
