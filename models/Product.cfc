@@ -240,8 +240,10 @@ component   table="cbc_products"
 				var searchTermRef = '%' & searchCollection.refine & '%';
 				arguments.builder.where( 'name', 'like', searchTerm )
 				.andWhere( 'name', 'like', searchTermRef )
-                .orWhere( 'shortDescription', 'like', searchTerm ).andWhere( 'shortDescription', 'like', searchTermRef )
-				.orWhere( 'description', 'like', searchTerm ).andWhere( 'description', 'like', searchTermRef )
+				.orWhere( 'shortDescription', 'like', searchTerm )
+				.andWhere( 'shortDescription', 'like', searchTermRef )
+				.orWhere( 'description', 'like', searchTerm )
+				.andWhere( 'description', 'like', searchTermRef )
 				.orwhereExists( 
 					function( subQuery ){
 						return subQuery.from( 'cbc_SKUs SKUs' )
