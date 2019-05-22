@@ -283,7 +283,7 @@ const mutations = {
 	updateSKUImage(state, mediaItem) {
 		let skuIndex = state.activeProduct.skus.findIndex(found => found.id === mediaItem.FK_sku);
 		let mediaIndex = state.activeProduct.skus[ skuIndex ].media.findIndex( found => found.id === mediaItem.id );
-		state.activeProduct.skus[skuIndex].media.slice( mediaIndex, 1, mediaItem );
+		state.activeProduct.skus[skuIndex].media.splice( mediaIndex, 1, mediaItem );
 	},
 	removeSKUImage(state, mediaItem) {
 		let skuIndex = state.activeProduct.skus.findIndex(found => found.id === mediaItem.FK_sku);
@@ -300,7 +300,7 @@ const mutations = {
 	updateSKU( state, sku ){
 		let skuIndex = state.activeProduct.skus.findIndex( found => found.id === sku.id );
 		if( skuIndex > -1 ){
-			state.activeProduct.skus.slice( skuIndex, 1, sku );
+			state.activeProduct.skus.splice( skuIndex, 1, sku );
 		} else {
 			state.activeProduct.skus.push( sku );
 		}

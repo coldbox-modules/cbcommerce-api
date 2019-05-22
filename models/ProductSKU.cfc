@@ -28,7 +28,7 @@ component   table="cbc_SKUs"
 	property name="conditionDescription" type="string";
 	property name="displayOrder" type="numeric" default=0;
 	// an external reference id used for syncing data between systems
-	property name="modelNumber" type="string";
+	property name="modelNumber" type="string" sqltype="varchar";
 	property name="externalId" type="string";
 	
 	//Foreign Keys
