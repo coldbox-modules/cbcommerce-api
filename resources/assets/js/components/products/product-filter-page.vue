@@ -4,16 +4,16 @@
 
         <div class="col-md-3">
             <div class="widget-title first-widget">
-                <i class="fa fa-search"></i> Refine Search
+                <i class="fa fa-search"></i> Search
             </div>
             <div class="widget-block">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="input-group">
                             <input 
-                                @keyup.tab="refine()"
-                                @keyup.enter="refine()"
-                                @change="refine()"
+                                @keyup.tab="fetchProducts()"
+                                @keyup.enter="fetchProducts()"
+                                @change="fetchProducts()"
                                 type="text" 
                                 id="refine-from" 
                                 class="form-control"
@@ -281,7 +281,7 @@ export default {
             Vue.set( self, "isLoading", true );
             self.searchParams.maxrows = parseInt( self.perPage );
             self.searchParams.page = self.currentPage;
-            self.searchParams.refine = self.refine_
+            self.searchParams.search = self.refine_
             self.getListOfProducts( self.searchParams ).then( productsMap => {
             self.setPagination( productsMap.meta.pagination );
             Vue.set( self, "isLoading", false );
@@ -331,10 +331,6 @@ export default {
             }
             this.fetchProducts();
         },
-        refine(){
-            this.fetchProducts();
-        },
-
         maxPriceRangeChange(){
             if( isNaN( this.maxPrice ) || this.maxPrice == 0 ){ 
                 delete this.searchParams.maximumPrice
