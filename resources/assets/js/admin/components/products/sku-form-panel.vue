@@ -141,24 +141,20 @@
 								</b-input-group>
 							</b-form-group>
 
-							<b-form-group>
-
-							    <b-form-checkbox 
-							    	v-model="form.isActive" 
-							    	:model.sync="form.isActive">
-							    	Is SKU active?
-							    </b-form-checkbox>
-
+							<b-form-group label="Is SKU active?">
+								 <b-form-radio-group
+									v-model="form.isActive"
+									:options="booleanOptions"
+									name="isActive"
+								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group>
-
-							    <b-form-checkbox 
-							    	v-model="form.isConsigned" 
-							    	:model.sync="form.isConsigned">
-							    	Is Consignment Product
-							    </b-form-checkbox>
-
+							<b-form-group label="Is Consignment Product">
+								 <b-form-radio-group
+									v-model="form.isConsigned"
+									:options="booleanOptions"
+									name="isConsigned"
+								></b-form-radio-group>
 							</b-form-group>
 
 							<b-form-group v-if="form.isConsigned">
@@ -177,35 +173,36 @@
 								<consignor-form v-if="!form.consignor || !form.consignor.id" :consignor="form.consignor"></consignor-form>
 							</b-form-group>
 
-							<b-form-group>
-
-							    <b-form-checkbox 
-							    	v-model="form.isVirtual" 
-							    	:model.sync="form.isVirtual">
-							    	Is this a virtual/downloadable product?
-							    </b-form-checkbox>
-
+							<b-form-group label="Is this a virtual/downloadable product?">
+								 <b-form-radio-group
+									v-model="form.isVirtual"
+									:options="booleanOptions"
+									name="isVirtual"
+								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group>
-
-							    <b-form-checkbox 
-									id="pick-up-check"
-							    	v-model="form.pickUpInStore" 
-							    	:model.sync="form.pickUpInStore">
-							    	Is Pick-Up In Store Only?
-							    </b-form-checkbox>
-
+							<b-form-group label="In-Store Pick Up Only?">
+								 <b-form-radio-group
+									v-model="form.pickUpInStore"
+									:options="booleanOptions"
+									name="pickUpInStore"
+								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group>
+							<b-form-group label="Show Pricing on Site?">
+								 <b-form-radio-group
+									v-model="form.showPricing"
+									:options="booleanOptions"
+									name="showPricing"
+								></b-form-radio-group>
+							</b-form-group>
 
-							    <b-form-checkbox 
-							    	v-model="form.allowBackorder" 
-							    	:model.sync="form.allowBackorder">
-							    	Allow backorder?
-							    </b-form-checkbox>
-
+							<b-form-group label="Allow backorder?">
+								 <b-form-radio-group
+									v-model="form.allowBackorder"
+									:options="booleanOptions"
+									name="allowBackorder"
+								></b-form-radio-group>
 							</b-form-group>							
 
 							<b-form-group
@@ -336,7 +333,11 @@ export default {
 		return {
 			form: new Form(),
 			eventPrefix : "activeSKU_",
-			consignors : { results : [], resultsMap : {} }
+			consignors : { results : [], resultsMap : {} },
+			booleanOptions : [
+				{ text: 'Yes', value: true },
+				{ text: 'No', value: false }
+			]
 		};
 	},
 

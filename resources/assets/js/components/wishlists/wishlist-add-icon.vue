@@ -7,7 +7,6 @@
                 :title="$t('wishlist_add_item')"
                 class="addToCart has-tooltip product-wishlist tooltip-target">
                 <i :class="targetIconClass"></i>
-                {{ $t('wishlist_add_item') }}
             </a>
 
             <template slot="popover" class="text-center">

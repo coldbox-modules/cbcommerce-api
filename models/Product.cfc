@@ -235,23 +235,6 @@ component   table="cbc_products"
 
 		if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
 			var searchTerm = '%' & searchCollection.search & '%';
-
-			if( structKeyExists( searchCollection, "refine" ) && len( searchCollection.refine )){
-				var searchTermRef = '%' & searchCollection.refine & '%';
-				arguments.builder.where( 'name', 'like', searchTerm )
-				.andWhere( 'name', 'like', searchTermRef )
-				.orWhere( 'shortDescription', 'like', searchTerm )
-				.andWhere( 'shortDescription', 'like', searchTermRef )
-				.orWhere( 'description', 'like', searchTerm )
-				.andWhere( 'description', 'like', searchTermRef )
-				.orwhereExists( 
-					function( subQuery ){
-						return subQuery.from( 'cbc_SKUs SKUs' )
-						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
-						.where( 'SKUs.modelNumber' , searchCollection.search );	
-				}
-			);
-			}else{
 				arguments.builder
                 .where( 'name', 'like', searchTerm )
                 .orWhere( 'shortDescription', 'like', searchTerm )
@@ -263,7 +246,6 @@ component   table="cbc_products"
 						.where( 'SKUs.modelNumber' , searchCollection.search );
 				}
 			);
-			}
 		}
 
 		if( structKeyExists( searchCollection, "modelNumber" ) ){

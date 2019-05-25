@@ -20,7 +20,8 @@
                         
                         
                         <div class="product-item-image" v-if="productImageSrc.length" :style="`background-image:url(${productImageSrc})`"></div>
-                        <div class="product-item-image-placeholder" v-else></div>
+                        <div class="product-item-image-placeholder" v-else>
+                        </div>
                     </figure>
                     <div class="product-caption">
                         <div class="block-name">
@@ -46,6 +47,9 @@
                     <div v-else>
                         <p class="pickup" >&nbsp;</p>
                     </div>
+                    <p class="description">
+                        {{product.externalId}}
+                    </p>
                     <p class="description">
                         {{ product.shortDescription | removeHTML( 65 ) }}
                     </p>
