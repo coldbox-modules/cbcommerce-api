@@ -87,10 +87,10 @@
                                                         </div>
 
                                                     </div>
-                                                    <div v-if="sku.pickUpInStore">
+                                                    <div v-if="sku.pickUpInStore" class="round_section_label">
                                                         <p class="pickup" >In Store Pick Up</p>
                                                     </div>
-                                                    <div v-else>
+                                                    <div v-else class="round_section_label_dis">
                                                         <p class="pickup" >&nbsp;</p>
                                                     </div>
                                                     <p class="description">

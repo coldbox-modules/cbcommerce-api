@@ -26,33 +26,28 @@
                     <div class="product-caption">
                         <div class="block-name">
                             <a :href="`/store/product/${product.id}`" class="product-name">{{ product.name | removeHTML( 100 ) }}</a>
-
-                            <div v-if="hasPricing">
-                                <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
-                                    <span>{{ product.startingPrice.MSRP | currency }}</span> {{ product.startingPrice.basePrice | currency }}
+                                <div v-if="hasPricing">
+                                    <div v-if="product.startingPrice.basePrice < product.startingPrice.MSRP" class="priceWithDiscount">
+                                        <span>{{ product.startingPrice.MSRP | currency }}</span> {{ product.startingPrice.basePrice | currency }}
+                                    </div>
+                                    <div v-else>
+                                        <p class="product-price">{{ product.startingPrice.basePrice | currency }}</p>
+                                    </div>
                                 </div>
                                 <div v-else>
-                                    <p class="product-price">{{ product.startingPrice.basePrice | currency }}</p>
+                                    <p class="product-price">&nbsp;</p>
                                 </div>
-                            </div>
-                            <div v-else>
-                                <p class="product-price">&nbsp;</p>
-                            </div>
-
                         </div>
                     </div>
-                    <div v-if="product.startingPrice.pickUpInStore">
-                        <p class="pickup" >In Store Pick Up</p>
-                    </div>
-                    <div v-else>
-                        <p class="pickup" >&nbsp;</p>
-                    </div>
-                    <p class="description">
+                    <p class="tag_number">
                         {{product.externalId}}
                     </p>
-                    <p class="description">
-                        {{ product.shortDescription | removeHTML( 65 ) }}
-                    </p>
+                    <div v-if="product.startingPrice.pickUpInStore" class="round_section_label">
+                        <p class="pickup" >In Store Pick Up</p>
+                    </div>
+                    <div v-else class="round_section_label_dis">
+                        <p class="pickup" >&nbsp;</p>
+                    </div>
 
                     <div v-if="hasPricing" class="product-cart">
                         <a 

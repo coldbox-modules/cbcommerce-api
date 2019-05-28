@@ -77,7 +77,7 @@
                                     :value="category.id"
                                     @change="categoriesFilterChange"> {{category.name}}</label>
 
-                                <ul :id="`childrens_${category.id}`" v-if="category.children.length" style="display: none;" class="subcategory-links list-unstyled">
+                                <ul :id="`childrens_${category.id}`" v-if="category.children.length" style="display: none;" class="subcategory-children-links list-unstyled">
                                     <li
                                         v-for="categoryc in category.children"
                                         :key="`subcat_${categoryc.id}`">
