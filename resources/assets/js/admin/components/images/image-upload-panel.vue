@@ -54,26 +54,23 @@
 									</b-form-textarea>
 								</b-form-group>
 
+                <b-form-group label="Enable the image">
+                     <b-form-radio-group
+                     v-model="form.isActive"
+                     :options="booleanOptions"
+                     name="isActive"
+                     ></b-form-radio-group>
+                 </b-form-group>
 
 								<b-form-group>
 
-									<b-form-checkbox id="imageIsActive"
-										v-model="form.isActive"
-										value="true"
-										unchecked-value="false">
-										Enable the image
-									</b-form-checkbox>
-
-								</b-form-group>
-
-								<b-form-group>
-
-									<b-form-checkbox id="imageIsPrimary"
-										v-model="form.isPrimary"
-										value="true"
-										unchecked-value="false">
-										Set as the primary image
-									</b-form-checkbox>								
+                <b-form-group label="Set as the primary image">
+                			<b-form-radio-group
+                			v-model="form.isPrimary"
+                			:options="booleanOptions"
+                      name="isPrimary"
+                      ></b-form-radio-group>
+                </b-form-group>							
 
 								</b-form-group>
 
@@ -129,7 +126,11 @@ export default {
 			dropzoneOptions: {
 				url: this.endpoint,
 				thumbnailWidth: 150,
-				maxFilesize: 100
+				maxFilesize: 100,
+        booleanOptions : [
+            { text: 'Yes', value: true },
+            { text: 'No', value: false }
+        ]
 			}
 		}
 	},

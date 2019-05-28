@@ -36,16 +36,12 @@
 
 		    </b-row>
 		    
-		    <b-form-group>
-
-				<b-form-group label="Enable Product">
-				 	<b-form-radio-group
-						v-model="form.isActive"
-						:options="booleanOptions"
-						name="isActive"
-					></b-form-radio-group>
-				</b-form-group>
-
+			<b-form-group label="Enable Product">
+			 	<b-form-radio-group
+					v-model="form.isActive"
+					:options="booleanOptions"
+					name="isActive"
+				></b-form-radio-group>
 			</b-form-group>
 
 		    <b-row>

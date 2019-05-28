@@ -75,17 +75,13 @@
 			    <b-row>
 			        
 			        <b-col cols="12">
-
-			             <b-form-group>
-
-						    <b-form-checkbox 
-						    	v-model="form.isActive" 
-						    	:model.sync="form.isActive">
-						    	Enable Category
-						    </b-form-checkbox>
-
+						<b-form-group label="Enable Category">
+							<b-form-radio-group
+								v-model="form.isActive"
+								:options="booleanOptions"
+								name="isActive"
+							></b-form-radio-group>
 						</b-form-group>
-
 			        </b-col>
 
 			    </b-row>
@@ -133,7 +129,11 @@ export default {
 			errors        : [],
 			isSent        : false,
 			isSending     : false,
-			categoryImages: []
+			categoryImages: [],
+			booleanOptions : [
+				{ text: 'Yes', value: true },
+				{ text: 'No', value: false }
+			]
         }
     },
 
