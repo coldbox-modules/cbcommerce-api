@@ -3,7 +3,25 @@
     <div>
 
         <div class="col-md-3">
-
+            <div class="widget-title first-widget">
+                <i class="fa fa-search"></i> Search
+            </div>
+            <div class="widget-block">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input 
+                                @keyup.tab="fetchProducts()"
+                                @keyup.enter="fetchProducts()"
+                                @change="fetchProducts()"
+                                type="text" 
+                                id="refine-from" 
+                                class="form-control"
+                                v-model="refine_"/>
+                        </div>
+                    </div>
+                </div> 
+            </div>
             <div class="widget-title first-widget">
                 <i class="fa fa-money"></i> Price range
             </div>
@@ -215,6 +233,7 @@ export default {
             searchParams : {
                 condition : "New"
             },
+            refine_ : "",
             filterCategories : []
         }
     },
@@ -262,9 +281,10 @@ export default {
             Vue.set( self, "isLoading", true );
             self.searchParams.maxrows = parseInt( self.perPage );
             self.searchParams.page = self.currentPage;
+            self.searchParams.search = self.refine_
             self.getListOfProducts( self.searchParams ).then( productsMap => {
-                self.setPagination( productsMap.meta.pagination );
-                Vue.set( self, "isLoading", false );
+            self.setPagination( productsMap.meta.pagination );
+            Vue.set( self, "isLoading", false );
             } );
         },
 
@@ -311,7 +331,6 @@ export default {
             }
             this.fetchProducts();
         },
-
         maxPriceRangeChange(){
             if( isNaN( this.maxPrice ) || this.maxPrice == 0 ){ 
                 delete this.searchParams.maximumPrice

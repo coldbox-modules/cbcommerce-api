@@ -34,7 +34,6 @@
             :title="$t('wishlist_add_item')"
             v-bind:class="{ 'addToCart has-tooltip':true ,'product-wishlist' : true, 'in-wishlist' : inDefaultWishlist }">
             <i :class="targetIconClass"></i>
-            {{ $t('wishlist_add_item') }}
         </a>
         <br/>
     </span>
