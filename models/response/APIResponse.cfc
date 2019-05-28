@@ -1,8 +1,8 @@
 /**
  *
  * @displayname API Response
- * @package AvoyaSearch.models.responses
- * @description This is the API Response object for Avoya Search API endpoints
+ * @package cbCommerce.models.responses
+ * @description This is the API Response object cbCommerce API endpoints
  * @author Jon Clausen <jclausen@ortussolutions.com>
  *
  **/
