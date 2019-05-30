@@ -80,11 +80,7 @@ component extends="BaseAPIHandler"{
         // reset our layout to none
         event.noLayout();
 
-        if(!isNull( prc.cart.getCustomer() ) ){
-            quoteMail.setBody( renderView( view="email/quotes/cart", module="cbCommerce" ) );
-        }else{
-            quoteMail.setBody( renderView( view="email/quotes/cart_anonymous", module="cbCommerce" ) );
-        }
+        quoteMail.setBody( renderView( view="email/quotes/cart", module="cbCommerce" ) );
         
         mailService.send( quoteMail );
 

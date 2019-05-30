@@ -2,14 +2,14 @@
     #renderView( view="email/inc/open", module="cbCommerce" )#
     <p>A request for a custom quotation has been received at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
     <h5>Name</h5>
-    <p>#prc.cart.getCustomer().getFullName()#</p>
+    <p>#rc.name#</p>
     <h5>Email</h5>
-    <p><a href="mailto:#prc.cart.getCustomer().getEmail()#">#prc.cart.getCustomer().getEmail()#</a></p>
+    <p><a href="mailto:#rc.email#">#rc.email#</a></p>
     <h5>Phone</h5>
 
     <p>
-        <cfif len( prc.cart.getCustomer().getPrimaryPhone() )>
-            <a href="tel:#encodeForHTMLAttribute( prc.cart.getCustomer().getPrimaryPhone() )#">#prc.cart.getCustomer().getPrimaryPhone()#</a>
+        <cfif len(rc.phone)>
+            <a href="tel:#encodeForHTMLAttribute( rc.phone )#">#rc.phone#</a>
         <cfelse>
             Not Provided
         </cfif>
