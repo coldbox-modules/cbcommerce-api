@@ -27,9 +27,10 @@ component extends="contentbox.models.ui.BaseWidget" singleton{
 	*/
 	any function renderIt(
 		numeric max=3,
-		string category=""
+		string category="",
+		string sortOrder="order ASC"
 	){
-		var contentResults = contentStoreService.findPublishedContent( max=arguments.max, category=arguments.category );
+		var contentResults = contentStoreService.findPublishedContent( max=arguments.max, category=arguments.category, sortOrder=arguments.sortOrder );
 		var slides = [];
 		var rString			= "";
 
