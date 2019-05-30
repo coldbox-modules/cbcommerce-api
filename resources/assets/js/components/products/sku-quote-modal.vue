@@ -6,7 +6,27 @@
                     <form @submit.prevent="handleSubmit">
 
                         <div class="modal-header header-for-light">
-                            <h1>Request a Quote for <span v-if="sku" v-html="sku.product.name"></span></h1>
+                                     <article class="product list" v-if="sku">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-4 col-md-4 text-center">
+                                                <figure class="figure-hover-overlay text-center">                                                                        
+                                                    <a :href="`/store/product/${sku.product.id}`" class="figure-href"></a>
+
+                                                    <div class="product-item-image" v-if="skuImageSrc.length" :style="`background-image:url(${skuImageSrc})`"></div>
+                                                    <div class="product-item-image-placeholder" v-else></div>
+
+                                                </figure>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-8 col-md-8">
+                                                <div class="product-caption">
+                                                
+                                                    <div class="block-name">
+                                                        <h4>Request a Quote for <span v-if="sku" v-html="sku.product.name"></span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
                         </div>
 
                         <div class="modal-body">
@@ -57,54 +77,6 @@
                                             <input type="text" v-model="formData.hpInfo"/>
                                         </div>
                                     </div>
-                                    <article class="product list" v-if="sku">
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-4 col-md-4 text-center">
-                                                <figure class="figure-hover-overlay text-center">                                                                        
-                                                    <a :href="`/store/product/${sku.product.id}`" class="figure-href"></a>
-
-                                                    <div class="product-item-image" v-if="skuImageSrc.length" :style="`background-image:url(${skuImageSrc})`"></div>
-                                                    <div class="product-item-image-placeholder" v-else></div>
-
-                                                </figure>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-8 col-md-8">
-                                                <div class="product-caption">
-                                                
-                                                    <div class="block-name">
-                                                        <a :href="`/store/product/${sku.product.id}`" class="product-name">{{ sku.product.name | removeHTML( 100 ) }}</a>
-
-                                                        <div v-if="sku && sku.basePrice && sku.showPricing">
-                                                            <div v-if="sku.basePrice < sku.MSRP" class="priceWithDiscount">
-                                                                <span>{{ sku.MSRP | currency }}</span> {{ sku.basePrice | currency }}
-                                                            </div>
-                                                            <div v-else>
-                                                                <p class="product-price">{{ sku.basePrice | currency }}</p>
-                                                        </div>
-                                                        </div>
-                                                        <div v-else>
-                                                            <p class="product-price">&nbsp;</p>
-                                                        </div>
-
-                                                    </div>
-                                                    <div v-if="sku.pickUpInStore" class="round_section_label">
-                                                        <p class="pickup" >In Store Pick Up</p>
-                                                    </div>
-                                                    <div v-else class="round_section_label_dis">
-                                                        <p class="pickup" >&nbsp;</p>
-                                                    </div>
-                                                    <p class="description">
-                                                        {{sku.product.externalId}}
-                                                    </p>
-                                                    <p class="description">
-                                                        {{ sku.product.shortDescription }}
-                                                    </p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="inputText" class="control-label">Message/Additional Items Requested:</label>
@@ -112,7 +84,7 @@
                                                 <textarea
                                                     class="form-control"
                                                     id="inputText"
-                                                    :rows="10"
+                                                    :rows="5"
                                                     v-model="formData.message"
                                                 ></textarea>
                                             </div>
@@ -166,6 +138,7 @@
 <script>
 import moment from "moment";
 import { mapState, mapGetters, mapActions } from "vuex";
+import Swal from 'sweetalert2'
 export default{
     props : {
         skuId : {
@@ -251,7 +224,14 @@ export default{
 							message : '',
 							hpInfo  : ''
 						}
-					);
+                    );
+                    this.closeModal();
+                    Swal.fire({
+						type: 'success',
+						title: 'Thank you for submitting your request for quote. A sales representative will contact you shorlty!',
+						showConfirmButton: false,
+						timer: 5000
+					})
 				})
 				.catch(err => {
 					if( err.response.data.messages.length ){
@@ -260,7 +240,13 @@ export default{
 						self.contactErrors.push( "An error occurred while attempting to send your message" );
 					}
 					self.isSent    = true;
-					self.isSending = false;
+                    self.isSending = false;
+                    Swal.fire({
+						type: 'error',
+						title: 'There was an error sending your request.',
+						showConfirmButton: false,
+						timer: 5000
+					})
 				});
 
 	        

@@ -5,7 +5,7 @@
                 <div class="modal-container">
                     <form @submit.prevent="handleSubmit">
                         <div class="modal-header header-for-light">
-                            <h1><span>Request a Quote for {{cart.items.length}} Items in Your Cart</span></h1>
+                            <h2><span>Request a Quote for {{cart.items.length}} Items in Your Cart</span></h2>
                         </div>
 
                         <div class="modal-body">
@@ -63,7 +63,7 @@
                                                 <textarea
                                                     class="form-control"
                                                     id="inputText"
-                                                    :rows="10"
+                                                    :rows="5"
                                                     v-model="formData.message"></textarea>
                                             </div>
                                         </div>
@@ -116,6 +116,7 @@
 <script>
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
+import Swal from 'sweetalert2'
 export default{
     data(){
         return {
@@ -180,7 +181,14 @@ export default{
 							message : '',
 							hpInfo  : ''
 						}
-					);
+                    );
+                    this.closeModal();
+                    Swal.fire({
+						type: 'success',
+						title: 'Thank you for submitting your request for quote. A sales representative will contact you shorlty!',
+						showConfirmButton: false,
+						timer: 5000
+					})
 				})
 				.catch(err => {
 					if( err.response.data.messages.length ){
@@ -189,7 +197,13 @@ export default{
 						self.contactErrors.push( "An error occurred while attempting to send your message" );
 					}
 					self.isSent    = true;
-					self.isSending = false;
+                    self.isSending = false;
+                    Swal.fire({
+						type: 'error',
+						title: 'There was an error sending your request.',
+						showConfirmButton: false,
+						timer: 5000
+					})
 				});
 
 	        
