@@ -29,11 +29,8 @@
 
                     </div>
                 </div>
-                <p class="description">
+                <p class="tag_number">
                         {{product.externalId}}
-                </p>
-                <p class="description">
-                    {{ category.description }}
                 </p>
 
                 <sub-category-links 

@@ -244,7 +244,7 @@ component   table="cbc_products"
 						return subQuery.from( 'cbc_SKUs SKUs' )
 						.whereColumn( 'cbc_products.id', 'SKUs.FK_product'  )
 						.where( 'SKUs.modelNumber' , searchCollection.search )
-						.orWhere( 'SKUs.externalId' , searchCollection.search );
+						.orWhere( 'SKUs.externalId' ,'like', searchCollection.search );
 				}
 			);
 		}
