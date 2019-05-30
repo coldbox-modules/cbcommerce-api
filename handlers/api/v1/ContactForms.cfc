@@ -62,6 +62,7 @@ component extends="BaseAPIHandler"{
     //( POST ) /api/v1/quote-request/cart
     function cartQuote( event, rc, prc ){
         paramRequest( argumentCollection = arguments );
+
         if( prc.response.getError() ) return;
         
         prc.cart = getInstance( "CartService@cbCommerce" ).getActiveCart();
@@ -75,6 +76,7 @@ component extends="BaseAPIHandler"{
             from=structKeyExists( prc, "authenticatedUser" ) ? prc.authenticatedUser.getEmail() : rc.email,
             subject=subject
         );
+        
         // Prepare our contentbox
         getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
         // reset our layout to none
