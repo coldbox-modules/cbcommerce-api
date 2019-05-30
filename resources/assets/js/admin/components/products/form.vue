@@ -36,16 +36,12 @@
 
 		    </b-row>
 		    
-		    <b-form-group>
-
-			    <b-form-checkbox 
-			    	v-model="form.isActive" 
-			    	:model.sync="form.isActive"
-					:true-value="1"
-					:false-value="0">
-			    	Enable Product
-			    </b-form-checkbox>
-
+			<b-form-group label="Enable Product">
+			 	<b-form-radio-group
+					v-model="form.isActive"
+					:options="booleanOptions"
+					name="isActive"
+				></b-form-radio-group>
 			</b-form-group>
 
 		    <b-row>
@@ -245,7 +241,11 @@ export default {
 				basePrice: {},
 				isActive : {},
 				actions: {}
-			}
+			},
+			booleanOptions : [
+				{ text: 'Yes', value: true },
+				{ text: 'No', value: false }
+			]
         }
     },
 
