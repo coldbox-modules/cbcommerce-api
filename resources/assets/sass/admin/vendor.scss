@@ -1,4 +1,4 @@
-@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/font-awesome-sass/assets/stylesheets/font-awesome";
-@import "node_modules/summernote/dist/summernote";
-@import "node_modules/pretty-checkbox/dist/pretty-checkbox";
+@import "node_modules/summernote/src/less/summernote.scss";
+@import "node_modules/pretty-checkbox/src/pretty-checkbox.scss";

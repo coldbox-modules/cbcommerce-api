@@ -1,6 +1,6 @@
 <cfoutput>
     #renderView( view="email/inc/open", module="cbCommerce" )#
-    <p>A request for a custom quotation has been received at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
+    <p>A request for a custom shopping cart quotation has been received at <a href="#cb.linkHome()#">#cb.linkHome()#</a></p>
     <h5>Name</h5>
     <p>#rc.name#</p>
     <h5>Email</h5>
