@@ -1,0 +1,16 @@
+{
+    "debug": true,
+    "trace" : true,
+    "jvm": {
+        "heapSize": 512,
+        "minHeapSize": 256
+    },
+    "app":{
+        "cfengine":"adobe@2016"
+    },
+    "web":{
+        "rewrites":{
+            "enable":true
+        }
+    }
+}
