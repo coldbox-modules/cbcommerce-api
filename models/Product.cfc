@@ -305,10 +305,7 @@ component   table="cbc_products"
 	}
 
 	function getRequiredOptions(){
-		if( isSimpleValue( variables.requiredOptions ) ){
-			assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), deserializeJSON( variables.requiredOptions ) );
-		}
-		return variables.requiredOptions;
+		return deserializeJSON( variables.requiredOptions );
 	}
 
 	function setRequiredOptions( any options ){
