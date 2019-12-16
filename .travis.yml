@@ -11,9 +11,8 @@ env:
     - TARGET_VERSION=1.0.0
   matrix:
     - ENGINE=lucee@5
-    - ENGINE=adobe@11
     - ENGINE=adobe@2016
-    #- ENGINE=adobe@2018
+    - ENGINE=adobe@2018
 
 branches:
   only:
