@@ -7,11 +7,16 @@ www.ortussolutions.com
 component{
 
 	// APPLICATION CFC PROPERTIES
-	this.name 				= "ColdBoxTestingSuite" & hash(getCurrentTemplatePath());
+	this.name 				= "CbCommerce-TestingSuite" & hash(getCurrentTemplatePath());
 	this.sessionManagement 	= true;
 	this.sessionTimeout 	= createTimeSpan( 0, 0, 15, 0 );
 	this.applicationTimeout = createTimeSpan( 0, 0, 15, 0 );
 	this.setClientCookies 	= true;
+
+	// Add Environment Access
+	system = createObject( "java", "java.lang.System" );
+	systemEnv = system.getenv();
+
 
 	// Create testing mapping
 	this.mappings[ "/tests" ] = getDirectoryFromPath( getCurrentTemplatePath() );
@@ -19,10 +24,42 @@ component{
 	// The application root
 	rootPath = REReplaceNoCase( this.mappings[ "/tests" ], "tests(\\|/)", "" );
 	this.mappings[ "/root" ]   = rootPath;
-
+	
+	this.mappings[ '/config' ]           = rootPath & "config";
+	this.mappings[ "/coldbox" ]          = rootPath & "lib/frameworks/coldbox";
+	this.mappings[ "/testbox" ]          = rootPath & "lib/frameworks/testbox";	
+	this.mappings[ "/contentbox-deps" ]  = rootPath & "modules/contentbox/modules/contentbox-deps";
+	this.mappings[ "/cborm" ] 	 		 = this.mappings[ "/contentbox-deps" ] & "/modules/cborm";
+	
 	// UPDATE THE NAME OF THE MODULE IN TESTING BELOW
 	request.MODULE_NAME = "cbCommerce";
-	this.datasource = "cbc_testing";
+	this.datasource = "contentbox";
+	// ORM SETTINGS
+	this.ormEnabled = true;
+	this.ormSettings = {
+		// ENTITY LOCATIONS, ADD MORE LOCATIONS AS YOU SEE FIT
+		cfclocation=[ "models", "modules", "modules_app" ],
+		// DO NOT REMOVE THE FOLLOWING LINE OR AUTO-UPDATES MIGHT FAIL.
+		dbcreate = "update",
+		// GET SECONDARY CACHE FROM ENV VARIABLE
+		secondarycacheenabled = structKeyExists( systemEnv, "ORM_SECONDARY_CACHE" ) ? systemEnv[ "ORM_SECONDARY_CACHE" ] : false,
+		cacheprovider		= "EhCache",
+		// ORM SESSION MANAGEMENT SETTINGS, DO NOT CHANGE
+		logSQL 				= false,
+		flushAtRequestEnd 	= false,
+		autoManageSession	= false,
+		// ORM EVENTS MUST BE TURNED ON FOR CONTENTBOX TO WORK
+		eventHandling 		= true,
+		eventHandler		= "cborm.models.EventHandler",
+		// THIS IS ADDED SO OTHER CFML ENGINES CAN WORK WITH CONTENTBOX
+		skipCFCWithError	= true
+	};
+
+	// Dialect Overrides via environment
+	if( structKeyExists( systemEnv, "ORM_DIALECT" ) ){
+		this.ormSettings[ "dialect" ] = systemEnv[ "ORM_DIALECT" ];
+	}
+
 
 	this.mappings[ "/coldbox" ]    = rootPath & "coldbox";
     this.mappings[ "/quick" ]      = rootPath & "modules/quick";
