@@ -1,0 +1,5 @@
+# MariaDB database server configuration file.
+
+[mysqld]
+bind-address		= 0.0.0.0
+old_passwords       = 1
