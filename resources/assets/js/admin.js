@@ -9,6 +9,7 @@ import Grid from 'vue-js-grid';
 import VueCurrencyFilter from 'vue-currency-filter';
 import VueCharts from 'vue-chartjs';
 import VueNestable from "vue-nestable";
+import VueI18n from "vue-i18n";
 
 // Module components
 import PageHeader from '@cbCommerce/admin/components/ui/page-header';
@@ -40,6 +41,7 @@ routerInstance.beforeEach((to, from, next) => {
 
 sync( storeInstance, routerInstance );
 
+Vue.use(VueI18n);
 Vue.use( VueTruncate );
 Vue.use( VTooltip );
 Vue.use( PrettyCheckbox );
@@ -54,6 +56,13 @@ Vue.component( 'back-button', BackButton );
 Vue.component( 'table-pagination', TablePagination );
 Vue.component( 'dismissable-alert', DismissableAlert );
 Vue.component( "generic-loader",  require( "@cbCommerce/components/generic-loader" ).default );
+
+// Create VueI18n instance with options
+const messages = window.cbcGlobalData.i18n;
+const i18n = new VueI18n({
+    locale: window.cbcGlobalData.fwLocale, // set locale
+    messages, // set locale messages
+});
 
 Vue.use( 
 	VueCurrencyFilter,
@@ -72,6 +81,7 @@ window.Event = new Vue();
 
 const commerceAdmin = new Vue( {
 	el        : "#app",
+    i18n,
 	store     : storeInstance,
 	router    : routerInstance,
 	filters   : createFilters( Vue ),
