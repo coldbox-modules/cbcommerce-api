@@ -17,9 +17,8 @@
 		<script type="application/javascript">
 		window.cbcGlobalData=<cfoutput>#serializeJSON( prc.globalData )#</cfoutput>;
 		</script>
-        <script type="text/javascript" src="/includes/js/runtime.js"></script>
-        <script type="text/javascript" src="/includes/js/vendor.js"></script>
-		<script type="text/javascript" src="#event.getModuleRoot()#/includes/js/admin.js"></script>
+        <script type="text/javascript" src="#event.getModuleRoot()#/includes/js/runtime.js"></script>
+        <script type="text/javascript" src="#event.getModuleRoot()#/includes/js/admin.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js"></script>
 	</body>
 </html>
