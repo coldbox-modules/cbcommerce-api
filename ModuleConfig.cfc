@@ -32,6 +32,9 @@ component {
     function configure() {
 
         settings = {
+            "cbauth" : {
+                "userServiceClass" : "UserService@cbCommerce"
+            },
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases
                 "externalModel"        : false,
