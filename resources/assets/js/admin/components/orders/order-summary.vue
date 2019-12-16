@@ -4,7 +4,7 @@
         striped
         caption-top
         :items="ordersListArray"
-        :fields="ordersFields"
+        :fields="orderFields"
         :current-page="1"
         :per-page="4">
         <template slot="paidInFull" slot-scope="data">
@@ -39,35 +39,42 @@ export default {
     	return {
             isLoading   : true,
             orders      : null,
-            ordersFields: {
-                firstName: {
+            orderFields : [
+                {
                     key     : 'customer.firstName',
                     label   : 'First Name',
                     sortable: true
                 },
-                lastName: {
+                {
                     key     : 'customer.lastName',
                     label   : 'Last Name',
                     sortable: true
                 },
-                total: {
+                {
+                    key     : 'total',
                     sortable: true
                 },
-                paidInFull: {
-                    sortanle: true
+                {
+                    key     : 'paidInFull',
+                    sortable: true
                 },
-                createdTime: {
+                {
+                    key     : 'createdTime',
                     label   : 'Created',
                     sortable: true
                 },
-                fulfilledTime: {
+                {
+                    key     : 'fulfilledTime',
                     label   : 'Fulfilled',
                     sortable: true
                 },
-                actions: {
+                {
+                    key     : 'actions',
+                    label   : 'actions',
                     sortable: false
                 }
-            }
+
+            ]
     	}
     },
 
