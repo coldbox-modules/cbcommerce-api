@@ -24,6 +24,7 @@ services:
     depends_on:
       - mysql
     environment:
+      cfconfig_adminPassword: "c6C0mm3rc3!"
       PORT: 8080
       SSL_PORT: 8443
       HEALTHCHECK_URI: http://app/config/Routes.cfm

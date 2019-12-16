@@ -5,9 +5,8 @@
     "inspectTemplate":"always",
     "requestTimeout":"0,0,0,90",
     "robustExceptionEnabled":true,
-    "adminPassword" : "commandbox",
 	"datasources": {
-        "cbc_testing":
+        "contentbox":
         {
             "allowAlter": true,
             "allowCreate": true,
@@ -29,8 +28,8 @@
             "host": "${DB_HOST}",
             "metaCacheTimeout": "60000",
             "port": "3306",
-            "storage": "false",
-            "username": "${DB_USER}",
+            "storage": "true",
+            "username": "${DB_USERNAME}",
             "password" : "${DB_PASSWORD}",
             "validate": "false"
         }
