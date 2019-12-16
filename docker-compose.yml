@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: cbcommerce
+      MYSQL_USER: cbcommerce
+      MYSQL_PASSWORD: "c6C0mm3rc3!"
+      MYSQL_ROOT_PASSWORD: "c6C0mm3rc3!"
+    volumes:
+      - cbc-mysql-data:/var/lib/mysql
+      - ./workbench/docker/mysql:/tmp/mysql
+      - ./workbench/docker/mysql/conf.d:/etc/mysql/mariadb.conf.d/custom.cnf
+    ports:
+      - "3307:3306"
+
+  #App Server
+  app:
+    # We use the Adobe11 image because it ensures we maintain backward compatibility to that version as we develop
+    image: ortussolutions/contentbox
+    depends_on:
+      - mysql
+    environment:
+      PORT: 8080
+      SSL_PORT: 8443
+      HEALTHCHECK_URI: http://app/config/Routes.cfm
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: cbcommerce
+      DB_USERNAME: cbcommerce
+      DB_PASSWORD: "c6C0mm3rc3!"
+      ENVIRONMENT: development
+    ports:
+      - "61651:8080"
+      - "61653:8443"
+    volumes:
+      # Mount our application in delgated mode
+      - ./:/app/modules/contentbox/modules_user/cbCommerce:delegated
+      - ./workbench/docker/contentbox/config/Coldbox.cfc:/app/config/Coldbox.cfc
+      - ./test-harness/tests:/app/tests
+      - ./test-harness/testbox:/app/testbox
+      - ./test-harness/.cfconfig.json:/app/.cfconfig.json
+      - ./test-harness/modules_app:/app/modules_app
+    expose:
+      - "8080"
+      - "8443"
+
+volumes:
+  cbc-mysql-data:
