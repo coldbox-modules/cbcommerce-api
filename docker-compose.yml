@@ -12,7 +12,8 @@ services:
       MYSQL_ROOT_PASSWORD: "c6C0mm3rc3!"
     volumes:
       - cbc-mysql-data:/var/lib/mysql
-      - ./workbench/docker/mysql:/tmp/mysql
+      - ./workbench/docker/mysql/tmp:/tmp/mysql
+      - ./workbench/docker/mysql/init.db.sql:/docker-entrypoint-initdb.d/init.db.sql
       - ./workbench/docker/mysql/conf.d:/etc/mysql/mariadb.conf.d/custom.cnf
     ports:
       - "3307:3306"
