@@ -53,11 +53,7 @@ export default new Vue({
     i18n,
     store: storeInstance,
     router: routerInstance,
-    filters: createFilters(Vue),
-    template: "<app/>",
-    components: {
-        App
-    }
+    filters: createFilters(Vue)
 });
 
 Vue.use( VueTruncate );
