@@ -12,6 +12,9 @@ test-harness/testbox/**
 test-harness/logs/**
 test-harness/modules/**
 
+# Workbench items
+docker/mysql/tmp
+
 # CommandBox Modules
 modules/**
 
