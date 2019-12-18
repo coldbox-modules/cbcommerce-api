@@ -28,7 +28,7 @@
         "coldbox-asset-bag":"^1.0.2",
         "cbContactForm":"^1.0",
         "stripecfml":"^1.1.5"
-    }
+    },
     "devDependencies":{
         "mockdatacfc":"^3.0.0+7"
     },
@@ -46,7 +46,8 @@
         "cfcollection":"modules/cfcollection/",
         "stripecfml":"modules/stripecfml/",
         "cbjavaloader":"modules/cbjavaloader/",
-        "mockdatacfc":"modules/mockdatacfc/"
+        "mockdatacfc":"modules/mockdatacfc/",
+        "cbContactForm":"modules/contentbox/modules_user/cbContactForm/"
     },
     "scripts":{
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",
