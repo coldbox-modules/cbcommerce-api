@@ -1,3 +1,16 @@
+
+
+.product-item-image,.wishlist-item-image, .product-item-image-placeholder{
+  height: 100px;
+  width: 100%;
+  background-size:cover;
+  background-position:center;
+  background-repeat: no-repeat;
+}
+.wishlist-item-image{
+  height : 275px;
+}
+
 .product.light {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
@@ -11,7 +24,6 @@
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  height:700px;
   &:hover {
     border-color: #ffffff;
     -webkit-box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
@@ -24,12 +36,15 @@
       right: 10px;
     }
   }
-  .round_section_label{
-    color: #FFFFFF;
-    border:1px solid;
-    border-color:#b10505;
-    background-color: #b10505;
+  
+  .product-item-image, .product-item-image-placeholder{
+    height: 255px;
   }
+
+  .figure-hover-overlay {
+    min-height: 260px!important;
+  }
+
   .product-compare {
     cursor: pointer;
     position: absolute;
@@ -85,19 +100,33 @@
       background-color: rgba(235, 44, 51, 0.9);
       color: #ffffff;
     }
+    &.in-wishlist{
+      background-color: $secondary;
+      color: #ffffff;
+      border: 1px solid $secondary;
+    }
+  }
+
+  .product-compare{
+    &.in-comparison{
+      background-color: $secondary;
+      color: #ffffff;
+      border: 1px solid $secondary;
+    }
   }
   .product-caption {
     text-align: left;
     position: relative;
     padding: 10px 10px 5px 10px;
     background-color: #ffffff;
+    min-height: 100px;
     .product-name {
       font-size: 14px;
       padding: 0 0 5px;
       display: block;
       text-transform: uppercase;
       text-decoration: none;
-      font-family: 'Raleway', sans-serif;
+      font-family: $font-family-sans-serif;
       color: #0e0e0e;
       &:hover {
         color: #eb2c33;
@@ -105,6 +134,7 @@
     }
     .block-name {
       display: inline-block;
+      height:175px;
     }
   }
   .product-cart {
@@ -162,7 +192,7 @@
     }
   }
   .product-caption {
-    height: 150px;
+    height: 125px;
     .product-price, .priceWithDiscount {
       color: rgba(14, 14, 14, 0.9);
       font-size: 15px;
@@ -178,7 +208,15 @@
     font-size: 14px;
     color: rgba(14, 14, 14, 0.7);
     text-align: left;
-    margin: 0 10px;
+    margin: 7px 10px 0px 10px;
+    height:50px;
+  }
+  .tag_number {
+    font-size: 14px;
+    color: rgba(14, 14, 14, 0.7);
+    text-align: left;
+    margin: 7px 10px 0px 10px;
+    height:25px;
   }
   .product-new {
     position: absolute;
@@ -275,6 +313,7 @@
 .figure-hover-overlay {
   position: relative;
   overflow: hidden;
+  height:100px;
   .figure-href {
     position: absolute;
     left: 0;
@@ -349,13 +388,14 @@
       text-align: left;
       padding: 10px 10px 5px 10px;
       background-color: #ffffff;
+      min-height: 100px;
       .product-name {
         font-size: 14px;
         padding: 5px 0 5px;
         display: block;
         text-transform: uppercase;
         text-decoration: none;
-        font-family: 'Raleway', sans-serif;
+        font-family: $font-family-sans-serif;
         color: #0e0e0e;
         &:hover {
           color: #eb2c33;
@@ -465,6 +505,7 @@
 
 .block-products-modes {
   padding: 10px 15px;
+  margin-bottom: 30px;
   border: 1px solid #ddd;
   label {
     line-height: 34px;
@@ -581,13 +622,14 @@
     text-align: left;
     padding: 10px 10px 5px 10px;
     background-color: #ffffff;
+    min-height: 100px;
     .product-name {
       font-size: 14px;
       padding: 5px 0 5px;
       display: block;
       text-transform: uppercase;
       text-decoration: none;
-      font-family: 'Raleway', sans-serif;
+      font-family: $font-family-sans-serif;
       color: #0e0e0e;
       &:hover {
         color: #eb2c33;
@@ -715,6 +757,33 @@
     backface-visibility: hidden;
   }
 }
+
+/* Product Detail */
+.sku-options{
+  margin-top: 15px;
+  padding: 1%;
+  .sku-option{
+    border: 1px $secondary solid;
+    background-color: $lightest-grey;
+    padding: 5px 7px 5px 7px;
+    float:left;
+    width: 22%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 7px;
+    &.selected{
+      border-color: $primary;
+      background-color: $medium-grey;
+    }
+    .sku-select-img-wrap{
+      width: 40px;
+      height: 40px;
+      background-size:cover;
+      margin-right: 7px;
+    }
+  }
+}
+
 
 /* Products Loading */
 
@@ -847,4 +916,17 @@
     }
 
   }
+}
+
+.round_section_label{
+  color: #FFFFFF;
+  border:1px solid;
+  border-color:#b10505;
+  background-color: #b10505;
+  height:25px;
+}
+
+.round_section_label_dis{
+  border:1px solid;
+  height:25px;
 }

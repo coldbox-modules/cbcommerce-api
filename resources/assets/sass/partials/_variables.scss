@@ -1,12 +1,26 @@
 /* VARIABLES */
-
+$font-size-base : 16px;
+$font-family-serif : 'PT Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-family-sans-serif: 'Raleway', sans-serif;
 /* color scheme */
 $primary: #790000;
 $secondary: #f7941d;
-$tertiary: #eb2c33;
+$tertiary: #b10505;
 
 $dark-grey: #e1e1e1;
+$muted-grey: #999999;
+$medium-grey: #cccccc;
+$light-grey: #e1e1e1;
+$lightest-grey: #efefef;
 
+$btn-primary-bg: $primary;
 $btn-secondary-bg: $secondary;
 
 $danger: #b10505;
+
+/* Overrides to Bootstrap Defaults */
+$alert-border-radius: 0px;
+$btn-border-radius: 0px;
+$input-border-radius: 0px;
+$thumbnail-border-radius: 0px;
+$pager-border-radius: 0px;

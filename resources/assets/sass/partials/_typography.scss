@@ -1,8 +1,14 @@
-.text-left{
-	text-align: left;
-}
 .text-danger{
 	color: $tertiary;
+}
+.text-warning,.text-secondary{
+	color: $secondary
+}
+.text-muted{
+	color: $muted-grey;
+}
+.text-ultra-muted{
+	color: $medium-grey;
 }
 .text-primary{
 	color: $primary;

@@ -1,5 +1,4 @@
 .header-for-light {
-  margin-bottom: 20px;
   position: relative;
 }
 .header-for-light h1 {
@@ -8,7 +7,14 @@
   text-align: left;
   margin-top: 0;
 }
+.header-for-light h2 {
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: left;
+  margin-top: 0;
+}
 .header-for-light h1 span,
+.header-for-light h2 span,
 .header-for-light h4 span {
   color: #b10505;
 }
@@ -29,6 +35,11 @@
 .header-for-light h1 {
 	font-size: 32px;
 	line-height: 42px;
+}
+
+.header-for-light h2 {
+	font-size: 24px;
+	line-height: 32px;
 }
 
 @media (max-width: 480px) {
