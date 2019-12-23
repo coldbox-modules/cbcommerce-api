@@ -14,10 +14,10 @@
 						data-wow-duration="1s">
 
 						<h3>Send Us A <span class="heading-highlight">Message</span></h3>
+						<!--- TODO: Use setting to get sales email and phone number--->
+						<p>For sales and service inquiries please send us a message, call <strong>1-800-000-0000</strong> or email <a mailto="sales@appname.com">sales@appname.com</a>.
 
-						<p>For sales and service inquiries please send us a message, call <strong>1-800-368-3181</strong> or email <a mailto="sales@bsrequipment.com">sales@bsrequipment.com</a>.
-
-                    	<contact-form></contact-form>
+						<contact-form></contact-form>
 
                     </div>
 
