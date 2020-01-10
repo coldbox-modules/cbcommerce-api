@@ -555,7 +555,8 @@
 
 							Place Order
 						</button><br/><br/>
-						<p>By Placing your order, you agree to BSR's Privacy Notice.</p>
+						<!--- TODO: Use setting to get the app name -->
+						<p>By Placing your order, you agree to App's name Privacy Notice.</p>
 					</div>
 			     	<div class="cart-summary">
 			     		<h4>Order Summary</h4>

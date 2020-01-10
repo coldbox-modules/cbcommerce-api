@@ -67,7 +67,6 @@
 					</div>
 				</div>
 				<div class="col-md-8">
-					<newsletter-signup></newsletter-signup>
 				</div>
 			</div>
 		</div>

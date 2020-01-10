@@ -46,15 +46,26 @@ const actions = {
         });
     },
     saveCategory: (context, categoryData) => new Promise( (resolve, reject) => {
-        api().put.categories.update( categoryData )
+        if( categoryData.id && categoryData.id.indexOf('new') === -1 ) {
+            api().put.categories.update( categoryData )
+                .then(XHR => {
+                    context.commit( 'setActiveCategory', XHR.data);
+                    resolve( XHR.data );
+                })
+                .catch(err => {
+                    console.error(err);
+                    reject("Error: There was an error retreiving the categories");
+                });
+        } else {
+            api().post.categories.save( categoryData )
             .then(XHR => {
                 context.commit( 'setActiveCategory', XHR.data);
                 resolve( XHR.data );
             })
             .catch(err => {
-                console.error(err);
-                reject("Error: There was an error retreiving the categories");
+                reject("Error: There was an error creating the category");
             });
+        }
     }),
     updateCategoryImage : ( context, image ) => new Promise( ( resolve, reject ) => {
         api().put.categories.updateMedia( image )
