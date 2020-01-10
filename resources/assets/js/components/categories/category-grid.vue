@@ -24,6 +24,8 @@
 <script>
 import CategoryGridItem from './category-grid-item';
 import CategoryGridItemLoading from './category-grid-item-loading';
+import { mapGetters } from 'vuex';
+
 export default {
     components: {
         CategoryGridItemLoading,
@@ -32,14 +34,21 @@ export default {
     data(){
         return {
             fakes     : [{"id":1},{"id":2},{"id":3}],
-            categories: null,
             isLoading : false,
+            filters : {}
         }
     },
     created: function(){
+        var self = this;
         this.isLoading = true;
         // Fetch the categories
-        this.fetchCategories();
+        this.fetchCategories().then( () => self.isloading=false )
+
+    },
+    computed: {
+        ...mapGetters({ 
+            categories: 'categoriesListArray'
+        })
     },
     mounted() {
 
@@ -50,13 +59,7 @@ export default {
     methods: {
 
         fetchCategories: function(){
-            var self       = this;
-            fetch( 'mockData/categories.json' )
-                .then(r => r.json())
-                .then(categories => {
-                    self.categories = categories;
-                    self.isLoading = false;
-                })
+            return this.$store.dispatch( 'getCategories' );        
         }
 
     }
