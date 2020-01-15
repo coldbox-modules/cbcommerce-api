@@ -63,7 +63,7 @@
 			text-align: left;
 			
 			&:hover {
-				background-color: #eb2c33;
+				background-color: $primary;
 				color: #fff;
 				text-decoration: none;
 			}
@@ -85,6 +85,7 @@
 		width: 50px;
 		
 		.cart-count{
+			color: white;
 			vertical-align: super;
 		}
 	}
@@ -110,7 +111,7 @@
 
 #cart-menu{
 	.secondary-menu-title{
-		background-color: $danger;
+		background-color: $secondary;
 		line-height: 32px;
 		
 		&:hover{
@@ -313,9 +314,9 @@
 .nav-pills {
 	> li {
 		&.active > a {
-			background-color: #790000;
+			background-color: $primary;
 			&:hover, &:focus {
-				background-color: #790000;
+				background-color: $secondary;
 			}
 		}
 		> a {
@@ -328,7 +329,7 @@
 				height: 24px;
 			}
 			&:hover {
-				background-color: #790000;
+				background-color: $secondary;
 				color: #ffffff;
 				box-shadow: none;
 				i {
