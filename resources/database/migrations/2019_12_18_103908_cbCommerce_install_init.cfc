@@ -16,6 +16,7 @@ component {
             table.string('password');
             table.char( 'primaryPhone', 25 ).nullable();
             table.char( 'secondaryPhone', 25 ).nullable();
+            table.string( "resetToken", 255 ).nullable();
 		} );
 
 		schema.create( "cbc_userPermissions", function( table ){
@@ -157,10 +158,28 @@ component {
 			table.string( "shortDescription", 1000 );
 			table.text( "description" );
 			table.boolean( "hasOptions");
-			table.json( "requiredOptions" );
+            table.json( "requiredOptions" );
+            table.integer( "displayOrder" ).default( 0 );
+            table.string( "externalId" ).nullable();
+            table.string( "manufacturer" ).nullable();
+            table.boolean( "isFeatured" ).default( 0 );
+            table.integer( "hitCount" ).default( 0 );
+        } );
+        
+        schema.alter( "cbc_products", function( table ){
+            table.addConstraint( table.index( "name", "idx_cbc_products_name" ) );
+        } );
+        transaction action="commit";
 
-		    
-		} );
+        transaction action="commit";
+        schema.alter( "cbc_productCategoryMedia", function( table ){
+            table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
+        } );
+        transaction action="commit";
+        schema.alter( "cbc_productMedia", function( table ){
+            table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
+        } );
+        transaction action="commit";
 
         schema.create( "cbc_productCategories", function( table ) {
 		    table.uuid( "id" ).primaryKey();
@@ -169,12 +188,15 @@ component {
 			table.boolean( "isActive" ).default( 1 );
 
 			table.string( "name" );
-			table.string( "description");
+            table.string( "description");
+            table.integer( "displayOrder" ).default( 0 );
 
 			table.uuid( "FK_parent" )
 					.nullable()
 		    		.references( "id" )
-		    		.onTable( "cbc_productCategories" );
+                    .onTable( "cbc_productCategories" );
+            table.boolean( "isFeatured" ).default( 0 );
+            table.integer( "hitCount" ).default( 0 );
 
 		});
 
@@ -279,13 +301,12 @@ component {
 			table.decimal( "packagingX", 8, 2  ).default( 0 );
 			table.decimal( "packagingY", 8, 2  ).default( 0 );
 			table.decimal( "packagingZ", 8, 2  ).default( 0 );
-			table.json( "options" );
 
 			table.uuid( "FK_product" )
 		    		.references( "id" )
 					.onTable( "cbc_products" );
 
-			table.uuid( "FK_consignee" )
+			table.uuid( "FK_consignor" )
 					.nullable()
 		    		.references( "id" )
 					.onTable( "cbc_users" );
@@ -298,9 +319,25 @@ component {
 			table.uuid( "FK_subCondition" )
 					.nullable()
 					.references( "id" )
-					.onTable( "cbc_productConditions" );
-					
-		} );
+                    .onTable( "cbc_productConditions" );
+                    
+            table.integer( "displayOrder" ).default( 0 );
+            table.string( "externalId" ).nullable();
+            table.string( "modelNumber" ).nullable();
+            table.boolean( "allowBackorder" ).default( 1 );
+            table.boolean( "isFeatured" ).default( 0 );
+            table.decimal( "MAP", 8, 2  ).nullable();
+            table.string( "summary", 1000 ).nullable();
+            table.text( "description" ).nullable();
+            table.uuid( "FK_consignmentBatch" ).nullable();
+            table.uuid( "FK_consignmentBatch" ).references( "id" ).onTable( "cbc_consignmentBatches" );
+            table.boolean( "showPricing" ).default( 1 );
+            table.boolean( "pickUpInStore").default( 0 );
+        } );
+        
+        var sql = "ALTER TABLE `cbc_SKUs` CHANGE `discontinueOn` `discontinueOn` TIMESTAMP NULL DEFAULT NULL";
+        var q = new query( sql=sql );
+        q.execute();
 
 		schema.create( "cbc_virtualSKUs", function( table ){
 		    table.uuid( "id" ).primaryKey();
@@ -384,7 +421,12 @@ component {
 
 			table.uuid( "FK_billingAddress" )
 		    		.references( "id" )
-		    		.onTable( "cbc_customerAddresses" );
+                    .onTable( "cbc_customerAddresses" );
+            
+            table.uuid( "FK_invoice" )
+					.references( "id" )
+                    .onTable( "cbc_orderInvoices" )
+                    .nullable();
 
     	} );
 
@@ -487,8 +529,9 @@ component {
 		    		.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
-		    
-
+		    table.boolean( "isDefault" ).default( 0 );
+            table.boolean( "isPublic" ).default( 0 );
+            table.string( "description", 750 ).nullable();
 		    
 		} );
 
@@ -509,7 +552,10 @@ component {
 					.references( "id" )
 					.onTable( "cbc_wishlists" )
 					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
+                    .onDelete( "CASCADE" );
+            table.decimal( "discountPrice" ).default( 0 );
+            table.integer( "quantity" ).default( 1 );
+            table.integer( "quantity" ).default( 1 );
 
 		} );
 
@@ -589,89 +635,6 @@ component {
 
         });
 
-        schema.alter( "cbc_orders", function( table ){
-            table.addColumn(
-                table.uuid( "FK_invoice" )
-                    .nullable()
-            );
-            table.addConstraint(
-                table.uuid( "FK_invoice" )
-					.references( "id" )
-                    .onTable( "cbc_orderInvoices" )
-            );
-        } );
-
-        //======
-
-         schema.alter( "cbc_productCategories", function( table ){
-            table.addColumn(
-                table.integer( "sortOrder" ).default( 0 )
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.addColumn(
-                table.integer( "sortOrder" ).default( 0 )
-            );
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.integer( "sortOrder" ).default( 0 )
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.addColumn(
-                table.string( "externalId" ).nullable()
-            );
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.string( "externalId" ).nullable()
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.string( "modelNumber" ).nullable()
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.addColumn(
-                table.string( "manufacturer" ).nullable()
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.boolean( "allowBackorder" ).default( 1 )
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlists", function( table ){
-            table.addColumn(
-                table.boolean( "isDefault" ).default( 0 )
-            );
-            table.addColumn(
-                table.boolean( "isPublic" ).default( 0 )
-            );
-        } );
-
         //======
 
         schema.create( "cbc_productCategoryMedia", function( table ) {
@@ -694,19 +657,6 @@ component {
 
         } );
         
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.renameColumn( "sortOrder", table.integer( "displayOrder" ).default( 0 ) );
-        } );
-
-        schema.alter( "cbc_products", function( table ){
-            table.renameColumn( "sortOrder", table.integer( "displayOrder" ).default( 0 ) );
-        } );
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.renameColumn( "sortOrder", table.integer( "displayOrder" ).default( 0 ) );
-        } );
 
         //======
 
@@ -736,31 +686,6 @@ component {
 					
         } );
         
-        //======
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.addColumn(
-                table.boolean( "isFeatured" ).default( 0 )
-            );
-        } );
-
-        schema.alter( "cbc_products", function( table ){
-            table.addColumn(
-                table.boolean( "isFeatured" ).default( 0 )
-            );
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.boolean( "isFeatured" ).default( 0 )
-            );
-        } );
-
-        //======
-
-        var sql = "ALTER TABLE `cbc_SKUs` CHANGE `discontinueOn` `discontinueOn` TIMESTAMP NULL DEFAULT NULL";
-        var q = new query( sql=sql );
-        q.execute();
         // now clear out our column values 
         sql = "UPDATE `cbc_SKUs` SET `discontinueOn` = NULL";
         q = new query( sql=sql );
@@ -776,20 +701,6 @@ component {
             var q = new query( sql=sql );
             q.execute();
         });
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.addColumn(
-                table.integer( "hitCount" ).default( 0 )
-            );
-        } );
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.addColumn(
-                table.integer( "hitCount" ).default( 0 )
-            );
-        } );
 
         //======
 
@@ -839,30 +750,6 @@ component {
                     .references( "id" )
                     .onTable( "cbc_SKUs" );
         } );
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "options" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.decimal( "MAP", 8, 2  ).nullable()
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-
-            table.addColumn(
-                table.string( "summary", 1000 ).nullable()
-            );
-            table.addColumn(
-                table.text( "description" ).nullable()
-            );
-
-        } );
 
         //======
 
@@ -886,17 +773,7 @@ component {
 
         } );
 
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.uuid( "FK_consignmentBatch" )
-                    .nullable()
-            );
-            table.addConstraint(
-                table.uuid( "FK_consignmentBatch" )
-					.references( "id" )
-                    .onTable( "cbc_consignmentBatches" )
-            );
-        } );
+
 
         schema.create( "cbc_consignmentFeeTypes", function( table ) {
             table.uuid( "id" ).primaryKey();
@@ -971,21 +848,6 @@ component {
 
         } );
 
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.renameColumn( 
-                "FK_consignee", 
-                table.uuid( "FK_consignor" )
-                    .nullable()
-            );
-            table.addConstraint(
-                table.uuid( "FK_consignor" )
-					.references( "id" )
-                    .onTable( "cbc_users" )
-            );
-        } );
-
 
         query.from( "cbc_userRoles" )
             .where( 'name', 'Consignee' )
@@ -1010,106 +872,8 @@ component {
             table.string( 'key' );
             table.text( 'value' );
         } );
-        
-        //======
 
-        schema.alter( "cbc_SKUs", function( table ){
-
-            table.addColumn(
-                table.boolean( "showPricing" ).default( 1 )
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-
-            table.addColumn(
-                table.decimal( "discountPrice" ).default( 0 )
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlists", function( table ){
-
-            table.addColumn(
-                table.string( "description", 750 ).nullable()
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-
-            table.addColumn(
-                table.integer( "quantity" ).default( 1 )
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-
-            table.addColumn(
-                table.integer( "quantity" ).default( 1 )
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_users", function( table ){
-
-            table.addColumn(
-                table.string( "resetToken", 75 ).nullable()
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.addConstraint( table.index( "name", "idx_cbc_products_name" ) );
-        } );
-        transaction action="commit";
-        schema.alter( "cbc_productCategories", function( table ){
-            table.addConstraint( table.index( "name", "idx_cbc_productCategories_name" ) );
-        } );
-        transaction action="commit";
-        schema.alter( "cbc_productCategoryMedia", function( table ){
-            table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
-            table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productCategoryMedia_sort" ) );
-        } );
-        transaction action="commit";
-        schema.alter( "cbc_productMedia", function( table ){
-            table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
-            table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
-        } );
-        transaction action="commit";
-
-        //======
-
-        schema.alter( "cbc_users", function( table ){
-            table.modifyColumn(
-                "resetToken",
-                table.string( "resetToken", 255 ).nullable()
-            );
-
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.boolean( "pickUpInStore").default( 0 )
-            );
-        } );
-
+       
         sql = "UPDATE `cbc_SKUs` SET `pickUpInStore` = 1 where `FK_condition` in (SELECT id from `cbc_productConditions` where `name` ='New')";
         q = new query( sql=sql );
         q.execute();
@@ -1120,233 +884,11 @@ component {
     }
 
     function down( schema, query ) {
-        schema.dropIfExists( "cbc_orderShipments" );
-        schema.dropIfExists( "cbc_orderItems" );
-        schema.dropIfExists( "cbc_payments" );
-		schema.dropIfExists( "cbc_inventoryLocationStock");
-		schema.dropIfExists( "cbc_inventoryLocations");
-		schema.dropIfExists( "cbc_lookups_products_categories" );
-		schema.dropIfExists( "cbc_productCategories" );
-		schema.dropIfExists( "cbc_productSKUMedia" );
-		schema.dropIfExists( "cbc_productMedia" );
-		schema.dropIfExists( "cbc_media" );
-		schema.dropIfExists( "cbc_wishlistItems" );
-		schema.dropIfExists( "cbc_wishlists" );
-        schema.dropIfExists( "cbc_carts" );
-		schema.dropIfExists( "cbc_virtualSKUs" );
-		schema.dropIfExists( "cbc_SKUs" );
-		schema.dropIfExists( "cbc_productConditions" );
-		schema.dropIfExists( "cbc_orders" );
-		schema.dropIfExists( "cbc_products" );
-		schema.dropIfExists( "cbc_customerAddresses" );
-        schema.dropIfExists( "cbc_lookups_users_roles" );
-        schema.dropIfExists( "cbc_lookups_roles_permissions" );
-        schema.dropIfExists( "cbc_lookups_users_explicitPermissions" );
-        schema.dropIfExists( "cbc_userPermissions" );
-        schema.dropIfExists( "cbc_userRoles" );
-        schema.dropIfExists( "cbc_users" );
-
-        //======
-
-        schema.dropIfExists( "cbc_orderInvoices" );
-
-        //======
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.dropColumn( "sortOrder");
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropColumn( "sortOrder");
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "sortOrder");
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropColumn( "externalId");
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "externalId");
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "modelNumber");
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropColumn( "manufacturer");
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "allowBackorder" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlists", function( table ){
-            table.dropColumn( "isDefault" );
-            table.dropColumn( "isPublic" );
-        } );
-
-        //======
-
-        schema.dropIfExists( "cbc_productCategoryMedia" );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.renameColumn( "displayOrder", table.integer( "sortOrder" ).default( 0 ) );
-        } );
-
-        schema.alter( "cbc_products", function( table ){
-            table.renameColumn(  "displayOrder", table.integer( "sortOrder" ).default( 0 ) );
-        } );
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.renameColumn(  "displayOrder", table.integer( "sortOrder" ).default( 0 ) );
-        } );
-
-        //======
-
-        schema.dropIfExists( "cbc_productReviews" );
-
-        //======
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.dropColumn( "isFeatured" );
-        } );
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropColumn( "isFeatured" );
-        } );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "isFeatured" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropColumn( "hitCount" );
-        } );
-
-        schema.alter( "cbc_productCategories", function( table ){
-            table.dropColumn( "hitCount" );
-        } );
-
-        //======
 
         var sql = "DELETE from `cbc_userRoles` WHERE name = 'Consignee'";
         var q =  new query( sql = sql );
         q.execute();
 
-        //======
-
-        schema.alter( "cbc_customerAddresse", function( table ){
-            table.dropColumn( "fullName");
-        } );
-
-        //======
-
-        schema.dropIfExists( "cbc_productSKUOptions" );
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.addColumn(
-                table.json( "options" )
-            );
-        } );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "MAP" );
-        } );
-
-        //======
-        
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "summary" );
-            table.dropColumn( "description" );
-        } );
-
-        //======
-
-        schema.dropIfExists( "cbc_consignmentBatchFees" );
-        schema.dropIfExists( "cbc_consignmentFeeTypes" );
-        schema.dropIfExists( "cbc_lookups_consignmentBatch_skus" );
-        schema.dropIfExists( "cbc_consignmentBatches" );
-
-        //======
-
-        schema.dropIfExists( "cbc_tenantSettings" );
-
-        //======
-
-        schema.dropIfExists( "cbc_tenantSettings" );
-
-        //======
-
-        schema.alter( "cbc_SKUs", function( table ){
-            table.dropColumn( "showPricing" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-            table.dropColumn( "discountPrice" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlists", function( table ){
-            table.dropColumn( "description" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-            table.dropColumn( "quanity" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_wishlistItems", function( table ){
-            table.dropColumn( "quanity" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_users", function( table ){
-            table.dropColumn( "resetToken" );
-        } );
-
-        //======
-
-        schema.alter( "cbc_products", function( table ){
-            table.dropConstraint( "idx_cbc_products_name" );
-        } );
-        schema.alter( "cbc_productCategories", function( table ){
-            table.dropConstraint( "idx_cbc_productCategories_name" );
-        } );
-        schema.alter( "cbc_productCategoryMedia", function( table ){
-            table.dropConstraint( "idx_productCategoryMedia_sort" );
-        } );
-        schema.alter( "cbc_productMedia", function( table ){
-            table.dropConstraint( "idx_productMedia_sort" );
-        } );
     }
 
 }
