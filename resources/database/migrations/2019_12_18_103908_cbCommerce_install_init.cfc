@@ -173,11 +173,13 @@ component {
 
         transaction action="commit";
         schema.alter( "cbc_productCategoryMedia", function( table ){
-            table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
+			table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
+			table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productCategoryMedia_sort" ) );
         } );
         transaction action="commit";
         schema.alter( "cbc_productMedia", function( table ){
-            table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
+			table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
+			table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
         } );
         transaction action="commit";
 
