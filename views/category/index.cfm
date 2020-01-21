@@ -3,7 +3,7 @@
     <div class="block color-scheme-white-90">
 
         <div class="container">
-            <category-detail></category-detail>
+            <category-grid></category-grid>
         </div>
 
     </div>

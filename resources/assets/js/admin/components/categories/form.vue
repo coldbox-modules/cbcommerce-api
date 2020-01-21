@@ -144,7 +144,7 @@ export default {
 			"categoriesListArray"
 		]),
 		categoryId(){
-			return self.$route.params.id
+			return this.$route.params.id
 		}
 	},
 
@@ -174,6 +174,7 @@ export default {
 				})
 			]);
 		} else {
+			this.$store.commit( "setActiveCategory", {} );
 			Vue.set( self, "isLoading", false );
 		}
 	},
