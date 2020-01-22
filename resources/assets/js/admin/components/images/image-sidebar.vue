@@ -6,7 +6,7 @@
 
             <b-col cols="11" class="mt-2">
     
-                <h2>Image Detail</h2>
+                <h2>{{ $t( 'image_detail' ) }}</h2>
                 
             </b-col>
 
@@ -39,13 +39,13 @@
                         <b-col cols="6">
 
                             <b-form-group
-                                label="Link"
+                                :label="$t( 'link' )"
                                 label-for="imageHREF">
                                 <a :href="form.src">{{form.src}}</a>
                             </b-form-group>
 
                             <b-form-group
-                                label="Caption"
+                                :label="$t( 'caption' )"
                                 label-for="imageCaption">
                                 <b-form-textarea
                                     id="imageCaption"
@@ -55,7 +55,7 @@
                                 </b-form-textarea>
                             </b-form-group>
 
-                            <b-form-group label="Enable the image">
+                            <b-form-group :label="$t( 'image_enable' )">
                                 <b-form-radio-group
                                     v-model="form.isActive"
                                     :options="booleanOptions"
@@ -63,7 +63,7 @@
                                 ></b-form-radio-group>
                             </b-form-group>
 
-                            <b-form-group label="Set as the primary image">
+                            <b-form-group :label="$t( 'image_set_primary' )">
                                 <b-form-radio-group
                                     v-model="form.isPrimary"
                                     :options="booleanOptions"
@@ -75,7 +75,7 @@
                                 id="saveImageDetails"
                                 class="btn btn-success" 
                                 @click="saveImageDetails">
-                                Save Details
+                                {{ $t( 'save_details' ) }}
                             </button>
 
                         </b-col>
@@ -116,8 +116,8 @@ export default {
         return {
             form: new Form( this.data.image ),
             booleanOptions : [
-                { text: 'Yes', value: true },
-                { text: 'No', value: false }
+                { text: this.$t( 'yes' ), value: true },
+                { text: this.$t( 'no' ), value: false }
             ]
         };
     },
