@@ -15,7 +15,7 @@
 				<li class="nav-item">
 					<router-link 
 						class="nav-link" 
-						to="/orders"><i class="fa fa-file"></i> Orders</router-link>
+						to="/orders"><i class="fa fa-file"></i> {{ $t( 'orders_name' ) }}</router-link>
 				</li>
 
 				<li class="nav-item">

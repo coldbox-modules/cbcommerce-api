@@ -3,7 +3,7 @@
 	<div>
 
         <page-header
-            :headerTitle="$t( 'orders' )"
+            :headerTitle="$t( 'orders_name' )"
             :displayToolBarButton="true"
             routeName="newOrder"
             buttonIconClass="fa fa-plus">    
