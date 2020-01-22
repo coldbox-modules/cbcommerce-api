@@ -3,7 +3,7 @@
 	<div>
 
         <page-header
-            headerTitle="Customers"
+            :headerTitle="$t( 'customers' )"
             :displayToolBarButton="true"
             routeName="newCustomer"
             buttonIconClass="fa fa-plus">    
@@ -14,9 +14,9 @@
             <b-col md="6" offset-md="6" class="my-1">
                 <b-form-group horizontal class="mb-0">
                     <b-input-group>
-                        <b-form-input v-model="searchParams.search" @change="refreshList" placeholder="Type to Search" />
+                        <b-form-input v-model="searchParams.search" @change="refreshList" :placeholder="$t( 'type_search' )" />
                         <b-input-group-append>
-                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">{{ $t( 'clear' ) }}</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
@@ -50,7 +50,7 @@
 
         <b-row>
             <b-col xs="12">
-              <generic-loader v-if="isLoading" message="Loading customers. Please wait..."></generic-loader>
+              <generic-loader v-if="isLoading" :message="$t( 'customers_loading' )"></generic-loader>
             </b-col>
         </b-row>
 

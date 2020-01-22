@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-form-group
-			label="First Name"
+			:label="$t( 'first_name' )"
 			label-for="firstName">
 			<b-form-input 
 	        	required="required"
@@ -11,7 +11,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Last Name"
+			:label="$t( 'last_name' )"
 			label-for="lastName">
 			<b-form-input 
 	        	required="required"
@@ -21,7 +21,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Email"
+			:label="$t( 'Email' )"
 			label-for="emailName">
 			<b-form-input 
 				type="email"
@@ -32,7 +32,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Primary Phone"
+			:label="$t( 'primary_phone' )"
 			label-for="primaryPhone">
 			<b-form-input 
 				type="tel"
@@ -44,7 +44,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Secondary Phone"
+			:label="$t( 'secondary_phone' )"
 			label-for="secondaryPhone">
 			<b-form-input 
 				type="tel"
@@ -55,7 +55,7 @@
 		</b-form-group>
 
         <b-form-group
-			label="Address Line 1"
+			:label="$t( 'address_line' ) + `1`"
 			label-for="address1">
 			<b-form-input 
 				type="text"
@@ -65,7 +65,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Address Line 2"
+			:label="$t( 'address_line' ) + `2`"
 			label-for="address2">
 			<b-form-input 
 				type="text"
@@ -74,7 +74,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="City"
+			:label="$t( 'city' )"
 			label-for="city">
 			<b-form-input 
 				type="text"
@@ -84,7 +84,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="State/Province"
+			:label="$t( 'state' ) + `/` + $t( 'province' )"
 			label-for="province">
 			<b-form-input 
 				type="text"
@@ -94,7 +94,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="ZIP/Postal Code"
+			:label="$t( 'zip' ) + `/` + $t( 'postal_code' )"
 			label-for="postalCode">
 			<b-form-input 
 				type="text"
@@ -104,7 +104,7 @@
 		</b-form-group>							
 
 		<b-form-group
-			label="Country"
+			:label="$t( 'country' )"
 			label-for="country">
 			<b-form-input 
 				type="text"
