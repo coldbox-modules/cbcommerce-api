@@ -25,7 +25,7 @@
             </router-link>
         </template>
         <template slot="table-caption">
-            Latest Orders
+            {{ $t( 'orders_latest' ) }}
         </template>
     </b-table>
 
@@ -42,12 +42,12 @@ export default {
             orderFields : [
                 {
                     key     : 'customer.firstName',
-                    label   : 'First Name',
+                    label   : this.$t( 'first_name' ),
                     sortable: true
                 },
                 {
                     key     : 'customer.lastName',
-                    label   : 'Last Name',
+                    label   : this.$t( 'last_name' ),
                     sortable: true
                 },
                 {
@@ -60,17 +60,17 @@ export default {
                 },
                 {
                     key     : 'createdTime',
-                    label   : 'Created',
+                    label   : this.$t( 'created' ),
                     sortable: true
                 },
                 {
                     key     : 'fulfilledTime',
-                    label   : 'Fulfilled',
+                    label   : this.$t( 'fulfilled' ),
                     sortable: true
                 },
                 {
                     key     : 'actions',
-                    label   : 'actions',
+                    label   : this.$t( 'actions' ),
                     sortable: false
                 }
 

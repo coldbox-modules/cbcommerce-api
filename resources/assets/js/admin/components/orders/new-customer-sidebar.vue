@@ -6,7 +6,7 @@
 
 			<div class="col-md-11 mt-2">
     
-			    <h2>New Customer Details</h2>
+			    <h2></h2>
 			    
 			</div>
 
@@ -35,7 +35,7 @@
 								</account-info-fields>
 
 								<b-card-header header-tags="header" class="p-1 mt-5" role="tab">
-					    			<b-btn block href="#" v-b-toggle.billingAddress>Billing Address</b-btn>
+					    			<b-btn block href="#" v-b-toggle.billingAddress>{{ $t( 'billing_address' ) }}</b-btn>
 					    		</b-card-header>
 					    		<b-collapse 
 					    			id="billingAddress"
@@ -64,7 +64,7 @@
 					    		</b-collapse>
 
 								<b-card-header header-tags="header" class="p-1 mb-5" role="tab">
-					    			<b-btn block href="#" v-b-toggle.shippingAddress>Shipping Address</b-btn>
+					    			<b-btn block href="#" v-b-toggle.shippingAddress>{{ $t( 'shipping_address' ) }}</b-btn>
 					    		</b-card-header>
 					    		<b-collapse 
 					    			id="shippingAddress"
@@ -96,7 +96,7 @@
 									id="saveDetails"
 									class="btn btn-success" 
 									@click="saveDetails">
-									Save Details
+									{{ $t( 'save_details' ) }}
 								</button>
 
 						    </div>

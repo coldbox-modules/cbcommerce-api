@@ -4,7 +4,7 @@
 
 		<div v-if="!isLoading">
 
-			<page-header headerTitle="Order Details"></page-header>
+			<page-header :headerTitle="$t( 'order_details' )"></page-header>
 
 			<b-row>
 
@@ -15,7 +15,7 @@
 			            caption-top
 			            :items="orderItems"
 			            :fields="orderItemsFields">
-			            <template slot="table-caption">Items Ordered</template>
+			            <template slot="table-caption">{{ $t( 'orders_items_order' ) }}</template>
 			            <template slot="product.name" slot-scope="data">
 							<router-link 
 								@click.stop
@@ -43,7 +43,7 @@
 						stacked 
 						caption-top
 						:items="paymentBreakdownData">
-						<template slot="table-caption">Payment Breakdown</template>
+						<template slot="table-caption">{{ $t( 'order_payment_breakdown' ) }}</template>
 						<template slot="subtotal" slot-scope="data">
 							{{ data.item.subtotal | currency }}
 						</template>
@@ -73,7 +73,7 @@
 						caption-top
 						:items="payments"
 						:fields="paymentFields">
-						<template slot="table-caption">Payment Details</template>
+						<template slot="table-caption">{{ $t( 'order_payment_details' ) }}</template>
 						<template slot="amount" slot-scope="data">
 							{{ data.item.amount | currency }}
 						</template>
@@ -95,7 +95,7 @@
 						striped
 						:items="shipments"
 						:fields="shipmentFields">
-						<template slot="table-caption">Shipment Details</template>
+						<template slot="table-caption">{{ $t( 'order_shipment_details' ) }}</template>
 						<template slot="createdTime" slot-scope="data">
 							{{ data.item.createdTime | dateToText }}
 						</template>
@@ -132,7 +132,7 @@
 
 			<hr />
 
-			<back-button link="/orders" text="Back to orders"></back-button>
+			<back-button link="/orders" :text="$t( 'orders_back' )"></back-button>
 
 		</div>
 
@@ -166,16 +166,16 @@ export default {
 			orderItemsFields    : {
 				product: {
 					key  : 'product.name',
-					label: 'Product'
+					label: this.$t( 'product' )
 				},
 				quantityOrdered: {
-					label: 'Quantity'
+					label: this.$t( 'quantity' )
 				},
 				originalCost: {
-					label: 'Cost'
+					label: this.$t( 'cost' )
 				},
 				originalPrice: {
-					labek: 'Price'
+					label: this.$t( 'price' )
 				}
 			},
 			shipments           : null,

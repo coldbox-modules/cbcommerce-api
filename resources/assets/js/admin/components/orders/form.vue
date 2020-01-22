@@ -2,10 +2,10 @@
 
 	<div v-if="!this.isLoading">
 
-		<page-header headerTitle="New Order Entry"></page-header>
+		<page-header :headerTitle="$t( 'order_new_entry' )"></page-header>
 
 		<dismissable-alert v-if="isSent && !isSending"
-			alertText="The order has been saved."
+			:alertText="$t( 'order_saved' )"
 			alertType="success">
 		</dismissable-alert>
 
@@ -16,7 +16,7 @@
 		        <b-col cols="8">
 
 		        	<b-form-group
-						label="Customer"
+						:label="$t( 'customer' )"
 						label-for="categories">
 						<list-select 
 							:list="this.customerListArray"
@@ -36,7 +36,7 @@
 						<a 
 							class="btn btn-success accountInfoFormBtn"			    				
 							@click="showNewCustomerForm()">
-							<i class="fa fa-plus"></i> Add New Customer
+							<i class="fa fa-plus"></i> {{ $t ( 'customer_add' )}}
 						</a>
 					</span>
 				</b-col>
@@ -47,7 +47,7 @@
 					<div v-if="this.currentCustomer">
 
 						<b-card-header header-tags="header" class="p-1" role="tab">
-			    			<b-btn block href="#" v-b-toggle.shippingAddress>Shipping Address</b-btn>
+			    			<b-btn block href="#" v-b-toggle.shippingAddress>{{ $t( 'shipping_address' ) }}</b-btn>
 			    		</b-card-header>
 			    		<b-collapse 
 			    			id="shippingAddress"
@@ -82,7 +82,7 @@
 			    <b-col cols="6">
 
 		        	<b-form-group
-						label="Products"
+						:label="$t( 'products' )"
 						label-for="products">
 						<list-select 
 							:list="this.productsListArray"
@@ -99,7 +99,7 @@
 			    <b-col cols="6" v-if="this.productSKUs">
 
 		        	<b-form-group
-						label="Product Variants"
+						:label="$t( 'product_variants' )"
 						label-for="productSKUs">
 						<list-select 
 							:list="this.productSKUs"
@@ -154,11 +154,11 @@
 
 			        <table class="table table-striped">
 			        	<tr>
-			        		<td><strong>Subtotal:</strong></td>
+			        		<td><strong>{{ $t( 'subtotal' ) }}:</strong></td>
 			        		<td>{{ subTotal | currency }}</td>
 			        	</tr>
 			        	<tr>
-			        		<td><strong>Discount:</strong></td>
+			        		<td><strong>{{ $t( 'discount' ) }}:</strong></td>
 			        		<td>
 			        			<editable-number-field 
 									:fieldValue="parseInt( discount )"
@@ -167,7 +167,7 @@
 			        		</td>
 			        	</tr>
 			        	<tr>
-			        		<td><strong>Shipping:</strong></td>
+			        		<td><strong>{{ $t( 'order_shipping' ) }}:</strong></td>
 			        		<td>
 			        			<editable-number-field
 									:fieldValue="parseInt( shippingCosts )"
@@ -176,7 +176,7 @@
 			        		</td>
 			        	</tr>
 			        	<tr>
-			        		<td><strong>Fees:</strong></td>
+			        		<td><strong>{{ $t( 'order_fees' ) }}:</strong></td>
 			        		<td>
 			        			<editable-number-field
 									:fieldValue="parseInt( fees )"
@@ -185,7 +185,7 @@
 			        		</td>
 			        	</tr>
 			        	<tr>
-			        		<td><strong>Tax:</strong></td>
+			        		<td><strong>{{ $t( 'order_tax' ) }}:</strong></td>
 			        		<td>
 			        			<editable-number-field
 									:fieldValue="parseInt( tax )"
@@ -194,7 +194,7 @@
 			        		</td>
 			        	</tr>
 			        	<tr>
-			        		<td><strong>Total:</strong></td>
+			        		<td><strong>{{ $t( 'order_total' ) }}:</strong></td>
 			        		<td>{{ total | currency }}</td>
 			        	</tr>
 			        </table>
@@ -216,9 +216,9 @@
 
 			</b-row>
 
-		    <button type="submit" class="btn btn-secondary btn-lg">Save</button>
+		    <button type="submit" class="btn btn-secondary btn-lg">{{ $t( 'save' ) }}</button>
 
-		    <back-button link="/orders" text="Back to orders"></back-button>
+		    <back-button link="/orders" :text="$t( 'orders_back' )"></back-button>
 
 		</form>
 
@@ -260,18 +260,18 @@ export default {
 			orderProductListFields: {
 				name: {
 					key  : 'product.name',
-					label: 'Name'
+					label: this.$t( 'name' )
 				},
 				variant: {
-					label: 'SKU',
+					label: this.$t( 'product_sku' ),
 					key  : 'productSKU.condition'
 				},
 				quantity : {},
 				basePrice: {
-					label: 'Unit Price'
+					label: this.$t( 'product_unit_price' )
 				},
 				productTotal: {
-					label: 'Total',
+					label: this.$t( 'order_total' ),
 					formatter: ( value, key, item ) => {
 						return item.productSKU.basePrice * item.quantity;
 					}
@@ -291,10 +291,10 @@ export default {
 			},
 			selectedShippingOption: null,
 			shippingOptions: [
-				{ value: null, text: 'Please select a shipping option' },
-				{ value: 1, text: 'ACME Couriers' },
-				{ value: 2, text: 'Ortus Delivery Systems' },
-				{ value: 3, text: 'We Try and Deliver' }
+				{ value: null, text: this.$t( 'order_shipping_option' ) },
+				{ value: 1, text: this.$t( 'order_couriers' ) },
+				{ value: 2, text: this.$t( 'order_ortus_delivery' ) },
+				{ value: 3, text: this.$t( 'order_we_try' ) }
 			]
         }
     },
