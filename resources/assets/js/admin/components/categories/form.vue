@@ -4,10 +4,10 @@
 
 		<div v-if="!this.isLoading">
 
-	        <page-header :headerTitle="`Category: ${ form.name }`"></page-header>
+	        <page-header :headerTitle="$t( 'category' ) + `${ form.name == undefined ? '' : ': ' + form.name }`"></page-header>
 
 			<dismissable-alert v-if="isSent && !isSending"
-				alertText="The item has been updated."
+				:alertText="$t( 'category_updated' )"
 				alertType="success">
 			</dismissable-alert>
 
@@ -18,7 +18,7 @@
 			        <b-col cols="12">
 
 			            <b-form-group
-							label="Category Name"
+							:label="$t( 'category_name' )"
 							label-for="categoryName">
 							<b-form-input 
 		                    	required="required"
@@ -36,7 +36,7 @@
 			        <b-col cols="12">
 
 			            <b-form-group
-							label="Category Description"
+							:label="$t( 'category_description' )"
 							label-for="description">
 		                    <html-editor 
 			            		height="200" 
@@ -54,7 +54,7 @@
 				    	<b-card no-body class="mb-1">
 
 				    		<b-card-header header-tags="header" class="p-1" role="tab">
-				    			<b-btn block href="#" v-b-toggle.images>Images</b-btn>
+				    			<b-btn block href="#" v-b-toggle.images>{{ $t( 'images' ) }}</b-btn>
 				    		</b-card-header>
 				    		<b-collapse id="images" accordion="product-accordion" role="tabpanel">
 				    			<b-card-body>
@@ -75,7 +75,7 @@
 			    <b-row>
 			        
 			        <b-col cols="12">
-						<b-form-group label="Enable Category">
+						<b-form-group :label="$t( 'category_enable' )">
 							<b-form-radio-group
 								v-model="form.isActive"
 								:options="booleanOptions"
@@ -88,10 +88,10 @@
 				
 			    <button type="submit" class="btn btn-secondary btn-lg">
 					<i v-if="isSending" class="fa fa-spin fa-spinner"></i> 
-					Save
+					{{ $t( 'save' ) }}
 				</button>
 
-			    <back-button link="/categories" text="Back to categories"></back-button>
+			    <back-button link="/categories" :text="$t( 'categories_back' )"></back-button>
 			    
 			</form>
 
@@ -131,8 +131,8 @@ export default {
 			isSending     : false,
 			categoryImages: [],
 			booleanOptions : [
-				{ text: 'Yes', value: true },
-				{ text: 'No', value: false }
+				{ text: this.$t( 'yes' ), value: true },
+				{ text: this.$t( 'no' ), value: false }
 			]
         }
     },
