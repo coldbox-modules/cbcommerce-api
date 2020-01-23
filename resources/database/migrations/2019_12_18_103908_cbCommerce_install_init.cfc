@@ -2,162 +2,166 @@ component {
     
     function up( schema, query ) {
         
-		// @TODO - unable to use this until QB-10 is resolved
-		// var uuidLib = createobject("java", "java.util.UUID");
+        // @TODO - unable to use this until QB-10 is resolved
+        // var uuidLib = createobject("java", "java.util.UUID");
 
-		schema.create( "cbc_users", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			table.string('firstName', 255).nullable();
+        schema.create( "cbc_users", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.string('firstName', 255).nullable();
             table.string('lastName', 255).nullable();
             table.string('email', 255).unique();
             table.string('password');
             table.char( 'primaryPhone', 25 ).nullable();
             table.char( 'secondaryPhone', 25 ).nullable();
             table.string( "resetToken", 255 ).nullable();
-		} );
+        } );
 
-		schema.create( "cbc_userPermissions", function( table ){
-			table.uuid( 'id' ).primaryKey();
+        schema.create( "cbc_userPermissions", function( table ){
+            table.uuid( 'id' ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.string( 'prefix', 75 );
             table.string( 'suffix', 75 );
-		} );
+        } );
 
-		var prefixes  = [ "Product", "Order", "Return" , "System" ];
-		var suffixes = [ "Configure", "Manage" , "Edit", "Approve", "Delete" ];
+        var prefixes  = [ "Product", "Order", "Return" , "System" ];
+        var suffixes = [ "Configure", "Manage" , "Edit", "Approve", "Delete" ];
 
-		for( var prefix in prefixes ){
-			for( var suffix in suffixes ){
-				query.from( "cbc_userPermissions" ).insert( 
-					values = {
-							"id" : createUUID(),
-							"prefix" : prefix,
-							"suffix" : suffix	
-						}
-				);
-			}
-		}
+        for( var prefix in prefixes ){
+            for( var suffix in suffixes ){
+                query.from( "cbc_userPermissions" ).insert( 
+                    values = {
+                            "id" : createUUID(),
+                            "prefix" : prefix,
+                            "suffix" : suffix	
+                        }
+                );
+            }
+        }
 
-		schema.create( "cbc_userRoles", function( table ){
-			table.uuid( 'id' ).primaryKey();
+        schema.create( "cbc_userRoles", function( table ){
+            table.uuid( 'id' ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
             table.string( 'name', 75 );
-		});
-
-		// Insert our intial roles
-		query.from( "cbc_userRoles" ).insert(
-			values = [
-				{
-					"id" : createUUID(),
-					"name" : "User"
-				},
-				{
-					"id" : createUUID(),
-					"name" : "Marketer"
-				},
-				{
-					"id" : createUUID(),
-					"name" : "Editor"
-				},
-				{
-					"id" : createUUID(),
-					"name" : "Manager"
-				},
-				{
-					"id" : createUUID(),
-					"name" : "Administrator"
-				}
-			]
-		);
-
-		schema.create('cbc_lookups_users_roles', function ( table ) {
-            table.increments('id');
-			
-			table.uuid( 'FK_user')
-		    		.references( "id" )
-		    		.onTable( "cbc_users" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-
-			table.uuid( 'FK_user_role')
-					.references('id')
-					.onTable('cbc_userRoles')
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-		});
-		
-		schema.create('cbc_lookups_roles_permissions', function ( table ) {
-			table.increments('id');
-			
-			table.uuid( 'FK_permission')
-					.references('id')
-					.onTable('cbc_userPermissions')
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-
-			table.uuid( 'FK_user_role')
-					.references('id')
-					.onTable('cbc_userRoles')
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-		});
-		
-		schema.create('cbc_lookups_users_explicitPermissions', function ( table ) {
-            table.increments('id');
-			
-			table.uuid( 'FK_permission')
-					.references('id')
-					.onTable('cbc_userPermissions')
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-			
-			table.uuid( 'FK_user')
-					.references('id')
-					.onTable( 'cbc_users' )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
         });
-		
 
-    	schema.create( "cbc_customerAddresses", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-			table.string( "designation", 25 );
-			
-			table.string( 'address1', 255 );
-			table.string( 'address2', 255 );
-			table.string( 'city', 255 );
-			table.string( 'province', 3 );
-			table.string( 'postalCode', 15);
-			table.string( 'country', 3 ).default( "USA" );
-			table.boolean( 'isPrimary' ).default( 0 );
+        // Insert our intial roles
+        query.from( "cbc_userRoles" ).insert(
+            values = [
+                {
+                    "id" : createUUID(),
+                    "name" : "User"
+                },
+                {
+                    "id" : createUUID(),
+                    "name" : "Marketer"
+                },
+                {
+                    "id" : createUUID(),
+                    "name" : "Editor"
+                },
+                {
+                    "id" : createUUID(),
+                    "name" : "Manager"
+                },
+                {
+                    "id" : createUUID(),
+                    "name" : "Administrator"
+                },
+                {
+                    "id" : createUUID(),
+                    "name" : "Consignor"
+                }
+            ]
+        );
 
-		    table.uuid( "FK_user" )
-		    		.references( "id" )
-		    		.onTable( "cbc_users" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-		    
-    	} );
+        schema.create('cbc_lookups_users_roles', function ( table ) {
+            table.increments('id');
+            
+            table.uuid( 'FK_user')
+                    .references( "id" )
+                    .onTable( "cbc_users" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+
+            table.uuid( 'FK_user_role')
+                    .references('id')
+                    .onTable('cbc_userRoles')
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+        });
+        
+        schema.create('cbc_lookups_roles_permissions', function ( table ) {
+            table.increments('id');
+            
+            table.uuid( 'FK_permission')
+                    .references('id')
+                    .onTable('cbc_userPermissions')
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+
+            table.uuid( 'FK_user_role')
+                    .references('id')
+                    .onTable('cbc_userRoles')
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+        });
+        
+        schema.create('cbc_lookups_users_explicitPermissions', function ( table ) {
+            table.increments('id');
+            
+            table.uuid( 'FK_permission')
+                    .references('id')
+                    .onTable('cbc_userPermissions')
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+            
+            table.uuid( 'FK_user')
+                    .references('id')
+                    .onTable( 'cbc_users' )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+        });
+        
+
+        schema.create( "cbc_customerAddresses", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.string( "designation", 25 );
+            
+            table.string( 'address1', 255 );
+            table.string( 'address2', 255 ).nullable();
+            table.string( 'city', 255 );
+            table.string( 'province', 3 );
+            table.string( 'postalCode', 15);
+            table.string( 'country', 3 ).default( "USA" );
+            table.boolean( 'isPrimary' ).default( 0 );
+            table.string( 'fullName', 255 ).nullable();
+            table.uuid( "FK_user" )
+                    .references( "id" )
+                    .onTable( "cbc_users" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+            
+        } );
 
         schema.create( "cbc_products", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			
-			table.string( "name", 300 );
-			table.string( "shortDescription", 1000 );
-			table.text( "description" );
-			table.boolean( "hasOptions");
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            
+            table.string( "name", 300 );
+            table.string( "shortDescription", 1000 );
+            table.text( "description" );
+            table.boolean( "hasOptions");
             table.json( "requiredOptions" );
             table.integer( "displayOrder" ).default( 0 );
             table.string( "externalId" ).nullable();
@@ -166,161 +170,145 @@ component {
             table.integer( "hitCount" ).default( 0 );
         } );
         
-        schema.alter( "cbc_products", function( table ){
-            table.addConstraint( table.index( "name", "idx_cbc_products_name" ) );
-        } );
-        transaction action="commit";
-
-        transaction action="commit";
-        schema.alter( "cbc_productCategoryMedia", function( table ){
-			table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
-			table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productCategoryMedia_sort" ) );
-        } );
-        transaction action="commit";
-        schema.alter( "cbc_productMedia", function( table ){
-			table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
-			table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
-        } );
-        transaction action="commit";
 
         schema.create( "cbc_productCategories", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
 
-			table.string( "name" );
+            table.string( "name" );
             table.string( "description");
             table.integer( "displayOrder" ).default( 0 );
 
-			table.uuid( "FK_parent" )
-					.nullable()
-		    		.references( "id" )
+            table.uuid( "FK_parent" )
+                    .nullable()
+                    .references( "id" )
                     .onTable( "cbc_productCategories" );
             table.boolean( "isFeatured" ).default( 0 );
             table.integer( "hitCount" ).default( 0 );
 
-		});
+        });
 
-		schema.create( "cbc_lookups_products_categories", function( table ){
+        schema.create( "cbc_lookups_products_categories", function( table ){
 
-			table.increments( "increments" );
+            table.increments( "increments" );
 
-			table.uuid( "FK_product" )
-		    		.references( "id" )
-					.onTable( "cbc_products" );
-					
-			table.uuid( "FK_category" )
-		    		.references( "id" )
-					.onTable( "cbc_productCategories" );
+            table.uuid( "FK_product" )
+                    .references( "id" )
+                    .onTable( "cbc_products" );
+                    
+            table.uuid( "FK_category" )
+                    .references( "id" )
+                    .onTable( "cbc_productCategories" );
 
-					
-		});
+                    
+        });
 
-		schema.create( "cbc_productConditions", function( table ){
-			table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+        schema.create( "cbc_productConditions", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
 
-			table.string( "name", 25 );
-			
-			table.uuid( "FK_parent" )
-					.nullable()
-		    		.references( "id" )
-					.onTable( "cbc_productConditions" );
-		
-		} );
+            table.string( "name", 25 );
+            
+            table.uuid( "FK_parent" )
+                    .nullable()
+                    .references( "id" )
+                    .onTable( "cbc_productConditions" );
+        
+        } );
 
-		var topLevelConditions = [
-			{
-				"id" : createUUID(),
-				"name" : "New"
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Used"
-			}
-		];
+        var topLevelConditions = [
+            {
+                "id" : createUUID(),
+                "name" : "New"
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Used"
+            }
+        ];
 
-		var subConditions = [
-			{
-				"id" : createUUID(),
-				"name" : "Unopened",
-				"FK_parent" : topLevelConditions[ 1 ].id
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Like New",
-				"FK_parent" : topLevelConditions[ 2 ].id
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Excellent",
-				"FK_parent" : topLevelConditions[ 2 ].id
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Good",
-				"FK_parent" : topLevelConditions[ 2 ].id
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Fair",
-				"FK_parent" : topLevelConditions[ 2 ].id
-			},
-			{
-				"id" : createUUID(),
-				"name" : "Poor",
-				"FK_parent" : topLevelConditions[ 2 ].id
-			}
+        var subConditions = [
+            {
+                "id" : createUUID(),
+                "name" : "Unopened",
+                "FK_parent" : topLevelConditions[ 1 ].id
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Like New",
+                "FK_parent" : topLevelConditions[ 2 ].id
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Excellent",
+                "FK_parent" : topLevelConditions[ 2 ].id
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Good",
+                "FK_parent" : topLevelConditions[ 2 ].id
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Fair",
+                "FK_parent" : topLevelConditions[ 2 ].id
+            },
+            {
+                "id" : createUUID(),
+                "name" : "Poor",
+                "FK_parent" : topLevelConditions[ 2 ].id
+            }
 
-		];
+        ];
 
-		query.from( "cbc_productConditions" ).insert(
-			values = topLevelConditions
-		);
+        query.from( "cbc_productConditions" ).insert(
+            values = topLevelConditions
+        );
 
-		query.from( "cbc_productConditions" ).insert(
-			values = subConditions
-		);
+        query.from( "cbc_productConditions" ).insert(
+            values = subConditions
+        );
 
 
         schema.create( "cbc_SKUs", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isVirtual" ).default( 0 );
-			table.boolean( "isConsigned").default( 0 );
-			table.decimal( "cost", 8, 2 );
-			table.decimal( "basePrice",  8, 2  );
-			table.text( "conditionDescription" ).nullable();
-			table.decimal( "minimumPrice", 8, 2  ).nullable();
-			table.decimal( "MSRP", 8, 2  ).nullable();
-			table.timestamp( "discontinueOn" ).nullable();
-			table.decimal( "packagedWeight", 8, 2  ).default( 0 );
-			table.decimal( "packagingX", 8, 2  ).default( 0 );
-			table.decimal( "packagingY", 8, 2  ).default( 0 );
-			table.decimal( "packagingZ", 8, 2  ).default( 0 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isVirtual" ).default( 0 );
+            table.boolean( "isConsigned").default( 0 );
+            table.decimal( "cost", 8, 2 );
+            table.decimal( "basePrice",  8, 2  );
+            table.text( "conditionDescription" ).nullable();
+            table.decimal( "minimumPrice", 8, 2  ).nullable();
+            table.decimal( "MSRP", 8, 2  ).nullable();
+            table.timestamp( "discontinueOn" ).nullable();
+            table.decimal( "packagedWeight", 8, 2  ).default( 0 );
+            table.decimal( "packagingX", 8, 2  ).default( 0 );
+            table.decimal( "packagingY", 8, 2  ).default( 0 );
+            table.decimal( "packagingZ", 8, 2  ).default( 0 );
 
-			table.uuid( "FK_product" )
-		    		.references( "id" )
-					.onTable( "cbc_products" );
+            table.uuid( "FK_product" )
+                    .references( "id" )
+                    .onTable( "cbc_products" );
 
-			table.uuid( "FK_consignor" )
-					.nullable()
-		    		.references( "id" )
-					.onTable( "cbc_users" );
+            table.uuid( "FK_consignor" )
+                    .nullable()
+                    .references( "id" )
+                    .onTable( "cbc_users" );
 
-			table.uuid( "FK_condition" )
-					.default( "'#topLevelConditions[ 1 ].id#'" )
-					.references( "id" )
-					.onTable( "cbc_productConditions" );
+            table.uuid( "FK_condition" )
+                    .default( "'#topLevelConditions[ 1 ].id#'" )
+                    .references( "id" )
+                    .onTable( "cbc_productConditions" );
 
-			table.uuid( "FK_subCondition" )
-					.nullable()
-					.references( "id" )
+            table.uuid( "FK_subCondition" )
+                    .nullable()
+                    .references( "id" )
                     .onTable( "cbc_productConditions" );
                     
             table.integer( "displayOrder" ).default( 0 );
@@ -336,293 +324,289 @@ component {
             table.boolean( "showPricing" ).default( 1 );
             table.boolean( "pickUpInStore").default( 0 );
         } );
+
+        schema.create( "cbc_virtualSKUs", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+
+            table.string( "location", 255 );
+
+            table.uuid( "FK_sku" )
+                    .references( "id" )
+                    .onTable( "cbc_SKUs" );
+        } );
+
+        schema.create( "cbc_inventoryLocations", function( table ) {
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+
+            table.string( "name", 255 );
+            table.string( "description" ).nullable();
+
+            table.string( 'address1', 255 ).nullable();
+            table.string( 'address2', 255 ).nullable();
+            table.string( 'city', 255 ).nullable();
+            table.string( 'province', 3 ).nullable();
+            table.string( 'postalCode', 15).nullable();
+            table.string( 'country', 3 ).default( "USA" );
+            
+        } );
+
+        schema.create( "cbc_inventoryLocationStock", function( table ) {
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+
+            table.integer( "available" ).default( 0 );
+            table.integer( "unaccounted" ).default( 0 );
+            table.boolean( "countRequired" ).default( 0 );
+            table.boolean( "allowBackorder" ).default( 0 );
+
+            table.uuid( "FK_sku" )
+                    .references( "id" )
+                    .onTable( "cbc_SKUs" );
+
+            table.uuid( "FK_inventoryLocation" )
+                    .references( "id" )
+                    .onTable( "cbc_inventoryLocations" );
+
+        });
+
         
-        var sql = "ALTER TABLE `cbc_SKUs` CHANGE `discontinueOn` `discontinueOn` TIMESTAMP NULL DEFAULT NULL";
-        var q = new query( sql=sql );
-        q.execute();
 
-		schema.create( "cbc_virtualSKUs", function( table ){
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+        schema.create( "cbc_orders", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.timestamp( "approvalTime" ).nullable();
+            table.timestamp( "fulfilledTime" ).nullable();
+            table.decimal( "subtotal", 8, 2  );
+            table.decimal( "shipping", 8, 2  );
+            table.decimal( "fees", 8, 2  );
+            table.decimal( "tax", 8, 2  );
+            table.decimal( "discount", 8, 2  );
+            table.decimal( "total", 8, 2  );
+            table.timestamp( "paidInFull" ).nullable();
+        
+            table.uuid( "FK_user" )
+                    .references( "id" )
+                    .onTable( "cbc_users" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
 
-			table.string( "location", 255 );
-
-			table.uuid( "FK_sku" )
-		    		.references( "id" )
-		    		.onTable( "cbc_SKUs" );
-		} );
-
-		schema.create( "cbc_inventoryLocations", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-
-			table.string( "name", 255 );
-			table.string( "description" ).nullable();
-
-			table.string( 'address1', 255 ).nullable();
-			table.string( 'address2', 255 ).nullable();
-			table.string( 'city', 255 ).nullable();
-			table.string( 'province', 3 ).nullable();
-			table.string( 'postalCode', 15).nullable();
-			table.string( 'country', 3 ).default( "USA" );
-		    
-		} );
-
-		schema.create( "cbc_inventoryLocationStock", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-
-			table.integer( "available" ).default( 0 );
-			table.integer( "unaccounted" ).default( 0 );
-			table.boolean( "countRequired" ).default( 0 );
-			table.boolean( "allowBackorder" ).default( 0 );
-
-			table.uuid( "FK_sku" )
-		    		.references( "id" )
-		    		.onTable( "cbc_SKUs" );
-
-			table.uuid( "FK_inventoryLocation" )
-		    		.references( "id" )
-		    		.onTable( "cbc_inventoryLocations" );
-
-		});
-
-		
-
-		schema.create( "cbc_orders", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-		    table.timestamp( "approvalTime" );
-		    table.timestamp( "fulfilledTime" );
-		    table.decimal( "subtotal", 8, 2  );
-		    table.decimal( "shipping", 8, 2  );
-		    table.decimal( "fees", 8, 2  );
-		    table.decimal( "tax", 8, 2  );
-		    table.decimal( "discount", 8, 2  );
-		    table.decimal( "total", 8, 2  );
-		    table.timestamp( "paidInFull" );
-		    
-		    table.uuid( "FK_user" )
-		    		.references( "id" )
-		    		.onTable( "cbc_users" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-
-			table.uuid( "FK_shippingAddress" )
-		    		.references( "id" )
-		    		.onTable( "cbc_customerAddresses" );
+            table.uuid( "FK_shippingAddress" )
+                    .references( "id" )
+                    .onTable( "cbc_customerAddresses" );
 
 
-			table.uuid( "FK_billingAddress" )
-		    		.references( "id" )
+            table.uuid( "FK_billingAddress" )
+                    .references( "id" )
                     .onTable( "cbc_customerAddresses" );
             
             table.uuid( "FK_invoice" )
-					.references( "id" )
+                    .references( "id" )
                     .onTable( "cbc_orderInvoices" )
                     .nullable();
 
-    	} );
+        } );
 
-    	schema.create( "cbc_orderItems", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isVirtual" ).default( 0 );
+        schema.create( "cbc_orderItems", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isVirtual" ).default( 0 );
 
-			table.integer( "quantityOrdered" ).default( 1 );
-			table.integer( "quantityCancelled" ).default( 0 );
-			table.integer( "quantityRefunded" ).default( 0 );
-			table.integer( "quantityDownloaded" ).nullable( 0 );
+            table.integer( "quantityOrdered" ).default( 1 );
+            table.integer( "quantityCancelled" ).default( 0 );
+            table.integer( "quantityRefunded" ).default( 0 );
+            table.integer( "quantityDownloaded" ).nullable( 0 );
 
-			table.decimal( "originalPrice", 8, 2  );
-			table.decimal( "originalCost", 8, 2  );
+            table.decimal( "originalPrice", 8, 2  );
+            table.decimal( "originalCost", 8, 2  );
 
-			table.json( "productSnapshot" ).nullable();
+            table.json( "productSnapshot" ).nullable();
 
-		    table.uuid( "FK_order" )
-					.references( "id" )
-					.onTable( "cbc_orders" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );   
-		} );
-		
-		schema.create( "cbc_orderShipments", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+            table.uuid( "FK_order" )
+                    .references( "id" )
+                    .onTable( "cbc_orders" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );   
+        } );
+        
+        schema.create( "cbc_orderShipments", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
 
-			table.integer( "quantity" );
-			table.string( "carrierReferenceNumber", 125 );
+            table.integer( "quantity" );
+            table.string( "carrierReferenceNumber", 125 );
 
-			table.uuid( "FK_order" )
-					.references( "id" )
-					.onTable( "cbc_orderItems" );
-			
-			table.uuid( "FK_inventoryLocation" )
-					.references( "id" )
-					.onTable( "cbc_inventoryLocations" );
+            table.uuid( "FK_order" )
+                    .references( "id" )
+                    .onTable( "cbc_orderItems" );
+            
+            table.uuid( "FK_inventoryLocation" )
+                    .references( "id" )
+                    .onTable( "cbc_inventoryLocations" );
 
-		});
+        });
 
-    	schema.create( "cbc_payments", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-		    table.string( "externalTransactionID" );
-		    table.index( [ "externalTransactionID" ], "IDX_externalTransactionID" );
-		    table.decimal( "amount", 8, 2  );
-		    table.text( "comment" ).nullable();
-		    table.integer( "lastFour" );
-		    table.string( "paymentMethod" );
+        schema.create( "cbc_payments", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.string( "externalTransactionID" );
+            table.index( [ "externalTransactionID" ], "IDX_externalTransactionID" );
+            table.decimal( "amount", 8, 2  );
+            table.text( "comment" ).nullable();
+            table.integer( "lastFour" );
+            table.string( "paymentMethod" );
 
-			table.uuid( "FK_order" )
-					.references( "id" )
-					.onTable( "cbc_orders" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" ); 
-    	} );
+            table.uuid( "FK_order" )
+                    .references( "id" )
+                    .onTable( "cbc_orders" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" ); 
+        } );
 
 
         schema.create( "cbc_carts", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-		    table.json( "contents" );
-		    table.json( "audit" ).nullable();
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.json( "contents" );
+            table.json( "audit" ).nullable();
 
-		    table.uuid( "FK_user" )
-					.nullable()
-		    		.references( "id" )
-		    		.onTable( "cbc_users" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
+            table.uuid( "FK_user" )
+                    .nullable()
+                    .references( "id" )
+                    .onTable( "cbc_users" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
 
-			table.uuid( "FK_order" )
-					.nullable()
-					.references( "id" )
-					.onTable( "cbc_orders" );
+            table.uuid( "FK_order" )
+                    .nullable()
+                    .references( "id" )
+                    .onTable( "cbc_orders" );
 
-		} );
+        } );
 
 
         schema.create( "cbc_wishlists", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			
-			table.string( "name", 255 );
-			
-			table.uuid( "FK_user" )
-		    		.references( "id" )
-		    		.onTable( "cbc_users" )
-					.onUpdate( "CASCADE" )
-					.onDelete( "CASCADE" );
-		    table.boolean( "isDefault" ).default( 0 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            
+            table.string( "name", 255 );
+            
+            table.uuid( "FK_user" )
+                    .references( "id" )
+                    .onTable( "cbc_users" )
+                    .onUpdate( "CASCADE" )
+                    .onDelete( "CASCADE" );
+            table.boolean( "isDefault" ).default( 0 );
             table.boolean( "isPublic" ).default( 0 );
             table.string( "description", 750 ).nullable();
-		    
-		} );
+            
+        } );
 
-		schema.create( "cbc_wishlistItems", function( table ){
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
+        schema.create( "cbc_wishlistItems", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
 
-			table.decimal( "baselinePrice" );
+            table.decimal( "baselinePrice" );
 
-			table.uuid( "FK_sku" )
-		    		.references( "id" )
-		    		.onTable( "cbc_SKUs" )
-					.onDelete( "CASCADE" );
+            table.uuid( "FK_sku" )
+                    .references( "id" )
+                    .onTable( "cbc_SKUs" )
+                    .onDelete( "CASCADE" );
 
-			table.uuid( "FK_wishlist" )
-					.references( "id" )
-					.onTable( "cbc_wishlists" )
-					.onUpdate( "CASCADE" )
+            table.uuid( "FK_wishlist" )
+                    .references( "id" )
+                    .onTable( "cbc_wishlists" )
+                    .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
             table.decimal( "discountPrice" ).default( 0 );
             table.integer( "quantity" ).default( 1 );
             table.integer( "quantity" ).default( 1 );
 
-		} );
+        } );
 
 
         schema.create( "cbc_media", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			table.string( "designation" ).default( "image" );
-			table.string( "title", 255 ).nullable();
-			table.string( "caption", 750 ).nullable();
-		    table.string( 'originalFileName', 255 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.string( "designation" ).default( "image" );
+            table.string( "title", 255 ).nullable();
+            table.string( "caption", 750 ).nullable();
+            table.string( 'originalFileName', 255 );
             table.string( 'fileLocation', 255 );
             table.integer( 'fileSizeBytes' ).default( 0 );
-		} );
+        } );
 
-		// create media lookups table
-		schema.create( "cbc_productMedia", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isPrimary" ).default( 0 );
-			table.integer( "displayOrder" ).default( 0 );
+        // create media lookups table
+        schema.create( "cbc_productMedia", function( table ) {
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isPrimary" ).default( 0 );
+            table.integer( "displayOrder" ).default( 0 );
 
-			table.uuid( "FK_media" )
-		    		.references( "id" )
-		    		.onTable( "cbc_media" )
-					.onUpdate( "CASCADE" );
+            table.uuid( "FK_media" )
+                    .references( "id" )
+                    .onTable( "cbc_media" )
+                    .onUpdate( "CASCADE" );
 
-			table.uuid( "FK_product" )
-		    		.references( "id" )
-		    		.onTable( "cbc_products" )
-					.onDelete( "CASCADE" );
+            table.uuid( "FK_product" )
+                    .references( "id" )
+                    .onTable( "cbc_products" )
+                    .onDelete( "CASCADE" );
 
-		} );
+        } );
 
-		// create sku-specific media lookups table
-		schema.create( "cbc_productSKUMedia", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isPrimary" ).default( 0 );
-			table.integer( "displayOrder" ).default( 0 );
+        // create sku-specific media lookups table
+        schema.create( "cbc_productSKUMedia", function( table ) {
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isPrimary" ).default( 0 );
+            table.integer( "displayOrder" ).default( 0 );
 
-			table.uuid( "FK_media" )
-		    		.references( "id" )
-		    		.onTable( "cbc_media" )
-					.onUpdate( "CASCADE" );
+            table.uuid( "FK_media" )
+                    .references( "id" )
+                    .onTable( "cbc_media" )
+                    .onUpdate( "CASCADE" );
 
-			table.uuid( "FK_sku" )
-		    		.references( "id" )
-		    		.onTable( "cbc_SKUs" )
-					.onDelete( "CASCADE" );
+            table.uuid( "FK_sku" )
+                    .references( "id" )
+                    .onTable( "cbc_SKUs" )
+                    .onDelete( "CASCADE" );
 
         } );
         
         //======
 
          schema.create( "cbc_orderInvoices", function( table ){
-    		table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             
             table.string( "internalId" );
@@ -640,22 +624,22 @@ component {
         //======
 
         schema.create( "cbc_productCategoryMedia", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isPrimary" ).default( 0 );
-			table.integer( "displayOrder" ).default( 0 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isPrimary" ).default( 0 );
+            table.integer( "displayOrder" ).default( 0 );
 
-			table.uuid( "FK_media" )
-		    		.references( "id" )
-		    		.onTable( "cbc_media" )
-					.onUpdate( "CASCADE" );
+            table.uuid( "FK_media" )
+                    .references( "id" )
+                    .onTable( "cbc_media" )
+                    .onUpdate( "CASCADE" );
 
-			table.uuid( "FK_category" )
-		    		.references( "id" )
-		    		.onTable( "cbc_productCategories" )
-					.onDelete( "CASCADE" );
+            table.uuid( "FK_category" )
+                    .references( "id" )
+                    .onTable( "cbc_productCategories" )
+                    .onDelete( "CASCADE" );
 
         } );
         
@@ -663,90 +647,53 @@ component {
         //======
 
         schema.create( "cbc_productReviews", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-			table.boolean( "isActive" ).default( 1 );
-			table.boolean( "isPublished" ).default( 0 );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isPublished" ).default( 0 );
             table.decimal( "rating", 8, 2 );
             table.decimal( "relevancyScore", 8, 2 ).default( 0 );
-		    table.string( "summary", 255 ).nullable();
-		    table.text( "comment" ).nullable();
+            table.string( "summary", 255 ).nullable();
+            table.text( "comment" ).nullable();
             
             table.uuid( "FK_product" )
-		    		.references( "id" )
-					.onTable( "cbc_products" );
+                    .references( "id" )
+                    .onTable( "cbc_products" );
 
             table.uuid( "FK_sku" )
                     .nullable()
-		    		.references( "id" )
-					.onTable( "cbc_SKUs" );
+                    .references( "id" )
+                    .onTable( "cbc_SKUs" );
 
-			table.uuid( "FK_user" )
-		    		.references( "id" )
-					.onTable( "cbc_users" );
-					
+            table.uuid( "FK_user" )
+                    .references( "id" )
+                    .onTable( "cbc_users" );
+                    
         } );
         
-        // now clear out our column values 
-        sql = "UPDATE `cbc_SKUs` SET `discontinueOn` = NULL";
-        q = new query( sql=sql );
-        q.execute();
 
-        //======
-
-        var statements = [ 
-            "ALTER TABLE `cbc_productSKUMedia` DROP FOREIGN KEY fk_cbc_productSKUMedia_FK_sku",
-            "ALTER TABLE `cbc_productSKUMedia` ADD CONSTRAINT fk_cbc_productSKUMedia_FK_sku FOREIGN KEY (FK_sku) REFERENCES cbc_SKUs(id)" 
-        ];
-        statements.each( function( sql ){
-            var q = new query( sql=sql );
-            q.execute();
-        });
-
-        //======
 
         query.from( "cbc_userRoles" ).insert(
             values = [
-				{
-					"id" : createUUID(),
-					"name" : "Consignor"
+                {
+                    "id" : createUUID(),
+                    "name" : "Consignor"
                 }
             ]
-        );
-
-        //======
-
-        var sql = "ALTER TABLE `cbc_customerAddresses` CHANGE `address2` `address2` VARCHAR(255) NULL DEFAULT NULL";
-        var q = new query( sql=sql );
-        q.execute();
-
-        sql = "ALTER TABLE `cbc_orders`
-        		MODIFY `fulfilledTime` timestamp NULL DEFAULT NULL,
-        		MODIFY `paidInFull` timestamp NULL DEFAULT NULL,
-        		MODIFY `approvalTime` timestamp NULL DEFAULT NULL";
-        q = new query( sql=sql );
-        q.execute();
-
-        //======
-
-        schema.alter( "cbc_customerAddresses", function( table ){
-            table.addColumn(
-                table.string( "fullName", 255 ).nullable()
-            );
-        } );
+        ); 
 
         //======
 
         schema.create( "cbc_productSKUOptions", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             table.integer( "displayOrder" ).default( 0 )
-			
-			table.string( "name", 100 );
-			table.string( "value", 255 );
+            
+            table.string( "name", 100 );
+            table.string( "value", 255 );
 
             table.uuid( "FK_sku" )
                     .references( "id" )
@@ -758,8 +705,8 @@ component {
             function up( SchemaBuilder schema, QueryBuilder query ) {
         schema.create( "cbc_consignmentBatches", function( table ) {
             table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             table.string( "externalId", 75 ).nullable();
             table.string( "summary", 400 );
@@ -769,7 +716,7 @@ component {
             table.decimal( "repairHourlyRate", 8, 2 ).default( 0 );
 
             
-			table.uuid( "FK_consignor" )
+            table.uuid( "FK_consignor" )
                 .references( "id" )
                 .onTable( "cbc_users" );
 
@@ -781,7 +728,7 @@ component {
             table.uuid( "id" ).primaryKey();
             table.string( "name", 300 );
             table.string( "description", 750 );
-			table.integer( "displayOrder" ).default( 0 );
+            table.integer( "displayOrder" ).default( 0 );
         });
 
         var feeTypes = [
@@ -824,12 +771,12 @@ component {
         ];
 
         query.from( "cbc_consignmentFeeTypes" ).insert(
-			values = feeTypes
-		);
+            values = feeTypes
+        );
         
         schema.create( "cbc_consignmentBatchFees", function( table ){
             table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             table.decimal( "amount", 8, 2 ).default( 0 );
@@ -850,17 +797,12 @@ component {
 
         } );
 
-
-        query.from( "cbc_userRoles" )
-            .where( 'name', 'Consignee' )
-            .update(  { 'name' : 'Consignor' } );
-
         //======
 
         schema.create( "cbc_tenantSettings", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.string( 'key' );
             table.text( 'value' );
         } );
@@ -868,29 +810,27 @@ component {
         //======
 
         schema.create( "cbc_tenantSettings", function( table ) {
-		    table.uuid( "id" ).primaryKey();
-		    table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-		    table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.string( 'key' );
             table.text( 'value' );
         } );
 
-       
-        sql = "UPDATE `cbc_SKUs` SET `pickUpInStore` = 1 where `FK_condition` in (SELECT id from `cbc_productConditions` where `name` ='New')";
-        q = new query( sql=sql );
-        q.execute();
-
-        sql2 = "UPDATE `cbc_SKUs` SET `pickUpInStore` = 0 where `pickUpInStore` is null";
-        q2 = new query( sql=sql2 );
-        q2.execute();
     }
 
-    function down( schema, query ) {
+        schema.alter( "cbc_products", function( table ){
+            table.addConstraint( table.index( "name", "idx_cbc_products_name" ) );
+        } );
 
-        var sql = "DELETE from `cbc_userRoles` WHERE name = 'Consignee'";
-        var q =  new query( sql = sql );
-        q.execute();
-
-    }
-
+        schema.alter( "cbc_productCategoryMedia", function( table ){
+            table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
+            table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productCategoryMedia_sort" ) );
+        } );
+        
+        schema.alter( "cbc_productMedia", function( table ){
+            table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
+            table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
+        } );
+        
 }
