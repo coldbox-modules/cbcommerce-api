@@ -16,7 +16,7 @@
                     <b-input-group class="col col-12">
                         <b-form-input v-model="searchParams.search" @change="refreshList" :placeholder="$t( 'type_search')" />
                         <b-input-group-append>
-                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">{{ $t( 'clear' ) }}</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-row>
