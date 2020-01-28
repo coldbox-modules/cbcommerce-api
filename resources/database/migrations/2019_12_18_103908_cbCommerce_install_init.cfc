@@ -832,5 +832,6 @@ component {
             table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
             table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
         } );
+    }
         
 }
