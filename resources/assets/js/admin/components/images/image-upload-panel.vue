@@ -44,7 +44,7 @@
 						    <div class="col-md-6" v-if="imageToUpload">
 									
 								<b-form-group
-									label="Caption"
+									:label="$t( 'caption' )"
 									label-for="imageCaption">
 									<b-form-textarea
 										v-model="form.caption"
@@ -54,7 +54,7 @@
 									</b-form-textarea>
 								</b-form-group>
 
-                <b-form-group label="Enable the image">
+                <b-form-group :label="$t( 'image_enable' )">
                      <b-form-radio-group
                      v-model="form.isActive"
                      :options="booleanOptions"
@@ -64,7 +64,7 @@
 
 								<b-form-group>
 
-                <b-form-group label="Set as the primary image">
+                <b-form-group :label="$t( 'image_set_primary' )">
                 			<b-form-radio-group
                 			v-model="form.isPrimary"
                 			:options="booleanOptions"
@@ -78,7 +78,7 @@
 									v-if="imageToUpload"
 									@click="attemptUpload"
 									class="btn btn-success">
-									Upload and Save
+									{{ $t ( 'upload_save' )}}
 								</button>
 
 						    </div>
@@ -115,7 +115,7 @@ export default {
 		},
 		sidebarTitle: {
 			type   : String,
-			default: 'Upload Image'
+			default: this.$t( 'image_upload' )
 		}
 	},
 
@@ -128,8 +128,8 @@ export default {
 				thumbnailWidth: 150,
 				maxFilesize: 100,
         booleanOptions : [
-            { text: 'Yes', value: true },
-            { text: 'No', value: false }
+            { text: this.$t( 'yes' ), value: true },
+            { text: this.$t( 'no' ), value: false }
         ]
 			}
 		}

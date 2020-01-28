@@ -5,7 +5,7 @@
 		<page-header headerTitle="Stripe Configuration"></page-header>
 
 		<dismissable-alert v-if="isSent && !isSending"
-			alertText="Your settings have been saved."
+			:alertText="$t( 'settings_saved' )"
 			alertType="success">
 		</dismissable-alert>
 
@@ -16,7 +16,7 @@
 				<b-col cols="6">
 
 					<b-form-group
-						label="Please enter your Stripe API key"
+						:label="$t( 'setting_api_key' )"
 						label-for="apiKey">
 						<b-form-input 
 							id="apiKey"
@@ -31,7 +31,7 @@
 
 			<button type="submit" class="btn btn-secondary btn-lg">Save</button>
 
-			<back-button link="/" text="Back to dashboard"></back-button>
+			<back-button link="/" :text="$t( 'setting_back_dashboard' )"></back-button>
 
 		</b-form>
 

@@ -3,7 +3,7 @@
 	<div>
         
         <page-header
-            headerTitle="Products"
+            :headerTitle="$t( 'products' )"
             :displayToolBarButton="true"
             routeName="newProduct"
             buttonIconClass="fa fa-plus">    
@@ -14,15 +14,15 @@
             <b-col md="3">
                 <b-row>
                     <b-input-group class="col col-12">
-                        <b-form-input v-model="searchParams.search" @change="refreshList" placeholder="Type to Search" />
+                        <b-form-input v-model="searchParams.search" @change="refreshList" :placeholder="$t( 'type_search')" />
                         <b-input-group-append>
-                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">Clear</b-btn>
+                            <b-btn :disabled="!searchParams.search" @click="searchParams.search = null;refreshList( $event )">{{ $t( 'clear' ) }}</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-row>
                 <b-row>
                     <b-form-group class="col col-12">
-                        <legend>Condition</legend>
+                        <legend>{{ $t( 'condition' ) }}</legend>
                         <b-form-radio-group
                             v-model="searchParams.condition"
                             :options="conditionOptions"
@@ -34,14 +34,14 @@
                 </b-row>
                 <b-row>
                     <b-form-group class="col col-12">
-                        <legend>Search By Tag</legend>
-                        <b-form-input v-model="searchParams.externalIdSearch" @change="refreshList" placeholder="Enter a Tag Number to Search" />
+                        <legend>{{ $t( 'product_tag_search' ) }}</legend>
+                        <b-form-input v-model="searchParams.externalIdSearch" @change="refreshList" :placeholder="$t( 'products_tag_search' )" />
                     </b-form-group>
                 </b-row>
                 <b-row>
                     <b-form-group class="col col-12">
-                        <legend>Search By Model Number</legend>
-                        <b-form-input v-model="searchParams.modelNumber" @change="refreshList" placeholder="Enter a Model Number to Search" />
+                        <legend>{{ $t( 'product_model_search' ) }}</legend>
+                        <b-form-input v-model="searchParams.modelNumber" @change="refreshList" :placeholder="$t( 'products_model_search' )" />
                     </b-form-group>
                 </b-row>
             </b-col>
@@ -50,7 +50,7 @@
 
                 <b-row>
                     <b-col xs="12">
-                    <generic-loader v-if="isLoading" message="Loading products. Please wait..."></generic-loader>
+                    <generic-loader v-if="isLoading" :message="$t( 'products_loading' )"></generic-loader>
                     </b-col>
                 </b-row>
 
@@ -131,7 +131,7 @@ export default {
                 condition: 'New',
                 activeSKUsOnly : false
             },
-            conditionOptions : [ { text : "New", value : "New" }, {text : "Used", value : "Used" } ],
+            conditionOptions : [ { text : this.$t( 'new' ), value : "New" }, {text : this.$t( 'used' ), value : "Used" } ],
             productsFields: {
                 thumbnail: {
                     formatter: ( value, key, item ) => {

@@ -4,15 +4,15 @@
 
 		<page-header 
 			v-if="!isNewProduct"
-			:headerTitle="`Product: ${form.name}`">		
+			:headerTitle="$t( 'product' ) + `: ${form.name}`">		
 		</page-header>
 		<page-header 
 			v-else
-			header-title="Create Product">		
+			:header-title="$t( 'product_create' )">		
 		</page-header>
 
 		<dismissable-alert v-if="isSent && !isSending"
-			alertText="The item has been updated."
+			:alertText="$t( 'product_updated' )"
 			alertType="success">
 		</dismissable-alert>
 
@@ -23,7 +23,7 @@
 		        <b-col cols="12">
 
 		            <b-form-group
-						label="Name"
+						:label="$t( 'name' )"
 						label-for="name">
 						<b-form-input 
 	                    	required="required"
@@ -36,7 +36,7 @@
 
 		    </b-row>
 		    
-			<b-form-group label="Enable Product">
+			<b-form-group :label="$t( 'product_enable' )">
 			 	<b-form-radio-group
 					v-model="form.isActive"
 					:options="booleanOptions"
@@ -49,7 +49,7 @@
 		        <b-col cols="12">
 
 					<b-form-group
-						label="Categories"
+						:label="$t( 'categories' )"
 						label-for="categories">
 						<v-select 
 							v-if="categoriesListArray.length"
@@ -58,7 +58,7 @@
 							label="name"
 							:options="categoriesListArray"
 						></v-select>
-						<p v-else class="text-center text-muted"><i class="fa fa-spin fa-spinner fa-2x"></i><br> Loading all categories. Please wait...</p>
+						<p v-else class="text-center text-muted"><i class="fa fa-spin fa-spinner fa-2x"></i><br>{{ $t( 'categories_loading' ) }}</p>
 					</b-form-group>
 
 		        </b-col>
@@ -70,7 +70,7 @@
 		    	<b-card no-body class="mb-1">
 
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
-		    			<b-btn block href="#" v-b-toggle.content>Content</b-btn>
+		    			<b-btn block href="#" v-b-toggle.content>{{ $t( 'content' ) }}</b-btn>
 		    		</b-card-header>
 		    		<b-collapse id="content" accordion="product-accordion" role="tabpanel" visible>
 		    			<b-card-body>
@@ -79,7 +79,7 @@
 						        <b-col cols="12">
 
 									<b-form-group
-										label="Short Description"
+										:label="$t( 'short_description' )"
 										label-for="shortDescription">
 										<html-editor 
 						            		height="200" 
@@ -93,7 +93,7 @@
 						        <b-col cols="12">
 
 									<b-form-group
-										label="Long Description"
+										:label="$t( 'long_description' )"
 										label-for="description">
 										<html-editor 
 						            		height="200" 
@@ -112,7 +112,7 @@
 
 					<b-col cols="12">
 
-						<p class="alert alert-info text-center">Save your product first to add Images and SKUs</p>
+						<p class="alert alert-info text-center">{{ $t( 'product_save' ) }}</p>
 
 					</b-col>
 
@@ -121,7 +121,7 @@
 		    	<b-card no-body class="mb-1" v-if="currentProduct.id">
 
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
-		    			<b-btn block href="#" v-b-toggle.images>Images</b-btn>
+		    			<b-btn block href="#" v-b-toggle.images>{{ $t( 'images' ) }}</b-btn>
 		    		</b-card-header>
 		    		<b-collapse id="images" accordion="product-accordion" role="tabpanel">
 		    			<b-card-body>
@@ -138,7 +138,7 @@
 		    	<b-card no-body class="mb-1" v-if="currentProduct.id">
 
 		    		<b-card-header header-tags="header" class="p-1" role="tab">
-		    			<b-btn block href="#" v-b-toggle.skus>SKUs</b-btn>
+		    			<b-btn block href="#" v-b-toggle.skus>{{ $t( 'product_skus ') }}</b-btn>
 		    		</b-card-header>
 		    		<b-collapse id="skus" accordion="product-accordion" role="tabpanel">
 		    			<b-card-body>
@@ -192,9 +192,9 @@
 
 		    <hr />
 
-		    <button type="submit" class="btn btn-secondary btn-lg">Save</button>
+		    <button type="submit" class="btn btn-secondary btn-lg">{{ $t( 'save' ) }}</button>
 
-		    <back-button link="/products" text="Back to products"></back-button>
+		    <back-button link="/products" :text="$t( 'products_back' )"></back-button>
 		    
 		</form>
 
@@ -243,8 +243,8 @@ export default {
 				actions: {}
 			},
 			booleanOptions : [
-				{ text: 'Yes', value: true },
-				{ text: 'No', value: false }
+				{ text: this.$t( 'yes' ), value: true },
+				{ text: this.$t( 'no' ), value: false }
 			]
         }
     },

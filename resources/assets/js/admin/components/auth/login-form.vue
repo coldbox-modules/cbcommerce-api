@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <div class="col-md-6 col-md-offset-3">
             <page-header 
-                header-title="Log In">		
+                :header-title="$t( 'log_in' )">		
             </page-header>
 
             <login-form></login-form>

@@ -3,15 +3,15 @@
 	<div>
 
         <page-header
-            headerTitle="Categories"
+            :headerTitle="$t( 'categories' )"
             :displayToolBarButton="true"
             routeName="newCategory"
             buttonIconClass="fa fa-plus">    
         </page-header>
-		<p class="text-muted">Drag and drop to order categories.  Click the <i class="fa fa-pencil"></i> icon to edit.</p>
+		<p class="text-muted">{{ $t( 'categories_order' ) }} Click the <i class="fa fa-pencil"></i> icon to edit.</p>
 	
 		<div class="nestable-categories-list nested-expandable col-xs-12">
-			<generic-loader v-if="!categoryTree" message="Loading categories. Please wait..."></generic-loader>
+			<generic-loader v-if="!categoryTree" :message="$t( 'categories_loading' )"></generic-loader>
 			<vue-nestable 
 				v-else 
 				v-model="categoryTree"
@@ -48,7 +48,7 @@
 								class="btn btn-link btn-sm float-right"
 								v-if="item.children && item.children.length"
 								v-b-tooltip.hover
-								title="View Category in Site"
+								:title="$( 'category_site' )"
 							>
 								<i class="fa fa-globe"></i>
 							</a>

@@ -27,7 +27,7 @@
 			    		<b-col>
 
 							<b-form-group
-								label="Model Number"
+								:label="$t( 'product_model' )"
 								label-for="modelNumber">
 								<b-form-input 
 									type="text"
@@ -37,7 +37,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Condition"
+								:label="$t( 'condition' )"
 								label-for="condition">
 									<v-select  
 										v-model="form.condition" 
@@ -47,7 +47,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Sub-Condition"
+								:label="$t( 'sub_condition' )"
 								label-for="condition">
 									<v-select  
 										v-model="form.subCondition" 
@@ -57,7 +57,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Condition Description"
+								:label="$t( 'condition_description' )"
 								label-for="conditionDescription">
 								<html-editor 
 									height="200" 
@@ -68,7 +68,7 @@
 							<b-card no-body class="mb-1" v-if="data.sku.media">
 
 								<b-card-header header-tags="header" class="p-1" role="tab">
-									<b-btn block href="#" v-b-toggle.skuImages>Images</b-btn>
+									<b-btn block href="#" v-b-toggle.skuImages>{{ $t( 'images' ) }}</b-btn>
 								</b-card-header>
 								<b-collapse id="skuImages" accordion="product-accordion" role="tabpanel">
 									<b-card-body>
@@ -83,7 +83,7 @@
 							</b-card>
 
 							<b-form-group
-								label="MSRP"
+								:label="$t( 'product_msrp' )"
 								label-for="MSRP">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 
@@ -95,7 +95,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Minimum Retail Price"
+								:label="$t( 'product_minimum_retail' )"
 								label-for="miniumumPrice">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 
@@ -107,7 +107,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Minimum Advertised Price"
+								:label="$t( 'product_minimum_advertised' )"
 								label-for="MAP">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 
@@ -119,7 +119,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Selling Price"
+								:label="$t( 'product_selling' )"
 								label-for="basePrice">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 
@@ -130,7 +130,7 @@
 							</b-form-group>																		
 
 							<b-form-group
-								label="Cost"
+								:label="$t( 'cost' )"
 								label-for="cost">
 								<b-input-group size="lg" prepend="$">
 									<b-form-input 
@@ -141,7 +141,7 @@
 								</b-input-group>
 							</b-form-group>
 
-							<b-form-group label="Is SKU active?">
+							<b-form-group :label="$t( 'product_sku_active' )">
 								 <b-form-radio-group
 									v-model="form.isActive"
 									:options="booleanOptions"
@@ -149,7 +149,7 @@
 								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group label="Is Consignment Product">
+							<b-form-group :label="$t( 'product_consignment' )">
 								 <b-form-radio-group
 									v-model="form.isConsigned"
 									:options="booleanOptions"
@@ -158,10 +158,10 @@
 							</b-form-group>
 
 							<b-form-group v-if="form.isConsigned">
-								<legend>Consignor</legend>
+								<legend>{{ $t( 'product_consignor' ) }}</legend>
 								<h5>Select an existing customer</h5>
 								<v-select  
-									label="fullName"
+									:label="$t( 'full_name' )"
 									v-model="form.consignor"
 									:filterable="false" 
 									:options="consignorsListArray" 
@@ -173,7 +173,7 @@
 								<consignor-form v-if="!form.consignor || !form.consignor.id" :consignor="form.consignor"></consignor-form>
 							</b-form-group>
 
-							<b-form-group label="Is this a virtual/downloadable product?">
+							<b-form-group :label="$t( 'product_virtual_downloadable' )">
 								 <b-form-radio-group
 									v-model="form.isVirtual"
 									:options="booleanOptions"
@@ -181,7 +181,7 @@
 								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group label="In-Store Pick Up Only?">
+							<b-form-group :label="$t( 'product_pick_up' )">
 								 <b-form-radio-group
 									v-model="form.pickUpInStore"
 									:options="booleanOptions"
@@ -189,7 +189,7 @@
 								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group label="Show Pricing on Site?">
+							<b-form-group :label="$t( 'product_show_price' )">
 								 <b-form-radio-group
 									v-model="form.showPricing"
 									:options="booleanOptions"
@@ -197,7 +197,7 @@
 								></b-form-radio-group>
 							</b-form-group>
 
-							<b-form-group label="Allow backorder?">
+							<b-form-group :label="$t( 'product_allow_backorder' )">
 								 <b-form-radio-group
 									v-model="form.allowBackorder"
 									:options="booleanOptions"
@@ -206,7 +206,7 @@
 							</b-form-group>							
 
 							<b-form-group
-								label="Discontinue On"
+								:label="$t( 'product_discontinue_on' )"
 								label-for="discontinueOn">
 								<b-input-group>
 									<b-input-group-prepend>
@@ -224,7 +224,7 @@
 							<hr />
 
 							<b-form-group
-								label="Packaged Weight (lbs)"
+								:label="$t( 'product_packaged_weight' )"
 								label-for="packagedWeight">
 								<b-form-input 
 									type="text"
@@ -234,7 +234,7 @@
 							</b-form-group>							
 
 							<b-form-group
-								label="Packaging Width (in)"
+								:label="$t( 'product_packaging_width' )"
 								label-for="packagingX">
 								<b-form-input 
 									type="text"
@@ -244,7 +244,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Packaging Height (in)"
+								:label="$t( 'product_packaging_height' )"
 								label-for="packagingY">
 								<b-form-input 
 									type="text"
@@ -254,7 +254,7 @@
 							</b-form-group>
 
 							<b-form-group
-								label="Packaging Depth (in)"
+								:label="$t( 'product_packaging_depth' )"
 								label-for="packagingZ">
 								<b-form-input 
 									type="text"
@@ -267,7 +267,7 @@
 								id="saveDetails"
 								class="btn btn-success" 
 								@click="saveDetails">
-								Save SKU
+								{{ $t( 'product_save_sku' ) }}
 							</button>
 
 						</b-col>
@@ -314,7 +314,7 @@ export default {
 	computed : {
 		...mapGetters([ "currentProduct" ] ),
 		sideBarTitle() {
-			return ( this.data.method === 'edit' ) ? `Edit SKU Details` : `Add SKU Details`;
+			return ( this.data.method === 'edit' ) ? this.$t( 'product_sku_edit' ) : this.$t( 'product_sku_add' );
 		},
 		...mapState({
 			parentConditions : state => Vue.options.filters
@@ -335,8 +335,8 @@ export default {
 			eventPrefix : "activeSKU_",
 			consignors : { results : [], resultsMap : {} },
 			booleanOptions : [
-				{ text: 'Yes', value: true },
-				{ text: 'No', value: false }
+				{ text: this.$t( 'yes' ), value: true },
+				{ text: this.$t( 'no' ), value: false }
 			]
 		};
 	},

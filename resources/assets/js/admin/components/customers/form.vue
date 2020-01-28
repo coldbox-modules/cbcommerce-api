@@ -3,10 +3,10 @@
 	<div v-if="!this.isLoading">
 
 		<page-header
-			:headerTitle="`Customer: ${ fullName }`"></page-header>
+			:headerTitle="$t( 'customer' ) + `: ${ fullName }`"></page-header>
 
 		<dismissable-alert v-if="isSent && !isSending"
-			alertText="The customer has been updated."
+			:alertText="$t( 'customer_updated' )"
 			alertType="success">
 		</dismissable-alert>
 
@@ -14,7 +14,7 @@
 
 			<b-tabs>
 
-				<b-tab title="Customer Overview">
+				<b-tab :title="$t( 'customer_overview' )">
 
 					<b-row>
 
@@ -25,7 +25,7 @@
 								stacked 
 								caption-top
 								:items="overviewData">
-								<template slot="table-caption">Personal Information</template>
+								<template slot="table-caption">{{ $t( 'personal_information' ) }}</template>
 								<template slot="createdTime" slot-scope="data">
 									{{ data.item.createdTime | dateToText }}
 								</template>
@@ -42,7 +42,7 @@
 
 				</b-tab>
 
-				<b-tab title="Account Information">
+				<b-tab :title="$t( 'account_information' )">
 
 					<account-info-fields
 						:firstName="form.firstName"
@@ -52,7 +52,7 @@
 
 				</b-tab>
 
-				<b-tab title="Billing Addresses">
+				<b-tab :title="$t( 'billing_addresses' )">
 
 					<b-col cols="12" class="mt-5">
     					<span 
@@ -71,7 +71,7 @@
 
 				</b-tab>
 
-				<b-tab title="Shipping Addresses">
+				<b-tab :title="$t( 'shipping_addresses' )">
 
 					<b-col cols="12" class="mt-5">
     					<span 
@@ -94,9 +94,9 @@
 
 		    <hr />
 
-		    <button type="submit" class="btn btn-secondary btn-lg">Save</button>
+		    <button type="submit" class="btn btn-secondary btn-lg">{{ $t( 'save' ) }}</button>
 
-		    <back-button link="/customers" text="Back to customers"></back-button>
+		    <back-button link="/customers" :text="$t( 'customers_back' )"></back-button>
 
 		</form>
 

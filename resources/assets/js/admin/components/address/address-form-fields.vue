@@ -3,7 +3,7 @@
 	<div>
 
 		<b-form-group
-			label="Address Line 1"
+			:label="$t('address_line') + ` 1`"
 			label-for="address1">
 			<b-form-input 
 				type="text"
@@ -13,7 +13,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="Address Line 2"
+			:label="$t('address_line') + ` 2`"
 			label-for="address2">
 			<b-form-input 
 				type="text"
@@ -22,7 +22,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="City"
+			:label="$t( 'city' )"
 			label-for="city">
 			<b-form-input 
 				type="text"
@@ -32,7 +32,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="State/Province"
+			:label="$t( 'state' ) + `/` + $t( 'province' )"
 			label-for="province">
 			<b-form-input 
 				type="text"
@@ -42,7 +42,7 @@
 		</b-form-group>
 
 		<b-form-group
-			label="ZIP/Postal Code"
+			:label="$t( 'zip' ) + `/` + $t( 'postal_code' )"
 			label-for="postalCode">
 			<b-form-input 
 				type="text"
@@ -52,7 +52,7 @@
 		</b-form-group>							
 
 		<b-form-group
-			label="Country"
+			:label="$t( 'country' )"
 			label-for="country">
 			<b-form-input 
 				type="text"

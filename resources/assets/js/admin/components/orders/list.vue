@@ -3,7 +3,7 @@
 	<div>
 
         <page-header
-            headerTitle="Orders"
+            :headerTitle="$t( 'orders_name' )"
             :displayToolBarButton="true"
             routeName="newOrder"
             buttonIconClass="fa fa-plus">    
@@ -14,9 +14,9 @@
             <b-col md="6" offset-md="6" class="my-1">
                 <b-form-group horizontal class="mb-0">
                     <b-input-group>
-                        <b-form-input v-model="filter" placeholder="Type to Search" />
+                        <b-form-input v-model="filter" :placeholder="$t( 'type_search' )" />
                         <b-input-group-append>
-                            <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+                            <b-btn :disabled="!filter" @click="filter = ''">{{ $t( 'clear' ) }}</b-btn>
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
@@ -52,7 +52,7 @@
 
         <b-row>
             <b-col xs="12">
-              <generic-loader v-if="isLoading" message="Loading orders. Please wait..."></generic-loader>
+              <generic-loader v-if="isLoading" :message="$t( 'orders_loading' )"></generic-loader>
             </b-col>
         </b-row>
 
