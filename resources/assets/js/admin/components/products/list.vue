@@ -63,7 +63,7 @@
                     :fields="productsFields"
                     :current-page="currentPage"
                     :per-page="perPage">
-                    <template slot="thumbnail" slot-scope="data">
+                    <template v-slot:cell(thumbnail)="data">
                         <router-link 
                             @click.stop
                             :to="{ name: 'productForm', params: { id: data.item.id } }">
@@ -77,20 +77,20 @@
                                 height="80" />
                         </router-link>
                     </template>
-                    <template slot="name" slot-scope="data">
+                    <template v-slot:cell(name)="data">
                         <router-link 
                             @click.stop
                             :to="{ name: 'productForm', params: { id: data.item.id } }">
                             {{ data.item.name }}
                         </router-link>
                     </template>
-                    <template slot="externalId" slot-scope="data">
+                    <template v-slot:cell(externalId)="data">
                         {{ data.item.externalId }}
                     </template>
-                    <template slot="isActive" slot-scope="data">
+                    <template v-slot:cell(isActive)="data">
                         {{ data.item.isActive | itemStatusToText }}
                     </template>
-                    <template slot="actions" slot-scope="data">
+                    <template v-slot:cell(actions)="data">
                         <router-link 
                             @click.stop
                             :to="{ name: 'productForm', params: { id: data.item.id } }" 
@@ -132,29 +132,34 @@ export default {
                 activeSKUsOnly : false
             },
             conditionOptions : [ { text : this.$t( 'new' ), value : "New" }, {text : this.$t( 'used' ), value : "Used" } ],
-            productsFields: {
-                thumbnail: {
+            productsFields: [
+                {   
+                    key: 'thumbnail',
                     formatter: ( value, key, item ) => {
                         const primaryMedia = this.$options.filters.denormalize( item.media ).filter( mediaItem => mediaItem.isPrimary );
                         return ( primaryMedia.length ) ? primaryMedia[ 0 ].src : '';
                     }
                 },
-                name: {
+                {
+                    key: 'name',
                     sortable: true
                 },
-                externalId: {
+                {
+                    key: 'externalId',
                     label   : 'Reference Number',
                     sortable: true
                 },
-                isActive: {
+                {
+                    key: 'isActive',
                     label     : 'Status',
                     sortable: true
                 },
-                actions: {
+                {
+                    key: 'actions',
                     sortable: false
                 }
-            }
-    	}
+            ]
+        }
     },
 
     created() {},

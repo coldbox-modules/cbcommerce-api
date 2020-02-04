@@ -235,13 +235,23 @@ export default {
 			selectedCategories: [],
 			productImages     : [],
 			productSKUs       : [],
-			productSKUFields  : {
-				modelNumber : {},
-				condition: {},
-				basePrice: {},
-				isActive : {},
-				actions: {}
-			},
+			productSKUFields  : [
+				{ 
+					key: 'modelNumber'
+				},
+				{ 
+					key: 'condition'
+				},
+				{ 
+					key: 'basePrice'
+				},
+				{ 
+					key: 'isActive'
+				},
+				{ 
+					key: 'actions'
+				}
+			],
 			booleanOptions : [
 				{ text: this.$t( 'yes' ), value: true },
 				{ text: this.$t( 'no' ), value: false }
