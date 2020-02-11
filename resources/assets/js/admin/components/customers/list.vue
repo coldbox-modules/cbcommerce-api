@@ -81,22 +81,30 @@ export default {
             perPage       : 25,
             totalRows     : 0,
             searchParams  : {},
-            customerFields: {
-                firstName: {
+            customerFields: [
+                {
+                    key: 'firstName',
                     sortable: true
                 },
-                lastName: {
+                {
+                    key: 'lastName',
                     sortable: true
                 },
-                email: {},
-                primaryPhone: {},
-                createdTime: {
+                {
+                    key: 'email',
+                },
+                {
+                    key: 'primaryPhone'
+                },
+                {
+                    key: 'createdTime',
                     sortable: true
                 },
-                actions: {
+                {
+                    key: 'actions',
                     sortable: false
                 }
-            }
+            ]
     	}
     },
 

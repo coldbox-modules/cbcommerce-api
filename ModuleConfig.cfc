@@ -77,8 +77,7 @@ component {
 				"onOrderCompleted",
 				"onConsignmentOrderReceived",
 				"onOrderItemReturned",
-                "onOrderItemsShipped",
-                "onEnsureContentboxCategoryMenus"
+                "onOrderItemsShipped"
 			]
 		};
 

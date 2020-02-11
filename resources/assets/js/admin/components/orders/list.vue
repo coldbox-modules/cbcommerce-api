@@ -76,35 +76,40 @@ export default {
             perPage     : 5,
             totalRows   : 0,
             filter      : null,
-            ordersFields: {
-                firstName: {
-                    key     : 'customer.firstName',
+            ordersFields: [
+                {
+                    key     : 'firstName',
                     label   : 'First Name',
                     sortable: true
                 },
-                lastName: {
-                    key     : 'customer.lastName',
+                {
+                    key     : 'lastName',
                     label   : 'Last Name',
                     sortable: true
                 },
-                total: {
+                {
+                    key     : 'total',
                     sortable: true
                 },
-                paidInFull: {
+                {
+                    key: 'paidInFull',
                     sortanle: true
                 },
-                createdTime: {
+                {
+                    key: 'createdTime',
                     label   : 'Created',
                     sortable: true
                 },
-                fulfilledTime: {
+                {
+                    key: 'fulfilledTime',
                     label   : 'Fulfilled',
                     sortable: true
                 },
-                actions: {
+                {
+                    key: 'actions',
                     sortable: false
                 }
-            }
+            ]
     	}
     },
 
