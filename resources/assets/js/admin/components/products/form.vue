@@ -159,19 +159,19 @@
 								<b-table
 								    :items="currentProduct.skus"
 								    :fields="productSKUFields">
-								    <template slot="modelNumber" slot-scope="data">
+								    <template v-slot:cell(modelNumber)="data">
 								    	{{ data.item.modelNumber }}
 								    </template>
-								    <template slot="condition" slot-scope="data">
+								    <template v-slot:cell(condition)="data">
 								    	{{ data.item.FK_condition ? productConditions.resultsMap[ data.item.FK_condition ].name : 'New' }}
 								    </template>
-								    <template slot="basePrice" slot-scope="data">
+								    <template v-slot:cell(basePrice)="data">
 								    	{{ data.item.basePrice | currency }}
 								    </template>
-								    <template slot="isActive" slot-scope="data">
+								    <template v-slot:cell(isActive)="data">
 								    	<i v-if="data.item.isActive" class="fa fa-check"></i>
 									</template>
-								    <template slot="actions" slot-scope="data">
+								    <template  v-slot:cell(actions)="data">
 								        <a 
 								            @click.stop="showSKUPanel( data.item, 'edit' )"
 								            class="btn btn-success SKUBtn float-right">
