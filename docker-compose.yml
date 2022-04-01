@@ -12,16 +12,16 @@ services:
       MYSQL_ROOT_PASSWORD: "c6C0mm3rc3!"
     volumes:
       - cbc-mysql-data:/var/lib/mysql
-      - ./workbench/docker/mysql/tmp:/tmp/mysql
-      - ./workbench/docker/mysql/init.db.sql:/docker-entrypoint-initdb.d/init.db.sql
-      - ./workbench/docker/mysql/conf.d:/etc/mysql/mariadb.conf.d/custom.cnf
+      - ./build/docker/mysql/tmp:/tmp/mysql
+      - ./build/docker/mysql/init.db.sql:/docker-entrypoint-initdb.d/init.db.sql
+      - ./build/docker/mysql/conf.d:/etc/mysql/mariadb.conf.d/custom.cnf
     ports:
       - "3307:3306"
 
   #App Server
   app:
-    # We use the Adobe11 image because it ensures we maintain backward compatibility to that version as we develop
-    image: ortussolutions/contentbox
+    # We use the Adobe2016 image because it ensures we maintain backward compatibility to that version as we develop
+    image: ortussolutions/commandbox:adobe2016
     depends_on:
       - mysql
     environment:
@@ -41,7 +41,7 @@ services:
     volumes:
       # Mount our application in delgated mode
       - ./:/app/modules/contentbox/modules_user/cbCommerce:delegated
-      - ./workbench/docker/contentbox/config/Coldbox.cfc:/app/config/Coldbox.cfc
+      - ./build/docker/contentbox/config/Coldbox.cfc:/app/config/Coldbox.cfc
       - ./test-harness/tests:/app/tests
       - ./test-harness/testbox:/app/testbox
       - ./test-harness/.cfconfig.json:/app/.cfconfig.json

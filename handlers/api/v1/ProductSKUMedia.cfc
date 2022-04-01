@@ -7,7 +7,7 @@ component extends="BaseAPIHandler"{
 	property name="productSKUService" inject="ProductSKUService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/skus/{skuId}/media'
-	
+
 	// (GET) /store/api/v1/skus/:skuId/media
 	function index( event, rc, prc ){
 
@@ -18,16 +18,16 @@ component extends="BaseAPIHandler"{
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.collection( media )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
@@ -35,7 +35,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/skus/:skuId/media
-	function create( event, rc, prc ) secured="Products:Edit"{
+	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		var sku = productSKUService.newEntity().getOrFail( rc.skuId );
 
@@ -69,18 +69,18 @@ component extends="BaseAPIHandler"{
 			}
 			rethrow;
 		}
-		
 
-		prc.response.setData( 
+
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.skuMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
@@ -88,30 +88,30 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /store/api/v1/skus/:skuId/media/:id
 	function show( event, rc, prc ){
-		
+
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.skuMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/skus/:skuId/media/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		var mediaAttachment = prc.skuMedia.getMediaItem();
 
 		mediaAttachment.fill( rc );
@@ -126,24 +126,24 @@ component extends="BaseAPIHandler"{
 
 		prc.skuMedia.save();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.skuMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
-		
+
 	}
 
 	// (DELETE) /store/api/v1/skus/:skuId/media/:id
-	function delete( event, rc, prc ) secured="Products:Edit"{
+	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.skuMedia.delete();
@@ -151,5 +151,5 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	
+
 }

@@ -9,7 +9,7 @@ component extends="BaseAPIHandler"{
 	this.APIBaseURL = '/store/api/v1/products'
 	// (GET) /store/api/v1/products
 	function index( event, rc, prc ) cache="true" cacheTimeout="1440"{
-		
+
 		if( rc.sortOrder == 'createdTime DESC' ){
 			rc.sortOrder = 'displayOrder ASC, name ASC';
 		}
@@ -20,17 +20,17 @@ component extends="BaseAPIHandler"{
 		var transformer = getInstance( "ProductTransformer@cbCommerce" );
 		transformer.setActiveSkusOnly( rc.activeSKUsOnly );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
 				.withTransformer( transformer )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
 						}
@@ -38,27 +38,27 @@ component extends="BaseAPIHandler"{
 							transformed.skus.each( function( sku ){
 								sku["href"] = '/store/api/v1/skus/' & sku.id;
 								if( structKeyExists( sku, "media" ) ){
-									sku.media.each( function( mediaItem ){ 
+									sku.media.each( function( mediaItem ){
 										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
 									});
 								}
 							});
 						}
 						return transformed;
-					} 
+					}
 				).convert()
 		);
 
 	}
 
 	// (POST) /store/api/v1/products
-	function create( event, rc, prc ) secured="Products:Manage"{
+	function create( event, rc, prc ) secured="cbcommerce:Products:Manage"{
 
 		var payload = event.getHTTPContent( json=true, xml=false );
 
 		// writedump( payload );
 		// abort;
-		
+
 		prc.product = entityService.newEntity().fill( payload );
 
 		validateModelOrFail( prc.product );
@@ -72,16 +72,16 @@ component extends="BaseAPIHandler"{
 			prc.product.categories().sync( rc.categories.map( function( cat ){ return isSimpleValue( cat ) ? cat : cat.id } ) );
 		}
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
 						}
@@ -89,23 +89,23 @@ component extends="BaseAPIHandler"{
 							transformed.skus.each( function( sku ){
 								sku["href"] = '/store/api/v1/skus/' & sku.id;
 								if( structKeyExists( sku, "media" ) ){
-									sku.media.each( function( mediaItem ){ 
+									sku.media.each( function( mediaItem ){
 										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
 									});
 								}
 							});
 						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
-		
+
 	}
 
 	// (GET) /store/api/v1/products/:id
 	function show( event, rc, prc ) cache="true" cacheTimeout="1440"{
-		
+
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 
 		event.paramValue( "activeSkusOnly", true );
@@ -113,16 +113,16 @@ component extends="BaseAPIHandler"{
 		transformer.setActiveSkusOnly( rc.activeSKUsOnly );
 
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
 				.withTransformer( transformer )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
 						}
@@ -130,25 +130,25 @@ component extends="BaseAPIHandler"{
 							transformed.skus.each( function( sku ){
 								sku["href"] = '/store/api/v1/skus/' & sku.id;
 								if( structKeyExists( sku, "media" ) ){
-									sku.media.each( function( mediaItem ){ 
+									sku.media.each( function( mediaItem ){
 										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
 									});
 								}
 							});
 						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/products/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		prc.product.fill( rc );
 
 		validateModelOrFail( prc.product );
@@ -163,16 +163,16 @@ component extends="BaseAPIHandler"{
 			prc.product.categories().sync( categories );
 		}
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.product )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
 						}
@@ -180,22 +180,22 @@ component extends="BaseAPIHandler"{
 							transformed.skus.each( function( sku ){
 								sku["href"] = '/store/api/v1/skus/' & sku.id;
 								if( structKeyExists( sku, "media" ) ){
-									sku.media.each( function( mediaItem ){ 
+									sku.media.each( function( mediaItem ){
 										mediaItem[ "href" ] = sku.href & "/media/" & mediaItem.id;
 									});
 								}
 							});
 						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
-		
+
 	}
 
 	// (DELETE) /store/api/v1/products/:id
-	function delete( event, rc, prc ) secured="Products:Manage"{
+	function delete( event, rc, prc ) secured="cbcommerce:Products:Manage"{
 
 		prc.product = entityService.newEntity().getOrFail( rc.id );
 		prc.product.delete();
@@ -208,11 +208,11 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /store/api/v1/products/count
 	function count( event, rc, prc ){
-		prc.response.setData( 
+		prc.response.setData(
 			{ "count" : entityService.count( rc ) }
 		);
 	}
-	
 
-	
+
+
 }

@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
-@import 'partials/variables';
+@import './partials/variables';
 @import '~foundation-emails/scss/foundation-emails';
-@import 'partials/typography';
+@import './partials/typography';
 
 body{
     h1{
@@ -37,7 +37,7 @@ body{
                 }
             }
         }
-        
+
         div.mail-content{
             background: #fff;
             border: 5px #efefef solid;

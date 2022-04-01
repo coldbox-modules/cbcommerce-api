@@ -47,7 +47,7 @@ a {
     }
     .header-bg {
         min-height: 150px;
-        background: url('../images/header-bg.png') repeat;
+        background: url('../../images/header-bg.png') repeat;
         box-shadow: 1px 0px 5px #efefef; // super light shadow to distinguish when scrolling
         position: relative;
     }
@@ -64,7 +64,7 @@ a {
     }
     .header-main-fixed {
         min-height: 110px;
-        
+
         .nav.navbar-nav{
             margin-top: 20px;
         }
@@ -215,7 +215,7 @@ a {
         height:         calc(100% - 70px);
 
         .home-category-option {
-            
+
             padding-top:10px;
             min-height: 330px;
             padding-bottom: 60px;
@@ -410,11 +410,10 @@ a {
     margin-right: -15px;
 }
 
-resources/assets/sass/partials/_layout.scss
- .box-padded{
+.box-padded{
      padding: 15px;
- }
- #collapseLocations{
+}
+#collapseLocations{
      background: #000;
      color: #fff;
 

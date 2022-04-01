@@ -1,9 +1,6 @@
 component {
-    
+
     function up( schema, query ) {
-        
-        // @TODO - unable to use this until QB-10 is resolved
-        // var uuidLib = createobject("java", "java.util.UUID");
 
         schema.create( "cbc_users", function( table ){
             table.uuid( "id" ).primaryKey();
@@ -27,16 +24,16 @@ component {
             table.string( 'suffix', 75 );
         } );
 
-        var prefixes  = [ "Product", "Order", "Return" , "System" ];
+        var prefixes  = [ "cbcommerce:Product", "cbcommerce:Order", "cbcommerce:Return" , "cbcommerce:System" ];
         var suffixes = [ "Configure", "Manage" , "Edit", "Approve", "Delete" ];
 
         for( var prefix in prefixes ){
             for( var suffix in suffixes ){
-                query.from( "cbc_userPermissions" ).insert( 
+                query.from( "cbc_userPermissions" ).insert(
                     values = {
                             "id" : createUUID(),
                             "prefix" : prefix,
-                            "suffix" : suffix	
+                            "suffix" : suffix
                         }
                 );
             }
@@ -82,7 +79,7 @@ component {
 
         schema.create('cbc_lookups_users_roles', function ( table ) {
             table.increments('id');
-            
+
             table.uuid( 'FK_user')
                     .references( "id" )
                     .onTable( "cbc_users" )
@@ -95,10 +92,10 @@ component {
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
         });
-        
+
         schema.create('cbc_lookups_roles_permissions', function ( table ) {
             table.increments('id');
-            
+
             table.uuid( 'FK_permission')
                     .references('id')
                     .onTable('cbc_userPermissions')
@@ -111,23 +108,23 @@ component {
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
         });
-        
+
         schema.create('cbc_lookups_users_explicitPermissions', function ( table ) {
             table.increments('id');
-            
+
             table.uuid( 'FK_permission')
                     .references('id')
                     .onTable('cbc_userPermissions')
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
-            
+
             table.uuid( 'FK_user')
                     .references('id')
                     .onTable( 'cbc_users' )
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
         });
-        
+
 
         schema.create( "cbc_customerAddresses", function( table ){
             table.uuid( "id" ).primaryKey();
@@ -135,7 +132,7 @@ component {
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             table.string( "designation", 25 );
-            
+
             table.string( 'address1', 255 );
             table.string( 'address2', 255 ).nullable();
             table.string( 'city', 255 );
@@ -149,7 +146,7 @@ component {
                     .onTable( "cbc_users" )
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
-            
+
         } );
 
         schema.create( "cbc_products", function( table ) {
@@ -157,7 +154,7 @@ component {
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
-            
+
             table.string( "name", 300 );
             table.string( "shortDescription", 1000 );
             table.text( "description" );
@@ -169,7 +166,7 @@ component {
             table.boolean( "isFeatured" ).default( 0 );
             table.integer( "hitCount" ).default( 0 );
         } );
-        
+
 
         schema.create( "cbc_productCategories", function( table ) {
             table.uuid( "id" ).primaryKey();
@@ -197,12 +194,12 @@ component {
             table.uuid( "FK_product" )
                     .references( "id" )
                     .onTable( "cbc_products" );
-                    
+
             table.uuid( "FK_category" )
                     .references( "id" )
                     .onTable( "cbc_productCategories" );
 
-                    
+
         });
 
         schema.create( "cbc_productConditions", function( table ){
@@ -212,12 +209,12 @@ component {
             table.boolean( "isActive" ).default( 1 );
 
             table.string( "name", 25 );
-            
+
             table.uuid( "FK_parent" )
                     .nullable()
                     .references( "id" )
                     .onTable( "cbc_productConditions" );
-        
+
         } );
 
         var topLevelConditions = [
@@ -310,7 +307,7 @@ component {
                     .nullable()
                     .references( "id" )
                     .onTable( "cbc_productConditions" );
-                    
+
             table.integer( "displayOrder" ).default( 0 );
             table.string( "externalId" ).nullable();
             table.string( "modelNumber" ).nullable();
@@ -353,7 +350,7 @@ component {
             table.string( 'province', 3 ).nullable();
             table.string( 'postalCode', 15).nullable();
             table.string( 'country', 3 ).default( "USA" );
-            
+
         } );
 
         schema.create( "cbc_inventoryLocationStock", function( table ) {
@@ -377,7 +374,7 @@ component {
 
         });
 
-        
+
 
         schema.create( "cbc_orders", function( table ){
             table.uuid( "id" ).primaryKey();
@@ -393,7 +390,7 @@ component {
             table.decimal( "discount", 8, 2  );
             table.decimal( "total", 8, 2  );
             table.timestamp( "paidInFull" ).nullable();
-        
+
             table.uuid( "FK_user" )
                     .references( "id" )
                     .onTable( "cbc_users" )
@@ -408,7 +405,7 @@ component {
             table.uuid( "FK_billingAddress" )
                     .references( "id" )
                     .onTable( "cbc_customerAddresses" );
-            
+
             table.uuid( "FK_invoice" )
                     .references( "id" )
                     .onTable( "cbc_orderInvoices" )
@@ -437,9 +434,9 @@ component {
                     .references( "id" )
                     .onTable( "cbc_orders" )
                     .onUpdate( "CASCADE" )
-                    .onDelete( "CASCADE" );   
+                    .onDelete( "CASCADE" );
         } );
-        
+
         schema.create( "cbc_orderShipments", function( table ){
             table.uuid( "id" ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
@@ -452,7 +449,7 @@ component {
             table.uuid( "FK_order" )
                     .references( "id" )
                     .onTable( "cbc_orderItems" );
-            
+
             table.uuid( "FK_inventoryLocation" )
                     .references( "id" )
                     .onTable( "cbc_inventoryLocations" );
@@ -475,7 +472,7 @@ component {
                     .references( "id" )
                     .onTable( "cbc_orders" )
                     .onUpdate( "CASCADE" )
-                    .onDelete( "CASCADE" ); 
+                    .onDelete( "CASCADE" );
         } );
 
 
@@ -507,9 +504,9 @@ component {
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
-            
+
             table.string( "name", 255 );
-            
+
             table.uuid( "FK_user" )
                     .references( "id" )
                     .onTable( "cbc_users" )
@@ -518,7 +515,7 @@ component {
             table.boolean( "isDefault" ).default( 0 );
             table.boolean( "isPublic" ).default( 0 );
             table.string( "description", 750 ).nullable();
-            
+
         } );
 
         schema.create( "cbc_wishlistItems", function( table ){
@@ -600,7 +597,7 @@ component {
                     .onDelete( "CASCADE" );
 
         } );
-        
+
         //======
 
          schema.create( "cbc_orderInvoices", function( table ){
@@ -608,7 +605,7 @@ component {
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
-            
+
             table.string( "internalId" );
             table.string( "externalId").nullable();
             table.text( "terms" ).nullable();
@@ -642,7 +639,7 @@ component {
                     .onDelete( "CASCADE" );
 
         } );
-        
+
 
         //======
 
@@ -656,7 +653,7 @@ component {
             table.decimal( "relevancyScore", 8, 2 ).default( 0 );
             table.string( "summary", 255 ).nullable();
             table.text( "comment" ).nullable();
-            
+
             table.uuid( "FK_product" )
                     .references( "id" )
                     .onTable( "cbc_products" );
@@ -669,9 +666,9 @@ component {
             table.uuid( "FK_user" )
                     .references( "id" )
                     .onTable( "cbc_users" );
-                    
+
         } );
-        
+
 
 
         query.from( "cbc_userRoles" ).insert(
@@ -681,7 +678,7 @@ component {
                     "name" : "Consignor"
                 }
             ]
-        ); 
+        );
 
         //======
 
@@ -691,7 +688,7 @@ component {
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
             table.integer( "displayOrder" ).default( 0 )
-            
+
             table.string( "name", 100 );
             table.string( "value", 255 );
 
@@ -715,7 +712,7 @@ component {
             table.decimal( "cleaningHourlyRate", 8, 2 ).default( 0 );
             table.decimal( "repairHourlyRate", 8, 2 ).default( 0 );
 
-            
+
             table.uuid( "FK_consignor" )
                 .references( "id" )
                 .onTable( "cbc_users" );
@@ -773,7 +770,7 @@ component {
         query.from( "cbc_consignmentFeeTypes" ).insert(
             values = feeTypes
         );
-        
+
         schema.create( "cbc_consignmentBatchFees", function( table ){
             table.uuid( "id" ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
@@ -806,7 +803,7 @@ component {
             table.string( 'key' );
             table.text( 'value' );
         } );
-        
+
         //======
 
         schema.create( "cbc_tenantSettings", function( table ) {
@@ -827,11 +824,11 @@ component {
             table.addConstraint( table.index( "isPrimary", "idx_productCategoryMedia_isPrimary" ) );
             table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productCategoryMedia_sort" ) );
         } );
-        
+
         schema.alter( "cbc_productMedia", function( table ){
             table.addConstraint( table.index( "isPrimary", "idx_productMedia_isPrimary" ) );
             table.addConstraint( table.index( [ "displayOrder", "createdTime" ], "idx_productMedia_sort" ) );
         } );
     }
-        
+
 }

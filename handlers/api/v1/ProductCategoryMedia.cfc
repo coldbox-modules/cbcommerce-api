@@ -7,7 +7,7 @@ component extends="BaseAPIHandler"{
 	property name="categoryService" inject="ProductCategoryService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/product-categories/{categoryId}/media'
-	
+
 	// (GET) /store/api/v1/product-categories/:categoryId/media
 	function index( event, rc, prc ){
 
@@ -18,16 +18,16 @@ component extends="BaseAPIHandler"{
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.collection( media )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
@@ -35,7 +35,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/product-categories/:categoryId/media
-	function create( event, rc, prc ) secured="Products:Edit"{
+	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
 
@@ -70,18 +70,18 @@ component extends="BaseAPIHandler"{
 			}
 			rethrow;
 		}
-		
 
-		prc.response.setData( 
+
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.categoryMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
@@ -89,57 +89,57 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /store/api/v1/product-categories/:categoryId/media/:id
 	function show( event, rc, prc ){
-		
+
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.categoryMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/product-categories/:categoryId/media/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		prc.categoryMedia.fill( rc );
 		validateModelOrFail( prc.categoryMedia );
 		prc.categoryMedia.save();
-		
+
 		var mediaAttachment = prc.categoryMedia.getMediaItem();
 		mediaAttachment.fill( rc );
 		validateModelOrFail( mediaAttachment );
-		mediaAttachment.save();		
+		mediaAttachment.save();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.categoryMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
-		
+
 	}
 
 	// (DELETE) /store/api/v1/product-categories/:categoryId/media/:id
-	function delete( event, rc, prc ) secured="Products:Edit"{ 
+	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		var mediaAttachment = prc.categoryMedia.getMediaItem();
@@ -149,5 +149,5 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	
+
 }

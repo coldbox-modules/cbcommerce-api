@@ -14,7 +14,7 @@ component extends="BaseAPIHandler"{
 	/**
 	* (GET) /store/api/v1/customers
 	*/
-	function index( event, rc, prc ) secured="Product:Edit,Order:Edit"{
+	function index( event, rc, prc ) secured="cbcommerce:Product:Edit,Order:Edit"{
 		var searchResponse = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 		prc.response.setData(
 			fractal.builder()
@@ -35,7 +35,7 @@ component extends="BaseAPIHandler"{
 	*/
 	function show( event, rc, prc ) secured{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
-		
+
 		if( !prc.authenticatedUser.hasPermission( "Product:Edit,Order:Edit" ) && prc.authenticatedUser.getId() != rc.id  ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
@@ -61,7 +61,7 @@ component extends="BaseAPIHandler"{
 			prc.response.addMessage( "You already have an account under the email #rc.email#" );
 			return onExpectationFailed( argumentCollection=arguments );
 		}
-		
+
 		prc.user = entityService.newEntity().fill( rc );
 
 		validateModelOrFail( prc.user );
@@ -118,7 +118,7 @@ component extends="BaseAPIHandler"{
 	/**
 	* (DELETE) /store/api/v1/customers/:id
 	*/
-	function delete( event, rc, prc ) secured="System:Edit"{
+	function delete( event, rc, prc ) secured="cbcommerce:System:Edit"{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 		prc.user.delete();
 

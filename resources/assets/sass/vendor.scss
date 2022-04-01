@@ -1,10 +1,12 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "node_modules/font-awesome-sass/assets/stylesheets/font-awesome";
-@import "node_modules/animate-scss/animate.scss";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap-vue/src/variables";
+/* Import colors and mixins */
+@import './partials/variables';
+@import "~bootstrap-vue/src/index";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~animate-scss/animate";
+@import "~slick-carousel/slick/slick";
+@import "~viewerjs/src/css/viewer";
 
-@import "node_modules/owl.carousel/src/scss/owl.carousel.scss";
-@import "node_modules/owl.carousel/src/scss/owl.theme.default.scss";
-
-@import "node_modules/slick-carousel/slick/slick.scss";
-
-@import "node_modules/viewerjs/src/css/viewer.scss";

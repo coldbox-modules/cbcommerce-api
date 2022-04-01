@@ -1,5 +1,5 @@
 // Import our jQuery and Bootstrap extensions
-import "bootstrap-sass/assets/javascripts/bootstrap.js";
+import "bootstrap/dist/js/bootstrap.js";
 import { WOW } from "wowjs/dist/wow.js";
 import 'owl.carousel/dist/owl.carousel.min.js';
 import VueTruncate from 'vue-truncate-filter';

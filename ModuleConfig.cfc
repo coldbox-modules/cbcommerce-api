@@ -12,15 +12,9 @@ component {
     this.viewParentLookup = true;
     this.layoutParentLookup = true;
     this.dependencies   = [
-        "contentbox",
-        "contentbox-sitemap",
         "cbauth",
-        "cbguard",
-        "cfcollection",
         "quick",
         "cfmigrations",
-        "cffractal",
-        "cbstorages",
         "cbsecurity",
         "BCrypt",
         "cbi18n"
@@ -30,6 +24,10 @@ component {
 	 * Configure Module
 	 */
     function configure() {
+		if( len( getSystemSetting( "CBCOMMERCE_ENTRYPOINT", "" ) ) ){
+			this.entryPoint = getSystemSetting( "CBCOMMERCE_ENTRYPOINT" );
+		}
+		var isContentBoxContext = controller.getModuleService().isModuleRegistered( "contentbox" );
 
         settings = {
             "cbauth" : {
@@ -44,19 +42,19 @@ component {
             },
             "media" : {
                 //local or s3 storage currently supported
-                "driver" : getEnv( 'CBC_MEDIA_DRIVER', 'local' ),
+                "driver" : getSystemSetting( 'CBC_MEDIA_DRIVER', 'local' ),
                 // for local drivers, this would be the path from the root of the site
                 "storageLocation" : "/includes/shared/store",
                 "tempStorageLocation" : "/includes/tmp",
                 "placeholderImage" : "/" & this.entrypoint & "/includes/static/default-placeholder.png",
                 // Only used for s3 driver
                 "s3" : {
-                    "key"    :   getEnv('AWS_ACCESS_KEY_ID',     ''),
-                    "secret" :   getEnv('AWS_SECRET_ACCESS_KEY', ''),
-                    "region" :   getEnv('AWS_DEFAULT_REGION',    ''),
-                    "bucket" :   getEnv('AWS_BUCKET',            ''),
+                    "key"    :   getSystemSetting( 'AWS_ACCESS_KEY_ID',     ''),
+                    "secret" :   getSystemSetting( 'AWS_SECRET_ACCESS_KEY', ''),
+                    "region" :   getSystemSetting( 'AWS_DEFAULT_REGION',    ''),
+                    "bucket" :   getSystemSetting( 'AWS_BUCKET',            ''),
                     // the AWS base URL for serving assets ( e.g. cloudflare )
-                    "url"    :   getEnv('AWS_URL',               ''),
+                    "url"    :   getSystemSetting( 'AWS_URL',               '')
                 },
                 //the security service - may be changed to use a different wirebox mapping ( e.g. - ContentBox )
                 "securityService" : "SecurityService@cbCommerce"
@@ -71,6 +69,11 @@ component {
             }
             // An optional "storage" key may be provided which specifies custom cb storage and matches the settings structure of that module
         };
+		if( !isContentBoxContext ){
+			"cbsecurity" : {
+				"userService" : "UserService@cbCommerce"
+			}
+		}
 
         interceptorSettings = {
 			customInterceptionPoints = [
@@ -87,10 +90,6 @@ component {
 					class="cbCommerce.interceptors.CBCQuickEntity",
 					name="CBCQuickEntityInterceptor"
             },
-            {
-					class="cbCommerce.interceptors.ContentboxSSO",
-					name="CBCContentboxSSOInterceptor"
-            },
 			{
 					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
@@ -98,211 +97,27 @@ component {
 			{
 					class="cbCommerce.interceptors.GlobalData",
 					name="GlobalDataInterceptor"
-			},
-			{
-					class="cbCommerce.interceptors.CBCMenuHelper",
-					name="CBCMenuHelperInterceptor"
 			}
         ];
-        // Forward Media
-        router.route( "media/:path" )
-                .withAction(
-                    {
-                        "get" : "deliver"
-                    }
-                )
-                .toHandler( "Media" );
-        
-        // Contact Forms
-        router.route( "api/v1/contact-forms" )
-                .withAction(
-                    {
-                        "post" : "send"
-                    }
-                )
-                .toHandler( "API.v1.ContactForms" );
+		if( isContentBoxContext ){
+			interceptors.append(
+				[
+					{
+						class="cbCommerce.interceptors.ContentboxSSO",
+						name="CBCContentboxSSOInterceptor"
+					},
+					{
+						class="cbCommerce.interceptors.CBCMenuHelper",
+						name="CBCMenuHelperInterceptor"
+					}
+				],
+				true
+			);
+		}
 
-        router.route( "api/v1/quote-request/wishlist/:wishlistId" )
-                .withAction(
-                    {
-                        "post" : "wishlistQuote"
-                    }
-                )
-                .toHandler( "API.v1.ContactForms" );
-
-        router.route( "api/v1/quote-request/cart" )
-                .withAction(
-                    {
-                        "post" : "cartQuote"
-                    }
-                )
-                .toHandler( "API.v1.ContactForms" );
-
-        router.route( "api/v1/quote-request/sku/:skuId" )
-                .withAction(
-                    {
-                        "post" : "skuQuote"
-                    }
-                )
-                .toHandler( "API.v1.ContactForms" );
-
-        // API Routing
-
-        router.route( "api/v1/authentication/password-reset" )
-                .withAction({
-                    POST : "passwordReset"
-                })
-                .toHandler( "API.v1.Authentication" );
-
-        router.route( "api/v1/authentication" )
-                .withAction( {
-                    GET : "get",
-                    POST : "create",
-                    DELETE : "delete"
-                } )
-                .toHandler( "API.v1.Authentication" );
-
-        router.route( "api/v1/cart/:itemId" )
-                .withAction(
-                    {
-                        "POST" : "addItem",
-                        "PUT" : "updateItem",
-                        "PATCH" : "updateItem",
-                        "DELETE" : "deleteItem"
-                    }
-                )
-                .toHandler( "API.v1.Cart" );
-
-        router.route( "api/v1/cart" )
-                .withAction({
-                    "GET" : "get"
-                })
-                .toHandler( "API.v1.Cart" );
-
-        //statistical routes
-        router.route( "api/v1/statistics/products/:id" ).withAction({ "POST" : "productView" } ).toHandler( "API.v1.Statistics");
-        router.route( "api/v1/statistics/categories/:id" ).withAction({ "POST" : "categoryView" } ).toHandler( "API.v1.Statistics");
-
-        router.route( "api/v1/products/count" )
-                .withAction({
-                    "GET" : "count"
-                })
-                .toHandler( "API.v1.Products" );
-
-        // Resource Routes ( auto-magic method conventions )
-        router
-            .resources(
-                resource   = "api/v1/products/:productId/reviews",
-                handler    = "API.v1.ProductReviews"
-            )
-            .resources(
-                resource = "api/v1/products/:productId/media",
-                handler = "API.v1.ProductMedia"
-            )
-            .resources(
-                resource   = "api/v1/products",
-                handler    = "API.v1.Products"
-            )
-            .resources(
-                resource = "api/v1/skus/:skuId/media",
-                handler = "API.v1.ProductSKUMedia"
-            )
-            .resources(
-                resource = "api/v1/skus",
-                handler  = "API.v1.ProductSKUs"
-            )
-            .resources(
-                resource = "api/v1/consignment-batches",
-                handler  = "API.v1.ConsignmentBatches"
-            )
-            .resources(
-                resource = "api/v1/product-categories/:categoryId/media",
-                handler = "API.v1.ProductCategoryMedia"
-            )
-            .resources(
-                resource   = "api/v1/product-categories",
-                handler    = "API.v1.ProductCategories"
-            )
-            .resources(
-                resource   = "api/v1/product-inventory",
-                handler    = "API.v1.ProductInventory"
-            )
-            .resources(
-                resource   = "api/v1/orders",
-                handler    = "API.v1.Orders"
-            )
-            .resources(
-                resource   = "api/v1/customers",
-                handler    = "API.v1.Customers"
-            )
-            .resources(
-                resource   = "api/v1/payments",
-                handler    = "API.v1.Payments"
-            );
-
-            // Wishlist Item Routes
-            router.route( 'api/v1/wishlists/:wishlistId/items/:id' )
-                    .withAction(
-                        {
-                            "GET"    : "show",
-                            "PUT"    : "update",
-                            "PATCH"  : "update",
-                            "DELETE" : "delete"
-                        }
-                    )
-                    .toHandler( "API.v1.WishlistItems" );
-
-            router.route( 'api/v1/wishlists/:wishlistId/items' )
-                    .withAction(
-                        {
-                            "GET"  : "index",
-                            "POST" : "create"
-                        }
-                    )
-                    .toHandler( "API.v1.WishlistItems" );
-
-            // Core wishlist resource routes
-            router.resources(
-                resource   = "api/v1/wishlists",
-                handler    = "API.v1.Wishlists"
-            );
-
-
-            router.route( "category/used" ).to( "Category.used" );
-            router.route( "category/:id" ).to( "Category.detail" );
-            router.route( "category" ).to( "Category.index" );
-            router.route( "product/comparison" ).to( "Product.comparison" );
-            router.route( "product/:id" ).to( "Product.detail" );
-            router.route( "product" ).to( "Product.index" );
-            router.route( "shopping-cart" ).to( "Cart.index" );
-            router.route( "checkout/login" ).to( "Checkout.login" );
-            router.route( "checkout/thankyou/:id" ).to( "Checkout.thankyou" );
-            router.route( "checkout" ).to( "Checkout.index" );
-            router.route( "wishlist/:id" ).to( "Wishlist.detail" );
-            router.route( "wishlists/new" ).to( "Wishlist.edit" );
-            router.route( "wishlists/edit/:id" ).to( "Wishlist.edit" );
-            router.route( "wishlists/:id" ).to( "Wishlist.detail" );
-            router.route( "wishlists" ).to( "Wishlist.index" );
-            router.route( "account/reset/:token" ).to( "Account.reset" );
-            router.route( "account/edit" ).to( "Account.edit" );
-            router.route( "account/create" ).to( "Account.create" );
-            router.route( "account/login" ).to( "Account.login" );
-            router.route( "account" ).to( "Account.index" );
-            router.route( "sitemap" ).to( "Sitemap.index");
-
-            /**
-             * Display routing
-             */
-            router.route( "admin/app" ).to( "Admin.app" );
-
-            router.route( "admin" ).toHandler( "Admin" );
-
-            router.route( ":action?" )
-                .toHandler( "Main" );
     }
 
     function onLoad() {
-
         /**
         * Overload for ContentBox default Sitemap Routing
         */
@@ -312,15 +127,16 @@ component {
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
 
-
-        i18n = {
-            // Extra resource bundles to load
-            resourceBundles = {
-                "cbCommerce" : "/cbCommerce/includes/i18n/cbCommerce",
-                "cbCommerceAdmin" : "/cbCommerce/includes/i18n/cbCommerceAdmin",
-                "cbCommerceOrders" : "/cbCommerce/includes/i18n/cbCommerceOrders"
-            }
-        };
+		moduleSettings = {
+			"cbi18n" : {
+				// Extra resource bundles to load
+				resourceBundles = {
+					"cbCommerce" : "/cbCommerce/includes/i18n/cbCommerce",
+					"cbCommerceAdmin" : "/cbCommerce/includes/i18n/cbCommerceAdmin",
+					"cbCommerceOrders" : "/cbCommerce/includes/i18n/cbCommerceOrders"
+				}
+			}
+		};
 
         //change our binder mapping
         if( settings.products.externalModel ){
@@ -342,9 +158,9 @@ component {
 			// Cookie Storage settings
 			cookieStorage = {
 				useEncryption 	= true,
-				encryptionSeed 	= "jxPp16lyN9M4bNFL2NR5ow==", // `generateSecretKey( "AES" )`
-		        encryptionAlgorithm = "AES/CBC/PKCS5Padding",
-		        encryptionEncoding = "HEX"
+				encryptionSeed 	= getSystemSetting( "CBCOMMERCE_ENCRYPT_SEED", "jxPp16lyN9M4bNFL2NR5ow==" ), // `generateSecretKey( "AES" )`
+		        encryptionAlgorithm = getSystemSetting( "CBCOMMERCE_ENCRYPT_ALGORITHM", "AES/CBC/PKCS5Padding" ),
+		        encryptionEncoding = getSystemSetting( "CBCOMMERCE_ENCRYPT_ENCODING", "HEX" )
 			}
         };
 
@@ -368,7 +184,7 @@ component {
 
         // Add our menu item
         var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
-        
+
         menuService.addSubMenu(
             topMenu=menuService.MODULES,
             name="cbCommerce",

@@ -6,7 +6,7 @@
 }
 .secondary-nav-item {
 	position: relative;
-	
+
 	&:hover {
 		.account-menu-item {
 			display: block;
@@ -17,7 +17,7 @@
 			background-color: $tertiary;
 		}
 	}
-	
+
 	.secondary-menu-title {
 		color: rgba(255,255,255,.8);
 		display: block;
@@ -29,7 +29,7 @@
 		-o-transition: all .3s ease;
 		-ms-transition: all .3s ease;
 		transition: all .3s ease;
-		
+
 		&:hover{
 			background-color: $tertiary;
 			text-decoration: none;
@@ -38,7 +38,7 @@
 			font-size: 1.6em;
 		}
 	}
-	
+
 	.account-menu-item {
 		background-color: rgba(0,0,0,.9);
 		display: hidden;
@@ -53,7 +53,7 @@
 		-o-transition: opacity .3s ease;
 		-ms-transition: opacity .3s ease;
 		transition: opacity .3s ease;
-		
+
 		a {
 			border-top: 1px solid #2a2a2a;
 			display: block;
@@ -61,29 +61,29 @@
 			line-height: 38px;
 			padding: 5px 15px;
 			text-align: left;
-			
+
 			&:hover {
 				background-color: $primary;
 				color: #fff;
 				text-decoration: none;
 			}
-			
+
 			i:before {
 				display: inline;
 			}
 		}
 	}
-	
+
 	.cart-icon{
 		color: $secondary;
-		background-image: url('../images/cart.png');
+		background-image: url('../../images/cart.png');
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: contain;
 		display: inline-block;
 		font-size: 1.2em;
 		width: 50px;
-		
+
 		.cart-count{
 			color: white;
 			vertical-align: super;
@@ -94,15 +94,15 @@
 #locations-menu {
 	.secondary-menu-title{
 		background-color: $tertiary;
-		
+
 		&:focus {
 			text-decoration: none;
 		}
 	}
-	
+
 	.secondary-menu-title.collapsed {
 		background-color: transparent;
-		
+
 		&:hover {
 			background-color: $tertiary;
 		}
@@ -113,7 +113,7 @@
 	.secondary-menu-title{
 		background-color: $secondary;
 		line-height: 32px;
-		
+
 		&:hover{
 			background-color: $tertiary;
 		}
@@ -128,7 +128,7 @@
 	left: auto;
 	margin-bottom: 0px;
 	position: relative;
-	
+
 	.navbar-nav{
 		>li{
 			text-transform: uppercase;
@@ -157,14 +157,14 @@
 			}
 		}
 	}
-	
+
 	.nav > li > a i.fa-caret-right {
 		font-size: 15px;
 		position: absolute;
 		right: 6px;
 		bottom: 14px;
 	}
-	
+
 	.nav > li > a:hover, .nav > li > a:focus {
 		background-color: $primary;
 		color: #fff;
@@ -191,7 +191,7 @@
 	margin-bottom: 8px;
 	background-color: transparent;
 	border: 1px solid transparent;
-	
+
 	.icon-bar {
 		background-color: $primary;
 		display: block;
@@ -199,11 +199,11 @@
 		height: 2px;
 		border-radius: 1px;
 	}
-	
+
 	.icon-bar + .icon-bar {
 		margin-top: 4px;
 	}
-	
+
 }
 @media (min-width: 992px) {
 	.navbar-main{
@@ -213,7 +213,7 @@
     margin-top: -30px;
 		font-size: 1.1em;
 	}
-	
+
 }
 @media (max-width: 991px){
 	.navbar-main-close{
@@ -239,16 +239,16 @@
 		-webkit-overflow-scrolling: touch;
 		transition: all .5s linear;
 	}
-	
+
 	.navbar-main-header {
 		text-align: right;
 	}
-	
+
 	ul.navbar-nav, .navbar-nav > li{
 		float: none;
 		margin: 0;
 	}
-	
+
 	.dropdown-menu {
 		position: relative;
 		top: auto;
@@ -270,12 +270,12 @@
 		-webkit-box-shadow: none;
 		box-shadow: none;
 	}
-	
+
 	.navbar-main.active {
 		left: 0;
 		display: block;
 	}
-	
+
 }
 
 
@@ -288,19 +288,19 @@
 	margin: 20px;
 	padding-left: 0px;
 	text-transform: uppercase;
-	
+
 	ul{
 		border-top: 1px solid #fff;
 		font-size: .8em;
 		list-style: none;
 		margin-top: 5px;
 		padding-left: 0px;
-		
+
 		li{
 			margin: 8px 0px;
 		}
 	}
-	
+
 	a{
 		color: #fff;
 	}

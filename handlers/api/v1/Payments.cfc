@@ -209,7 +209,7 @@ component extends="BaseAPIHandler" {
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/payments/:id
-	function update( event, rc, prc ) secured="Payments:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Payments:Edit"{
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -237,7 +237,7 @@ component extends="BaseAPIHandler" {
 	}
 
 	// (DELETE) /cbc/api/v1/payments/:id
-	function delete( event, rc, prc ) secured="Payments:Manage"{
+	function delete( event, rc, prc ) secured="cbcommerce:Payments:Manage"{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		prc.payment.delete();

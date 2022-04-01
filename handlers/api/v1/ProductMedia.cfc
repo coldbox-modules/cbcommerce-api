@@ -7,7 +7,7 @@ component extends="BaseAPIHandler"{
 	property name="productService" inject="ProductService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/products/{productId}/media'
-	
+
 	// (GET) /store/api/v1/products/:productId/media
 	function index( event, rc, prc ){
 
@@ -17,16 +17,16 @@ component extends="BaseAPIHandler"{
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.collection( media )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
@@ -34,7 +34,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /store/api/v1/products/:productId/media
-	function create( event, rc, prc ) secured="Products:Edit"{
+	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
 
@@ -69,18 +69,18 @@ component extends="BaseAPIHandler"{
 			}
 			rethrow;
 		}
-		
 
-		prc.response.setData( 
+
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.productMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
@@ -88,30 +88,30 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /store/api/v1/products/:productId/media/:id
 	function show( event, rc, prc ){
-		
+
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.productMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/products/:productId/media/:id
-	function update( event, rc, prc ) secured="Products:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		var mediaAttachment = prc.productMedia.getMediaItem();
 
 		mediaAttachment.fill( rc );
@@ -124,24 +124,24 @@ component extends="BaseAPIHandler"{
 
 		prc.productMedia.save();
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.productMedia )
 				.withIncludes( rc.includes )
 				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ]; 
+						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
-		
+
 	}
 
 	// (DELETE) /store/api/v1/products/:productId/media/:id
-	function delete( event, rc, prc ) secured="Products:Edit"{
+	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.productMedia.delete();
@@ -149,5 +149,5 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	
+
 }

@@ -1,28 +1,57 @@
 <template>
 	<div>
-		<div :id="carouselId"  class="owl-carousel" :class="carouselClass" v-if="isLoading">
+
+		<div  class="owl-carousel" :class="carouselClass" v-if="isLoading">
 			<div class="pic">
 				Images loading...
 			</div>
 		</div>
-		<div :id="carouselId"  class="owl-carousel" :class="carouselClass" v-else>
-            <div class="item" v-for="item in carouselData">
-            	<div class="pic" v-if="getValue( item.name, 'href' ) != ''">
-            		<a :href="getValue( item.name, 'href' )">
-            			<img class="img-responsive" :src="getMediaPath( item.name )" :alt="getValue( item.name, 'alt' )" />
-            		</a>
-            	</div>
-            	<div class="pic" v-else>
-            		<img class="img-responsive" :src="getMediaPath( item.name )" :alt="getValue( item.name, 'alt' )" />
-            	</div>
-            </div>
-        </div>
+		<template v-else>
+			<carousel
+				class="owl-carousel"
+				:class="carouselClass"
+				:loop="loop"
+				:autoplay="autoPlay"
+				:nav="showNav"
+				:dots="showDots"
+				:margin="margin"
+				:items="itemsOnStage"
+				:responsive="{
+					0:{
+						items:1
+					},
+					600:{
+						items:this.itemsOnStage - 1
+					},
+					1000:{
+						items:this.itemsOnStage
+					}
+				}"
+			>
+				<template slot="default">
+					<div class="item" v-for="item in carouselData" :key="item.id">
+						<div class="pic" v-if="getValue( item.name, 'href' ) != ''">
+							<a :href="getValue( item.name, 'href' )">
+								<img class="img-responsive" :src="getMediaPath( item.name )" :alt="getValue( item.name, 'alt' )" />
+							</a>
+						</div>
+						<div class="pic" v-else>
+							<img class="img-responsive" :src="getMediaPath( item.name )" :alt="getValue( item.name, 'alt' )" />
+						</div>
+					</div>
+				</template>
+				<template slot="prev"><a class="prev"><i class="fa fa-angle-left"></i></a></template>
+				<template slot="next"><a class="next"><i class="fa fa-angle-right"></i></a></template>
+			</carousel>
+		</template>
 	</div>
 </template>
 <script type="application/javascript">
-	import Owl from "owl.carousel";
-
+	import carousel from 'vue-owl-carousel';
 	export default {
+		components:{
+			carousel
+		},
 		props: {
             carouselId: { 				// unique carousel Id
                 type: String,

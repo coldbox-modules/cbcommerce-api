@@ -4,36 +4,36 @@
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
 component extends="BaseAPIHandler"{
-	
+
 	property name="entityService" inject="ProductSKUService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/skus'
-	
+
 	// (GET) /cbc/api/v1/skus
 	function index( event, rc, prc ){
-		
+
 		if( rc.sortOrder == 'createdTime DESC' ){
 			rc.sortOrder = 'displayOrder ASC, name ASC';
 		}
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.collection( searchResults.collection )
 				.withPagination( searchResults.pagination )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
-						} 
+						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
@@ -41,8 +41,8 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/skus
-	function create( event, rc, prc ) secured="Product:Edit"{
-		
+	function create( event, rc, prc ) secured="cbcommerce:Product:Edit"{
+
 		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
 			structDelete( rc, "discontinueOn" );
 		}
@@ -84,21 +84,21 @@ component extends="BaseAPIHandler"{
 			} );
 		}
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
-						} 
+						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		).setStatusCode( STATUS.CREATED );
@@ -106,31 +106,31 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /cbc/api/v1/skus/:id
 	function show( event, rc, prc ){
-		
+
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
-						} 
+						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/skus/:id
-	function update( event, rc, prc ) secured="Product:Edit"{
+	function update( event, rc, prc ) secured="cbcommerce:Product:Edit"{
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -188,29 +188,29 @@ component extends="BaseAPIHandler"{
 			} );
 		}
 
-		prc.response.setData( 
+		prc.response.setData(
 			fractal.builder()
 				.item( prc.sku )
 				.withIncludes( rc.includes )
 				.withTransformer( "ProductSKUTransformer@cbCommerce" )
-				.withItemCallback( 
+				.withItemCallback(
 					function( transformed ) {
 						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
 						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){ 
+							transformed.media.each( function( mediaItem ){
 								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
 							});
-						} 
+						}
 						return transformed;
-					} 
+					}
 				)
 				.convert()
 		);
-		
+
 	}
 
 	// (DELETE) /cbc/api/v1/skus/:id
-	function delete( event, rc, prc ) secured="Product:Edit"{
+	function delete( event, rc, prc ) secured="cbcommerce:Product:Edit"{
 
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 		prc.sku.delete();
