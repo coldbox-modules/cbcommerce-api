@@ -2,7 +2,7 @@
 * cboxCommerce default Product Category Object
 */
 component   table="cbc_productCategories"
-			extends="BaseCBCommerceEntity" 
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
 {
@@ -15,7 +15,15 @@ component   table="cbc_productCategories"
 
 	//Foreign Keys
 	property name="FK_parent";
-	
+
+	function onDIComplete(){
+		arrayAppend(
+			this.memento.defaultIncludes,
+			["media"],
+			true
+		);
+	}
+
 	// Relationships
 	function parent(){
 		return belongsTo( "ProductCategory@cbCommerce", "FK_parent");
@@ -73,7 +81,7 @@ component   table="cbc_productCategories"
 		if( !isNull( arguments.limit ) ){
 			childQuery.limit( arguments.limit );
 		}
-		
+
 		return childQuery.getResults();
 	}
 
@@ -85,7 +93,7 @@ component   table="cbc_productCategories"
 							.where( 'isPrimary', 1 )
 							.limit( 1 )
 							.orderBy( 'displayOrder', 'ASC' );
-		
+
 		var results = catMediaItem.getResults();
 
 		if( arrayLen( results ) ){
@@ -96,7 +104,7 @@ component   table="cbc_productCategories"
 	}
 
 	function filterSearch(
-		required struct searchCollection, 
+		required struct searchCollection,
 		required QueryBuilder builder
 	 ){
 		if( structKeyExists( searchCollection, "productCondition" ) ){

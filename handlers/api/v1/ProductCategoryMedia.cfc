@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler"{
 	property name="categoryService" inject="ProductCategoryService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/product-categories/{categoryId}/media'
+	this.APIBaseURL = '/store/api/v1/product-categories/{categoryId}/media';
 
 	// (GET) /store/api/v1/product-categories/:categoryId/media
 	function index( event, rc, prc ){
@@ -19,23 +19,20 @@ component extends="BaseAPIHandler"{
 							.getResults();
 
 		prc.response.setData(
-			fractal.builder()
-				.collection( media )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			resultsMapper.process(
+				collection = media,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (POST) /store/api/v1/product-categories/:categoryId/media
-	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
 
@@ -73,17 +70,14 @@ component extends="BaseAPIHandler"{
 
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.categoryMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.categoryMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -93,22 +87,19 @@ component extends="BaseAPIHandler"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.categoryMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.categoryMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/product-categories/:categoryId/media/:id
-	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -123,23 +114,20 @@ component extends="BaseAPIHandler"{
 		mediaAttachment.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.categoryMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{categoryId}', transformed.FK_category ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.categoryMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (DELETE) /store/api/v1/product-categories/:categoryId/media/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		var mediaAttachment = prc.categoryMedia.getMediaItem();

@@ -24,13 +24,13 @@ component{
 	// The application root
 	rootPath = REReplaceNoCase( this.mappings[ "/tests" ], "tests(\\|/)", "" );
 	this.mappings[ "/root" ]   = rootPath;
-	
+
 	this.mappings[ '/config' ]           = rootPath & "config";
 	this.mappings[ "/coldbox" ]          = rootPath & "lib/frameworks/coldbox";
-	this.mappings[ "/testbox" ]          = rootPath & "lib/frameworks/testbox";	
+	this.mappings[ "/testbox" ]          = rootPath & "lib/frameworks/testbox";
 	this.mappings[ "/contentbox-deps" ]  = rootPath & "modules/contentbox/modules/contentbox-deps";
 	this.mappings[ "/cborm" ] 	 		 = this.mappings[ "/contentbox-deps" ] & "/modules/cborm";
-	
+
 	// UPDATE THE NAME OF THE MODULE IN TESTING BELOW
 	request.MODULE_NAME = "cbCommerce";
 	this.datasource = "contentbox";
@@ -65,7 +65,6 @@ component{
     this.mappings[ "/quick" ]      = rootPath & "modules/quick";
     this.mappings[ "/bcrypt" ]     = rootPath & "modules/BCrypt";
     this.mappings[ "/qb" ]         = rootPath & "modules/quick/modules/qb";
-    this.mappings[ "/cffractal" ]  = rootPath & "modules/cffractal";
 
 	// The module root path
 	moduleRootPath = REReplaceNoCase( this.mappings[ "/root" ], "#request.module_name#(\\|/)test-harness(\\|/)", "" );

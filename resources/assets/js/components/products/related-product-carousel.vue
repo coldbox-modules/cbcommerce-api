@@ -29,7 +29,6 @@
 					items:this.itemsOnStage
 				}
 			}"
-			:
 		>
 			<template slot="default">
 				<product-item

@@ -3,7 +3,7 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" secured="cbcommerce:InventoryLocationStocks:Manage"{
+component extends="BaseAPIHandler" secured="cbcInventoryLocationStocks:Manage"{
 
 	property name="entityService" inject="InventoryLocationStockService@cbCommerce";
 
@@ -12,22 +12,7 @@ component extends="BaseAPIHandler" secured="cbcommerce:InventoryLocationStocks:M
 	// (GET) /cbc/api/v1/product-inventory
 	function index( event, rc, prc ){
 
-		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
-
-		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
-		);
+		return super.index( argumentCollection=arguments );
 
 	}
 
@@ -41,17 +26,12 @@ component extends="BaseAPIHandler" secured="cbcommerce:InventoryLocationStocks:M
 		prc.sku.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.sku )
-				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.sku.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -61,17 +41,12 @@ component extends="BaseAPIHandler" secured="cbcommerce:InventoryLocationStocks:M
 		prc.sku = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.sku )
-				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.sku.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
@@ -88,17 +63,12 @@ component extends="BaseAPIHandler" secured="cbcommerce:InventoryLocationStocks:M
 		prc.sku.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.sku )
-				.withIncludes( rc.includes )
-				.withTransformer( "InventoryLocationStockTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.sku.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 
 	}

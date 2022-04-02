@@ -1,11 +1,11 @@
 /**
 * cboxCommerce Order Object
 */
-component   table="cbc_orders" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_orders"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
-{   
+{
 
     property name="approvaltime" type="date";
     property name="fulfilledTime" type="date";
@@ -22,6 +22,20 @@ component   table="cbc_orders"
 	property name="FK_shippingAddress";
 	property name="FK_billingAddress";
 	property name="FK_invoice";
+
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+			this.memento.defaultIncludes,
+			[
+				"customer",
+                "items",
+                "shippingAddress",
+                "billingAddress"
+			],
+			true
+		);
+	}
 
 	function customer(){
         return belongsTo( "User@cbCommerce", "FK_user" );

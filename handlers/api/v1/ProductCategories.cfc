@@ -13,39 +13,11 @@ component extends="BaseAPIHandler"{
 		if( rc.sortOrder == 'createdTime DESC' ){
 			rc.sortOrder = 'displayOrder ASC, name ASC';
 		}
-
-		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
-		var transformer = getInstance( "ProductCategoryTransformer@cbCommerce" );
-		listToArray( rc.excludes ).each( function( exclude ){
-			if( arrayContains( transformer.getDefaultIncludes(), exclude ) ){
-				arrayDeleteAt( transformer.getDefaultIncludes(), arrayFind( transformer.getDefaultIncludes(), exclude ) );
-			}
-		} )
-
-		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( transformer )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){
-								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
-							});
-						}
-						return transformed;
-					}
-				)
-				.convert()
-		);
-
+		return super.index( argumentCollection=arguments );
 	}
 
 	// (POST) /cbc/api/v1/product-categories
-	function create( event, rc, prc ) secured="cbcommerce:Products:Manage"{
+	function create( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		prc.category = entityService.newEntity().fill( rc );
 
@@ -54,22 +26,12 @@ component extends="BaseAPIHandler"{
 		prc.category.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.category )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){
-								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
-							});
-						}
-						return transformed;
-					}
-				)
-				.convert()
+			prc.category.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -79,27 +41,17 @@ component extends="BaseAPIHandler"{
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.category )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){
-								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
-							});
-						}
-						return transformed;
-					}
-				)
-				.convert()
+			prc.category.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/product-categories/:id
-	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
@@ -117,28 +69,18 @@ component extends="BaseAPIHandler"{
 		prc.category.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.category )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductCategoryTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						if( structKeyExists( transformed, "media" ) ){
-							transformed.media.each( function( mediaItem ){
-								mediaItem[ "href" ] = transformed.href & "/media/" & mediaItem.id;
-							});
-						}
-						return transformed;
-					}
-				)
-				.convert()
+			prc.category.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 
 	}
 
 	// (DELETE) /cbc/api/v1/product-categories/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Products:Manage"{
+	function delete( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 		prc.category.delete();

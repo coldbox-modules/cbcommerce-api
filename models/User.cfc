@@ -3,7 +3,7 @@
 */
 component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true"{
     property name="encryptionService" inject="EncryptionService@cbCommerce" persistent="false";
-        
+
     // Persistent column properties
     property name="firstName";
     property name="lastName";
@@ -14,6 +14,17 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     property name="resetToken";
 
     property name="_normalizedPermissions" persistent="false";
+
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+			this.memento.defaultIncludes,
+			[
+				"fullName"
+			],
+			true
+		);
+	}
 
     function addresses(){
         return hasMany( "CustomerAddress@cbCommerce", "FK_user" );
@@ -30,7 +41,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     function carts(){
         return hasMany( "Cart@cbCommerce", "FK_user" );
     }
-    
+
     function orders(){
         return hasMany( "Order@cbCommerce", "FK_user" );
     }
@@ -74,10 +85,10 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
         if( isNull( variables._normalizedPermissions ) ){
             var permissions = [];
-            this.getRoles().each( function( role ){ 
-                role.getPermissions().each( function( permission ){ 
+            this.getRoles().each( function( role ){
+                role.getPermissions().each( function( permission ){
                     arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
-                } )
+                } );
             } );
 
             this.getExplicitPermissions().each( function (permission ){
@@ -85,7 +96,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
             } );
 
             variables._normalizedPermissions = [];
-            variables._normalizedPermissions.addAll( 
+            variables._normalizedPermissions.addAll(
                 createObject("java", "java.util.HashSet").init( permissions )
             );
         }
@@ -93,23 +104,23 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
         return variables._normalizedPermissions;
     }
 
-    function filterSearch( 
-		required struct searchCollection, 
-        required QueryBuilder builder 
+    function filterSearch(
+		required struct searchCollection,
+        required QueryBuilder builder
     ){
 
         if( structKeyExists( searchCollection, "search" ) && len( searchCollection.search ) ){
-            builder.where( 
-                        "firstName", 
+            builder.where(
+                        "firstName",
                         "like",
-                        searchCollection.search 
-                    ).orWhere( 
+                        searchCollection.search
+                    ).orWhere(
                         "lastName",
-                        "like", 
-                        searchCollection.search 
+                        "like",
+                        searchCollection.search
                     );
         }
-        
+
         if( structKeyExists( searchCollection, "role" ) ){
             builder.join( "cbc_lookups_users_roles", "FK_user", "=", "users.id" )
                     .join( "cbc_userRoles", "cbc_userRoles.id", "=", "cbc_lookups_users_roles.FK_role" )

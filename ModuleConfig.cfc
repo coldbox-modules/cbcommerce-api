@@ -1,9 +1,9 @@
 component {
 
     this.name           = "cbCommerce";
-    this.title          = "cbCommerce "
-    this.description    = "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS"
-    this.version        = "1.0.0-alpha1"
+    this.title          = "cbCommerce";
+    this.description    = "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS";
+    this.version        = "1.0.0-alpha1";
     this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
     this.webUrl         = "https://github.com/jclausen/cbCommerce";
     this.cfmapping      = "cbCommerce";
@@ -27,7 +27,6 @@ component {
 		if( len( getSystemSetting( "CBCOMMERCE_ENTRYPOINT", "" ) ) ){
 			this.entryPoint = getSystemSetting( "CBCOMMERCE_ENTRYPOINT" );
 		}
-		var isContentBoxContext = controller.getModuleService().isModuleRegistered( "contentbox" );
 
         settings = {
             "cbauth" : {
@@ -69,11 +68,6 @@ component {
             }
             // An optional "storage" key may be provided which specifies custom cb storage and matches the settings structure of that module
         };
-		if( !isContentBoxContext ){
-			"cbsecurity" : {
-				"userService" : "UserService@cbCommerce"
-			}
-		}
 
         interceptorSettings = {
 			customInterceptionPoints = [
@@ -99,7 +93,22 @@ component {
 					name="GlobalDataInterceptor"
 			}
         ];
-		if( isContentBoxContext ){
+
+    }
+
+    function onLoad() {
+		var isContentBoxContext = controller.getModuleService().isModuleRegistered( "contentbox" );
+		if( !isContentBoxContext ){
+			structAppend(
+				settings,
+				{
+					"cbsecurity" : {
+						"userService" : "UserService@cbCommerce"
+					}
+				}
+			);
+
+		} else {
 			interceptors.append(
 				[
 					{
@@ -113,11 +122,16 @@ component {
 				],
 				true
 			);
+			// Add our menu item
+			var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
+
+			menuService.addSubMenu(
+				topMenu=menuService.MODULES,
+				name="cbCommerce",
+				label="Store Admin",
+				href=menuService.buildModuleLink( 'store', 'admin' )
+			);
 		}
-
-    }
-
-    function onLoad() {
         /**
         * Overload for ContentBox default Sitemap Routing
         */
@@ -182,21 +196,12 @@ component {
            settings = storageSettings
         );
 
-        // Add our menu item
-        var menuService = controller.getWireBox().getInstance( "AdminMenuService@cb" );
-
-        menuService.addSubMenu(
-            topMenu=menuService.MODULES,
-            name="cbCommerce",
-            label="Store Admin",
-            href=menuService.buildModuleLink( 'store', 'admin' )
-        );
 
         // Run any outstanding migrations on module load ( or reinit )
         var migrationService = new cfmigrations.models.MigrationService();
-        migrationService.setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
-        migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/migrations' );
         wirebox.autoWire( migrationService );
+        migrationService.getManager().setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
+        migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/migrations' );
         migrationService.runAllMigrations( "up" );
 
         // TODO: Only run seeds in development mode, investigate if we want this in production

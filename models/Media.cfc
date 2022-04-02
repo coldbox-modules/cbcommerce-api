@@ -1,11 +1,11 @@
 /**
 * cboxCommerce Media Entity
 */
-component   table="cbc_media" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_media"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
-{ 
+{
 	property name="mediaSettings" inject="coldbox:setting:media@cbCommerce" persistent="false";
 	property name="mediaUtil" inject="MediaUtil@cbCommerce" persistent="false";
 	property name="jLoader" inject="loader@cbjavaloader" persistent="false";
@@ -17,6 +17,17 @@ component   table="cbc_media"
 	property name="originalFileName" type="string";
 	property name="fileLocation" type="string";
 	property name="fileSizeBytes" type="string";
+
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+			this.memento.defaultIncludes,
+			[
+				"src"
+			],
+			true
+		);
+	}
 
 	function url(){
 		var extension = listLast( getFileLocation(), "." );
@@ -56,7 +67,7 @@ component   table="cbc_media"
 		//Process our field upload and return the tmp clientFile
 		if( !isNull( arguments.fileInput ) ){
 			var tmpFile = uploadToTemp( arguments.fileInput, mimeAccept );
-		
+
 		} else if( !isNull( arguments.filePath ) ) {
 			var inputFile = arguments.filePath;
 
@@ -199,7 +210,7 @@ component   table="cbc_media"
 								);
 
 		return fileInputStream;
-		
+
 	}
 
 	/**
@@ -252,7 +263,7 @@ component   table="cbc_media"
 
 	}
 
-	
+
 	/**
 	* Returns a native CFML Image (e.g. "<cfimage>" ) from the file
 	*
@@ -283,7 +294,7 @@ component   table="cbc_media"
 		if(arguments.x != 0 && arguments.y !=0){
 			scaleAndCropToFit( ImageIO, arguments );
 		} else if( !isNull( width ) && !isNull( height ) && arguments.height == arguments.width ) {
-			
+
 			if( originalHeight > originalWidth ){
 				ImageIO.setHeight( arguments.height );
 			} else {
@@ -378,5 +389,5 @@ component   table="cbc_media"
 
 		return Img.crop(imageArgs.x,imageArgs.y,destWidth,destHeight);
 	}
-	
+
 }

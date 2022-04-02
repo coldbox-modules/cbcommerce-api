@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler" secured{
 	property name="entityService" inject="ConsignmentBatchService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/consigment-batches'
+	this.APIBaseURL = '/store/api/v1/consigment-batches';
 
 	// (GET) /store/api/v1/consigment-batches
 	function index( event, rc, prc ){
@@ -17,25 +17,23 @@ component extends="BaseAPIHandler" secured{
 
         var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
+		listAppend( rc.includes, "href" );
+
 		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "ConsignmentBatchTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & "/" & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
+		).setPagination(
+			searchResults.pagination
 		);
 
 	}
 
 	// (POST) /store/api/v1/consigment-batches
-	function create( event, rc, prc ) secured="cbcommerce:Products:Manage"{
+	function create( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		var sku = entityService.newEntity().getOrFail( rc.skuId );
 
@@ -52,17 +50,12 @@ component extends="BaseAPIHandler" secured{
         }
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.batch )
-				.withIncludes( rc.includes )
-				.withTransformer( "ConsignmentBatchTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & "/" & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.batch.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -77,22 +70,17 @@ component extends="BaseAPIHandler" secured{
         }
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.batch )
-				.withIncludes( rc.includes )
-				.withTransformer( "ConsignmentBatchTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & "/" & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.batch.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/consigment-batches/:id
-	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
 
 		prc.batch.fill( rc );
@@ -110,23 +98,18 @@ component extends="BaseAPIHandler" secured{
         }
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.batch )
-				.withIncludes( rc.includes )
-				.withTransformer( "ConsignmentBatchTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & "/" & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.batch.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 
 	}
 
 	// (DELETE) /store/api/v1/consigment-batches/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Products:Manage"{
+	function delete( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
 		prc.batch.delete();

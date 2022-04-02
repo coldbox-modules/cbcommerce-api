@@ -9,26 +9,22 @@ component extends="BaseAPIHandler" secured{
 	property name="skuService" inject="ProductSKUService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/wishlists/{wishlist}/items'
-	
+
 	// (GET) /wishlists/::wishlistId/items
 	function index( event, rc, prc ){
-		
+
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
 		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
-		prc.response.setData( 
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withTransformer( "WishlistItemTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, "{wishlist}", wishlist.keyValue() ) & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
+			)
 		);
 
 	}
@@ -37,7 +33,7 @@ component extends="BaseAPIHandler" secured{
 	function create( event, rc, prc ){
 
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
-		
+
 		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
@@ -61,24 +57,19 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlistItem.save();
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlistItem )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistItemTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, "{wishlist}", wishlist.keyValue() ) & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlistItem.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
 	// (GET) /cbc/api/v1/wishlists/:wishlistId/items/:id
 	function show( event, rc, prc ){
-		
+
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		var wishlist = prc.wishlistItem.getWishlist();
 
@@ -86,18 +77,13 @@ component extends="BaseAPIHandler" secured{
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlistItem )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistItemTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, "{wishlist}", wishlist.keyValue() ) & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlistItem.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
+			)
 		);
 	}
 
@@ -106,9 +92,9 @@ component extends="BaseAPIHandler" secured{
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		var wishlist = prc.wishlistItem.getWishlist();
-		
+
 		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
@@ -119,20 +105,15 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlistItem.save();
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlistItem )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistItemTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, "{wishlist}", wishlist.keyValue() ) & '/' & transformed[ "id" ]; 
-						return transformed;
-					}
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlistItem.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
+			)
 		);
-		
+
 	}
 
 	// (DELETE) /cbc/api/v1/wishlists/:wishlistId/items/:id
@@ -150,5 +131,5 @@ component extends="BaseAPIHandler" secured{
 
 	}
 
-	
+
 }

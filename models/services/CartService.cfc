@@ -2,7 +2,6 @@ component extends="BaseQuickEntityService" singleton{
     property name="cookieStorage" inject="CookieStorage@cbCommerce";
     property name="auth" inject="authenticationService@cbauth";
     property name="dateUtil" inject="DateFormatUtil@cbCommerce";
-    property name="fractal" inject="Manager@cffractal";
     //provider for the entity - this provider must exist to use the search() method
     function newEntity() provider="Cart@cbCommerce"{}
     function skuEntity() provider="ProductSKU@cbCommerce"{}
@@ -58,26 +57,19 @@ component extends="BaseQuickEntityService" singleton{
         } );
 
         if( !itemExists ){
-            var serializedProduct = fractal.builder()
-				.item( sku.getProduct() )
-				.withTransformer( "ProductTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = '/store/api/v1/products/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-                .convert();
+            var serializedProduct = sku.getProduct().getMemento(
+										includes="href",
+										defaults={ "href" : "" },
+										mappers={ "href" : function( transformed ) { return '/store/api/v1/products/' & transformed[ "id" ]; } }
+									);
+
             if( arrayLen( serializedProduct.media ) ){
                 serializedProduct[ "image" ] = serializedProduct.media[ 1 ];
             }
 
             structDelete( serializedProduct, "media" );
 
-            var serializedSKU = fractal.builder()
-				.item( sku )
-				.withTransformer( "ProductSKUTransformer@cbCommerce" )
-                .convert();
+            var serializedSKU = sku.getMemento();
 
             if( arrayLen( serializedSKU.media ) ){
                 serializedSKU[ "image" ] = serializedSKU.media[ 1 ];

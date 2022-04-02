@@ -1,11 +1,11 @@
 /**
 * cboxCommerce default Product Object
 */
-component   table="cbc_SKUs" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_SKUs"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
-{   
+{
 	// Persistent column properties
 	property name="isVirtual" type="boolean" default=0;
 	property name="isConsigned" type="boolean" default=0;
@@ -30,14 +30,28 @@ component   table="cbc_SKUs"
 	// an external reference id used for syncing data between systems
 	property name="modelNumber" type="string" sqltype="varchar";
 	property name="externalId" type="string";
-	
+
 	//Foreign Keys
 	property name="FK_product";
 	property name="FK_consignor";
 	property name="FK_condition";
 	property name="FK_subCondition";
 	property name="FK_consignmentBatch";
-	
+
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+            this.memento.defaultIncludes,
+            [
+                "onHand",
+                "media",
+                "condition",
+                "options",
+                "subCondition"
+            ],
+            true
+        );
+	}
 
 	function product(){
 		return belongsTo( "Product@cbCommerce", "FK_product" );
@@ -92,7 +106,7 @@ component   table="cbc_SKUs"
 		} )
 		return super.delete( argumentCollection=arguments );
 	}
-	
+
 
 	function scopeWhereUsed( query ){
 		return query.join( 'cbc_productConditions', 'cbc_SKUs.FK_condition', '=', 'cbc_productConditions.id' )
@@ -101,7 +115,7 @@ component   table="cbc_SKUs"
 
 	function scopeWhereInStock( query ){
         return query.where( function( subquery ){
-			return subquery.whereExists( 
+			return subquery.whereExists(
 				function( subSubQuery ){
 					return subSubQuery.from( 'cbc_inventoryLocationStock' )
 									.whereColumn( 'cbc_inventoryLocationStock.FK_sku', '=', 'cbc_SKUs.id' )
@@ -110,7 +124,7 @@ component   table="cbc_SKUs"
 				}
 			)
 			.orWhere( 'cbc_SKUs.allowBackorder', 1 );
-				
+
 		} );
 	}
 }

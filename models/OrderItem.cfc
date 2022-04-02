@@ -20,6 +20,17 @@ component   table="cbc_orderItems"
 	property name="FK_order";
 	// property name="FK_sku";
 
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+            this.memento.defaultIncludes,
+            [
+               "productSnapshot"
+            ],
+            true
+        );
+	}
+
 	/**
 	 * Pre-save Interception
 	 */

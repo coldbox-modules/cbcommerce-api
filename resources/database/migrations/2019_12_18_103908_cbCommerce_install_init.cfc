@@ -24,12 +24,12 @@ component {
             table.string( 'suffix', 75 );
         } );
 
-        var prefixes  = [ "cbcommerce:Product", "cbcommerce:Order", "cbcommerce:Return" , "cbcommerce:System" ];
+        var prefixes  = [ "cbcProduct", "cbcOrder", "cbcReturn" , "cbcSystem" ];
         var suffixes = [ "Configure", "Manage" , "Edit", "Approve", "Delete" ];
 
         for( var prefix in prefixes ){
             for( var suffix in suffixes ){
-                query.from( "cbc_userPermissions" ).insert(
+                query.newQuery().from( "cbc_userPermissions" ).insert(
                     values = {
                             "id" : createUUID(),
                             "prefix" : prefix,
@@ -48,7 +48,7 @@ component {
         });
 
         // Insert our intial roles
-        query.from( "cbc_userRoles" ).insert(
+        query.newQuery().from( "cbc_userRoles" ).insert(
             values = [
                 {
                     "id" : createUUID(),
@@ -262,11 +262,11 @@ component {
 
         ];
 
-        query.from( "cbc_productConditions" ).insert(
+        query.newQuery().from( "cbc_productConditions" ).insert(
             values = topLevelConditions
         );
 
-        query.from( "cbc_productConditions" ).insert(
+        query.newQuery().from( "cbc_productConditions" ).insert(
             values = subConditions
         );
 
@@ -317,10 +317,13 @@ component {
             table.string( "summary", 1000 ).nullable();
             table.text( "description" ).nullable();
             table.uuid( "FK_consignmentBatch" ).nullable();
-            table.uuid( "FK_consignmentBatch" ).references( "id" ).onTable( "cbc_consignmentBatches" );
             table.boolean( "showPricing" ).default( 1 );
             table.boolean( "pickUpInStore").default( 0 );
         } );
+
+		schema.alter( "cbc_SKUs", function( table ){
+			table.uuid( "FK_consignmentBatch" ).references( "id" ).onTable( "cbc_consignmentBatches" );
+		} );
 
         schema.create( "cbc_virtualSKUs", function( table ){
             table.uuid( "id" ).primaryKey();
@@ -390,28 +393,31 @@ component {
             table.decimal( "discount", 8, 2  );
             table.decimal( "total", 8, 2  );
             table.timestamp( "paidInFull" ).nullable();
-
-            table.uuid( "FK_user" )
-                    .references( "id" )
-                    .onTable( "cbc_users" )
-                    .onUpdate( "CASCADE" )
-                    .onDelete( "CASCADE" );
-
-            table.uuid( "FK_shippingAddress" )
-                    .references( "id" )
-                    .onTable( "cbc_customerAddresses" );
-
-
-            table.uuid( "FK_billingAddress" )
-                    .references( "id" )
-                    .onTable( "cbc_customerAddresses" );
-
-            table.uuid( "FK_invoice" )
-                    .references( "id" )
-                    .onTable( "cbc_orderInvoices" )
-                    .nullable();
-
+			table.uuid( "FK_invoice" ).nullable();
         } );
+
+		schema.alter( "cbc_orders", function( table ){
+			table.uuid( "FK_user" )
+					.references( "id" )
+					.onTable( "cbc_users" )
+					.onUpdate( "CASCADE" )
+					.onDelete( "CASCADE" );
+
+			table.uuid( "FK_shippingAddress" )
+					.references( "id" )
+					.onTable( "cbc_customerAddresses" );
+
+
+			table.uuid( "FK_billingAddress" )
+					.references( "id" )
+					.onTable( "cbc_customerAddresses" );
+
+			table.uuid( "FK_invoice" )
+					.references( "id" )
+					.onTable( "cbc_orderInvoices" );
+
+
+		} );
 
         schema.create( "cbc_orderItems", function( table ){
             table.uuid( "id" ).primaryKey();
@@ -537,7 +543,6 @@ component {
                     .onUpdate( "CASCADE" )
                     .onDelete( "CASCADE" );
             table.decimal( "discountPrice" ).default( 0 );
-            table.integer( "quantity" ).default( 1 );
             table.integer( "quantity" ).default( 1 );
 
         } );
@@ -671,7 +676,7 @@ component {
 
 
 
-        query.from( "cbc_userRoles" ).insert(
+        query.newQuery().from( "cbc_userRoles" ).insert(
             values = [
                 {
                     "id" : createUUID(),
@@ -687,7 +692,7 @@ component {
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
             table.boolean( "isActive" ).default( 1 );
-            table.integer( "displayOrder" ).default( 0 )
+            table.integer( "displayOrder" ).default( 0 );
 
             table.string( "name", 100 );
             table.string( "value", 255 );
@@ -698,8 +703,6 @@ component {
         } );
 
         //======
-
-            function up( SchemaBuilder schema, QueryBuilder query ) {
         schema.create( "cbc_consignmentBatches", function( table ) {
             table.uuid( "id" ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
@@ -767,7 +770,7 @@ component {
             }
         ];
 
-        query.from( "cbc_consignmentFeeTypes" ).insert(
+        query.newQuery().from( "cbc_consignmentFeeTypes" ).insert(
             values = feeTypes
         );
 
@@ -804,17 +807,6 @@ component {
             table.text( 'value' );
         } );
 
-        //======
-
-        schema.create( "cbc_tenantSettings", function( table ) {
-            table.uuid( "id" ).primaryKey();
-            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
-            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
-            table.string( 'key' );
-            table.text( 'value' );
-        } );
-
-    }
 
         schema.alter( "cbc_products", function( table ){
             table.addConstraint( table.index( "name", "idx_cbc_products_name" ) );

@@ -86,52 +86,51 @@ component{
                 .toHandler( "API.v1.Products" );
 
         // Resource Routes ( auto-magic method conventions )
-        router
-            .resources(
+        	resources(
                 resource   = "api/v1/products/:productId/reviews",
                 handler    = "API.v1.ProductReviews"
-            )
-            .resources(
+            );
+            resources(
                 resource = "api/v1/products/:productId/media",
                 handler = "API.v1.ProductMedia"
-            )
-            .resources(
+            );
+            resources(
                 resource   = "api/v1/products",
                 handler    = "API.v1.Products"
-            )
-            .resources(
+            );
+            resources(
                 resource = "api/v1/skus/:skuId/media",
                 handler = "API.v1.ProductSKUMedia"
-            )
-            .resources(
+            );
+			resources(
                 resource = "api/v1/skus",
                 handler  = "API.v1.ProductSKUs"
-            )
-            .resources(
+            );
+			resources(
                 resource = "api/v1/consignment-batches",
                 handler  = "API.v1.ConsignmentBatches"
-            )
-            .resources(
+            );
+			resources(
                 resource = "api/v1/product-categories/:categoryId/media",
                 handler = "API.v1.ProductCategoryMedia"
-            )
-            .resources(
+            );
+			resources(
                 resource   = "api/v1/product-categories",
                 handler    = "API.v1.ProductCategories"
-            )
-            .resources(
+            );
+			resources(
                 resource   = "api/v1/product-inventory",
                 handler    = "API.v1.ProductInventory"
-            )
-            .resources(
+            );
+			resources(
                 resource   = "api/v1/orders",
                 handler    = "API.v1.Orders"
-            )
-            .resources(
+            );
+			resources(
                 resource   = "api/v1/customers",
                 handler    = "API.v1.Customers"
-            )
-            .resources(
+            );
+			resources(
                 resource   = "api/v1/payments",
                 handler    = "API.v1.Payments"
             );

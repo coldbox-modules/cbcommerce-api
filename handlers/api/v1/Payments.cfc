@@ -16,24 +16,7 @@ component extends="BaseAPIHandler" {
 
 	// (GET) /cbc/api/v1/payments
 	function index( event, rc, prc ){
-
-		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
-
-		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
-		);
-
+		return super.index( argumentCollection=arguments );
 	}
 
 	// (POST) /cbc/api/v1/payments
@@ -49,7 +32,7 @@ component extends="BaseAPIHandler" {
 				newUser.lastName = rc.billingAddress.lastName;
 				newUser.email = rc.email;
 				newUser.primaryPhone = rc.phone;
-				newUser.password = lcase( createGUID() );
+				newUser.password = lcase( createUUID() );
 				newUser.isActive = 0;
 
 				prc.user = userService.newEntity().fill( newUser ).save();
@@ -158,17 +141,12 @@ component extends="BaseAPIHandler" {
 			cartService.getActiveCart().setIsActive( 0 ).save();
 			cookieStorage.deleteVar( "cartId" );
 			prc.response.setData(
-				fractal.builder()
-					.item( prc.payment )
-					.withIncludes( rc.includes )
-					.withTransformer( "PaymentTransformer@cbCommerce" )
-					.withItemCallback(
-						function( transformed ) {
-							transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-							return transformed;
-						}
-					)
-					.convert()
+				prc.payment.getMemento(
+					includes=rc.includes,
+					excludes=rc.excludes,
+					defaults={ "href" : variables.hrefDefault },
+					mappers={ "href" : variables.hrefMapper }
+				)
 			).setStatusCode( STATUS.CREATED );
 		} else{
 
@@ -194,22 +172,17 @@ component extends="BaseAPIHandler" {
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.payment )
-				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
+			prc.payment.getMemento(
+					includes=rc.includes,
+					excludes=rc.excludes,
+					defaults={ "href" : variables.hrefDefault },
+					mappers={ "href" : variables.hrefMapper }
 				)
-				.convert()
 		);
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/payments/:id
-	function update( event, rc, prc ) secured="cbcommerce:Payments:Edit"{
+	function update( event, rc, prc ) secured="cbcPayments:Edit"{
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -221,23 +194,18 @@ component extends="BaseAPIHandler" {
 		prc.payment.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.payment )
-				.withIncludes( rc.includes )
-				.withTransformer( "PaymentTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.payment.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 
 	}
 
 	// (DELETE) /cbc/api/v1/payments/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Payments:Manage"{
+	function delete( event, rc, prc ) secured="cbcPayments:Manage"{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		prc.payment.delete();

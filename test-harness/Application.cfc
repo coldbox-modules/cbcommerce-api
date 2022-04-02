@@ -40,7 +40,7 @@ component{
 	this.mappings[ "/root" ] = COLDBOX_APP_ROOT_PATH;
 
 	// Datasource
-	this.datasource = "cbc_testing";
+	this.datasource = "cbcommerce";
 
 	// Map back to its root
 	moduleRootPath 	= REReplaceNoCase( this.mappings[ "/root" ], "#request.MODULE_NAME#(\\|/)test-harness(\\|/)", "" );

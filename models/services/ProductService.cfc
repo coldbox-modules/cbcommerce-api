@@ -8,6 +8,6 @@ component extends="BaseQuickEntityService" singleton{
                 .hasUsedSKU()
                 .orderBy( 'displayOrder', 'ASC' )
                 .orderBy( 'name', 'ASC' )
-                .getEntities();
+                .get();
     }
 }

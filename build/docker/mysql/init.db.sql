@@ -1,2220 +1,1653 @@
--- MariaDB dump 10.17  Distrib 10.4.11-MariaDB, for debian-linux-gnu (x86_64)
---
--- Host: localhost    Database: cbcommerce
--- ------------------------------------------------------
--- Server version	10.4.11-MariaDB-1:10.4.11+maria~bionic
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Current Database: `cbcommerce`
---
-
 CREATE DATABASE IF NOT EXISTS `cbcommerce` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
 USE `cbcommerce`;
 
---
--- Table structure for table `cachebox_content`
---
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+SET NAMES utf8mb4;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE='NO_AUTO_VALUE_ON_ZERO', SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP TABLE IF EXISTS `cachebox_content`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cachebox_content` (
-  `id` varchar(100) NOT NULL,
-  `objectKey` varchar(255) NOT NULL,
-  `objectValue` longtext NOT NULL,
-  `hits` int(11) NOT NULL DEFAULT 1,
-  `timeout` int(11) NOT NULL,
-  `lastAccessTimeout` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  `lastAccessed` datetime NOT NULL,
-  `isExpired` tinyint(4) NOT NULL DEFAULT 1,
-  `isSimple` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cachebox_content`
---
-
-LOCK TABLES `cachebox_content` WRITE;
-/*!40000 ALTER TABLE `cachebox_content` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cachebox_content` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cachebox_sessions`
---
-
-DROP TABLE IF EXISTS `cachebox_sessions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cachebox_sessions` (
-  `id` varchar(100) NOT NULL,
-  `objectKey` varchar(255) NOT NULL,
-  `objectValue` longtext NOT NULL,
-  `hits` int(11) NOT NULL DEFAULT 1,
-  `timeout` int(11) NOT NULL,
-  `lastAccessTimeout` int(11) NOT NULL,
-  `created` datetime NOT NULL,
-  `lastAccessed` datetime NOT NULL,
-  `isExpired` tinyint(4) NOT NULL DEFAULT 1,
-  `isSimple` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cachebox_sessions`
---
-
-LOCK TABLES `cachebox_sessions` WRITE;
-/*!40000 ALTER TABLE `cachebox_sessions` DISABLE KEYS */;
-INSERT INTO `cachebox_sessions` VALUES ('BB25DFFAD7A726BAC02D8E6D2527F616','cbstorage:contentbox-docker-_d2326e46-cdbd-4d3e-9881-c769a359b3fa_0','rO0ABXNyAB1sdWNlZS5ydW50aW1lLnR5cGUuU3RydWN0SW1wbBO7DyUhSuS5AgABTAADbWFwdAAhTGx1Y2VlL2NvbW1vbnMvY29sbGVjdGlvbi9NYXBQcm87eHIAJWx1Y2VlLnJ1bnRpbWUudHlwZS51dGlsLlN0cnVjdFN1cHBvcnRnKbKJGDmF4wIAAHhwc3IAOGx1Y2VlLmNvbW1vbnMuY29sbGVjdGlvbi5jb25jdXJyZW50LkNvbmN1cnJlbnRIYXNoTWFwUHJvZJneEp2HKT0MAAB4cgAnbHVjZWUuY29tbW9ucy5jb2xsZWN0aW9uLkFic3RyYWN0TWFwUHJvlyz7VteiVMwMAAB4cHNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAZ3CAAAAAgAAAADc3IAGmx1Y2VlLnJ1bnRpbWUudHlwZS5LZXlJbXBshPm/L2n0b2cMAAB4cHQACXNlc3Npb25pZHh0AENjYnN0b3JhZ2U6Q29udGVudEJveC1Eb2NrZXItX2QyMzI2ZTQ2LWNkYmQtNGQzZS05ODgxLWM3NjlhMzU5YjNmYV8wc3EAfgAJdAALdGltZWNyZWF0ZWR4c3IAImx1Y2VlLnJ1bnRpbWUudHlwZS5kdC5EYXRlVGltZUltcGyL7K30ezFucgIAAHhyAB5sdWNlZS5ydW50aW1lLnR5cGUuZHQuRGF0ZVRpbWUfMrJraWnmvwIAAHhyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAW8T9fEFeHNxAH4ACXQAEGxvZ2dlZEluQXV0aG9ySUR4c3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAAF4eA==',45,60,0,'2019-12-17 13:09:13','2019-12-17 13:09:26',0,0);
-/*!40000 ALTER TABLE `cachebox_sessions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cb_author`
---
+# Dump of table cb_author
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_author`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_author` (
-  `authorID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `firstName` varchar(100) NOT NULL,
   `lastName` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `isActive` bit(1) NOT NULL,
+  `isActive` bit(1) NOT NULL DEFAULT b'1',
   `lastLogin` datetime DEFAULT NULL,
-  `biography` longtext DEFAULT NULL,
-  `preferences` longtext DEFAULT NULL,
+  `createdDate` datetime NOT NULL,
+  `biography` longtext,
+  `preferences` longtext,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `isPasswordReset` bit(1) NOT NULL DEFAULT b'0',
   `is2FactorAuth` bit(1) NOT NULL DEFAULT b'0',
-  `APIToken` varchar(255) DEFAULT NULL,
-  `FK_roleID` int(11) NOT NULL,
+  `authorID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_roleID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`authorID`),
   UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `APIToken` (`APIToken`),
-  KEY `FK6847396B9724FA40` (`FK_roleID`),
-  KEY `idx_login` (`username`,`password`,`isActive`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_apitoken` (`APIToken`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_activeAuthor` (`isActive`),
-  KEY `idx_passwordReset` (`isPasswordReset`),
+  UNIQUE KEY `id` (`authorID`),
+  UNIQUE KEY `authorID` (`authorID`),
+  KEY `idx_active` (`isActive`),
   KEY `idx_email` (`email`),
+  KEY `idx_login` (`username`,`password`,`isActive`),
+  KEY `idx_activeAuthor` (`isActive`),
   KEY `idx_deleted` (`isDeleted`),
+  KEY `idx_passwordReset` (`isPasswordReset`),
   KEY `idx_2factorauth` (`is2FactorAuth`),
-  CONSTRAINT `FK6847396B9724FA40` FOREIGN KEY (`FK_roleID`) REFERENCES `cb_role` (`roleID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_author`
---
+  KEY `fk_cb_author_FK_roleID` (`FK_roleID`),
+  CONSTRAINT `fk_cb_author_FK_roleID` FOREIGN KEY (`FK_roleID`) REFERENCES `cb_role` (`roleID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_author` WRITE;
 /*!40000 ALTER TABLE `cb_author` DISABLE KEYS */;
-INSERT INTO `cb_author` VALUES (1,'2019-12-16 16:46:18','2019-12-17 13:09:13','\0','Jon','Clausen','jclausen@ortussolutions.com','admin','$2a$12$mo.I90Cd2//rMZfyLC9/W.703Ohw7hn.ZCIpS.gzRtoBYglvwiZzm','','2019-12-17 13:09:13','','{\"sidemenuCollapse\":\"yes\"}','\0','\0','38103B8C679D63D97D42AC484168870200D529E2E9A47C9BA3BAF39C3A4F8E2030161AA27947B5359232C1FED8B1F03A43A0D5CFCD4D8EAAFD548432E04BDE54',2);
+
+INSERT INTO `cb_author` (`firstName`, `lastName`, `email`, `username`, `password`, `isActive`, `lastLogin`, `createdDate`, `biography`, `preferences`, `modifiedDate`, `isDeleted`, `isPasswordReset`, `is2FactorAuth`, `authorID`, `FK_roleID`)
+VALUES
+	('Jon','Clausen','jclausen@ortussolutions.com','jclausen','$2a$12$LTHvTlgHfYx2RlKqeQo6SOxsjd6C3AJZfr73Il9/i0XSGfQNypmiC',b'1','2021-02-18 17:54:10','2013-07-11 11:06:39','','{\"sidemenuCollapse\":\"yes\",\"linkedin\":\"\",\"sidebarState\":\"yes\",\"markup\":\"HTML\",\"website\":\"\",\"editor\":\"ckeditor\",\"twitter\":\"http://twitter.com/lmajano\",\"facebook\":\"http://facebook.com/jclausen\"}','2021-02-18 17:54:10',b'0',b'0',b'0','402890837ca95a0b017ca95c1da80093','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('Luis','Majano','lmajano@gmail.com','lmajano','$2a$12$KU4n4ZQf3cd/ULCuvc8PIO9VrQKi7eKbcEuQaILTJ/sdcjXvT31YK',b'1','2021-02-18 17:54:10','2013-07-11 11:06:39','','{\"sidemenuCollapse\":\"yes\",\"linkedin\":\"\",\"sidebarState\":\"yes\",\"markup\":\"HTML\",\"website\":\"\",\"editor\":\"ckeditor\",\"twitter\":\"http://twitter.com/lmajano\",\"facebook\":\"http://facebook.com/lmajano\"}','2021-02-18 17:54:10',b'0',b'0',b'0','77abddba-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('Lui','Majano','lmajano@ortussolutions.com','luismajano','$2a$12$KU4n4ZQf3cd/ULCuvc8PIO9VrQKi7eKbcEuQaILTJ/sdcjXvT31YK',b'1','2015-07-29 14:38:46','2013-07-11 11:07:23','','{\"GOOGLE\":\"\",\"EDITOR\":\"ckeditor\",\"TWITTER\":\"http:\\/\\/twitter.com\\/lmajano\",\"FACEBOOK\":\"http:\\/\\/facebook.com\\/lmajano\"}','2017-06-21 18:29:30',b'0',b'0',b'0','77abdf9a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('Tester','Majano','lmajano@testing.com','testermajano','$2a$12$FE058d9bj7Sv6tPmvZMaleC2x8.b.tRqVei5p/5XqPytSNpF5eCym',b'1','2017-07-06 12:13:14','2013-07-11 11:07:23','','{\"sidemenuCollapse\":\"no\",\"google\":\"\",\"sidebarState\":\"true\",\"markup\":\"HTML\",\"editor\":\"ckeditor\",\"twitter\":\"http://twitter.com/lmajano\",\"facebook\":\"http://facebook.com/lmajano\"}','2017-07-18 15:22:13',b'0',b'1',b'1','77abe0a8-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('Joe','Joe','joejoe@joe.com','joejoe','$2a$12$.FrcqDLb3DNIK2TqJo0aQuwB3WSxAW0KmJUKKPaAQV7VoYwihDM1.',b'1','2017-07-06 11:38:28','2017-07-06 11:30:59','','{\"linkedin\":\"\",\"markup\":\"HTML\",\"website\":\"\",\"editor\":\"ckeditor\",\"twitter\":\"\",\"facebook\":\"\"}','2017-07-06 11:54:11',b'0',b'1',b'1','77abe166-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('Jorge','Morelos','joremorelos@morelos.com','joremorelos@morelos.com','$2a$12$IBAYihdRG.Hj8fh/fztmi.MvFRn2lPxk4Thw1mnmbVzjoLnNCgzOe',b'0',NULL,'2017-07-06 12:07:02','','{\"linkedin\":\"\",\"markup\":\"HTML\",\"website\":\"\",\"editor\":\"ckeditor\",\"twitter\":\"\",\"facebook\":\"\"}','2017-07-19 17:01:18',b'0',b'1',b'0','77abe206-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_author` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_authorPermissionGroups`
---
+
+# Dump of table cb_authorPermissionGroups
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_authorPermissionGroups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_authorPermissionGroups` (
-  `FK_permissionGroupID` int(11) NOT NULL,
-  `FK_authorID` int(11) NOT NULL,
-  KEY `FK7443FC0EAA6AC0EA` (`FK_authorID`),
-  KEY `FK7443FC0EF4497DC2` (`FK_permissionGroupID`),
-  CONSTRAINT `FK7443FC0EAA6AC0EA` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`),
-  CONSTRAINT `FK7443FC0EF4497DC2` FOREIGN KEY (`FK_permissionGroupID`) REFERENCES `cb_permissionGroup` (`permissionGroupID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_authorPermissionGroups`
---
+CREATE TABLE `cb_authorPermissionGroups` (
+  `FK_permissionGroupID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_authorID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_authorPermissionGroups_FK_permissionGroupID` (`FK_permissionGroupID`),
+  KEY `fk_cb_authorPermissionGroups_FK_authorID` (`FK_authorID`),
+  CONSTRAINT `fk_cb_authorPermissionGroups_FK_authorID` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_authorPermissionGroups_FK_permissionGroupID` FOREIGN KEY (`FK_permissionGroupID`) REFERENCES `cb_permissionGroup` (`permissionGroupID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_authorPermissionGroups` WRITE;
 /*!40000 ALTER TABLE `cb_authorPermissionGroups` DISABLE KEYS */;
+
+INSERT INTO `cb_authorPermissionGroups` (`FK_permissionGroupID`, `FK_authorID`)
+VALUES
+	('7850efee-a444-11eb-ab6f-0290cc502ae3','77abe166-a444-11eb-ab6f-0290cc502ae3'),
+	('7850efee-a444-11eb-ab6f-0290cc502ae3','77abe206-a444-11eb-ab6f-0290cc502ae3'),
+	('7850f138-a444-11eb-ab6f-0290cc502ae3','77abe206-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_authorPermissionGroups` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_authorPermissions`
---
+
+# Dump of table cb_authorPermissions
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_authorPermissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_authorPermissions` (
-  `FK_authorID` int(11) NOT NULL,
-  `FK_permissionID` int(11) NOT NULL,
-  KEY `FKE167E219AA6AC0EA` (`FK_authorID`),
-  KEY `FKE167E21937C1A3F2` (`FK_permissionID`),
-  CONSTRAINT `FKE167E21937C1A3F2` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`),
-  CONSTRAINT `FKE167E219AA6AC0EA` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_authorPermissions`
---
+CREATE TABLE `cb_authorPermissions` (
+  `FK_permissionID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_authorID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_authorPermissions_FK_permissionID` (`FK_permissionID`),
+  KEY `fk_cb_authorPermissions_FK_authorID` (`FK_authorID`),
+  CONSTRAINT `fk_cb_authorPermissions_FK_authorID` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_authorPermissions_FK_permissionID` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_authorPermissions` WRITE;
 /*!40000 ALTER TABLE `cb_authorPermissions` DISABLE KEYS */;
+
+INSERT INTO `cb_authorPermissions` (`FK_permissionID`, `FK_authorID`)
+VALUES
+	('785d8182-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8574-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8420-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3'),
+	('785d83b2-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8344-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3'),
+	('785d84fc-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_authorPermissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_category`
---
+
+# Dump of table cb_category
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_category` (
-  `categoryID` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(200) NOT NULL,
+  `slug` varchar(200) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `category` varchar(200) NOT NULL,
-  `slug` varchar(200) NOT NULL,
+  `categoryID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_siteID` varchar(36) NOT NULL DEFAULT '',
+  `isPublic` bit(1) NOT NULL,
   PRIMARY KEY (`categoryID`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_deleted` (`isDeleted`),
+  UNIQUE KEY `id` (`categoryID`),
+  UNIQUE KEY `categoryID` (`categoryID`),
+  KEY `idx_slug` (`slug`),
   KEY `idx_categorySlug` (`slug`),
-  KEY `idx_categoryName` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_category`
---
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `idx_categoryName` (`category`),
+  KEY `FK_siteID` (`FK_siteID`),
+  KEY `idx_isPublic` (`isPublic`),
+  CONSTRAINT `cb_category_ibfk_1` FOREIGN KEY (`FK_siteID`) REFERENCES `cb_site` (`siteID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_category` WRITE;
 /*!40000 ALTER TABLE `cb_category` DISABLE KEYS */;
-INSERT INTO `cb_category` VALUES (1,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','News','news'),(2,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ColdFusion','coldfusion'),(3,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ColdBox','coldbox'),(4,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ContentBox','contentbox');
+
+INSERT INTO `cb_category` (`category`, `slug`, `createdDate`, `modifiedDate`, `isDeleted`, `categoryID`, `FK_siteID`, `isPublic` )
+VALUES
+	('ColdFusion','coldfusion','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','786a9660-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3', b'1'),
+	('cbcommerce','cbcommerce','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','786a97f0-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3', b'1'),
+	('coldbox','coldbox','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','786a98cc-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3', b'1'),
+	('News','news','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','A657752D-79AC-42CB-B7A9572AB7B329A1','1c81d376-a481-11eb-ab6f-0290cc502ae3', b'0'),
+	('General','general','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','16B64400-E17B-477C-B0A0C59764CB85F8','1c81d376-a481-11eb-ab6f-0290cc502ae3', b'0');
+
 /*!40000 ALTER TABLE `cb_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_comment`
---
+
+# Dump of table cb_comment
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_comment` (
-  `commentID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `content` longtext NOT NULL,
   `author` varchar(100) NOT NULL,
   `authorIP` varchar(100) NOT NULL,
   `authorEmail` varchar(255) NOT NULL,
   `authorURL` varchar(255) DEFAULT NULL,
-  `isApproved` bit(1) NOT NULL,
-  `FK_contentID` int(11) NOT NULL,
+  `createdDate` datetime NOT NULL,
+  `isApproved` bit(1) NOT NULL DEFAULT b'0',
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `commentID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`commentID`),
-  KEY `FKFFCED27F91F58374` (`FK_contentID`),
-  KEY `idx_createDate` (`createdDate`),
+  UNIQUE KEY `id` (`commentID`),
+  UNIQUE KEY `commentID` (`commentID`),
   KEY `idx_approved` (`isApproved`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_contentComment` (`isApproved`,`FK_contentID`),
+  KEY `idx_createdDate` (`createdDate`),
+  KEY `idx_commentCreatedDate` (`createdDate`),
   KEY `idx_deleted` (`isDeleted`),
-  CONSTRAINT `FKFFCED27F91F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_comment`
---
+  KEY `fk_cb_comment_FK_contentID` (`FK_contentID`),
+  CONSTRAINT `fk_cb_comment_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_comment` WRITE;
 /*!40000 ALTER TABLE `cb_comment` DISABLE KEYS */;
-INSERT INTO `cb_comment` VALUES (1,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','What an amazing blog entry, congratulations!','Awesome Joe','172.27.0.1','awesomejoe@contentbox.org','www.ortussolutions.com','',1),(2,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','I am some bad words and bad comment not approved','Bad Joe','172.27.0.1','badjoe@contentbox.org','www.ortussolutions.com','\0',1);
+
+INSERT INTO `cb_comment` (`content`, `author`, `authorIP`, `authorEmail`, `authorURL`, `createdDate`, `isApproved`, `modifiedDate`, `isDeleted`, `commentID`, `FK_contentID`)
+VALUES
+	('Test','Luis','','lmajano@gmail.com','','2015-08-04 16:17:43',b'0','2021-02-18 17:58:20',b'0','77d99fac-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('test','Luis Majano','127.0.0.1','lmajano@gmail.com','','2016-05-11 16:12:33',b'1','2016-05-11 16:12:33',b'0','77d9a15a-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('test','Luis Majano','127.0.0.1','lmajano@ortussolutions.com','','2016-05-12 12:34:17',b'1','2016-05-12 12:34:17',b'0','77d9a240-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('My awesome comment','Luis Majano','127.0.0.1','lmajano@gmail.com','','2016-11-28 15:35:51',b'1','2016-11-28 15:35:51',b'0','77d9a2cc-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('Another test comment','Luis Majano','127.0.0.1','lmajano@gmail.com','','2021-05-05 15:15:06',b'1','2021-05-05 15:15:06',b'0','ff808081793cf2c801793e2b749b002a','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('My comment is meant to test your limits','Joe Hacker','127.0.0.1','joe@hacker.com','','2021-05-05 15:15:29',b'0','2021-05-05 15:15:42',b'0','ff808081793cf2c801793e2bcd53002b','779cd234-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_commentSubscriptions`
---
+
+# Dump of table cb_commentSubscriptions
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_commentSubscriptions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_commentSubscriptions` (
-  `subscriptionID` int(11) NOT NULL,
-  `FK_contentID` int(11) NOT NULL,
-  PRIMARY KEY (`subscriptionID`),
-  KEY `FK41716EB791F58374` (`FK_contentID`),
-  KEY `FK41716EB71D33B614` (`subscriptionID`),
-  KEY `idx_contentCommentSubscription` (`FK_contentID`),
-  CONSTRAINT `FK41716EB71D33B614` FOREIGN KEY (`subscriptionID`) REFERENCES `cb_subscriptions` (`subscriptionID`),
-  CONSTRAINT `FK41716EB791F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_commentSubscriptions`
---
+CREATE TABLE `cb_commentSubscriptions` (
+  `subscriptionID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`subscriptionID`),
+  KEY `fk_cb_commentSubscriptions_FK_contentID` (`FK_contentID`),
+  CONSTRAINT `fk_cb_commentSubscriptions_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_commentSubscriptions_subscriptionID` FOREIGN KEY (`subscriptionID`) REFERENCES `cb_subscriptions` (`subscriptionID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_commentSubscriptions` WRITE;
 /*!40000 ALTER TABLE `cb_commentSubscriptions` DISABLE KEYS */;
+
+INSERT INTO `cb_commentSubscriptions` (`subscriptionID`, `FK_contentID`)
+VALUES
+	('77e37aae-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('77e37b80-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('77e3796e-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_commentSubscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_content`
---
+
+# Dump of table cb_content
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_content`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_content` (
-  `contentID` int(11) NOT NULL AUTO_INCREMENT,
   `contentType` varchar(255) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `slug` varchar(500) NOT NULL,
   `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `title` varchar(200) NOT NULL,
-  `slug` varchar(200) NOT NULL,
   `publishedDate` datetime DEFAULT NULL,
   `expireDate` datetime DEFAULT NULL,
-  `isPublished` bit(1) NOT NULL,
-  `allowComments` bit(1) NOT NULL,
+  `isPublished` bit(1) NOT NULL DEFAULT b'1',
+  `allowComments` bit(1) NOT NULL DEFAULT b'1',
   `passwordProtection` varchar(100) DEFAULT NULL,
   `HTMLKeywords` varchar(160) DEFAULT NULL,
   `HTMLDescription` varchar(160) DEFAULT NULL,
+  `cache` bit(1) NOT NULL DEFAULT b'1',
+  `cacheLayout` bit(1) NOT NULL DEFAULT b'1',
+  `cacheTimeout` int(11) DEFAULT '0',
+  `cacheLastAccessTimeout` int(11) DEFAULT '0',
+  `markup` varchar(100) NOT NULL DEFAULT 'HTML',
+  `showInSearch` bit(1) NOT NULL DEFAULT b'1',
+  `featuredImage` varchar(500) DEFAULT NULL,
+  `featuredImageURL` varchar(500) DEFAULT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `HTMLTitle` varchar(255) DEFAULT NULL,
-  `cache` bit(1) NOT NULL,
-  `cacheLayout` bit(1) NOT NULL,
-  `cacheTimeout` int(11) DEFAULT NULL,
-  `cacheLastAccessTimeout` int(11) DEFAULT NULL,
-  `markup` varchar(100) NOT NULL,
-  `showInSearch` bit(1) NOT NULL,
-  `featuredImage` varchar(255) DEFAULT NULL,
-  `featuredImageURL` varchar(255) DEFAULT NULL,
-  `FK_authorID` int(11) NOT NULL,
-  `FK_parentID` int(11) DEFAULT NULL,
+  `contentID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_authorID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_parentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_siteID` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`contentID`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `FKFFE01899AA6AC0EA` (`FK_authorID`),
-  KEY `FKFFE018996FDC2C99` (`FK_parentID`),
-  KEY `idx_cachelastaccesstimeout` (`cacheLastAccessTimeout`),
-  KEY `idx_publishedSlug` (`slug`,`isPublished`),
+  UNIQUE KEY `id` (`contentID`),
+  UNIQUE KEY `contentID` (`contentID`),
   KEY `idx_slug` (`slug`),
-  KEY `idx_expireDate` (`expireDate`),
-  KEY `idx_publishedDate` (`publishedDate`),
-  KEY `idx_cache` (`cache`),
-  KEY `idx_published` (`contentType`,`isPublished`,`passwordProtection`),
-  KEY `idx_cachetimeout` (`cacheTimeout`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_showInSearch` (`showInSearch`),
   KEY `idx_cachelayout` (`cacheLayout`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_search` (`title`,`isPublished`),
   KEY `idx_discriminator` (`contentType`),
+  KEY `idx_cachetimeout` (`cacheTimeout`),
+  KEY `idx_cache` (`cache`),
+  KEY `idx_publishedSlug` (`slug`,`isPublished`),
+  KEY `idx_published` (`contentType`,`isPublished`,`passwordProtection`),
+  KEY `idx_publishedDate` (`publishedDate`),
+  KEY `idx_cachelastaccesstimeout` (`cacheLastAccessTimeout`),
+  KEY `idx_createdDate` (`createdDate`),
+  KEY `idx_expireDate` (`expireDate`),
+  KEY `idx_search` (`title`,`isPublished`),
+  KEY `idx_showInSearch` (`showInSearch`),
   KEY `idx_deleted` (`isDeleted`),
-  CONSTRAINT `FKFFE018996FDC2C99` FOREIGN KEY (`FK_parentID`) REFERENCES `cb_content` (`contentID`),
-  CONSTRAINT `FKFFE01899AA6AC0EA` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_content`
---
+  KEY `fk_cb_content_FK_authorID` (`FK_authorID`),
+  KEY `fk_cb_content_FK_parentID` (`FK_parentID`),
+  KEY `FK_siteID` (`FK_siteID`),
+  CONSTRAINT `cb_content_ibfk_1` FOREIGN KEY (`FK_siteID`) REFERENCES `cb_site` (`siteID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cb_content_FK_authorID` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_content_FK_parentID` FOREIGN KEY (`FK_parentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_content` WRITE;
 /*!40000 ALTER TABLE `cb_content` DISABLE KEYS */;
-INSERT INTO `cb_content` VALUES (1,'Entry','2019-12-16 16:46:19','2019-12-16 16:46:19','\0','My first entry','my-first-entry','2019-12-16 16:46:18',NULL,'','','','cool,first entry, contentbox','The most amazing ContentBox blog entry in the world','','','',0,0,'HTML','','','',1,NULL),(2,'Page','2019-12-16 16:46:19','2019-12-16 16:46:19','\0','About','about','2019-12-16 16:46:19',NULL,'','\0','','about, contentbox,coldfusion,coldbox','The most amazing ContentBox page in the world','','','',0,0,'HTML','','','',1,NULL),(3,'ContentStore','2019-12-16 16:46:19','2019-12-16 16:46:19','\0','Contact Info','contentbox','2019-12-16 16:46:19',NULL,'','\0','','','','','','',0,0,'HTML','','','',1,NULL);
+
+INSERT INTO `cb_content` (`contentType`, `title`, `slug`, `createdDate`, `publishedDate`, `expireDate`, `isPublished`, `allowComments`, `passwordProtection`, `HTMLKeywords`, `HTMLDescription`, `cache`, `cacheLayout`, `cacheTimeout`, `cacheLastAccessTimeout`, `markup`, `showInSearch`, `featuredImage`, `featuredImageURL`, `modifiedDate`, `isDeleted`, `HTMLTitle`, `contentID`, `FK_authorID`, `FK_parentID`, `FK_siteID`)
+VALUES
+	('Entry','An awesome blog entry','an-awesome-blog-entry','2013-07-12 09:53:01','2013-07-20 16:05:46',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc2bc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Another Test','another-test','2013-07-12 09:53:31','2013-07-20 16:39:53',NULL,b'0',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc4e2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','cbcommerce Modular CMS at the South Florida CFUG','cbcommerce-modular-cms-at-the-south-florida-cfug','2012-09-13 15:55:12','2013-07-20 16:39:39',NULL,b'1',b'1','','','',b'1',b'1',0,0,'html',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc5e6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Test with an excerpt','test-with-an-excerpt','2013-07-15 17:56:10','2013-07-20 16:39:39',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc6b8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Updating an ORM entity','updating-an-orm-entity','2013-07-19 18:45:08','2013-07-20 16:39:39',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc76c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Copy of Updating an ORM entity','copy-of-updating-an-orm-entity','2013-07-20 16:10:43','2013-07-20 16:39:39',NULL,b'1',b'1','','','',b'1',b'1',0,0,'html',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc820-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Copy of Another Test','copy-of-another-test','2013-07-20 16:12:16','2013-07-20 16:39:39',NULL,b'1',b'1','','','',b'1',b'1',0,0,'html',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc906-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Copy of Copy of Another Test','copy-of-copy-of-another-test','2013-07-20 16:12:23','2013-07-20 16:12:00',NULL,b'0',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cc9ba-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Couchbase Infrastructure','couchbase-infrastructure','2013-07-26 16:53:43','2013-07-26 16:53:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cca64-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Couchbase Details','couchbase-details','2013-07-26 16:55:00','2013-10-11 10:31:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1','','','2021-02-19 10:54:25',b'0','','779ccb0e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','First Content Store','first-content-store','2013-08-12 11:59:12','2013-08-12 12:02:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779ccbb8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','My News','my-awesome-news','2013-08-14 18:14:43','2013-08-14 18:14:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779ccc62-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','blog-sidebar-top','blog-sidebar-top','2013-08-22 20:42:37','2013-08-22 20:42:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779ccd02-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','footer','foot','2013-08-22 20:43:59','2013-08-22 20:43:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2021-05-05 15:18:36',b'0',NULL,'779ccdac-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','support options','support-options-baby','2013-08-22 20:45:19','2013-08-22 20:45:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cce56-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','FireFox Test','firefox-test','2013-08-29 08:29:36','2013-08-29 08:29:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779ccef6-a444-11eb-ab6f-0290cc502ae3','77abe0a8-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Couchbase Conference','couchbase-conference','2013-09-13 16:54:52','2013-09-13 16:54:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779ccfa0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Disk Queues','disk-queues','2013-09-13 16:55:05','2013-09-13 16:54:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cd040-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','This is just awesome','this-is-just-awesome','2013-10-15 16:48:56','2013-10-15 16:48:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cd0ea-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Closures cannot be declared outside of cfscript','closures-cannot-be-declared-outside-of-cfscript','2013-11-11 11:53:03','2013-11-11 11:52:00',NULL,b'1',b'1','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cd18a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Entry','Disk Queues ','disk-queues-77caf','2014-01-31 14:41:16','2014-01-31 14:41:00',NULL,b'1',b'1','','these are nice keywords','Disk Queues are amazing and they rock SEO',b'1',b'1',0,0,'HTML',b'1','','','2021-05-05 15:17:18',b'0','Disk Queues are amazing','779cd234-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','support','support','2013-07-20 15:38:47','2013-07-20 15:38:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-08-05 14:42:30',b'0',NULL,'779cd2de-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','Small Footer','foot/small-footer','2014-09-26 16:00:44','2014-09-26 16:00:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-05-03 16:23:25',b'0',NULL,'779cd388-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccdac-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','No Layout Test','no-layout-test','2015-03-29 10:13:59','2015-03-29 10:13:00',NULL,b'1',b'0','test','','',b'1',b'1',0,0,'HTML',b'1','','','2016-08-05 14:42:30',b'0',NULL,'779cd432-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','No Sidebar','email-test','2015-09-16 10:33:56','2015-09-16 10:33:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1',NULL,NULL,'2016-08-05 14:42:30',b'0',NULL,'779cd4dc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','Lucee 4.5.2.018','lucee-452018','2016-01-14 11:44:58','2016-01-14 11:42:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-03 16:23:25',b'0',NULL,'779cd57c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','Another test','another-test-a161b','2016-01-14 11:45:35','2016-01-14 11:45:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-05 15:56:12',b'0',NULL,'779cd61c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','parent page','parent-page','2016-04-12 09:26:56','2016-04-12 09:26:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-03 16:23:25',b'0',NULL,'779cd6c6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','child 1','parent-page/child-1','2016-04-12 09:27:06','2016-04-12 09:27:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-03 16:23:25',b'0',NULL,'779cd766-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd6c6-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','node','node','2016-04-12 13:18:51','2016-04-12 13:18:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-08-05 14:42:30',b'0',NULL,'779cd806-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','child1','node/child1','2016-04-12 13:19:04','2016-04-12 13:18:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-03 16:23:25',b'0',NULL,'779cd8b0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd806-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','child2','node/child2','2016-04-12 13:19:10','2016-04-12 13:19:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-03 16:23:25',b'0',NULL,'779cd950-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd806-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','Test Markdown','test-markdown','2016-05-05 11:12:23','2016-05-05 11:11:00','2016-05-01 00:00:00',b'0',b'0','','','',b'1',b'1',0,0,'Markdown',b'0','','','2016-08-05 14:42:24',b'0',NULL,'779cd9fa-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','products','products','2016-05-18 11:35:32','2017-06-13 17:08:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2017-06-13 17:08:36',b'0','','779cdaa4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','coldbox','products/coldbox','2016-05-18 11:35:32','2013-07-11 11:23:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdb4e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','mini','products/coldbox/mini','2016-05-18 11:35:32','2015-09-22 10:53:23',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdbee-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdb4e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','services','products/coldbox/services','2016-05-18 11:35:32','2015-09-22 10:53:23',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdc8e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdb4e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','servers','products/coldbox/services/servers','2016-05-18 11:35:32','2013-07-20 10:40:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdd38-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdc8e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','More Servers','products/coldbox/services/more-servers','2016-05-18 11:35:32','2013-07-20 10:40:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cddd8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdc8e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','support','products/coldbox/services/support','2016-05-18 11:35:32','2013-07-20 10:40:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cde82-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdc8e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','coldbox-new','products/coldbox-new','2016-05-18 11:35:32','2016-04-11 11:32:00',NULL,b'1',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdf22-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','mini','products/coldbox-new/mini','2016-05-18 11:35:32','2013-08-22 10:23:03',NULL,b'0',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779cdfc2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdf22-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','services','products/coldbox-new/services','2016-05-18 11:35:32','2013-08-22 10:23:03',NULL,b'0',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779ce06c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdf22-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','servers','products/coldbox-new/services/servers','2016-05-18 11:35:32','2013-08-22 10:23:03',NULL,b'0',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779ce10c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce06c-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','More Servers','products/coldbox-new/services/more-servers','2016-05-18 11:35:32','2013-08-22 10:23:04',NULL,b'0',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779ce1ac-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce06c-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('Page','support','products/coldbox-new/services/support','2016-05-18 11:35:32','2013-08-22 10:23:04',NULL,b'0',b'0','','','',b'1',b'1',0,0,'html',b'1','','','2016-05-18 11:35:32',b'0',NULL,'779ce256-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce06c-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('ContentStore','My Expired Content Store','my-expired-content-store','2018-03-20 09:48:13','2018-03-20 09:47:00','2018-02-01 00:00:00',b'1',b'0','','','',b'1',b'1',0,0,'HTML',b'1','','','2018-03-20 09:48:13',b'0','','779ce300-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3',NULL,'1c81d376-a481-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_content` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_contentCategories`
---
+
+# Dump of table cb_contentCategories
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_contentCategories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_contentCategories` (
-  `FK_contentID` int(11) NOT NULL,
-  `FK_categoryID` int(11) NOT NULL,
-  KEY `FKD96A0F9591F58374` (`FK_contentID`),
-  KEY `FKD96A0F95F10ECD0` (`FK_categoryID`),
-  CONSTRAINT `FKD96A0F9591F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`),
-  CONSTRAINT `FKD96A0F95F10ECD0` FOREIGN KEY (`FK_categoryID`) REFERENCES `cb_category` (`categoryID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_contentCategories`
---
+CREATE TABLE `cb_contentCategories` (
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_categoryID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_contentCategories_FK_contentID` (`FK_contentID`),
+  KEY `fk_cb_contentCategories_FK_categoryID` (`FK_categoryID`),
+  CONSTRAINT `fk_cb_contentCategories_FK_categoryID` FOREIGN KEY (`FK_categoryID`) REFERENCES `cb_category` (`categoryID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_contentCategories_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_contentCategories` WRITE;
 /*!40000 ALTER TABLE `cb_contentCategories` DISABLE KEYS */;
+
+INSERT INTO `cb_contentCategories` (`FK_contentID`, `FK_categoryID`)
+VALUES
+	('779ccc62-a444-11eb-ab6f-0290cc502ae3','786a9660-a444-11eb-ab6f-0290cc502ae3'),
+	('779ccc62-a444-11eb-ab6f-0290cc502ae3','786a97f0-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc4e2-a444-11eb-ab6f-0290cc502ae3','786a9660-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc4e2-a444-11eb-ab6f-0290cc502ae3','786a97f0-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc906-a444-11eb-ab6f-0290cc502ae3','786a9660-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc906-a444-11eb-ab6f-0290cc502ae3','786a97f0-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc9ba-a444-11eb-ab6f-0290cc502ae3','786a9660-a444-11eb-ab6f-0290cc502ae3'),
+	('779cc9ba-a444-11eb-ab6f-0290cc502ae3','786a97f0-a444-11eb-ab6f-0290cc502ae3'),
+	('779cd2de-a444-11eb-ab6f-0290cc502ae3','786a98cc-a444-11eb-ab6f-0290cc502ae3'),
+	('779cd234-a444-11eb-ab6f-0290cc502ae3','786a97f0-a444-11eb-ab6f-0290cc502ae3'),
+	('779cd234-a444-11eb-ab6f-0290cc502ae3','786a9660-a444-11eb-ab6f-0290cc502ae3'),
+	('779ccdac-a444-11eb-ab6f-0290cc502ae3','786a98cc-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_contentCategories` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_contentStore`
---
+
+# Dump of table cb_contentStore
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_contentStore`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_contentStore` (
-  `contentID` int(11) NOT NULL,
-  `description` longtext DEFAULT NULL,
-  `order` int(11) DEFAULT 0,
-  PRIMARY KEY (`contentID`),
-  KEY `FKEA4C67C8C960893B` (`contentID`),
-  CONSTRAINT `FKEA4C67C8C960893B` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_contentStore`
---
+CREATE TABLE `cb_contentStore` (
+  `description` longtext,
+  `order` int(11) DEFAULT '0',
+  `contentID` char(36) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`contentID`),
+  CONSTRAINT `fk_cb_contentStore_contentID` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_contentStore` WRITE;
 /*!40000 ALTER TABLE `cb_contentStore` DISABLE KEYS */;
-INSERT INTO `cb_contentStore` VALUES (3,'Our contact information',0);
+
+INSERT INTO `cb_contentStore` (`description`, `order`, `contentID`)
+VALUES
+	('My very first content',0,'779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('Most greatest news',0,'779ccc62-a444-11eb-ab6f-0290cc502ae3'),
+	('',0,'779ccd02-a444-11eb-ab6f-0290cc502ae3'),
+	('This is a reusable footer',0,'779ccdac-a444-11eb-ab6f-0290cc502ae3'),
+	('support options',0,'779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('Test',0,'779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('A small footer',0,'779cd388-a444-11eb-ab6f-0290cc502ae3'),
+	('test',0,'779cd57c-a444-11eb-ab6f-0290cc502ae3'),
+	('asdf',0,'779cd61c-a444-11eb-ab6f-0290cc502ae3'),
+	('',0,'779ce300-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_contentStore` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_contentVersion`
---
+
+# Dump of table cb_contentVersion
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_contentVersion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_contentVersion` (
-  `contentVersionID` int(11) NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL,
+  `changelog` longtext,
+  `version` int(11) NOT NULL,
   `createdDate` datetime NOT NULL,
+  `isActive` bit(1) NOT NULL DEFAULT b'1',
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `content` longtext NOT NULL,
-  `changelog` longtext DEFAULT NULL,
-  `version` int(11) NOT NULL,
-  `isActive` bit(1) NOT NULL,
-  `FK_authorID` int(11) NOT NULL,
-  `FK_contentID` int(11) NOT NULL,
+  `contentVersionID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_authorID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`contentVersionID`),
-  KEY `FKE166DFFAA6AC0EA` (`FK_authorID`),
-  KEY `FKE166DFF91F58374` (`FK_contentID`),
+  UNIQUE KEY `id` (`contentVersionID`),
+  UNIQUE KEY `contentVersionID` (`contentVersionID`),
+  KEY `idx_active` (`isActive`),
   KEY `idx_version` (`version`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_contentVersions` (`isActive`,`FK_contentID`),
-  KEY `idx_deleted` (`isDeleted`),
+  KEY `idx_createdDate` (`createdDate`),
+  KEY `idx_versionCreatedDate` (`createdDate`),
   KEY `idx_activeContentVersion` (`isActive`),
-  CONSTRAINT `FKE166DFF91F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`),
-  CONSTRAINT `FKE166DFFAA6AC0EA` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_contentVersion`
---
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `fk_cb_contentVersion_FK_authorID` (`FK_authorID`),
+  KEY `fk_cb_contentVersion_FK_contentID` (`FK_contentID`),
+  CONSTRAINT `fk_cb_contentVersion_FK_authorID` FOREIGN KEY (`FK_authorID`) REFERENCES `cb_author` (`authorID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_contentVersion_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_contentVersion` WRITE;
 /*!40000 ALTER TABLE `cb_contentVersion` DISABLE KEYS */;
-INSERT INTO `cb_contentVersion` VALUES (1,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','Hey everybody, this is my first blog entry made from ContentBox.  Isn\'t this amazing!\'','Initial creation',1,'',1,1),(2,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','<p>Hey welcome to my about page for ContentBox, isn\'t this great!</p><p>{{{ContentStore slug=\'contentbox\'}}}</p>','First creation',1,'',1,2),(3,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','<p style=\"text-align: center;\">\n	<a href=\"https://www.ortussolutions.com/products/contentbox\"><img alt=\"\" src=\"/index.cfm/__media/ContentBox_300.png\" /></a></p>\n<p style=\"text-align: center;\">\n	Created by <a href=\"https://www.ortussolutions.com\">Ortus Solutions, Corp</a> and powered by <a href=\"http://coldbox.org\">ColdBox Platform</a>.</p>','First creation',1,'',1,3);
+
+INSERT INTO `cb_contentVersion` (`content`, `changelog`, `version`, `createdDate`, `isActive`, `modifiedDate`, `isDeleted`, `contentVersionID`, `FK_authorID`, `FK_contentID`)
+VALUES
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Test',1,'2013-07-12 09:53:01',b'1','2016-05-03 16:23:25',b'0','78076356-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc2bc-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-07-12 09:53:31',b'0','2016-05-03 16:23:25',b'0','780764fa-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc4e2-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2013-07-12 09:53:40',b'1','2016-05-03 16:23:25',b'0','780765c2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc4e2-a444-11eb-ab6f-0290cc502ae3'),
+	('I am glad to go back to my adoptive home, Miami next week and present at the South Florida CFUG on <a href=\"http://gocbcommerce.org\">cbcommerce Modular CMS</a> September 20th, 2012.  We will be showcasing our next cbcommerce version 1.0.7 and have some great goodies for everybody.  <a href=\"http://www.gocbcommerce.org/blog/south-florida-cfug-presentation\">You can read all about the event here</a>.  Hope to see you there!','Imported content',1,'2013-04-07 10:45:28',b'1','2016-05-03 16:23:25',b'0','7807666c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc5e6-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-07-15 17:56:10',b'1','2016-05-03 16:23:25',b'0','780766ee-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc6b8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',1,'2013-07-19 18:45:08',b'0','2016-05-03 16:23:25',b'0','78076766-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc76c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','What up daugh!',2,'2013-07-19 18:45:28',b'1','2016-05-03 16:23:25',b'0','78076806-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc76c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2013-07-20 16:10:43',b'1','2016-05-03 16:23:25',b'0','7807687e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc820-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2013-07-20 16:12:16',b'1','2016-05-03 16:23:25',b'0','7807691e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc906-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2013-07-20 16:12:23',b'0','2016-05-03 16:23:25',b'0','780769b4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',2,'2013-07-26 12:58:21',b'0','2016-05-03 16:23:25',b'0','78076a4a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',3,'2013-07-26 12:59:43',b'0','2016-05-03 16:23:25',b'0','78076ad6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2013-07-26 13:00:05',b'0','2016-05-03 16:23:25',b'0','78076b62-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',5,'2013-07-26 13:00:21',b'0','2016-05-03 16:23:25',b'0','78076c2a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',6,'2013-07-26 13:02:18',b'0','2016-05-03 16:23:25',b'0','78076cca-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',7,'2013-07-26 13:02:34',b'0','2016-05-03 16:23:25',b'0','78076dec-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>TESTT</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',8,'2013-07-26 13:02:38',b'0','2016-05-03 16:23:25',b'0','78076e82-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n','quick save',9,'2013-07-26 13:02:51',b'0','2016-05-03 16:23:25',b'0','78076f18-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n','Editor Change Quick Save',10,'2013-07-26 13:03:02',b'0','2016-05-03 16:23:25',b'0','78076fa4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n','quick save',11,'2013-07-26 13:03:09',b'0','2016-05-03 16:23:25',b'0','7807703a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',12,'2013-07-26 13:04:31',b'1','2016-05-03 16:23:25',b'0','780770bc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-07-26 16:53:43',b'1','2016-05-03 16:23:25',b'0','78077152-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cca64-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>{{{ContentStore slug=\'cbcommerce\'}}}</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-07-26 16:55:00',b'0','2016-05-03 16:23:25',b'0','780771ca-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccb0e-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',1,'2013-08-12 11:59:12',b'0','2016-05-03 16:23:25',b'0','78077260-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2013-08-12 12:18:13',b'0','2016-05-03 16:23:25',b'0','780772d8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',6,'2013-08-12 12:18:29',b'0','2016-05-03 16:23:25',b'0','7807736e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p><widget category=\"\" max=\"5\" searchterm=\"\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"RecentEntries\" widgetname=\"RecentEntries\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/list.png\" style=\"margin-right:5px;\" width=\"20\" />RecentEntries : max = 5 | titleLevel = 2 | widgetUDF = rende</widgetinfobar></widget></p>\r\n','',1,'2013-08-14 18:14:43',b'0','2016-05-03 16:23:25',b'0','780773dc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccc62-a444-11eb-ab6f-0290cc502ae3'),
+	('<p><widget category=\"\" max=\"5\" searchterm=\"\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"RecentEntries\" widgetname=\"RecentEntries\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/list.png\" style=\"margin-right:5px;\" width=\"20\" />RecentEntries : max = 5 | titleLevel = 2 | widgetUDF = rende</widgetinfobar></widget></p>\r\n','',2,'2013-08-14 18:15:14',b'1','2016-05-03 16:23:25',b'0','7807744a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccc62-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 4',7,'2013-08-21 13:43:59',b'0','2016-05-03 16:23:25',b'0','780774ea-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 5',8,'2013-08-21 13:44:18',b'0','2016-05-03 16:23:25',b'0','78077558-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 6',9,'2013-08-21 13:44:22',b'0','2016-05-03 16:23:25',b'0','780775f8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 4',10,'2013-08-21 18:15:46',b'0','2016-05-03 16:23:25',b'0','78077666-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 6',11,'2013-08-21 18:16:55',b'0','2016-05-03 16:23:25',b'0','780776f2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 9',12,'2013-08-21 18:17:41',b'0','2016-05-03 16:23:25',b'0','78077760-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 8',13,'2013-08-21 18:18:13',b'0','2016-05-03 16:23:25',b'0','780777f6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 9',14,'2013-08-21 18:18:29',b'1','2016-05-03 16:23:25',b'0','78077864-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Sidebar Top</p>\r\n','',1,'2013-08-22 20:42:37',b'1','2016-05-03 16:23:25',b'0','780778fa-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccd02-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-08-22 20:43:59',b'0','2021-05-05 15:18:17',b'0','78077968-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccdac-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-08-22 20:45:19',b'0','2016-05-03 16:23:25',b'0','78077a12-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('Test\r\n\r\nasdf\r\n\r\nasdf','quick save',1,'2013-08-29 08:29:36',b'0','2016-05-03 16:23:25',b'0','78077a94-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('Test\r\n\r\nasdf\r\n\r\nasdf','quick save',2,'2013-08-29 08:30:10',b'0','2016-05-03 16:23:25',b'0','78077af8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('Test\r\n\r\nasdf\r\n\r\nasdf','Editor Change Quick Save',3,'2013-08-29 08:30:21',b'0','2016-05-03 16:23:25',b'0','78077b5c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('lorem ipsum lorem','quick save',4,'2013-08-29 08:31:17',b'0','2016-05-03 16:23:25',b'0','78077bca-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>{{{ContentStore slug=\'cbcommerce\'}}}</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',2,'2013-08-29 08:32:16',b'0','2021-02-19 10:54:25',b'0','78077c2e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccb0e-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>I am at the conference</p>\r\n','',1,'2013-09-13 16:54:52',b'1','2016-05-03 16:23:25',b'0','78077cce-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccfa0-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-09-13 16:55:05',b'1','2016-05-03 16:23:25',b'0','78077d32-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd040-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>An awesome link</p>\r\n','',1,'2013-10-15 16:48:56',b'1','2016-05-03 16:23:25',b'0','78077daa-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd0ea-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2013-10-15 16:57:47',b'0','2016-05-03 16:23:25',b'0','78077e0e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2013-10-15 16:57:56',b'0','2016-05-03 16:23:25',b'0','78077eb8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2013-10-15 16:58:18',b'0','2016-05-03 16:23:25',b'0','78077f58-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',5,'2013-10-15 17:00:33',b'0','2016-05-03 16:23:25',b'0','78077fee-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',6,'2013-10-15 17:00:52',b'0','2016-05-03 16:23:25',b'0','78078084-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',7,'2013-10-15 17:03:19',b'0','2016-05-03 16:23:25',b'0','7807811a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',8,'2013-10-15 17:03:34',b'1','2016-05-03 16:23:25',b'0','780781c4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cce56-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2013-11-11 11:53:03',b'0','2016-05-03 16:23:25',b'0','7807825a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2013-11-11 11:53:49',b'1','2016-05-03 16:23:25',b'0','780782c8-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>This is a test.</p>\r\n','',1,'2014-01-31 14:41:16',b'0','2021-05-05 15:14:43',b'0','78078336-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>lorem ipsum lorem</p>\r\n','quick save',5,'2014-02-05 14:31:57',b'0','2016-05-03 16:23:25',b'0','7807839a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>lorem ipsum lorem</p>\r\n','',6,'2014-07-01 16:44:54',b'1','2016-05-03 16:23:25',b'0','780783fe-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccef6-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',26,'2014-08-25 12:40:55',b'0','2016-05-03 16:23:25',b'0','78078462-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',27,'2014-08-25 12:41:44',b'0','2016-05-03 16:23:25',b'0','78078502-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',28,'2014-08-25 12:46:10',b'0','2016-05-03 16:23:25',b'0','780785a2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',29,'2014-08-25 12:46:29',b'0','2016-05-03 16:23:25',b'0','78078638-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',30,'2014-08-25 12:46:59',b'0','2016-05-03 16:23:25',b'0','780786ce-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',31,'2014-08-25 13:22:47',b'0','2016-05-03 16:23:25',b'0','78078764-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',32,'2014-08-25 13:23:14',b'0','2016-05-03 16:23:25',b'0','780787f0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',33,'2014-08-25 13:23:55',b'0','2016-05-03 16:23:25',b'0','78078886-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2014-09-26 16:00:44',b'0','2016-05-03 16:23:25',b'0','7807891c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd388-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2014-09-26 16:25:23',b'0','2016-05-03 16:23:25',b'0','7807898a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd388-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2014-09-26 16:25:31',b'0','2016-05-03 16:23:25',b'0','78078a20-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd388-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2014-09-26 16:25:53',b'1','2016-05-03 16:23:25',b'0','78078a8e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd388-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2015-03-29 10:13:59',b'0','2016-05-03 16:23:25',b'0','78078b24-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>${rc:event}</p>\r\n\r\n<p>${prc:cbox_incomingContextHash}</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',2,'2015-04-01 11:17:19',b'0','2016-05-03 16:23:25',b'0','78078bc4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Reverting to version 1',3,'2015-05-09 22:31:13',b'0','2016-05-03 16:23:25',b'0','78078c5a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2015-05-09 22:39:03',b'0','2016-05-18 11:50:02',b'0','78078cfa-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2015-09-16 10:33:56',b'0','2016-05-03 16:23:25',b'0','78078d9a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd4dc-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2015-09-23 11:04:54',b'1','2016-05-03 16:23:25',b'0','78078e30-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd4dc-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Test</p>\r\n','',1,'2016-01-14 11:44:58',b'0','2016-05-03 16:23:25',b'0','78078ed0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd57c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Test</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2016-01-14 11:45:17',b'1','2016-05-03 16:23:25',b'0','78078f48-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd57c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>asdf</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-01-14 11:45:35',b'0','2016-05-05 15:53:13',b'0','78078fc0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd61c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',34,'2016-04-10 16:27:12',b'0','2016-05-03 16:23:25',b'0','78079056-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p><widget dropdown=\"false\" emptymessage=\"Sorry, no related content was found.\" rendermethodselect=\"renderIt\" title=\"\" titlelevel=\"2\" widgetdisplayname=\"Related Content\" widgetname=\"RelatedContent\" widgettype=\"Core\" widgetudf=\"renderIt\"><widgetinfobar contenteditable=\"false\"><img align=\"left\" contenteditable=\"false\" height=\"20\" src=\"/modules/cbcommerce-admin/includes/images/widgets/tag.png\" style=\"margin-right:5px;\" width=\"20\" />Related Content : dropdown = false | emptyMessage = Sorry, no related content was found. | titleLevel = 2 | UDF = renderIt()</widgetinfobar></widget></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',35,'2016-04-11 11:40:14',b'1','2016-05-03 16:23:25',b'0','780790ce-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-04-12 13:18:51',b'0','2016-05-03 16:23:25',b'0','78079164-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd806-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2016-04-12 13:19:21',b'1','2016-05-03 16:23:25',b'0','780791dc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd806-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-04-12 13:19:04',b'1','2016-05-03 16:23:25',b'0','78079268-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd8b0-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-04-12 13:19:10',b'1','2016-05-03 16:23:25',b'0','780792e0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd950-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>asdf</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',2,'2016-05-05 15:53:13',b'0','2016-05-05 15:55:34',b'0','7807938a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd61c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>asdf</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',3,'2016-05-05 15:55:34',b'0','2016-05-05 15:56:12',b'0','7807942a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd61c-a444-11eb-ab6f-0290cc502ae3'),
+	('Because of God\'s grace, this project exists. If you don\'t like this, then don\'t read it, its not for you.\r\n\r\n>\"Therefore being justified by faith, we have peace with God through our Lord Jesus Christ:\r\nBy whom also we have access by faith into this grace wherein we stand, and rejoice in hope of the glory of God.\r\nAnd not only so, but we glory in tribulations also: knowing that tribulation worketh patience;\r\nAnd patience, experience; and experience, hope:\r\nAnd hope maketh not ashamed; because the love of God is shed abroad in our hearts by the \r\nHoly Ghost which is given unto us. .\" Romans 5:5\r\n\r\n----\r\n\r\n# Welcome to cbcommerce\r\ncbcommerce is a modular content management engine based on the popular [ColdBox](www.coldbox.org) MVC framework.\r\n\r\n## License\r\nApache License, Version 2.0.\r\n\r\n## Versioning\r\ncbcommerce is maintained under the Semantic Versioning guidelines as much as possible.\r\n\r\nReleases will be numbered with the following format:\r\n\r\n```\r\n<major>.<minor>.<patch>\r\n```\r\n\r\nAnd constructed with the following guidelines:\r\n\r\n* Breaking backward compatibility bumps the major (and resets the minor and patch)\r\n* New additions without breaking backward compatibility bumps the minor (and resets the patch)\r\n* Bug fixes and misc changes bumps the patch\r\n\r\n## Important Links\r\n\r\nSource Code\r\n- https://github.com/Ortus-Solutions/cbcommerce\r\n\r\nContinuous Integration\r\n- http://jenkins.staging.ortussolutions.com/job/OS-cbcommerce%20BE/\r\n\r\nBug Tracking/Agile Boards\r\n- https://ortussolutions.atlassian.net/browse/cbcommerce\r\n\r\nDocumentation\r\n- http://cbcommerce.ortusbooks.com\r\n\r\nBlog\r\n- http://www.ortussolutions.com/blog\r\n\r\n## System Requirements\r\n- Lucee 4.5+\r\n- Railo 4+ (Deprecated)\r\n- ColdFusion 10+\r\n\r\n# cbcommerce Installation\r\n\r\nYou can follow in-depth installation instructions here: http://cbcommerce.ortusbooks.com/content/installation/index.html or you can use [CommandBox](http://www.ortussolutions.com/products/commandbox) to quickly get up and running via the following commands:\r\n\r\n**Stable Release**\r\n\r\n```bash\r\nmkdir mysite && cd mysite\r\n# Install latest release\r\nbox install cbcommerce\r\nbox server start --rewritesEnable\r\n```\r\n\r\n**Bleeding Edge Release**\r\n\r\n```bash\r\nmkdir mysite && cd mysite\r\n# Install latest release\r\nbox install cbcommerce-be\r\nbox server start --rewritesEnable\r\n```\r\n\r\n## Collaboration\r\n\r\nIf you want to develop and hack at the source, you will need to download [CommandBox](http://www.ortussolutions.com/products/commandbox) first.  Then in the root of this project, type `box install`.  This will download the necessary dependencies to develop and test cbcommerce.  You can then go ahead and start an embedded server `box server start --rewritesEnable` and start hacking around and contributing.  \r\n\r\n### Test Suites\r\nFor running our test suites you will need 2 more steps, so please refer to the [Readme](tests/readme.md) in the tests folder.\r\n\r\n### UI Development\r\nIf developing CSS and Javascript assets, please refer to the [Developer Guide](workbench/Developer.md) in the `workbench/Developer.md` folder.\r\n\r\n---\r\n \r\n###THE DAILY BREAD\r\n > \"I am the way, and the truth, and the life; no one comes to the Father, but by me (JESUS)\" Jn 14:1-12','',4,'2016-05-05 15:56:11',b'1','2016-05-05 15:56:11',b'0','78079560-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd61c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work</pre>\r\n','',6,'2016-05-06 15:47:42',b'0','2016-05-06 16:12:27',b'0','7807960a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n','quick save',7,'2016-05-06 16:12:27',b'0','2016-05-06 16:16:02',b'0','78079682-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','quick save',8,'2016-05-06 16:16:02',b'0','2016-05-09 15:18:20',b'0','780796f0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','quick save',9,'2016-05-09 15:18:20',b'0','2016-05-10 14:31:20',b'0','7807975e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','quick save',10,'2016-05-10 14:31:20',b'0','2016-05-11 15:52:40',b'0','780797f4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','quick save',11,'2016-05-11 15:52:40',b'0','2016-05-11 15:52:45',b'0','78079858-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','quick save',12,'2016-05-11 15:52:45',b'0','2016-05-18 11:42:34',b'0','780798c6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'0','2016-05-18 11:35:32',b'0','7807992a-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('<p><img alt=\"\" src=\"/index.cfm/__media/cbcommerce_300.png\" style=\"width: 300px; height: 284px;\" /></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p><img alt=\"\" src=\"/index.cfm/__media/cbcommerce_125.gif\" style=\"width: 124px; height: 118px;\" /></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2016-05-18 11:35:32',b'0','2016-05-18 11:35:32',b'0','780799d4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('<p><img alt=\"\" src=\"/__media/cbcommerce_300.png\" style=\"width: 300px; height: 284px;\" /></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p><img alt=\"\" src=\"/__media/cbcommerce_125.gif\" style=\"width: 124px; height: 118px;\" /></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2016-05-18 11:35:32',b'0','2016-05-18 11:35:32',b'0','78079a7e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('<p><img alt=\"\" src=\"/__media/cbcommerce_300.png\" style=\"width: 300px; height: 178px;\" /></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2016-05-18 11:35:32',b'0','2016-05-18 15:11:18',b'0','78079b00-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079b96-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdb4e-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079c0e-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdbee-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079cae-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdc8e-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079d26-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdd38-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079dbc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cddd8-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079e34-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cde82-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'0','2016-05-18 11:35:32',b'0','78079eb6-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdf22-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/vdBHFxfZues\" frameborder=\"0\" allowfullscreen></iframe>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',2,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079f4c-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdf22-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','78079fc4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdfc2-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','7807a064-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce06c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','7807a0dc-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce10c-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','7807a172-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce1ac-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Support services</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Content Cloned!',1,'2016-05-18 11:35:32',b'1','2016-05-18 11:35:32',b'0','7807a1f4-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce256-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','',13,'2016-05-18 11:42:34',b'0','2016-05-18 11:45:50',b'0','7807a3c0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('<p># Test App This is my `cool` documentation {{{ContentStore slug=\'firefox-test\'}}} I want an image: ![cbcommerceIcon300.png](/index.cfm/__media/cbcommerceIcon300.png) This is an amazing coding styles</p>\r\n\r\n<pre class=\"brush: coldfusion\">\r\nCode Fences Work\r\n</pre>\r\n\r\n\r\n','',14,'2016-05-18 11:45:50',b'0','2016-06-14 13:46:47',b'0','7807a4e2-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('My Products Rock','',5,'2017-06-13 17:08:36',b'1','2017-06-13 17:08:36',b'0','7807a5f0-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','Expired content',1,'2018-03-20 09:48:13',b'1','2018-03-20 09:48:13',b'0','7807a898-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ce300-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>{{{ContentStore slug=\'support-options-baby\'}}}</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2021-02-19 10:54:25',b'1','2021-02-19 10:54:25',b'0','7807aa28-a444-11eb-ab6f-0290cc502ae3','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccb0e-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>This is a test.</p>\r\n','',2,'2021-05-05 15:14:43',b'0','2021-05-05 15:17:18',b'0','ff808081793cf2c801793e2b1c630029','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('<h2><strong>This is a test.</strong></h2>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2021-05-05 15:17:18',b'0','2021-05-05 15:17:48',b'0','ff808081793cf2c801793e2d7a7f002f','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('<h2><strong>This is a test.</strong></h2>\r\n\r\n<p><strong><img alt=\"\" src=\"/__media/space-ninja200.png\" style=\"width: 200px; height: 238px;\" /></strong></p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2021-05-05 15:17:48',b'1','2021-05-05 15:17:48',b'0','ff808081793cf2c801793e2ded9c0033','77abddba-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','quick save',2,'2021-05-05 15:18:17',b'0','2021-05-05 15:18:36',b'0','ff808081793cf2c801793e2e609d0034','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccdac-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',3,'2021-05-05 15:18:35',b'0','2021-05-05 15:27:41',b'0','ff808081793cf2c801793e2ea7a40035','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccdac-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','',4,'2021-05-05 15:27:41',b'1','2021-05-05 15:27:41',b'0','ff808081793cf2c801793e36fab40036','77abddba-a444-11eb-ab6f-0290cc502ae3','779ccdac-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_contentVersion` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_customfield`
---
+
+# Dump of table cb_customfield
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_customfield`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_customfield` (
-  `customFieldID` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) NOT NULL,
+  `value` longtext NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `key` varchar(255) NOT NULL,
-  `value` longtext NOT NULL,
-  `FK_contentID` int(11) DEFAULT NULL,
+  `customFieldID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`customFieldID`),
-  KEY `FK1844684991F58374` (`FK_contentID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_contentCustomFields` (`FK_contentID`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`customFieldID`),
+  UNIQUE KEY `customFieldID` (`customFieldID`),
   KEY `idx_deleted` (`isDeleted`),
-  CONSTRAINT `FK1844684991F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_customfield`
---
+  KEY `fk_cb_customField_FK_contentID` (`FK_contentID`),
+  CONSTRAINT `fk_cb_customField_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_customfield` WRITE;
 /*!40000 ALTER TABLE `cb_customfield` DISABLE KEYS */;
+
+INSERT INTO `cb_customfield` (`key`, `value`, `createdDate`, `modifiedDate`, `isDeleted`, `customFieldID`, `FK_contentID`)
+VALUES
+	('age','30','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','783ceee0-a444-11eb-ab6f-0290cc502ae3','779ccc62-a444-11eb-ab6f-0290cc502ae3'),
+	('subtitle','4','2016-05-03 16:23:25','2016-05-03 16:23:25',b'0','783cf188-a444-11eb-ab6f-0290cc502ae3','779ccc62-a444-11eb-ab6f-0290cc502ae3'),
+	('premium','true','2021-05-05 15:17:48','2021-05-05 15:17:48',b'0','ff808081793cf2c801793e2ded9a0030','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('rows','3','2021-05-05 15:17:48','2021-05-05 15:17:48',b'0','ff808081793cf2c801793e2ded9a0031','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	('name','luis majano','2021-05-05 15:17:48','2021-05-05 15:17:48',b'0','ff808081793cf2c801793e2ded9a0032','779cd234-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_customfield` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_entry`
---
+
+# Dump of table cb_entry
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_entry`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_entry` (
-  `contentID` int(11) NOT NULL,
-  `excerpt` longtext DEFAULT NULL,
-  PRIMARY KEY (`contentID`),
-  KEY `FK141674927FFF6A7` (`contentID`),
-  CONSTRAINT `FK141674927FFF6A7` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_entry`
---
+CREATE TABLE `cb_entry` (
+  `excerpt` longtext,
+  `contentID` char(36) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`contentID`),
+  CONSTRAINT `fk_cb_entry_contentID` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_entry` WRITE;
 /*!40000 ALTER TABLE `cb_entry` DISABLE KEYS */;
-INSERT INTO `cb_entry` VALUES (1,'');
+
+INSERT INTO `cb_entry` (`excerpt`, `contentID`)
+VALUES
+	('','779cc2bc-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','779cc4e2-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cc5e6-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','779cc6b8-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cc76c-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cc820-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','779cc906-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n\r\n<p>&nbsp;</p>\r\n','779cc9ba-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cca64-a444-11eb-ab6f-0290cc502ae3'),
+	('','779ccb0e-a444-11eb-ab6f-0290cc502ae3'),
+	('','779ccfa0-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cd040-a444-11eb-ab6f-0290cc502ae3'),
+	('','779cd0ea-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Excerpt Content TestsExcerpt Content TestsExcerpt Content Tests</p>\r\n','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	('<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut odio. Nam sed est. Nam a risus et est iaculis adipiscing. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer ut justo. In tincidunt viverra nisl. Donec dictum malesuada magna. Curabitur id nibh auctor tellus adipiscing pharetra. Fusce vel justo non orci semper feugiat. Cras eu leo at purus ultrices tristique.</p>\r\n\r\n<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n','779cd234-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_entry` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_groupPermissions`
---
+
+# Dump of table cb_groupPermissions
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_groupPermissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_groupPermissions` (
-  `FK_permissionGroupID` int(11) NOT NULL,
-  `FK_permissionID` int(11) NOT NULL,
-  KEY `FK72ECB065F4497DC2` (`FK_permissionGroupID`),
-  KEY `FK72ECB06537C1A3F2` (`FK_permissionID`),
-  CONSTRAINT `FK72ECB06537C1A3F2` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`),
-  CONSTRAINT `FK72ECB065F4497DC2` FOREIGN KEY (`FK_permissionGroupID`) REFERENCES `cb_permissionGroup` (`permissionGroupID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_groupPermissions`
---
+CREATE TABLE `cb_groupPermissions` (
+  `FK_permissionGroupID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_permissionID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_groupPermissions_FK_permissionGroupID` (`FK_permissionGroupID`),
+  KEY `fk_cb_groupPermissions_FK_permissionID` (`FK_permissionID`),
+  CONSTRAINT `fk_cb_groupPermissions_FK_permissionGroupID` FOREIGN KEY (`FK_permissionGroupID`) REFERENCES `cb_permissionGroup` (`permissionGroupID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_groupPermissions_FK_permissionID` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_groupPermissions` WRITE;
 /*!40000 ALTER TABLE `cb_groupPermissions` DISABLE KEYS */;
+
+INSERT INTO `cb_groupPermissions` (`FK_permissionGroupID`, `FK_permissionID`)
+VALUES
+	('7850efee-a444-11eb-ab6f-0290cc502ae3','785d78d6-a444-11eb-ab6f-0290cc502ae3'),
+	('7850efee-a444-11eb-ab6f-0290cc502ae3','785d7e76-a444-11eb-ab6f-0290cc502ae3'),
+	('7850efee-a444-11eb-ab6f-0290cc502ae3','785d7d2c-a444-11eb-ab6f-0290cc502ae3'),
+	('7850f138-a444-11eb-ab6f-0290cc502ae3','785d7eee-a444-11eb-ab6f-0290cc502ae3'),
+	('7850f138-a444-11eb-ab6f-0290cc502ae3','785d73f4-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_groupPermissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_loginAttempts`
---
+
+# Dump of table cb_jwt
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cb_jwt`;
+
+CREATE TABLE `cb_jwt` (
+  `id` varchar(36) COLLATE utf8mb4_bin NOT NULL,
+  `cacheKey` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `expiration` datetime NOT NULL,
+  `issued` datetime NOT NULL,
+  `token` longtext COLLATE utf8mb4_bin NOT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_cacheKey` (`cacheKey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+LOCK TABLES `cb_jwt` WRITE;
+/*!40000 ALTER TABLE `cb_jwt` DISABLE KEYS */;
+
+INSERT INTO `cb_jwt` (`id`, `cacheKey`, `expiration`, `issued`, `token`, `subject`)
+VALUES
+	(X'31656262353065322D656661342D346262642D383634612D373233343664656633363531',X'3841444531423741353931444134464437333739414130393436443133383445','2021-04-29 17:23:59','2021-04-29 16:23:59',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D7A45304D7A6B73496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A55774D7A6B73496E4E6A6233426C496A6F6949697769616E5270496A6F694F454645525446434E3045314F544645515452475244637A4E7A6C42515441354E445A454D544D344E45556966512E6F526D77687547756E7457724D3942536D54594C565136385F695A7A7056587A336344634774573069383774304A6B4F554466694D4C4E384A6856505456562D6552633043667973727A4152566E5A34623265445167',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'31666634653636632D343033662D343165372D623264342D626231363430613364653035',X'3834394644383030314337303744393135423733344437353541463038334444','2021-05-04 11:11:12','2021-05-04 10:11:12',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D6A41784E4445774E7A4973496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D6A41784E4451324E7A4973496E4E6A6233426C496A6F6949697769616E5270496A6F694F445135526B51344D444178517A63774E3051354D5456434E7A4D30524463314E5546474D44677A5245516966512E45694A314673445567514F32757A6E415351347969415658617A7A704F6432504B36656D47317671445949724F4A323857595956673141303945375F70455453384E5779674668574F6F44395173644844744E767777',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'32356236396330342D366131372D346337392D613630632D613932373039333636373035',X'3031464334344430374145323341394632384130343333393944364130374442','2021-04-29 17:38:20','2021-04-29 16:38:20',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D7A497A4D444173496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A55354D444173496E4E6A6233426C496A6F6949697769616E5270496A6F694D444647517A513052444133515555794D304535526A4934515441304D7A4D354F555132515441335245496966512E614A374551647875684A694869745F467354626A51394F524D5653686D2D654F474B67323251666B6576423759306B6958654F7A774C444C79484D644B5477765A5662597A64747557586B63425F73776E6A63623667',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'35636234316462332D646235612D346165632D396635652D383666316532623939626661',X'3137343043394634454543313041384133464637413030323132423841343339','2021-04-29 16:29:22','2021-04-29 15:29:22',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D6A67784E6A4973496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A45334E6A4973496E4E6A6233426C496A6F6949697769616E5270496A6F694D5463304D454D35526A524652554D784D45453451544E47526A64424D4441794D544A434F4545304D7A6B6966512E5F54546D50764B6B75617761657A472D584D316F45664A524C536873684D6737424E666A76596E4874784C726F4A3171474B31466C38646639323675417A7A37494C576E6F7A315276754765306F7176413450553141',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'36383932393231662D393331342D346336342D386664662D326237613330643764386562',X'3344454644413442463735364330453541354539324133383137334445443344','2021-04-29 17:21:16','2021-04-29 16:21:16',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D7A45794E7A5973496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A51344E7A5973496E4E6A6233426C496A6F6949697769616E5270496A6F694D305246526B52424E454A474E7A5532517A42464E55453152546B7951544D344D54637A524556454D30516966512E4138376C724B416A306A61736E48437155356841416F53574E65564F76565058337A4D5472586D2D486B614948436B697855667242744B656D4F496E2D3752623879707475386E3634426B6756373633594A635F5477',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'39396438303531662D383537622D343935332D393531392D356634366338323637316662',X'3842323439313334424233363745384135463739454642453135363335393838','2021-05-05 13:10:51','2021-05-05 12:10:51',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D6A41794D7A51324E544573496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D6A41794D7A67794E544573496E4E6A6233426C496A6F6949697769616E5270496A6F694F4549794E446B784D7A5243516A4D324E305534515456474E7A6C46526B4A464D5455324D7A55354F44676966512E594968744758646D35796F415944414179714843324C79624D793234667A3537526B6850744362367635534959535233413853356B3852456938595A69795757616F58386870753553415030786C6D6844726D2D4877',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'63633565646162362D653732382D346561372D623937622D363230373163653838613263',X'3930453444343544343045344631434645393636364341453543384333383738','2021-04-29 17:35:29','2021-04-29 16:35:29',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D7A49784D6A6B73496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A55334D6A6B73496E4E6A6233426C496A6F6949697769616E5270496A6F694F5442464E4551304E5551304D455530526A4644526B55354E6A5932513046464E554D34517A4D344E7A676966512E68757335374B4A5A557A4C766C38302D514C366C5962466B637A346930486D367555584956386662764F726C666C45325F6F56586A4876494B3667704B55325770576262536A38644B6B484A304B4431385231656967',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533'),
+	(X'65633762313534342D316538312D343361342D386330632D646330366237363333623930',X'3335333435324231353432454543433542444637344330454633373443454433','2021-04-29 17:47:51','2021-04-29 16:47:51',X'65794A30655841694F694A4B563151694C434A68624763694F694A49557A55784D694A392E65794A70595851694F6A45324D546B334D7A49344E7A4573496D6C7A63794936496D4E76626E526C626E5269623367694C434A7A645749694F6949334E3246695A475269595331684E4451304C5445785A574974595749325A6930774D6A6B7759324D314D444A685A544D694C434A6C654841694F6A45324D546B334D7A59304E7A4573496E4E6A6233426C496A6F6949697769616E5270496A6F694D7A557A4E445579516A45314E444A4652554E444E554A45526A6330517A4246526A4D334E454E4652444D6966512E425F6C623644334746424949614E6C6135625F6E456B684E7A30786C543475654A786D446A7247326B74487453384A4870334A776451327058477973314F782D5048664C5775627569334E4F307571474A6A4F433541',X'37376162646462612D613434342D313165622D616236662D303239306363353032616533');
+
+/*!40000 ALTER TABLE `cb_jwt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table cb_loginAttempts
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_loginAttempts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_loginAttempts` (
-  `loginAttemptsID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `value` varchar(255) NOT NULL,
   `attempts` int(11) NOT NULL,
-  `lastLoginSuccessIP` varchar(100) DEFAULT NULL,
+  `createdDate` datetime NOT NULL,
+  `lastLoginSuccessIP` varchar(100) DEFAULT '',
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `loginAttemptsID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`loginAttemptsID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`loginAttemptsID`),
+  UNIQUE KEY `loginAttemptsID` (`loginAttemptsID`),
+  KEY `idx_createdDate` (`createdDate`),
   KEY `idx_values` (`value`),
+  KEY `idx_loginCreatedDate` (`createdDate`),
   KEY `idx_deleted` (`isDeleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_loginAttempts`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_loginAttempts` WRITE;
 /*!40000 ALTER TABLE `cb_loginAttempts` DISABLE KEYS */;
-INSERT INTO `cb_loginAttempts` VALUES (4,'2019-12-16 20:48:49','2019-12-16 20:48:49','\0','',0,'172.27.0.1'),(5,'2019-12-16 21:53:33','2019-12-16 21:53:33','\0','',0,'172.27.0.1'),(6,'2019-12-16 23:32:22','2019-12-16 23:32:22','\0','',0,'172.27.0.1'),(7,'2019-12-17 13:09:13','2019-12-17 13:09:13','\0','',0,'172.27.0.1');
+
+INSERT INTO `cb_loginAttempts` (`value`, `attempts`, `createdDate`, `lastLoginSuccessIP`, `modifiedDate`, `isDeleted`, `loginAttemptsID`)
+VALUES
+	('lmajano',0,'2016-11-28 14:56:43','127.0.0.1','2016-11-28 14:56:46',b'0','7816ad2a-a444-11eb-ab6f-0290cc502ae3'),
+	('testermajano',0,'2017-06-21 16:07:26','127.0.0.1','2017-06-21 17:37:42',b'0','7816aeb0-a444-11eb-ab6f-0290cc502ae3'),
+	('joejoe@joe.com',0,'2017-07-06 11:37:09',NULL,'2017-07-06 11:37:31',b'0','7816af8c-a444-11eb-ab6f-0290cc502ae3'),
+	('joejoe',0,'2017-07-06 11:38:28','127.0.0.1','2017-07-06 11:38:28',b'0','7816b00e-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_loginAttempts` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_menu`
---
+
+# Dump of table cb_menu
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_menu`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_menu` (
-  `menuID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `title` varchar(200) NOT NULL,
   `slug` varchar(200) NOT NULL,
+  `listType` varchar(20) DEFAULT NULL,
+  `createdDate` datetime NOT NULL,
   `menuClass` varchar(160) DEFAULT NULL,
   `listClass` varchar(160) DEFAULT NULL,
-  `listType` varchar(20) DEFAULT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `menuID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_siteID` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`menuID`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`menuID`),
+  UNIQUE KEY `menuID` (`menuID`),
   KEY `idx_menuslug` (`slug`),
+  KEY `idx_menutitle` (`title`),
   KEY `idx_deleted` (`isDeleted`),
-  KEY `idx_menutitle` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_menu`
---
+  KEY `FK_siteID` (`FK_siteID`),
+  CONSTRAINT `cb_menu_ibfk_1` FOREIGN KEY (`FK_siteID`) REFERENCES `cb_site` (`siteID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_menu` WRITE;
 /*!40000 ALTER TABLE `cb_menu` DISABLE KEYS */;
+
+INSERT INTO `cb_menu` (`title`, `slug`, `listType`, `createdDate`, `menuClass`, `listClass`, `modifiedDate`, `isDeleted`, `menuID`, `FK_siteID`)
+VALUES
+	('Main Menu','main-menu','ul','2016-05-04 17:00:14','m5 p5','','2021-05-05 15:29:13',b'0','77cccd4a-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('test','test -e123c','ul','2016-05-04 17:02:54','','','2016-05-04 17:02:54',b'0','77ccceb2-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_menuItem`
---
+
+# Dump of table cb_menuItem
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_menuItem`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_menuItem` (
-  `menuItemID` int(11) NOT NULL AUTO_INCREMENT,
   `menuType` varchar(255) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `label` varchar(200) DEFAULT NULL,
+  `data` varchar(255) DEFAULT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
+  `mediaPath` varchar(255) DEFAULT NULL,
+  `contentSlug` varchar(255) DEFAULT NULL,
+  `menuSlug` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `js` varchar(255) DEFAULT NULL,
+  `itemClass` varchar(200) DEFAULT NULL,
+  `target` varchar(255) DEFAULT NULL,
+  `urlClass` varchar(255) DEFAULT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `title` varchar(200) NOT NULL,
-  `label` varchar(200) DEFAULT NULL,
-  `itemClass` varchar(200) DEFAULT NULL,
-  `data` varchar(255) DEFAULT NULL,
-  `active` bit(1) DEFAULT NULL,
-  `FK_menuID` int(11) NOT NULL,
-  `FK_parentID` int(11) DEFAULT NULL,
-  `mediaPath` varchar(255) DEFAULT NULL,
-  `target` varchar(255) DEFAULT NULL,
-  `urlClass` varchar(255) DEFAULT NULL,
-  `menuSlug` varchar(255) DEFAULT NULL,
-  `contentSlug` varchar(255) DEFAULT NULL,
-  `js` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
+  `menuItemID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_menuID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_parentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`menuItemID`),
-  KEY `FKF9F1DCF28E0E8DD2` (`FK_menuID`),
-  KEY `FKF9F1DCF2D3B42410` (`FK_parentID`),
-  KEY `idx_createDate` (`createdDate`),
+  UNIQUE KEY `id` (`menuItemID`),
+  UNIQUE KEY `menuItemID` (`menuItemID`),
   KEY `idx_menuitemtitle` (`title`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
   KEY `idx_deleted` (`isDeleted`),
-  CONSTRAINT `FKF9F1DCF28E0E8DD2` FOREIGN KEY (`FK_menuID`) REFERENCES `cb_menu` (`menuID`),
-  CONSTRAINT `FKF9F1DCF2D3B42410` FOREIGN KEY (`FK_parentID`) REFERENCES `cb_menuItem` (`menuItemID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_menuItem`
---
+  KEY `fk_cb_menuItem_FK_menuID` (`FK_menuID`),
+  KEY `fk_cb_menuItem_FK_parentID` (`FK_parentID`),
+  CONSTRAINT `fk_cb_menuItem_FK_menuID` FOREIGN KEY (`FK_menuID`) REFERENCES `cb_menu` (`menuID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_menuItem_FK_parentID` FOREIGN KEY (`FK_parentID`) REFERENCES `cb_menuItem` (`menuItemID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_menuItem` WRITE;
 /*!40000 ALTER TABLE `cb_menuItem` DISABLE KEYS */;
+
+INSERT INTO `cb_menuItem` (`menuType`, `title`, `label`, `data`, `active`, `mediaPath`, `contentSlug`, `menuSlug`, `url`, `js`, `itemClass`, `target`, `urlClass`, `createdDate`, `modifiedDate`, `isDeleted`, `menuItemID`, `FK_menuID`, `FK_parentID`)
+VALUES
+	('Free','','test','',b'1',NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b6003b','77cccd4a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('URL','','hello','',b'1',NULL,NULL,NULL,'http://www.ortussolutions.com',NULL,'','_blank','test','2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b6003c','77cccd4a-a444-11eb-ab6f-0290cc502ae3','ff808081793cf2c801793e3947b6003b'),
+	('Content','','Disk Queues ','',b'1',NULL,'disk-queues-77caf',NULL,NULL,NULL,'','','','2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b6003d','77cccd4a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('Free','','Sites','',b'1',NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b6003e','77cccd4a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('URL','','ortus','',b'1',NULL,NULL,NULL,'https://ortussolutions.com',NULL,'','_blank','','2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b7003f','77cccd4a-a444-11eb-ab6f-0290cc502ae3','ff808081793cf2c801793e3947b6003e'),
+	('URL','Products','Products','',b'1',NULL,NULL,NULL,'https://www.ortussolutions.com/products',NULL,'','_blank','','2021-05-05 15:30:12','2021-05-05 15:30:12',b'0','ff808081793cf2c801793e3947b70040','77cccd4a-a444-11eb-ab6f-0290cc502ae3','ff808081793cf2c801793e3947b7003f');
+
 /*!40000 ALTER TABLE `cb_menuItem` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_module`
---
+
+# Dump of table cb_module
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_module`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_module` (
-  `moduleID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `name` varchar(255) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `version` varchar(255) DEFAULT NULL,
   `entryPoint` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
-  `webURL` longtext DEFAULT NULL,
+  `webURL` longtext,
   `forgeBoxSlug` varchar(255) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `isActive` bit(1) NOT NULL,
-  `moduleType` varchar(255) DEFAULT 'unknown',
+  `description` longtext,
+  `isActive` bit(1) NOT NULL DEFAULT b'0',
+  `createdDate` datetime NOT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `moduleType` varchar(255) DEFAULT 'core',
+  `moduleID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`moduleID`),
+  UNIQUE KEY `id` (`moduleID`),
+  UNIQUE KEY `moduleID` (`moduleID`),
+  KEY `idx_active` (`isActive`),
+  KEY `idx_entryPoint` (`entryPoint`),
   KEY `idx_moduleName` (`name`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_moduleType` (`moduleType`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_deleted` (`isDeleted`),
   KEY `idx_activeModule` (`isActive`),
-  KEY `idx_entryPoint` (`entryPoint`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_module`
---
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `idx_moduleType` (`moduleType`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_module` WRITE;
 /*!40000 ALTER TABLE `cb_module` DISABLE KEYS */;
-INSERT INTO `cb_module` VALUES (1,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','Hello','HelloContentBox','','HelloContentBox','Ortus Solutions, Corp','https://www.ortussolutions.com','','This is an awesome hello world module','\0','core'),(2,'2019-12-16 16:59:45','2019-12-17 13:09:26','\0','cbCommerce','cbCommerce ','1.0.0-alpha1','store','Jon Clausen <jclausen@ortussolutions.com>','https://github.com/jclausen/cbCommerce','','cbCommerce is the eCommerce Platform for the ContentBox Modular CMS','','core');
+
+INSERT INTO `cb_module` (`name`, `title`, `version`, `entryPoint`, `author`, `webURL`, `forgeBoxSlug`, `description`, `isActive`, `createdDate`, `modifiedDate`, `isDeleted`, `moduleType`, `moduleID`)
+VALUES
+	('Hello','Hellocbcommerce','1.0','Hellocbcommerce','Ortus Solutions, Corp','http://www.ortussolutions.com','','This is an awesome hello world module',b'0','2016-07-15 12:09:34','2016-07-15 12:09:34',b'0','core','77b59b34-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_page`
---
+
+# Dump of table cb_page
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_page`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_page` (
-  `contentID` int(11) NOT NULL,
   `layout` varchar(200) DEFAULT NULL,
   `mobileLayout` varchar(200) DEFAULT NULL,
-  `order` int(11) DEFAULT NULL,
-  `showInMenu` bit(1) NOT NULL,
-  `excerpt` longtext DEFAULT NULL,
-  `SSLOnly` bit(1) NOT NULL,
+  `order` int(11) DEFAULT '0',
+  `showInMenu` bit(1) NOT NULL DEFAULT b'1',
+  `excerpt` longtext,
+  `SSLOnly` bit(1) NOT NULL DEFAULT b'0',
+  `contentID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`contentID`),
-  KEY `FK21B2F26F9636A2E2` (`contentID`),
-  KEY `idx_ssl` (`SSLOnly`),
   KEY `idx_showInMenu` (`showInMenu`),
-  CONSTRAINT `FK21B2F26F9636A2E2` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_page`
---
+  KEY `idx_ssl` (`SSLOnly`),
+  CONSTRAINT `fk_cb_page_contentID` FOREIGN KEY (`contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_page` WRITE;
 /*!40000 ALTER TABLE `cb_page` DISABLE KEYS */;
-INSERT INTO `cb_page` VALUES (2,'pages','',0,'','','\0');
+
+INSERT INTO `cb_page` (`layout`, `mobileLayout`, `order`, `showInMenu`, `excerpt`, `SSLOnly`, `contentID`)
+VALUES
+	('pages','',6,b'1','',b'0','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	('-no-layout-','',3,b'1','',b'0','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	('pagesNoSidebar','',5,b'1','',b'0','779cd4dc-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',4,b'1','',b'0','779cd806-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779cd8b0-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779cd950-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',2,b'0','',b'0','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',1,b'1','',b'0','779cdaa4-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',2,b'1','',b'0','779cdb4e-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',1,b'1','',b'0','779cdbee-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',2,b'1','',b'0','779cdc8e-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',6,b'1','',b'0','779cdd38-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',4,b'1','',b'0','779cddd8-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',8,b'1','',b'0','779cde82-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',1,b'1','',b'0','779cdf22-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779cdfc2-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779ce06c-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779ce10c-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779ce1ac-a444-11eb-ab6f-0290cc502ae3'),
+	('pages','',0,b'1','',b'0','779ce256-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_page` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_permission`
---
+
+# Dump of table cb_permission
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_permission`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_permission` (
-  `permissionID` int(11) NOT NULL AUTO_INCREMENT,
+  `permission` varchar(255) NOT NULL,
+  `description` longtext,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `permission` varchar(255) NOT NULL,
-  `description` longtext DEFAULT NULL,
+  `permissionID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`permissionID`),
   UNIQUE KEY `permission` (`permission`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`permissionID`),
+  UNIQUE KEY `permissionID` (`permissionID`),
   KEY `idx_deleted` (`isDeleted`),
   KEY `idx_permissionName` (`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_permission`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_permission` WRITE;
 /*!40000 ALTER TABLE `cb_permission` DISABLE KEYS */;
-INSERT INTO `cb_permission` VALUES (1,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_MODIFIERS','Ability to view the content modifiers panel'),(2,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','CONTENTSTORE_ADMIN','Ability to manage the content store, default is view only'),(3,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','WIDGET_ADMIN','Ability to manage widgets, default is view only'),(4,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','TOOLS_IMPORT','Ability to import data into ContentBox'),(5,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_HTML_ATTRIBUTES','Ability to view the content HTML attributes panel'),(6,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SYSTEM_UPDATES','Ability to view and apply ContentBox updates'),(7,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SECURITYRULES_ADMIN','Ability to manage the system\'s security rules, default is view only'),(8,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SYSTEM_AUTH_LOGS','Access to the system auth logs'),(9,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ENTRIES_EDITOR','Ability to manage blog entries but not publish entries'),(10,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','THEME_ADMIN','Ability to manage layouts, default is view only'),(11,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_CATEGORIES','Ability to view the content categories panel'),(12,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','GLOBALHTML_ADMIN','Ability to manage the system\'s global HTML content used on layouts'),(13,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','RELOAD_MODULES','Ability to reload modules'),(14,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EMAIL_TEMPLATE_ADMIN','Ability to admin and preview email templates'),(15,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','GLOBAL_SEARCH','Ability to do global searches in the ContentBox Admin'),(16,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_RELATED_CONTENT','Ability to view the related content panel'),(17,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','CATEGORIES_ADMIN','Ability to manage categories, default is view only'),(18,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','COMMENTS_ADMIN','Ability to manage comments, default is view only'),(19,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','PAGES_EDITOR','Ability to manage content pages but not publish pages'),(20,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','MODULES_ADMIN','Ability to manage ContentBox Modules'),(21,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_EDITOR_SELECTOR','Ability to change the editor to another registered online editor'),(22,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','PERMISSIONS_ADMIN','Ability to manage permissions, default is view only'),(23,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','VERSIONS_DELETE','Ability to delete past content versions'),(24,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','MENUS_ADMIN','Ability to manage the menu builder'),(25,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','MEDIAMANAGER_LIBRARY_SWITCHER','Ability to switch media manager libraries for management'),(26,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','MEDIAMANAGER_ADMIN','Ability to manage the system\'s media manager'),(27,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','CONTENTSTORE_EDITOR','Ability to manage content store elements but not publish them'),(28,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','FORGEBOX_ADMIN','Ability to manage ForgeBox installations and connectivity.'),(29,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_CUSTOM_FIELDS','Ability to manage custom fields in any content editors'),(30,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','VERSIONS_ROLLBACK','Ability to rollback content versions'),(31,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ENTRIES_ADMIN','Ability to manage blog entries, default is view only'),(32,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','PAGES_ADMIN','Ability to manage content pages, default is view only'),(33,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_CACHING','Ability to view the content caching panel'),(34,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SYSTEM_TAB','Access to the ContentBox System tools'),(35,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_LINKED_CONTENT','Ability to view the linked content panel'),(36,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','TOOLS_EXPORT','Ability to export data from ContentBox'),(37,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','AUTHOR_ADMIN','Ability to manage authors, default is view only'),(38,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','ROLES_ADMIN','Ability to manage roles, default is view only'),(39,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SYSTEM_SAVE_CONFIGURATION','Ability to update global configuration data'),(40,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_FEATURED_IMAGE','Ability to view the featured image panel'),(41,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','SYSTEM_RAW_SETTINGS','Access to the ContentBox raw geek settings panel'),(42,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','EDITORS_DISPLAY_OPTIONS','Ability to view the content display options panel'),(43,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','CONTENTBOX_ADMIN','Access to the enter the ContentBox administrator console');
+
+INSERT INTO `cb_permission` (`permission`, `description`, `createdDate`, `modifiedDate`, `isDeleted`, `permissionID`)
+VALUES
+	('PAGES_ADMIN','Ability to manage content pages, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d71f6-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_EDITOR_SELECTOR','Ability to change the editor to another registered online editor','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d734a-a444-11eb-ab6f-0290cc502ae3'),
+	('WIDGET_ADMIN','Ability to manage widgets, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d73f4-a444-11eb-ab6f-0290cc502ae3'),
+	('TOOLS_IMPORT','Ability to import data into cbcommerce','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7480-a444-11eb-ab6f-0290cc502ae3'),
+	('GLOBALHTML_ADMIN','Ability to manage the system\'s global HTML content used on layouts','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d74f8-a444-11eb-ab6f-0290cc502ae3'),
+	('PAGES_EDITOR','Ability to manage content pages but not publish pages','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7570-a444-11eb-ab6f-0290cc502ae3'),
+	('SYSTEM_TAB','Access to the cbcommerce System tools','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d761a-a444-11eb-ab6f-0290cc502ae3'),
+	('SYSTEM_UPDATES','Ability to view and apply cbcommerce updates','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d769c-a444-11eb-ab6f-0290cc502ae3'),
+	('cbcommerce_ADMIN','Access to the enter the cbcommerce administrator console','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d770a-a444-11eb-ab6f-0290cc502ae3'),
+	('RELOAD_MODULES','Ability to reload modules','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7782-a444-11eb-ab6f-0290cc502ae3'),
+	('MODULES_ADMIN','Ability to manage cbcommerce Modules','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d77f0-a444-11eb-ab6f-0290cc502ae3'),
+	('COMMENTS_ADMIN','Ability to manage comments, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d785e-a444-11eb-ab6f-0290cc502ae3'),
+	('AUTHOR_ADMIN','Ability to manage authors, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d78d6-a444-11eb-ab6f-0290cc502ae3'),
+	('PERMISSIONS_ADMIN','Ability to manage permissions, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7944-a444-11eb-ab6f-0290cc502ae3'),
+	('MEDIAMANAGER_ADMIN','Ability to manage the system\'s media manager','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d79b2-a444-11eb-ab6f-0290cc502ae3'),
+	('SYSTEM_RAW_SETTINGS','Access to the cbcommerce raw geek settings panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7a20-a444-11eb-ab6f-0290cc502ae3'),
+	('CATEGORIES_ADMIN','Ability to manage categories, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7a8e-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_DISPLAY_OPTIONS','Ability to view the content display options panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7afc-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_HTML_ATTRIBUTES','Ability to view the content HTML attributes panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7b6a-a444-11eb-ab6f-0290cc502ae3'),
+	('FORGEBOX_ADMIN','Ability to manage ForgeBox installations and connectivity.','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7be2-a444-11eb-ab6f-0290cc502ae3'),
+	('THEME_ADMIN','Ability to manage themes, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7c50-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_CATEGORIES','Ability to view the content categories panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7cbe-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_MODIFIERS','Ability to view the content modifiers panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7d2c-a444-11eb-ab6f-0290cc502ae3'),
+	('ENTRIES_ADMIN','Ability to manage blog entries, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7d9a-a444-11eb-ab6f-0290cc502ae3'),
+	('VERSIONS_ROLLBACK','Ability to rollback content versions','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7e08-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_CACHING','Ability to view the content caching panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7e76-a444-11eb-ab6f-0290cc502ae3'),
+	('ROLES_ADMIN','Ability to manage roles, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7eee-a444-11eb-ab6f-0290cc502ae3'),
+	('SYSTEM_SAVE_CONFIGURATION','Ability to update global configuration data','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7f5c-a444-11eb-ab6f-0290cc502ae3'),
+	('ENTRIES_EDITOR','Ability to manage blog entries but not publish entries','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d7fca-a444-11eb-ab6f-0290cc502ae3'),
+	('VERSIONS_DELETE','Ability to delete past content versions','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8038-a444-11eb-ab6f-0290cc502ae3'),
+	('SECURITYRULES_ADMIN','Ability to manage the system\'s security rules, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d80a6-a444-11eb-ab6f-0290cc502ae3'),
+	('TOOLS_EXPORT','Ability to export data from cbcommerce','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8114-a444-11eb-ab6f-0290cc502ae3'),
+	('CONTENTSTORE_ADMIN','Ability to manage the content store, default is view only','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8182-a444-11eb-ab6f-0290cc502ae3'),
+	('CONTENTSTORE_EDITOR','Ability to manage content store elements but not publish them','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d81f0-a444-11eb-ab6f-0290cc502ae3'),
+	('MEDIAMANAGER_LIBRARY_SWITCHER','Ability to switch media manager libraries for management','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d825e-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_CUSTOM_FIELDS','Ability to manage custom fields in any content editors','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d82cc-a444-11eb-ab6f-0290cc502ae3'),
+	('GLOBAL_SEARCH','Ability to do global searches in the cbcommerce Admin','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8344-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_RELATED_CONTENT','Ability to view the related content panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d83b2-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_LINKED_CONTENT','Ability to view the linked content panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8420-a444-11eb-ab6f-0290cc502ae3'),
+	('MENUS_ADMIN','Ability to manage the menu builder','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d848e-a444-11eb-ab6f-0290cc502ae3'),
+	('SYSTEM_AUTH_LOGS','Access to the system auth logs','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d84fc-a444-11eb-ab6f-0290cc502ae3'),
+	('EDITORS_FEATURED_IMAGE','Ability to view the featured image panel','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','785d8574-a444-11eb-ab6f-0290cc502ae3'),
+	('EMAIL_TEMPLATE_ADMIN','Ability to admin and preview email templates','2017-06-20 16:13:01','2017-06-20 16:13:01',b'0','785d85e2-a444-11eb-ab6f-0290cc502ae3'),
+	('SITES_ADMIN','Ability to manage sites','2020-09-09 17:16:59','2020-09-09 17:16:59',b'0','785d8650-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_permissionGroup`
---
+
+# Dump of table cb_permissionGroup
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_permissionGroup`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_permissionGroup` (
-  `permissionGroupID` int(11) NOT NULL AUTO_INCREMENT,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `name` varchar(255) NOT NULL,
-  `description` longtext DEFAULT NULL,
+  `description` longtext,
+  `permissionGroupID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`permissionGroupID`),
   UNIQUE KEY `name` (`name`),
-  KEY `idx_permissionGroupName` (`name`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_deleted` (`isDeleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_permissionGroup`
---
+  UNIQUE KEY `id` (`permissionGroupID`),
+  UNIQUE KEY `permissionGroupID` (`permissionGroupID`),
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `idx_permissionGroupName` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_permissionGroup` WRITE;
 /*!40000 ALTER TABLE `cb_permissionGroup` DISABLE KEYS */;
+
+INSERT INTO `cb_permissionGroup` (`createdDate`, `modifiedDate`, `isDeleted`, `name`, `description`, `permissionGroupID`)
+VALUES
+	('2017-06-12 16:01:13','2017-06-12 20:31:52',b'0','Finance','Finance team permissions','7850efee-a444-11eb-ab6f-0290cc502ae3'),
+	('2017-06-16 13:02:12','2017-06-16 13:02:12',b'0','Security','','7850f138-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_permissionGroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_relatedContent`
---
+
+# Dump of table cb_relatedContent
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_relatedContent`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_relatedContent` (
-  `FK_contentID` int(11) NOT NULL,
-  `FK_relatedContentID` int(11) NOT NULL,
-  KEY `FK9C2F71AE91F58374` (`FK_contentID`),
-  KEY `FK9C2F71AEDF61AADD` (`FK_relatedContentID`),
-  CONSTRAINT `FK9C2F71AE91F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`),
-  CONSTRAINT `FK9C2F71AEDF61AADD` FOREIGN KEY (`FK_relatedContentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_relatedContent`
---
+CREATE TABLE `cb_relatedContent` (
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_relatedContentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_relatedContent_FK_contentID` (`FK_contentID`),
+  KEY `fk_cb_relatedContent_FK_relatedContentID` (`FK_relatedContentID`),
+  CONSTRAINT `fk_cb_relatedContent_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_relatedContent_FK_relatedContentID` FOREIGN KEY (`FK_relatedContentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_relatedContent` WRITE;
 /*!40000 ALTER TABLE `cb_relatedContent` DISABLE KEYS */;
+
+INSERT INTO `cb_relatedContent` (`FK_contentID`, `FK_relatedContentID`)
+VALUES
+	('779ccef6-a444-11eb-ab6f-0290cc502ae3','779ccbb8-a444-11eb-ab6f-0290cc502ae3'),
+	('779ccdac-a444-11eb-ab6f-0290cc502ae3','779cd4dc-a444-11eb-ab6f-0290cc502ae3'),
+	('779ccdac-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_relatedContent` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_role`
---
+
+# Dump of table cb_role
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_role` (
-  `roleID` int(11) NOT NULL AUTO_INCREMENT,
+  `role` varchar(255) NOT NULL,
+  `description` longtext,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `role` varchar(255) NOT NULL,
-  `description` longtext DEFAULT NULL,
+  `roleID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`roleID`),
   UNIQUE KEY `role` (`role`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`roleID`),
+  UNIQUE KEY `roleID` (`roleID`),
   KEY `idx_deleted` (`isDeleted`),
   KEY `idx_roleName` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_role`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_role` WRITE;
 /*!40000 ALTER TABLE `cb_role` DISABLE KEYS */;
-INSERT INTO `cb_role` VALUES (1,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','Editor','A ContentBox editor'),(2,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','Administrator','A ContentBox Administrator');
+
+INSERT INTO `cb_role` (`role`, `description`, `createdDate`, `modifiedDate`, `isDeleted`, `roleID`)
+VALUES
+	('Editor','A cbcommerce editor','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('Administrator','A cbcommerce Administrator','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('MegaAdmin','A cbcommerce Mega Admin','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('Test','Test','2016-09-23 14:35:41','2016-09-23 14:35:41',b'0','77c2c796-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_rolePermissions`
---
+
+# Dump of table cb_rolePermissions
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_rolePermissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_rolePermissions` (
-  `FK_roleID` int(11) NOT NULL,
-  `FK_permissionID` int(11) NOT NULL,
-  KEY `FKDCCC1A4E9724FA40` (`FK_roleID`),
-  KEY `FKDCCC1A4E37C1A3F2` (`FK_permissionID`),
-  CONSTRAINT `FKDCCC1A4E37C1A3F2` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`),
-  CONSTRAINT `FKDCCC1A4E9724FA40` FOREIGN KEY (`FK_roleID`) REFERENCES `cb_role` (`roleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cb_rolePermissions`
---
+CREATE TABLE `cb_rolePermissions` (
+  `FK_permissionID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  `FK_roleID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  KEY `fk_cb_rolePermissions_FK_permissionID` (`FK_permissionID`),
+  KEY `fk_cb_rolePermissions_FK_roleID` (`FK_roleID`),
+  CONSTRAINT `fk_cb_rolePermissions_FK_permissionID` FOREIGN KEY (`FK_permissionID`) REFERENCES `cb_permission` (`permissionID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cb_rolePermissions_FK_roleID` FOREIGN KEY (`FK_roleID`) REFERENCES `cb_role` (`roleID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_rolePermissions` WRITE;
 /*!40000 ALTER TABLE `cb_rolePermissions` DISABLE KEYS */;
-INSERT INTO `cb_rolePermissions` VALUES (1,18),(1,27),(1,19),(1,17),(1,9),(1,10),(1,12),(1,26),(1,30),(1,43),(1,35),(1,42),(1,16),(1,1),(1,33),(1,11),(1,5),(1,21),(1,29),(1,15),(1,24),(1,40),(1,14),(2,1),(2,4),(2,3),(2,2),(2,6),(2,5),(2,7),(2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15),(2,18),(2,17),(2,16),(2,19),(2,20),(2,21),(2,22),(2,23),(2,25),(2,24),(2,26),(2,27),(2,28),(2,29),(2,31),(2,30),(2,32),(2,34),(2,33),(2,36),(2,35),(2,37),(2,39),(2,38),(2,41),(2,40),(2,43),(2,42);
+
+INSERT INTO `cb_rolePermissions` (`FK_permissionID`, `FK_roleID`)
+VALUES
+	('785d78d6-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7a8e-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d785e-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d770a-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e76-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7cbe-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7afc-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d734a-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7b6a-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7d2c-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7d9a-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7fca-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7be2-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d74f8-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7c50-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d79b2-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d77f0-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d71f6-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7570-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7944-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7782-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7eee-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d80a6-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7a20-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7f5c-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d761a-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d769c-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7480-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8038-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e08-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d73f4-a444-11eb-ab6f-0290cc502ae3','77c2c70a-a444-11eb-ab6f-0290cc502ae3'),
+	('785d78d6-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7a8e-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d785e-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d770a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8182-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d81f0-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e76-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7cbe-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d82cc-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7afc-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d734a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8574-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7b6a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8420-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7d2c-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d83b2-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7d9a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7fca-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7be2-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d74f8-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8344-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d79b2-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d825e-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d848e-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d77f0-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d71f6-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7570-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7944-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7782-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7eee-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d80a6-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d84fc-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7a20-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7f5c-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d761a-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d769c-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7c50-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8114-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7480-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8038-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e08-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d73f4-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d85e2-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7a8e-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d785e-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d770a-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d81f0-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e76-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7cbe-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d82cc-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7afc-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d734a-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7b6a-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8420-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7d2c-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d83b2-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d85e2-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7fca-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d74f8-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8344-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d79b2-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d848e-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7570-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7c50-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d7e08-a444-11eb-ab6f-0290cc502ae3','77c2c476-a444-11eb-ab6f-0290cc502ae3'),
+	('785d8650-a444-11eb-ab6f-0290cc502ae3','77c2c62e-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_rolePermissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_securityRule`
---
+
+# Dump of table cb_securityRule
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_securityRule`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_securityRule` (
-  `ruleID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `whitelist` varchar(255) DEFAULT NULL,
   `securelist` varchar(255) NOT NULL,
   `roles` varchar(255) DEFAULT NULL,
-  `permissions` longtext DEFAULT NULL,
+  `permissions` longtext,
   `redirect` longtext NOT NULL,
-  `useSSL` bit(1) DEFAULT NULL,
-  `order` int(11) NOT NULL,
+  `useSSL` bit(1) NOT NULL DEFAULT b'0',
+  `order` int(11) NOT NULL DEFAULT '0',
   `match` varchar(50) DEFAULT NULL,
+  `createdDate` datetime NOT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `message` varchar(255) DEFAULT NULL,
   `messageType` varchar(50) DEFAULT 'info',
+  `overrideEvent` longtext NOT NULL,
+  `action` varchar(50) DEFAULT 'redirect',
+  `module` longtext,
+  `ruleID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`ruleID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`ruleID`),
+  UNIQUE KEY `ruleID` (`ruleID`),
   KEY `idx_deleted` (`isDeleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_securityRule`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_securityRule` WRITE;
 /*!40000 ALTER TABLE `cb_securityRule` DISABLE KEYS */;
-INSERT INTO `cb_securityRule` VALUES (1,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:modules\\..*','','MODULES_ADMIN','cbadmin/security/login','\0',1,'event','','info'),(2,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:mediamanager\\..*','','MEDIAMANAGER_ADMIN','cbadmin/security/login','\0',1,'event','','info'),(3,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:versions\\.(remove)','','VERSIONS_DELETE','cbadmin/security/login','\0',1,'event','','info'),(4,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:versions\\.(rollback)','','VERSIONS_ROLLBACK','cbadmin/security/login','\0',1,'event','','info'),(5,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:widgets\\.(remove|upload|edit|save|create|doCreate)$','','WIDGET_ADMIN','cbadmin/security/login','\0',2,'event','','info'),(6,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:tools\\.(importer|doImport)','','TOOLS_IMPORT','cbadmin/security/login','\0',3,'event','','info'),(7,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:(settings|permissions|roles|securityRules)\\..*','','SYSTEM_TAB','cbadmin/security/login','\0',4,'event','','info'),(8,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:settings\\.save','','SYSTEM_SAVE_CONFIGURATION','cbadmin/security/login','\0',5,'event','','info'),(9,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:settings\\.(raw|saveRaw|flushCache|flushSingletons|mappingDump|viewCached|remove)','','SYSTEM_RAW_SETTINGS','cbadmin/security/login','\0',6,'event','','info'),(10,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:securityRules\\.(remove|save|changeOrder|apply)','','SECURITYRULES_ADMIN','cbadmin/security/login','\0',7,'event','','info'),(11,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:roles\\.(remove|removePermission|save|savePermission)','','ROLES_ADMIN','cbadmin/security/login','\0',8,'event','','info'),(12,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:permissions\\.(remove|save)','','PERMISSIONS_ADMIN','cbadmin/security/login','\0',9,'event','','info'),(13,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:dashboard\\.reload','','RELOAD_MODULES','cbadmin/security/login','\0',10,'event','','info'),(14,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:pages\\.(changeOrder|remove)','','PAGES_ADMIN','cbadmin/security/login','\0',11,'event','','info'),(15,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:themes\\.(remove|upload|rebuildRegistry|activate)','','THEME_ADMIN','cbadmin/security/login','\0',12,'event','','info'),(16,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:entries\\.(quickPost|remove)','','ENTRIES_ADMIN','cbadmin/security/login','\0',13,'event','','info'),(17,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:contentStore\\.(editor|remove|save)','','CONTENTSTORE_ADMIN','cbadmin/security/login','\0',14,'event','','info'),(18,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:comments\\.(doStatusUpdate|editor|moderate|remove|save|saveSettings)','','COMMENTS_ADMIN','cbadmin/security/login','\0',15,'event','','info'),(19,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:categories\\.(remove|save)','','CATEGORIES_ADMIN','cbadmin/security/login','\0',16,'event','','info'),(20,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:authors\\.(remove|removePermission|savePermission|doPasswordReset|new|doNew)','','AUTHOR_ADMIN','cbadmin/security/login','\0',17,'event','','info'),(21,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','^contentbox-admin:security\\.','^contentbox-admin:.*','','CONTENTBOX_ADMIN','cbadmin/security/login','\0',18,'event','','info'),(22,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-filebrowser:.*','','MEDIAMANAGER_ADMIN','cbadmin/security/login','\0',19,'event','','info'),(23,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:(authors|categories|permissions|roles|settings|pages|entries|contentStore|securityrules)\\.importAll$','','TOOLS_IMPORT','cbadmin/security/login','\0',20,'event','','info'),(24,'2019-12-16 16:46:18','2019-12-16 16:46:18','\0','','^contentbox-admin:(authors|categories|permissions|roles|settings|pages|entries|contentStore|securityrules)\\.(export|exportAll)$','','TOOLS_EXPORT','cbadmin/security/login','\0',20,'event','','info');
+
+INSERT INTO `cb_securityRule` (`whitelist`, `securelist`, `roles`, `permissions`, `redirect`, `useSSL`, `order`, `match`, `createdDate`, `modifiedDate`, `isDeleted`, `message`, `messageType`, `overrideEvent`, `action`, `module`, `ruleID`)
+VALUES
+	('','^cbcommerce-admin:modules\\..*','','MODULES_ADMIN','cbadmin/security/login',b'0',1,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f0882a-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:mediamanager\\..*','','MEDIAMANAGER_ADMIN','cbadmin/security/login',b'0',1,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f08a00-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:versions\\.(remove)','','VERSIONS_DELETE','cbadmin/security/login',b'0',1,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f08ad2-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:versions\\.(rollback)','','VERSIONS_ROLLBACK','cbadmin/security/login',b'0',1,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f08b72-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:widgets\\.(remove|upload|edit|save|create|doCreate)$','','WIDGET_ADMIN','cbadmin/security/login',b'0',2,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f08c4e-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:tools\\.(importer|doImport)','','TOOLS_IMPORT','cbadmin/security/login',b'0',3,'event','2017-07-06 12:14:21','2017-07-06 12:14:21',b'0','','info','','redirect','cbcommerce','77f08cee-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:(settings|permissions|roles|securityRules)\\..*','','SYSTEM_TAB','cbadmin/security/login',b'0',4,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f08d84-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:settings\\.save','','SYSTEM_SAVE_CONFIGURATION','cbadmin/security/login',b'0',5,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f08e10-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:settings\\.(raw|saveRaw|flushCache|flushSingletons|mappingDump|viewCached|remove)','','SYSTEM_RAW_SETTINGS','cbadmin/security/login',b'0',6,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f08ea6-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:securityRules\\.(remove|save|changeOrder|apply)','','SECURITYRULES_ADMIN','cbadmin/security/login',b'0',7,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f08f3c-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:roles\\.(remove|removePermission|save|savePermission)','','ROLES_ADMIN','cbadmin/security/login',b'0',8,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f08fc8-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:permissions\\.(remove|save)','','PERMISSIONS_ADMIN','cbadmin/security/login',b'0',9,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f09054-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:dashboard\\.reload','','RELOAD_MODULES','cbadmin/security/login',b'0',10,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f090e0-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:pages\\.(changeOrder|remove)','','PAGES_ADMIN','cbadmin/security/login',b'0',11,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f0916c-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:themes\\.(remove|upload|rebuildRegistry|activate)','','THEME_ADMIN','cbadmin/security/login',b'0',12,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f091f8-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:entries\\.(quickPost|remove)','','ENTRIES_ADMIN','cbadmin/security/login',b'0',13,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f09284-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:contentStore\\.(editor|remove|save)','','CONTENTSTORE_ADMIN','cbadmin/security/login',b'0',14,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f09310-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:comments\\.(doStatusUpdate|editor|moderate|remove|save|saveSettings)','','COMMENTS_ADMIN','cbadmin/security/login',b'0',15,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f093a6-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:categories\\.(remove|save)','','CATEGORIES_ADMIN','cbadmin/security/login',b'0',16,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f09432-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:authors\\.(remove|removePermission|savePermission|doPasswordReset|new|doNew)','','AUTHOR_ADMIN','cbadmin/security/login',b'0',17,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f094be-a444-11eb-ab6f-0290cc502ae3'),
+	('^cbcommerce-admin:security\\.','^cbcommerce-admin:.*','','cbcommerce_ADMIN','cbadmin/security/login',b'0',18,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f0954a-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-filebrowser:.*','','MEDIAMANAGER_ADMIN','cbadmin/security/login',b'0',19,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f095d6-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:(authors|categories|permissions|roles|settings|pages|entries|contentStore|securityrules)\\.importAll$','','TOOLS_IMPORT','cbadmin/security/login',b'0',20,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f09662-a444-11eb-ab6f-0290cc502ae3'),
+	('','^cbcommerce-admin:(authors|categories|permissions|roles|settings|pages|entries|contentStore|securityrules)\\.(export|exportAll)$','','TOOLS_EXPORT','cbadmin/security/login',b'0',20,'event','2017-07-06 12:14:22','2017-07-06 12:14:22',b'0','','info','','redirect','cbcommerce','77f096f8-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_securityRule` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_setting`
---
+
+# Dump of table cb_setting
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_setting`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_setting` (
-  `settingID` int(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` datetime NOT NULL,
-  `modifiedDate` datetime NOT NULL,
-  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
   `name` varchar(100) NOT NULL,
   `value` longtext NOT NULL,
   `isCore` bit(1) NOT NULL DEFAULT b'0',
+  `createdDate` datetime NOT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `settingID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_siteID` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`settingID`),
-  UNIQUE KEY `name` (`name`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`settingID`),
+  UNIQUE KEY `settingID` (`settingID`),
   KEY `idx_core` (`isCore`),
-  KEY `idx_deleted` (`isDeleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_setting`
---
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `FK_siteID` (`FK_siteID`),
+  CONSTRAINT `cb_setting_ibfk_1` FOREIGN KEY (`FK_siteID`) REFERENCES `cb_site` (`siteID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_setting` WRITE;
 /*!40000 ALTER TABLE `cb_setting` DISABLE KEYS */;
-INSERT INTO `cb_setting` VALUES (1,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_media_allowDelete','true',''),(2,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_security_login_blocker','true',''),(3,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_versions_max_history','',''),(4,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_html_preArchivesDisplay','',''),(5,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_security_login_signin_text','',''),(6,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_security_rate_limiter_duration','1',''),(7,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_rss_description','ContentBox RSS Feed',''),(8,'2019-12-16 16:43:59','2019-12-16 16:46:19','\0','cb_site_name','cbCommerce Test Platform',''),(9,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_html_postCommentForm','',''),(10,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_media_html5uploads_maxFiles','25',''),(11,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_site_mail_password','',''),(12,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_comments_notifyemails','',''),(13,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_rss_cacheName','Template',''),(14,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_editors_markup','HTML',''),(15,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_content_cacheName','Template',''),(16,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_editors_ckeditor_toolbar','[\n		{ \"name\": \"document\",    \"items\" : [ \"Source\",\"-\",\"Maximize\",\"ShowBlocks\" ] },\n		{ \"name\": \"clipboard\",   \"items\" : [ \"Cut\",\"Copy\",\"Paste\",\"PasteText\",\"PasteFromWord\",\"-\",\"Undo\",\"Redo\" ] },\n		{ \"name\": \"editing\",     \"items\" : [ \"Find\",\"Replace\",\"SpellChecker\"] },\n		{ \"name\": \"forms\",       \"items\" : [ \"Form\", \"Checkbox\", \"Radio\", \"TextField\", \"Textarea\", \"Select\", \"Button\",\"HiddenField\" ] },\n		\"/\",\n		{ \"name\": \"basicstyles\", \"items\" : [ \"Bold\",\"Italic\",\"Underline\",\"Strike\",\"Subscript\",\"Superscript\",\"-\",\"RemoveFormat\" ] },\n		{ \"name\": \"paragraph\",   \"items\" : [ \"NumberedList\",\"BulletedList\",\"-\",\"Outdent\",\"Indent\",\"-\",\"Blockquote\",\"CreateDiv\",\"-\",\"JustifyLeft\",\"JustifyCenter\",\"JustifyRight\",\"JustifyBlock\",\"-\",\"BidiLtr\",\"BidiRtl\" ] },\n		{ \"name\": \"links\",       \"items\" : [ \"Link\",\"Unlink\",\"Anchor\" ] },\n		\"/\",\n		{ \"name\": \"styles\",      \"items\" : [ \"Styles\",\"Format\" ] },\n		{ \"name\": \"colors\",      \"items\" : [ \"TextColor\",\"BGColor\" ] },\n		{ \"name\": \"insert\",      \"items\" : [ \"Image\",\"Table\",\"HorizontalRule\",\"Smiley\",\"SpecialChar\",\"Iframe\",\"InsertPre\"] },\n		{ \"name\": \"contentbox\",  \"items\" : [ \"MediaEmbed\",\"cbIpsumLorem\",\"cbWidgets\",\"cbContentStore\",\"cbLinks\",\"cbEntryLinks\" ] }\n		]',''),(17,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_security_rate_limiter_logging','true',''),(18,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_site_settings_cache','Template',''),(19,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_site_adminbar','true',''),(20,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_versions_commit_mandatory','false',''),(21,'2019-12-16 16:43:59','2019-12-16 16:43:59','\0','cb_html_afterSideBar','',''),(22,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_notify_page','true',''),(23,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_mail_username','',''),(24,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_postPageDisplay','',''),(25,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_webmaster','',''),(26,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_title','RSS Feed by ContentBox',''),(27,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_acceptMimeTypes','',''),(28,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_notify_author','true',''),(29,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_welcome_title','Dashboard',''),(30,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_poweredby','true',''),(31,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_beforeSideBar','',''),(32,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_page_excerpts','true',''),(33,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_enabled','true',''),(34,'2019-12-16 16:44:00','2019-12-16 16:46:19','\0','cb_site_outgoingEmail','jclausen@ortussolutions.com',''),(35,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_newsfeed','https://www.ortussolutions.com/blog/rss',''),(36,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_createFolders','true',''),(37,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_min_password_length','8',''),(38,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_notify','true',''),(39,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_newsfeed_count','5',''),(40,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_afterBodyStart','',''),(41,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_preIndexDisplay','',''),(42,'2019-12-16 16:44:00','2019-12-16 16:46:19','\0','cb_site_tagline','Making eCommerce Awesome since 2018',''),(43,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_cachingTimeout','60',''),(44,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_cachingTimeoutIdle','15',''),(45,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_html5uploads_maxFileSize','100',''),(46,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_mail_server','',''),(47,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_salt','07FB91518129241AA81FD48FDAF1A7661D42CEDA1A780E73E7D55DF523CA9FB96BD4DE92C01D9484FA9F2B7E24C57C1627190346CAF75DE19BC6ACE3AEABB494',''),(48,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_quickViewWidth','400',''),(49,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_preEntryDisplay','',''),(50,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_urltranslations','true',''),(51,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_2factorAuth_trusted_days','30',''),(52,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_generator','ContentBox by Ortus Solutions',''),(53,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_homepage','cbBlog',''),(54,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_bot_regex','Google|msnbot|Rambler|Yahoo|AbachoBOT|accoona|AcioRobot|ASPSeek|CocoCrawler|Dumbot|FAST-WebCrawler|GeonaBot|Gigabot|Lycos|MSRBOT|Scooter|AltaVista|IDBot|eStyle|Scrubby',''),(55,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_editors_ckeditor_excerpt_toolbar','[\n		{ \"name\": \"document\",    \"items\" : [ \"Source\",\"-\",\"Maximize\",\"ShowBlocks\" ] },\n		{ \"name\": \"basicstyles\", \"items\" : [ \"Bold\",\"Italic\",\"Underline\",\"Strike\",\"Subscript\",\"Superscript\"] },\n		{ \"name\": \"paragraph\",   \"items\" : [ \"NumberedList\",\"BulletedList\",\"-\",\"Outdent\",\"Indent\",\"CreateDiv\"] },\n		{ \"name\": \"links\",       \"items\" : [ \"Link\",\"Unlink\",\"Anchor\" ] },\n		{ \"name\": \"insert\",      \"items\" : [ \"Image\",\"Flash\",\"Table\",\"HorizontalRule\",\"Smiley\",\"SpecialChar\" ] },\n		{ \"name\": \"contentbox\",  \"items\" : [ \"MediaEmbed\",\"cbIpsumLorem\",\"cbWidgets\",\"cbContentStore\",\"cbLinks\",\"cbEntryLinks\" ] }\n		]',''),(56,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_theme','default',''),(57,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_blocktime','5',''),(58,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_moderation_expiration','30',''),(59,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_disable_blog','false',''),(60,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_prePageDisplay','',''),(61,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_description','',''),(62,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_contentstore_caching','true',''),(63,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_gravatar_rating','PG',''),(64,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_maintenance_message','<h1>This site is down for maintenance.<br /> Please check back again soon.</h1>',''),(65,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_admin_theme','contentbox-default',''),(66,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_postIndexDisplay','',''),(67,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_recentcontentstore','5',''),(68,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_cachingTimeout','60',''),(69,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_moderation_blockedlist','',''),(70,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_login_signout_url','',''),(71,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_mail_ssl','false',''),(72,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_paging_bandgap','5',''),(73,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_maxComments','10',''),(74,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_rate_limiter','true',''),(75,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_allowDownloads','true',''),(76,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_beforeHeadEnd','',''),(77,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_caching','true',''),(78,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_hit_ignore_bots','false',''),(79,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_keywords','',''),(80,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_copyright','Ortus Solutions, Corp (www.ortussolutions.com)',''),(81,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_maintenance','false',''),(82,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_moderation','true',''),(83,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_rss_cachingTimeoutIdle','15',''),(84,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_admin_ssl','false',''),(85,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_recentComments','5',''),(86,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_paging_maxentries','10',''),(87,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_content_cachingHeader','true',''),(88,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_latest_logins','10',''),(89,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_search_adapter','contentbox.models.search.DBSearch',''),(90,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_notify_entry','true',''),(91,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_mail_smtp','25',''),(92,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_paging_maxrows','20',''),(93,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_2factorAuth_force','false',''),(94,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_rate_limiter_message','<p>You are making too many requests too fast, please slow down and wait {duration} seconds</p>',''),(95,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_rate_limiter_count','4',''),(96,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_moderation_notify','true',''),(97,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_max_attempts','5',''),(98,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_admin_quicksearch_max','5',''),(99,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_whoisURL','http://whois.arin.net/ui/query.do?q',''),(100,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_2factorAuth_provider','email',''),(101,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_comments_moderation_blacklist','',''),(102,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_dashboard_recentPages','5',''),(103,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_security_max_auth_logs','500',''),(104,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_editors_default','ckeditor',''),(105,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_mail_tls','false',''),(106,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_ssl','false',''),(107,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_media_provider','CFContentMediaProvider',''),(108,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_afterContent','',''),(109,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_site_sitemap','true',''),(110,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_gravatar_display','true',''),(111,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_editors_ckeditor_extraplugins','cbKeyBinding,cbWidgets,cbLinks,cbEntryLinks,cbContentStore,cbIpsumLorem,wsc,mediaembed,insertpre,justify,colorbutton,showblocks,find,div,smiley,specialchar,iframe',''),(112,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_postArchivesDisplay','',''),(113,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_html_beforeContent','',''),(114,'2019-12-16 16:44:00','2019-12-16 16:46:19','\0','cb_site_email','jclausen@ortussolutions.com',''),(115,'2019-12-16 16:44:00','2019-12-16 16:44:00','\0','cb_notify_contentstore','true',''),(116,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_paging_maxRSSComments','10',''),(117,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_html_afterFooter','',''),(118,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_media_provider_caching','true',''),(119,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_media_allowUploads','true',''),(120,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_site_blog_entrypoint','blog',''),(121,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_media_directoryRoot','/contentbox-custom/_content',''),(122,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_dashboard_welcome_body','',''),(123,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_search_maxResults','20',''),(124,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_content_uiexport','true',''),(125,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_security_rate_limiter_bots_only','true',''),(126,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_content_hit_count','true',''),(127,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_entry_caching','true',''),(128,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_html_postEntryDisplay','',''),(129,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_comments_moderation_whitelist','true',''),(130,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_comments_maxDisplayChars','500',''),(131,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_html_beforeBodyEnd','',''),(132,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_rss_caching','true',''),(133,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_security_rate_limiter_redirectURL','',''),(134,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_dashboard_recentEntries','5',''),(135,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_html_preCommentForm','',''),(136,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_rss_maxEntries','10',''),(137,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_cbBootswatchTheme','green','\0'),(138,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_overrideHeaderColors','false','\0'),(139,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_overrideHeaderBGColor','','\0'),(140,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_overrideHeaderTextColor','','\0'),(141,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_cssStyleOverrides','','\0'),(142,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_headerLogo','','\0'),(143,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showSiteSearch','true','\0'),(144,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_footerBox','','\0'),(145,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderTitle','','\0'),(146,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderText','','\0'),(147,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderLink','','\0'),(148,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBtnText','','\0'),(149,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBtnStyle','primary','\0'),(150,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBg','green','\0'),(151,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderImgBg','','\0'),(152,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBgPos','Top Center','\0'),(153,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBgPaddingTop','100px','\0'),(154,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_hpHeaderBgPaddingBottom','50px','\0'),(155,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_rssDiscovery','true','\0'),(156,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showCategoriesBlogSide','true','\0'),(157,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showRecentEntriesBlogSide','true','\0'),(158,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showSiteUpdatesBlogSide','true','\0'),(159,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showEntryCommentsBlogSide','true','\0'),(160,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showArchivesBlogSide','true','\0'),(161,'2019-12-16 16:44:01','2019-12-16 16:44:01','\0','cb_theme_default_showEntriesSearchBlogSide','true','\0'),(162,'2019-12-16 16:46:19','2019-12-16 16:46:19','\0','cb_active','true','\0');
+
+INSERT INTO `cb_setting` (`name`, `value`, `isCore`, `createdDate`, `modifiedDate`, `isDeleted`, `settingID`, `FK_siteID`)
+VALUES
+	('cb_security_login_blocker','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d99fe-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_allowDelete','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9b84-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_login_signin_text','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9d50-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_versions_max_history','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9dd2-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_duration','1',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9e36-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_description','cbcommerce RSS Feed',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9ea4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_html5uploads_maxFiles','25',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9efe-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_password','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9f62-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_cacheName','Template',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782d9fbc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_editors_markup','HTML',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da020-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_cacheName','Template',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da07a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_editors_ckeditor_toolbar','[\n		{ \"name\": \"document\",    \"items\" : [ \"Source\",\"-\",\"Maximize\",\"ShowBlocks\" ] },\n		{ \"name\": \"clipboard\",   \"items\" : [ \"Cut\",\"Copy\",\"Paste\",\"PasteText\",\"PasteFromWord\",\"-\",\"Undo\",\"Redo\" ] },\n		{ \"name\": \"editing\",     \"items\" : [ \"Find\",\"Replace\",\"SpellChecker\"] },\n		{ \"name\": \"forms\",       \"items\" : [ \"Form\", \"Checkbox\", \"Radio\", \"TextField\", \"Textarea\", \"Select\", \"Button\",\"HiddenField\" ] },\n		\"/\",\n		{ \"name\": \"basicstyles\", \"items\" : [ \"Bold\",\"Italic\",\"Underline\",\"Strike\",\"Subscript\",\"Superscript\",\"-\",\"RemoveFormat\" ] },\n		{ \"name\": \"paragraph\",   \"items\" : [ \"NumberedList\",\"BulletedList\",\"-\",\"Outdent\",\"Indent\",\"-\",\"Blockquote\",\"CreateDiv\",\"-\",\"JustifyLeft\",\"JustifyCenter\",\"JustifyRight\",\"JustifyBlock\",\"-\",\"BidiLtr\",\"BidiRtl\" ] },\n		{ \"name\": \"links\",       \"items\" : [ \"Link\",\"Unlink\",\"Anchor\" ] },\n		\"/\",\n		{ \"name\": \"styles\",      \"items\" : [ \"Styles\",\"Format\" ] },\n		{ \"name\": \"colors\",      \"items\" : [ \"TextColor\",\"BGColor\" ] },\n		{ \"name\": \"insert\",      \"items\" : [ \"Image\",\"Table\",\"HorizontalRule\",\"Smiley\",\"SpecialChar\",\"Iframe\",\"InsertPre\"] },\n		{ \"name\": \"cbcommerce\",  \"items\" : [ \"MediaEmbed\",\"cbIpsumLorem\",\"cbWidgets\",\"cbContentStore\",\"cbLinks\",\"cbEntryLinks\" ] }\n		]',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da0de-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_logging','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da156-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_settings_cache','template',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da1ba-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_versions_commit_mandatory','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da214-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_notify_page','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da26e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_username','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da2d2-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_webmaster','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da368-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_title','RSS Feed by cbcommerce',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da3cc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_acceptMimeTypes','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da55c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_notify_author','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da5b6-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_welcome_title','Dashboard',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da61a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_page_excerpts','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da66a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_outgoingEmail','info@ortussolutions.com',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da6c4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_newsfeed','https://www.ortussolutions.com/blog/rss',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da728-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_createFolders','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da782-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_min_password_length','8',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da7dc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_newsfeed_count','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da836-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_cachingTimeout','60',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da890-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_cachingTimeoutIdle','15',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da8ea-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_html5uploads_maxFileSize','100',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da944-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_salt','50C8A804FEFA3CC43AFF8E68F6FF4299E311786C6B0D5A8DC070044A3C59938B70218FFE71F5C8B8C544AD26FE0C21D2F7D582F53B8CF016350BCC98FEA8B102',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782da99e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_server','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daa02-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_quickViewWidth','400',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daa5c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_2factorAuth_trusted_days','30',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daab6-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_generator','cbcommerce by Ortus Solutions',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dab10-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_bot_regex','Google|msnbot|Rambler|Yahoo|AbachoBOT|accoona|AcioRobot|ASPSeek|CocoCrawler|Dumbot|FAST-WebCrawler|GeonaBot|Gigabot|Lycos|MSRBOT|Scooter|AltaVista|IDBot|eStyle|Scrubby',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dab6a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_editors_ckeditor_excerpt_toolbar','[\n		{ \"name\": \"document\",    \"items\" : [ \"Source\",\"-\",\"Maximize\",\"ShowBlocks\" ] },\n		{ \"name\": \"basicstyles\", \"items\" : [ \"Bold\",\"Italic\",\"Underline\",\"Strike\",\"Subscript\",\"Superscript\"] },\n		{ \"name\": \"paragraph\",   \"items\" : [ \"NumberedList\",\"BulletedList\",\"-\",\"Outdent\",\"Indent\",\"CreateDiv\"] },\n		{ \"name\": \"links\",       \"items\" : [ \"Link\",\"Unlink\",\"Anchor\" ] },\n		{ \"name\": \"insert\",      \"items\" : [ \"Image\",\"Flash\",\"Table\",\"HorizontalRule\",\"Smiley\",\"SpecialChar\" ] },\n		{ \"name\": \"cbcommerce\",  \"items\" : [ \"MediaEmbed\",\"cbIpsumLorem\",\"cbWidgets\",\"cbContentStore\",\"cbLinks\",\"cbEntryLinks\" ] }\n		]',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dabce-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_blocktime','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dad54-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_moderation_expiration','30',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dadae-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_contentstore_caching','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dae12-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_gravatar_rating','PG',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dae62-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_maintenance_message','<h1>This site is down for maintenance.<br /> Please check back again soon.</h1>',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daebc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_admin_theme','cbcommerce-default',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daf20-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_recentcontentstore','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782daf7a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_moderation_blockedlist','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dafd4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_cachingTimeout','60',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db02e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_login_signout_url','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db088-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_ssl','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db0e2-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_paging_bandgap','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db13c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_maxComments','10',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db196-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db1fa-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_allowDownloads','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db254-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_caching','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db2ae-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_hit_ignore_bots','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db308-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_copyright','Ortus Solutions, Corp (www.ortussolutions.com)',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db470-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_maintenance','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db4d4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_moderation','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db524-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_cachingTimeoutIdle','15',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db57e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_admin_ssl','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db5d8-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_paging_maxentries','10',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db632-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_recentComments','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db68c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_latest_logins','10',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db6e6-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_cachingHeader','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db740-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_search_adapter','cbcommerce.models.search.DBSearch',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db79a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_notify_entry','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db7f4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_smtp','25',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db966-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_message','<p>You are making too many requests too fast, please slow down and wait {duration} seconds</p>',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782db9c0-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_2factorAuth_force','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dba1a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_paging_maxrows','20',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dba74-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_count','4',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbace-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_max_attempts','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbb28-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_admin_quicksearch_max','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbc9a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_whoisURL','http://whois.arin.net/ui/query.do?q',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbcf4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_2factorAuth_provider','email',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbd4e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_max_auth_logs','500',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbde4-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_recentPages','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbe5c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_moderation_blacklist','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dbfe2-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_editors_default','ckeditor',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc05a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_mail_tls','false',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc0d2-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_provider','CFContentMediaProvider',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc24e-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_gravatar_display','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc2c6-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_editors_ckeditor_extraplugins','cbKeyBinding,cbWidgets,cbLinks,cbEntryLinks,cbContentStore,cbIpsumLorem,wsc,mediaembed,insertpre,justify,colorbutton,showblocks,find,div,smiley,specialchar,iframe',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc44c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_email','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc5dc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_notify_contentstore','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dc762-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_paging_maxRSSComments','10',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dcb72-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_provider_caching','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd16c-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_site_blog_entrypoint','blog',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd284-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_allowUploads','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd36a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_welcome_body','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd432-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_media_directoryRoot','/cbcommerce-custom/_content',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd504-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_search_maxResults','20',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd5cc-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_bots_only','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd694-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_uiexport','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd766-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_entry_caching','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dd9aa-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_content_hit_count','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dda9a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_comments_moderation_whitelist','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782ddb8a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_caching','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782ddc7a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_security_rate_limiter_redirectURL','',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782ddd6a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_dashboard_recentEntries','5',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dde5a-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_rss_maxEntries','10',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782ddf40-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_theme_default_cbBootswatchTheme','green',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de03a-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderColors','false',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de18e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderBGColor','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de472-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderTextColor','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de5c6-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_cssStyleOverrides','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de6de-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_headerLogo','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de7ec-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showSiteSearch','true',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de8f0-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_footerBox','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782de9f4-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderTitle','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782deaf8-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderText','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782debf2-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderLink','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782decf6-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBtnText','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782dedfa-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBtnStyle','primary',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782deefe-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBg','green',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782df00c-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderImgBg','',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782df156-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPos','Top Center',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782df264-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPaddingTop','100px',b'0','2020-09-09 17:34:50','2020-09-09 17:34:50',b'0','782df35e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPaddingBottom','50px',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df462-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_rssDiscovery','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df570-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showCategoriesBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df674-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showRecentEntriesBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df778-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showSiteUpdatesBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df872-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showEntryCommentsBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782df976-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showArchivesBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782dfa7a-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showEntriesSearchBlogSide','true',b'0','2020-09-09 17:34:51','2020-09-09 17:34:51',b'0','782dfb7e-a444-11eb-ab6f-0290cc502ae3','1c81d376-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_active','true',b'1','2020-09-09 17:34:49','2020-09-09 17:34:49',b'0','782dfc82-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_enc_key','guxDy6/lBXEyt3kOkKtl7A==',b'0','2020-09-09 17:38:19','2020-09-09 17:38:19',b'0','782dfd86-a444-11eb-ab6f-0290cc502ae3',NULL),
+	('cb_theme_default_cbBootswatchTheme','green',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782dfe8a-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderColors','false',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782dff8e-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderBGColor','',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782e0092-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_overrideHeaderTextColor','',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782e0196-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_cssStyleOverrides','',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782e029a-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_headerLogo','',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782e0394-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showSiteSearch','true',b'0','2021-02-18 17:46:22','2021-02-18 17:46:22',b'0','782e0498-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_footerBox','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e059c-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderTitle','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0696-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderText','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0790-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderLink','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e088a-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBtnText','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e098e-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBtnStyle','primary',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0a92-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBg','green',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0b00-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderImgBg','',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0b64-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPos','Top Center',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0bc8-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPaddingTop','100px',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0c2c-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_hpHeaderBgPaddingBottom','50px',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0c90-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_rssDiscovery','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0cf4-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showCategoriesBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0d58-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showRecentEntriesBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0dbc-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showSiteUpdatesBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0e20-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showEntryCommentsBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0e84-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showArchivesBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0ef2-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3'),
+	('cb_theme_default_showEntriesSearchBlogSide','true',b'0','2021-02-18 17:46:23','2021-02-18 17:46:23',b'0','782e0f56-a444-11eb-ab6f-0290cc502ae3','1c81d574-a481-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_setting` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_stats`
---
 
-DROP TABLE IF EXISTS `cb_stats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cb_stats` (
-  `statsID` int(11) NOT NULL AUTO_INCREMENT,
+# Dump of table cb_site
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cb_site`;
+
+CREATE TABLE `cb_site` (
+  `siteID` varchar(36) NOT NULL DEFAULT '',
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `hits` bigint(20) DEFAULT NULL,
-  `FK_contentID` int(11) NOT NULL,
-  PRIMARY KEY (`statsID`),
-  UNIQUE KEY `FK_contentID` (`FK_contentID`),
-  KEY `FK14DE30BF91F58374` (`FK_contentID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
-  KEY `idx_deleted` (`isDeleted`),
-  CONSTRAINT `FK14DE30BF91F58374` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text,
+  `domainRegex` varchar(255) DEFAULT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `tagline` varchar(255) DEFAULT NULL,
+  `homepage` varchar(255) DEFAULT NULL,
+  `isBlogEnabled` bit(1) NOT NULL DEFAULT b'1',
+  `isSitemapEnabled` bit(1) NOT NULL DEFAULT b'1',
+  `poweredByHeader` bit(1) NOT NULL DEFAULT b'1',
+  `adminBar` bit(1) NOT NULL DEFAULT b'1',
+  `isSSL` bit(1) NOT NULL DEFAULT b'0',
+  `activeTheme` varchar(255) DEFAULT NULL,
+  `notificationEmails` text,
+  `notifyOnEntries` bit(1) NOT NULL DEFAULT b'1',
+  `notifyOnPages` bit(1) NOT NULL DEFAULT b'1',
+  `notifyOnContentStore` bit(1) NOT NULL DEFAULT b'1',
+  `domain` varchar(255) DEFAULT NULL,
+  `isActive` bit(1) NOT NULL DEFAULT b'1',
+  PRIMARY KEY (`siteID`),
+  UNIQUE KEY `slug` (`slug`),
+  KEY `idx_siteSlug` (`slug`),
+  KEY `idx_deleted` (`isDeleted`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `cb_stats`
---
+LOCK TABLES `cb_site` WRITE;
+/*!40000 ALTER TABLE `cb_site` DISABLE KEYS */;
+
+INSERT INTO `cb_site` (`siteID`, `createdDate`, `modifiedDate`, `isDeleted`, `name`, `slug`, `description`, `domainRegex`, `keywords`, `tagline`, `homepage`, `isBlogEnabled`, `isSitemapEnabled`, `poweredByHeader`, `adminBar`, `isSSL`, `activeTheme`, `notificationEmails`, `notifyOnEntries`, `notifyOnPages`, `notifyOnContentStore`, `domain`, `isActive`)
+VALUES
+	('1c81d376-a481-11eb-ab6f-0290cc502ae3','2020-09-09 17:16:59','2021-02-18 18:15:53',b'0','Default Site','default','My Awesome Site','127\\.0\\.0\\.1','','My Awesome Site','support',b'1',b'1',b'1',b'1',b'0','default','lmajano@gmail.com',b'1',b'1',b'1','127.0.0.1',b'1'),
+	('1c81d574-a481-11eb-ab6f-0290cc502ae3','2021-02-18 17:44:50','2021-02-18 17:44:50',b'0','Development Site','development','A development site','localhost','','','cbBlog',b'1',b'1',b'1',b'1',b'0','default','',b'1',b'1',b'1','localhost',b'1'),
+	('ff80808179100916017914e9c96a0039','2021-04-27 14:58:56','2021-04-27 15:58:24',b'0','Test Disabled','test-disabled','test-disabled','google.com','','test-disabled','cbBlog',b'1',b'1',b'1',b'1',b'0','default','',b'1',b'1',b'1','google.com',b'0');
+
+/*!40000 ALTER TABLE `cb_site` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table cb_stats
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cb_stats`;
+
+CREATE TABLE `cb_stats` (
+  `hits` bigint(20) DEFAULT NULL,
+  `createdDate` datetime NOT NULL,
+  `modifiedDate` datetime NOT NULL,
+  `isDeleted` bit(1) NOT NULL DEFAULT b'0',
+  `statsID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_contentID` char(36) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`statsID`),
+  UNIQUE KEY `id` (`statsID`),
+  UNIQUE KEY `statsID` (`statsID`),
+  KEY `idx_deleted` (`isDeleted`),
+  KEY `fk_cb_stats_FK_contentID` (`FK_contentID`),
+  CONSTRAINT `fk_cb_stats_FK_contentID` FOREIGN KEY (`FK_contentID`) REFERENCES `cb_content` (`contentID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_stats` WRITE;
 /*!40000 ALTER TABLE `cb_stats` DISABLE KEYS */;
+
+INSERT INTO `cb_stats` (`hits`, `createdDate`, `modifiedDate`, `isDeleted`, `statsID`, `FK_contentID`)
+VALUES
+	(10,'2016-05-03 16:23:26','2021-02-19 10:51:56',b'0','78468572-a444-11eb-ab6f-0290cc502ae3','779cd8b0-a444-11eb-ab6f-0290cc502ae3'),
+	(3,'2016-05-03 16:23:26','2021-02-19 10:51:59',b'0','784686bc-a444-11eb-ab6f-0290cc502ae3','779cd950-a444-11eb-ab6f-0290cc502ae3'),
+	(5,'2016-05-03 16:23:26','2021-02-19 10:52:00',b'0','78468752-a444-11eb-ab6f-0290cc502ae3','779cd806-a444-11eb-ab6f-0290cc502ae3'),
+	(129,'2016-05-03 16:23:26','2021-02-19 10:54:50',b'0','784687fc-a444-11eb-ab6f-0290cc502ae3','779cd2de-a444-11eb-ab6f-0290cc502ae3'),
+	(4,'2016-05-03 16:23:26','2021-02-19 10:52:03',b'0','78468874-a444-11eb-ab6f-0290cc502ae3','779cd4dc-a444-11eb-ab6f-0290cc502ae3'),
+	(1,'2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','784688d8-a444-11eb-ab6f-0290cc502ae3','779cd432-a444-11eb-ab6f-0290cc502ae3'),
+	(4,'2016-05-18 11:35:32','2021-02-19 10:51:51',b'0','78468946-a444-11eb-ab6f-0290cc502ae3','779cdb4e-a444-11eb-ab6f-0290cc502ae3'),
+	(5,'2016-05-18 11:35:32','2021-02-19 10:51:43',b'0','784689b4-a444-11eb-ab6f-0290cc502ae3','779cdf22-a444-11eb-ab6f-0290cc502ae3'),
+	(1,'2016-05-18 11:48:04','2016-05-18 11:48:04',b'0','78468a18-a444-11eb-ab6f-0290cc502ae3','779cd9fa-a444-11eb-ab6f-0290cc502ae3'),
+	(10,'2016-08-05 11:41:28','2021-02-19 10:53:28',b'0','78468a7c-a444-11eb-ab6f-0290cc502ae3','779cd18a-a444-11eb-ab6f-0290cc502ae3'),
+	(33,'2016-11-28 14:56:53','2021-05-05 20:15:29',b'0','78468aea-a444-11eb-ab6f-0290cc502ae3','779cd234-a444-11eb-ab6f-0290cc502ae3'),
+	(1,'2021-02-19 10:53:24','2021-02-19 10:53:24',b'0','78468b4e-a444-11eb-ab6f-0290cc502ae3','779cd0ea-a444-11eb-ab6f-0290cc502ae3'),
+	(1,'2021-02-19 10:53:35','2021-02-19 10:53:35',b'0','78468bb2-a444-11eb-ab6f-0290cc502ae3','779ccb0e-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_subscribers`
---
+
+# Dump of table cb_subscribers
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_subscribers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_subscribers` (
-  `subscriberID` int(11) NOT NULL AUTO_INCREMENT,
+  `subscriberEmail` varchar(255) NOT NULL,
+  `subscriberToken` varchar(255) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `subscriberEmail` varchar(255) NOT NULL,
-  `subscriberToken` varchar(255) NOT NULL,
+  `subscriberID` char(36) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`subscriberID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`subscriberID`),
+  UNIQUE KEY `subscriberID` (`subscriberID`),
+  KEY `idx_createdDate` (`createdDate`),
   KEY `idx_subscriberEmail` (`subscriberEmail`),
+  KEY `idx_subscriberCreatedDate` (`createdDate`),
   KEY `idx_deleted` (`isDeleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_subscribers`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_subscribers` WRITE;
 /*!40000 ALTER TABLE `cb_subscribers` DISABLE KEYS */;
+
+INSERT INTO `cb_subscribers` (`subscriberEmail`, `subscriberToken`, `createdDate`, `modifiedDate`, `isDeleted`, `subscriberID`)
+VALUES
+	('lmajano@ortussolutions.com','9160905AD002614B9A06E7A59F6F137F','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','78205bf4-a444-11eb-ab6f-0290cc502ae3'),
+	('lmajano@gmail.com','28B937F6F2F970189DB7ED3C909DE922','2016-05-03 16:23:26','2016-05-03 16:23:26',b'0','78205d52-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_subscribers` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cb_subscriptions`
---
+
+# Dump of table cb_subscriptions
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cb_subscriptions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cb_subscriptions` (
-  `subscriptionID` int(11) NOT NULL AUTO_INCREMENT,
+  `subscriptionToken` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
   `createdDate` datetime NOT NULL,
   `modifiedDate` datetime NOT NULL,
   `isDeleted` bit(1) NOT NULL DEFAULT b'0',
-  `subscriptionToken` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `FK_subscriberID` int(11) NOT NULL,
+  `subscriptionID` char(36) CHARACTER SET utf8 NOT NULL,
+  `FK_subscriberID` char(36) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`subscriptionID`),
-  KEY `FKE92A1716F2A66EE4` (`FK_subscriberID`),
-  KEY `idx_createDate` (`createdDate`),
-  KEY `idx_modifiedDate` (`modifiedDate`),
+  UNIQUE KEY `id` (`subscriptionID`),
+  UNIQUE KEY `subscriptionID` (`subscriptionID`),
+  KEY `idx_createdDate` (`createdDate`),
+  KEY `idx_subscriptionCreatedDate` (`createdDate`),
   KEY `idx_deleted` (`isDeleted`),
-  KEY `idx_subscriber` (`FK_subscriberID`),
-  CONSTRAINT `FKE92A1716F2A66EE4` FOREIGN KEY (`FK_subscriberID`) REFERENCES `cb_subscribers` (`subscriberID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cb_subscriptions`
---
+  KEY `fk_cb_subscriptions_FK_subscriberID` (`FK_subscriberID`),
+  CONSTRAINT `fk_cb_subscriptions_FK_subscriberID` FOREIGN KEY (`FK_subscriberID`) REFERENCES `cb_subscribers` (`subscriberID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `cb_subscriptions` WRITE;
 /*!40000 ALTER TABLE `cb_subscriptions` DISABLE KEYS */;
+
+INSERT INTO `cb_subscriptions` (`subscriptionToken`, `type`, `createdDate`, `modifiedDate`, `isDeleted`, `subscriptionID`, `FK_subscriberID`)
+VALUES
+	('AD2669C5064D113531970A672B887743','Comment','2015-08-04 16:17:43','2016-05-03 16:23:25',b'0','77e3796e-a444-11eb-ab6f-0290cc502ae3','78205d52-a444-11eb-ab6f-0290cc502ae3'),
+	('E880B3507068855A1EA3D333021267B3','Comment','2016-05-11 16:12:34','2016-05-11 16:12:34',b'0','77e37aae-a444-11eb-ab6f-0290cc502ae3','78205d52-a444-11eb-ab6f-0290cc502ae3'),
+	('CB8797B8A3C80D045D232DA79C9E6FD9','Comment','2016-05-12 12:34:18','2016-05-12 12:34:18',b'0','77e37b80-a444-11eb-ab6f-0290cc502ae3','78205bf4-a444-11eb-ab6f-0290cc502ae3');
+
 /*!40000 ALTER TABLE `cb_subscriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `cbc_SKUs`
---
 
-DROP TABLE IF EXISTS `cbc_SKUs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_SKUs` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isVirtual` tinyint(1) NOT NULL DEFAULT 0,
-  `isConsigned` tinyint(1) NOT NULL DEFAULT 0,
-  `cost` decimal(8,2) NOT NULL,
-  `basePrice` decimal(8,2) NOT NULL,
-  `conditionDescription` text DEFAULT NULL,
-  `minimumPrice` decimal(8,2) DEFAULT NULL,
-  `MSRP` decimal(8,2) DEFAULT NULL,
-  `discontinueOn` timestamp NULL DEFAULT NULL,
-  `packagedWeight` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `packagingX` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `packagingY` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `packagingZ` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `FK_product` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_consignor` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `FK_condition` char(36) CHARACTER SET utf8 NOT NULL DEFAULT '253FFEB2-EB17-4341-ACBDC45885830ABA',
-  `FK_subCondition` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `externalId` varchar(255) DEFAULT NULL,
-  `modelNumber` varchar(255) DEFAULT NULL,
-  `allowBackorder` tinyint(1) NOT NULL DEFAULT 1,
-  `isFeatured` tinyint(1) NOT NULL DEFAULT 0,
-  `MAP` decimal(8,2) DEFAULT NULL,
-  `summary` varchar(1000) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `FK_consignmentBatch` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `showPricing` tinyint(1) NOT NULL DEFAULT 1,
-  `pickUpInStore` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_SKUs_FK_product` (`FK_product`),
-  KEY `fk_cbc_SKUs_FK_condition` (`FK_condition`),
-  KEY `fk_cbc_SKUs_FK_subCondition` (`FK_subCondition`),
-  KEY `fk_cbc_SKUs_FK_consignmentBatch` (`FK_consignmentBatch`),
-  KEY `fk_cbc_SKUs_FK_consignor` (`FK_consignor`),
-  CONSTRAINT `fk_cbc_SKUs_FK_condition` FOREIGN KEY (`FK_condition`) REFERENCES `cbc_productConditions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_SKUs_FK_consignee` FOREIGN KEY (`FK_consignor`) REFERENCES `cbc_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_SKUs_FK_consignmentBatch` FOREIGN KEY (`FK_consignmentBatch`) REFERENCES `cbc_consignmentBatches` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_SKUs_FK_consignor` FOREIGN KEY (`FK_consignor`) REFERENCES `cbc_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_SKUs_FK_product` FOREIGN KEY (`FK_product`) REFERENCES `cbc_products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_SKUs_FK_subCondition` FOREIGN KEY (`FK_subCondition`) REFERENCES `cbc_productConditions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_SKUs`
---
-
-LOCK TABLES `cbc_SKUs` WRITE;
-/*!40000 ALTER TABLE `cbc_SKUs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_SKUs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_carts`
---
-
-DROP TABLE IF EXISTS `cbc_carts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_carts` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `contents` text NOT NULL,
-  `audit` text DEFAULT NULL,
-  `FK_user` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `FK_order` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_carts_FK_user` (`FK_user`),
-  KEY `fk_cbc_carts_FK_order` (`FK_order`),
-  CONSTRAINT `fk_cbc_carts_FK_order` FOREIGN KEY (`FK_order`) REFERENCES `cbc_orders` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_carts_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_carts`
---
-
-LOCK TABLES `cbc_carts` WRITE;
-/*!40000 ALTER TABLE `cbc_carts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_carts` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_consignmentBatchFees`
---
-
-DROP TABLE IF EXISTS `cbc_consignmentBatchFees`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_consignmentBatchFees` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `amount` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `notes` text DEFAULT NULL,
-  `isPaid` tinyint(1) NOT NULL DEFAULT 0,
-  `FK_batch` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_feeType` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_createdBy` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_consignmentBatchFees_FK_batch` (`FK_batch`),
-  KEY `fk_cbc_consignmentBatchFees_FK_feeType` (`FK_feeType`),
-  KEY `fk_cbc_consignmentBatchFees_FK_createdBy` (`FK_createdBy`),
-  CONSTRAINT `fk_cbc_consignmentBatchFees_FK_batch` FOREIGN KEY (`FK_batch`) REFERENCES `cbc_consignmentBatches` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_consignmentBatchFees_FK_createdBy` FOREIGN KEY (`FK_createdBy`) REFERENCES `cbc_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_consignmentBatchFees_FK_feeType` FOREIGN KEY (`FK_feeType`) REFERENCES `cbc_consignmentFeeTypes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_consignmentBatchFees`
---
-
-LOCK TABLES `cbc_consignmentBatchFees` WRITE;
-/*!40000 ALTER TABLE `cbc_consignmentBatchFees` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_consignmentBatchFees` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_consignmentBatches`
---
-
-DROP TABLE IF EXISTS `cbc_consignmentBatches`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_consignmentBatches` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `externalId` varchar(75) DEFAULT NULL,
-  `summary` varchar(400) NOT NULL,
-  `description` text DEFAULT NULL,
-  `consignorPercent` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `cleaningHourlyRate` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `repairHourlyRate` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `FK_consignor` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_consignmentBatches_FK_consignor` (`FK_consignor`),
-  CONSTRAINT `fk_cbc_consignmentBatches_FK_consignor` FOREIGN KEY (`FK_consignor`) REFERENCES `cbc_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_consignmentBatches`
---
-
-LOCK TABLES `cbc_consignmentBatches` WRITE;
-/*!40000 ALTER TABLE `cbc_consignmentBatches` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_consignmentBatches` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_consignmentFeeTypes`
---
-
-DROP TABLE IF EXISTS `cbc_consignmentFeeTypes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_consignmentFeeTypes` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `name` varchar(300) NOT NULL,
-  `description` varchar(750) NOT NULL,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_consignmentFeeTypes`
---
-
-LOCK TABLES `cbc_consignmentFeeTypes` WRITE;
-/*!40000 ALTER TABLE `cbc_consignmentFeeTypes` DISABLE KEYS */;
-INSERT INTO `cbc_consignmentFeeTypes` VALUES ('4AC1C54D-3A66-4B7C-BA710A45E1BA25F8','Repair','Fees for repair and maintenance of consigment items',3),('8D16934E-18B8-4116-B6845BF5BD94A1FD','Other','Other fees, not listed',6),('A71333C9-218A-46A4-BB75720500182FF1','Storage','Fees for storage or warehousing of consigment items',1),('B0408C32-CEAE-43E5-8F364B4C089CAEB4','Cleaning','Fees for cleaning or prepping consigment items',2),('C7C49A74-565E-4118-9CA0906C21B00E48','Shipping','Fees for shipping or return shipping of consignment items',5),('E29BBCAF-AE22-4D42-BB1E8D8100FD24AD','Disposal','Fees for disposal of consignment items',4);
-/*!40000 ALTER TABLE `cbc_consignmentFeeTypes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_customerAddresses`
---
-
-DROP TABLE IF EXISTS `cbc_customerAddresses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_customerAddresses` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `designation` varchar(25) NOT NULL,
-  `address1` varchar(255) NOT NULL,
-  `address2` varchar(255) DEFAULT NULL,
-  `city` varchar(255) NOT NULL,
-  `province` varchar(3) NOT NULL,
-  `postalCode` varchar(15) NOT NULL,
-  `country` varchar(3) NOT NULL DEFAULT 'USA',
-  `isPrimary` tinyint(1) NOT NULL DEFAULT 0,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  `fullName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_customerAddresses_FK_user` (`FK_user`),
-  CONSTRAINT `fk_cbc_customerAddresses_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_customerAddresses`
---
-
-LOCK TABLES `cbc_customerAddresses` WRITE;
-/*!40000 ALTER TABLE `cbc_customerAddresses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_customerAddresses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_inventoryLocationStock`
---
-
-DROP TABLE IF EXISTS `cbc_inventoryLocationStock`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_inventoryLocationStock` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `available` int(11) NOT NULL DEFAULT 0,
-  `unaccounted` int(11) NOT NULL DEFAULT 0,
-  `countRequired` tinyint(1) NOT NULL DEFAULT 0,
-  `allowBackorder` tinyint(1) NOT NULL DEFAULT 0,
-  `FK_sku` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_inventoryLocation` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_inventoryLocationStock_FK_sku` (`FK_sku`),
-  KEY `fk_cbc_inventoryLocationStock_FK_inventoryLocation` (`FK_inventoryLocation`),
-  CONSTRAINT `fk_cbc_inventoryLocationStock_FK_inventoryLocation` FOREIGN KEY (`FK_inventoryLocation`) REFERENCES `cbc_inventoryLocations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_inventoryLocationStock_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_inventoryLocationStock`
---
-
-LOCK TABLES `cbc_inventoryLocationStock` WRITE;
-/*!40000 ALTER TABLE `cbc_inventoryLocationStock` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_inventoryLocationStock` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_inventoryLocations`
---
-
-DROP TABLE IF EXISTS `cbc_inventoryLocations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_inventoryLocations` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `address1` varchar(255) DEFAULT NULL,
-  `address2` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `province` varchar(3) DEFAULT NULL,
-  `postalCode` varchar(15) DEFAULT NULL,
-  `country` varchar(3) NOT NULL DEFAULT 'USA',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_inventoryLocations`
---
-
-LOCK TABLES `cbc_inventoryLocations` WRITE;
-/*!40000 ALTER TABLE `cbc_inventoryLocations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_inventoryLocations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_lookups_products_categories`
---
-
-DROP TABLE IF EXISTS `cbc_lookups_products_categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_lookups_products_categories` (
-  `increments` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `FK_product` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_category` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`increments`),
-  KEY `fk_cbc_lookups_products_categories_FK_product` (`FK_product`),
-  KEY `fk_cbc_lookups_products_categories_FK_category` (`FK_category`),
-  CONSTRAINT `fk_cbc_lookups_products_categories_FK_category` FOREIGN KEY (`FK_category`) REFERENCES `cbc_productCategories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_lookups_products_categories_FK_product` FOREIGN KEY (`FK_product`) REFERENCES `cbc_products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_lookups_products_categories`
---
-
-LOCK TABLES `cbc_lookups_products_categories` WRITE;
-/*!40000 ALTER TABLE `cbc_lookups_products_categories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_lookups_products_categories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_lookups_roles_permissions`
---
-
-DROP TABLE IF EXISTS `cbc_lookups_roles_permissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_lookups_roles_permissions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `FK_permission` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_user_role` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_lookups_roles_permissions_FK_permission` (`FK_permission`),
-  KEY `fk_cbc_lookups_roles_permissions_FK_user_role` (`FK_user_role`),
-  CONSTRAINT `fk_cbc_lookups_roles_permissions_FK_permission` FOREIGN KEY (`FK_permission`) REFERENCES `cbc_userPermissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cbc_lookups_roles_permissions_FK_user_role` FOREIGN KEY (`FK_user_role`) REFERENCES `cbc_userRoles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_lookups_roles_permissions`
---
-
-LOCK TABLES `cbc_lookups_roles_permissions` WRITE;
-/*!40000 ALTER TABLE `cbc_lookups_roles_permissions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_lookups_roles_permissions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_lookups_users_explicitPermissions`
---
-
-DROP TABLE IF EXISTS `cbc_lookups_users_explicitPermissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_lookups_users_explicitPermissions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `FK_permission` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_lookups_users_explicitPermissions_FK_permission` (`FK_permission`),
-  KEY `fk_cbc_lookups_users_explicitPermissions_FK_user` (`FK_user`),
-  CONSTRAINT `fk_cbc_lookups_users_explicitPermissions_FK_permission` FOREIGN KEY (`FK_permission`) REFERENCES `cbc_userPermissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cbc_lookups_users_explicitPermissions_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_lookups_users_explicitPermissions`
---
-
-LOCK TABLES `cbc_lookups_users_explicitPermissions` WRITE;
-/*!40000 ALTER TABLE `cbc_lookups_users_explicitPermissions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_lookups_users_explicitPermissions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_lookups_users_roles`
---
-
-DROP TABLE IF EXISTS `cbc_lookups_users_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_lookups_users_roles` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_user_role` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_lookups_users_roles_FK_user` (`FK_user`),
-  KEY `fk_cbc_lookups_users_roles_FK_user_role` (`FK_user_role`),
-  CONSTRAINT `fk_cbc_lookups_users_roles_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cbc_lookups_users_roles_FK_user_role` FOREIGN KEY (`FK_user_role`) REFERENCES `cbc_userRoles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_lookups_users_roles`
---
-
-LOCK TABLES `cbc_lookups_users_roles` WRITE;
-/*!40000 ALTER TABLE `cbc_lookups_users_roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_lookups_users_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_media`
---
-
-DROP TABLE IF EXISTS `cbc_media`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_media` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `designation` varchar(255) NOT NULL DEFAULT 'image',
-  `title` varchar(255) DEFAULT NULL,
-  `caption` varchar(750) DEFAULT NULL,
-  `originalFileName` varchar(255) NOT NULL,
-  `fileLocation` varchar(255) NOT NULL,
-  `fileSizeBytes` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_media`
---
-
-LOCK TABLES `cbc_media` WRITE;
-/*!40000 ALTER TABLE `cbc_media` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_media` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_orderInvoices`
---
-
-DROP TABLE IF EXISTS `cbc_orderInvoices`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_orderInvoices` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `internalId` varchar(255) NOT NULL,
-  `externalId` varchar(255) DEFAULT NULL,
-  `terms` text DEFAULT NULL,
-  `note` text DEFAULT NULL,
-  `FK_wishlist` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_orderInvoices_FK_wishlist` (`FK_wishlist`),
-  CONSTRAINT `fk_cbc_orderInvoices_FK_wishlist` FOREIGN KEY (`FK_wishlist`) REFERENCES `cbc_wishlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_orderInvoices`
---
-
-LOCK TABLES `cbc_orderInvoices` WRITE;
-/*!40000 ALTER TABLE `cbc_orderInvoices` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_orderInvoices` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_orderItems`
---
-
-DROP TABLE IF EXISTS `cbc_orderItems`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_orderItems` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isVirtual` tinyint(1) NOT NULL DEFAULT 0,
-  `quantityOrdered` int(11) NOT NULL DEFAULT 1,
-  `quantityCancelled` int(11) NOT NULL DEFAULT 0,
-  `quantityRefunded` int(11) NOT NULL DEFAULT 0,
-  `quantityDownloaded` int(11) DEFAULT NULL,
-  `originalPrice` decimal(8,2) NOT NULL,
-  `originalCost` decimal(8,2) NOT NULL,
-  `productSnapshot` text DEFAULT NULL,
-  `FK_order` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_orderItems_FK_order` (`FK_order`),
-  CONSTRAINT `fk_cbc_orderItems_FK_order` FOREIGN KEY (`FK_order`) REFERENCES `cbc_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_orderItems`
---
-
-LOCK TABLES `cbc_orderItems` WRITE;
-/*!40000 ALTER TABLE `cbc_orderItems` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_orderItems` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_orderShipments`
---
-
-DROP TABLE IF EXISTS `cbc_orderShipments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_orderShipments` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `quantity` int(11) NOT NULL,
-  `carrierReferenceNumber` varchar(125) NOT NULL,
-  `FK_order` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_inventoryLocation` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_orderShipments_FK_order` (`FK_order`),
-  KEY `fk_cbc_orderShipments_FK_inventoryLocation` (`FK_inventoryLocation`),
-  CONSTRAINT `fk_cbc_orderShipments_FK_inventoryLocation` FOREIGN KEY (`FK_inventoryLocation`) REFERENCES `cbc_inventoryLocations` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_orderShipments_FK_order` FOREIGN KEY (`FK_order`) REFERENCES `cbc_orderItems` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_orderShipments`
---
-
-LOCK TABLES `cbc_orderShipments` WRITE;
-/*!40000 ALTER TABLE `cbc_orderShipments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_orderShipments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_orders`
---
-
-DROP TABLE IF EXISTS `cbc_orders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_orders` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `approvalTime` timestamp NULL DEFAULT NULL,
-  `fulfilledTime` timestamp NULL DEFAULT NULL,
-  `subtotal` decimal(8,2) NOT NULL,
-  `shipping` decimal(8,2) NOT NULL,
-  `fees` decimal(8,2) NOT NULL,
-  `tax` decimal(8,2) NOT NULL,
-  `discount` decimal(8,2) NOT NULL,
-  `total` decimal(8,2) NOT NULL,
-  `paidInFull` timestamp NULL DEFAULT NULL,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_shippingAddress` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_billingAddress` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_invoice` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_orders_FK_user` (`FK_user`),
-  KEY `fk_cbc_orders_FK_shippingAddress` (`FK_shippingAddress`),
-  KEY `fk_cbc_orders_FK_billingAddress` (`FK_billingAddress`),
-  KEY `fk_cbc_orders_FK_invoice` (`FK_invoice`),
-  CONSTRAINT `fk_cbc_orders_FK_billingAddress` FOREIGN KEY (`FK_billingAddress`) REFERENCES `cbc_customerAddresses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_orders_FK_invoice` FOREIGN KEY (`FK_invoice`) REFERENCES `cbc_orderInvoices` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_orders_FK_shippingAddress` FOREIGN KEY (`FK_shippingAddress`) REFERENCES `cbc_customerAddresses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_orders_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_orders`
---
-
-LOCK TABLES `cbc_orders` WRITE;
-/*!40000 ALTER TABLE `cbc_orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_payments`
---
-
-DROP TABLE IF EXISTS `cbc_payments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_payments` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `externalTransactionID` varchar(255) NOT NULL,
-  `amount` decimal(8,2) NOT NULL,
-  `comment` text DEFAULT NULL,
-  `lastFour` int(11) NOT NULL,
-  `paymentMethod` varchar(255) NOT NULL,
-  `FK_order` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_externalTransactionID` (`externalTransactionID`),
-  KEY `fk_cbc_payments_FK_order` (`FK_order`),
-  CONSTRAINT `fk_cbc_payments_FK_order` FOREIGN KEY (`FK_order`) REFERENCES `cbc_orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_payments`
---
-
-LOCK TABLES `cbc_payments` WRITE;
-/*!40000 ALTER TABLE `cbc_payments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_payments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productCategories`
---
-
-DROP TABLE IF EXISTS `cbc_productCategories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productCategories` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `FK_parent` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `isFeatured` tinyint(1) NOT NULL DEFAULT 0,
-  `hitCount` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productCategories_FK_parent` (`FK_parent`),
-  KEY `idx_cbc_productCategories_name` (`name`),
-  CONSTRAINT `fk_cbc_productCategories_FK_parent` FOREIGN KEY (`FK_parent`) REFERENCES `cbc_productCategories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productCategories`
---
-
-LOCK TABLES `cbc_productCategories` WRITE;
-/*!40000 ALTER TABLE `cbc_productCategories` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productCategories` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productCategoryMedia`
---
-
-DROP TABLE IF EXISTS `cbc_productCategoryMedia`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productCategoryMedia` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isPrimary` tinyint(1) NOT NULL DEFAULT 0,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `FK_media` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_category` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productCategoryMedia_FK_media` (`FK_media`),
-  KEY `fk_cbc_productCategoryMedia_FK_category` (`FK_category`),
-  KEY `idx_productCategoryMedia_isPrimary` (`isPrimary`),
-  KEY `idx_productCategoryMedia_sort` (`displayOrder`,`createdTime`),
-  CONSTRAINT `fk_cbc_productCategoryMedia_FK_category` FOREIGN KEY (`FK_category`) REFERENCES `cbc_productCategories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_productCategoryMedia_FK_media` FOREIGN KEY (`FK_media`) REFERENCES `cbc_media` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productCategoryMedia`
---
-
-LOCK TABLES `cbc_productCategoryMedia` WRITE;
-/*!40000 ALTER TABLE `cbc_productCategoryMedia` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productCategoryMedia` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productConditions`
---
-
-DROP TABLE IF EXISTS `cbc_productConditions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productConditions` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(25) NOT NULL,
-  `FK_parent` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productConditions_FK_parent` (`FK_parent`),
-  CONSTRAINT `fk_cbc_productConditions_FK_parent` FOREIGN KEY (`FK_parent`) REFERENCES `cbc_productConditions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productConditions`
---
-
-LOCK TABLES `cbc_productConditions` WRITE;
-/*!40000 ALTER TABLE `cbc_productConditions` DISABLE KEYS */;
-INSERT INTO `cbc_productConditions` VALUES ('1301F67E-630A-4B7F-B58FA013C05F685F','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Excellent','F0189B2F-E0AC-41A8-95718596864D76A3'),('18B5652B-4EE6-4961-A6B50465278901A0','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Good','F0189B2F-E0AC-41A8-95718596864D76A3'),('1BD5B757-B887-4390-8B3F34B93E895565','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Unopened','253FFEB2-EB17-4341-ACBDC45885830ABA'),('253FFEB2-EB17-4341-ACBDC45885830ABA','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'New',NULL),('5E07DFE8-F7E8-411B-AF831CDFE17998AF','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Poor','F0189B2F-E0AC-41A8-95718596864D76A3'),('667F165D-A93F-433F-8443D13152CDAD50','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Like New','F0189B2F-E0AC-41A8-95718596864D76A3'),('9EEC133E-C345-45A5-BEAB0C99F7E39CF1','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Fair','F0189B2F-E0AC-41A8-95718596864D76A3'),('F0189B2F-E0AC-41A8-95718596864D76A3','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Used',NULL);
-/*!40000 ALTER TABLE `cbc_productConditions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productMedia`
---
-
-DROP TABLE IF EXISTS `cbc_productMedia`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productMedia` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isPrimary` tinyint(1) NOT NULL DEFAULT 0,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `FK_media` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_product` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productMedia_FK_media` (`FK_media`),
-  KEY `fk_cbc_productMedia_FK_product` (`FK_product`),
-  KEY `idx_productMedia_isPrimary` (`isPrimary`),
-  KEY `idx_productMedia_sort` (`displayOrder`,`createdTime`),
-  CONSTRAINT `fk_cbc_productMedia_FK_media` FOREIGN KEY (`FK_media`) REFERENCES `cbc_media` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `fk_cbc_productMedia_FK_product` FOREIGN KEY (`FK_product`) REFERENCES `cbc_products` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productMedia`
---
-
-LOCK TABLES `cbc_productMedia` WRITE;
-/*!40000 ALTER TABLE `cbc_productMedia` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productMedia` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productReviews`
---
-
-DROP TABLE IF EXISTS `cbc_productReviews`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productReviews` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isPublished` tinyint(1) NOT NULL DEFAULT 0,
-  `rating` decimal(8,2) NOT NULL,
-  `relevancyScore` decimal(8,2) NOT NULL DEFAULT 0.00,
-  `summary` varchar(255) DEFAULT NULL,
-  `comment` text DEFAULT NULL,
-  `FK_product` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_sku` char(36) CHARACTER SET utf8 DEFAULT NULL,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productReviews_FK_product` (`FK_product`),
-  KEY `fk_cbc_productReviews_FK_sku` (`FK_sku`),
-  KEY `fk_cbc_productReviews_FK_user` (`FK_user`),
-  CONSTRAINT `fk_cbc_productReviews_FK_product` FOREIGN KEY (`FK_product`) REFERENCES `cbc_products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_productReviews_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_productReviews_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productReviews`
---
-
-LOCK TABLES `cbc_productReviews` WRITE;
-/*!40000 ALTER TABLE `cbc_productReviews` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productReviews` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productSKUMedia`
---
-
-DROP TABLE IF EXISTS `cbc_productSKUMedia`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productSKUMedia` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `isPrimary` tinyint(1) NOT NULL DEFAULT 0,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `FK_media` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_sku` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productSKUMedia_FK_media` (`FK_media`),
-  KEY `fk_cbc_productSKUMedia_FK_sku` (`FK_sku`),
-  CONSTRAINT `fk_cbc_productSKUMedia_FK_media` FOREIGN KEY (`FK_media`) REFERENCES `cbc_media` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `fk_cbc_productSKUMedia_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productSKUMedia`
---
-
-LOCK TABLES `cbc_productSKUMedia` WRITE;
-/*!40000 ALTER TABLE `cbc_productSKUMedia` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productSKUMedia` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_productSKUOptions`
---
-
-DROP TABLE IF EXISTS `cbc_productSKUOptions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_productSKUOptions` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `name` varchar(100) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  `FK_sku` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_productSKUOptions_FK_sku` (`FK_sku`),
-  CONSTRAINT `fk_cbc_productSKUOptions_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_productSKUOptions`
---
-
-LOCK TABLES `cbc_productSKUOptions` WRITE;
-/*!40000 ALTER TABLE `cbc_productSKUOptions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_productSKUOptions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_products`
---
-
-DROP TABLE IF EXISTS `cbc_products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_products` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(300) NOT NULL,
-  `shortDescription` varchar(1000) NOT NULL,
-  `description` text NOT NULL,
-  `hasOptions` tinyint(1) NOT NULL,
-  `requiredOptions` text NOT NULL,
-  `displayOrder` int(11) NOT NULL DEFAULT 0,
-  `externalId` varchar(255) DEFAULT NULL,
-  `manufacturer` varchar(255) DEFAULT NULL,
-  `isFeatured` tinyint(1) NOT NULL DEFAULT 0,
-  `hitCount` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `idx_cbc_products_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_products`
---
-
-LOCK TABLES `cbc_products` WRITE;
-/*!40000 ALTER TABLE `cbc_products` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_products` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_tenantSettings`
---
-
-DROP TABLE IF EXISTS `cbc_tenantSettings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_tenantSettings` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `key` varchar(255) NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_tenantSettings`
---
-
-LOCK TABLES `cbc_tenantSettings` WRITE;
-/*!40000 ALTER TABLE `cbc_tenantSettings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_tenantSettings` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_userPermissions`
---
-
-DROP TABLE IF EXISTS `cbc_userPermissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_userPermissions` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `prefix` varchar(75) NOT NULL,
-  `suffix` varchar(75) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_userPermissions`
---
-
-LOCK TABLES `cbc_userPermissions` WRITE;
-/*!40000 ALTER TABLE `cbc_userPermissions` DISABLE KEYS */;
-INSERT INTO `cbc_userPermissions` VALUES ('05D51BF6-F3F2-4985-88A05C87D4D90300','2019-12-17 13:09:25','2019-12-17 13:09:25','Order','Approve'),('07A3D79F-DDF6-47DC-86BA0025046EFFD8','2019-12-17 13:09:25','2019-12-17 13:09:25','Return','Configure'),('15435527-DA36-4FD3-B834D77B3131450B','2019-12-17 13:09:25','2019-12-17 13:09:25','System','Configure'),('24793278-4909-4A0A-A1DFCF45D1177E54','2019-12-17 13:09:25','2019-12-17 13:09:25','Return','Delete'),('2AA982CF-D329-4AEF-85098A89E717D25A','2019-12-17 13:09:25','2019-12-17 13:09:25','Order','Edit'),('37876915-C6C2-4CAC-B05603F01186EBF0','2019-12-17 13:09:25','2019-12-17 13:09:25','System','Delete'),('457EDADE-758C-4011-A37F3F5D39640D66','2019-12-17 13:09:25','2019-12-17 13:09:25','Product','Delete'),('5E0BCC05-C82A-450F-9D5D7CA67C257045','2019-12-17 13:09:25','2019-12-17 13:09:25','Order','Configure'),('62EB438F-2E49-4D6D-98119E8B6BF46D85','2019-12-17 13:09:25','2019-12-17 13:09:25','Product','Manage'),('81031903-C482-4685-B54516FBDA3DE2A4','2019-12-17 13:09:25','2019-12-17 13:09:25','Return','Approve'),('8D81EAC7-8201-4F08-AE793CEBBB7DF4CC','2019-12-17 13:09:25','2019-12-17 13:09:25','System','Edit'),('ABE36CBF-8661-4D1E-8982AABE5A0E8767','2019-12-17 13:09:25','2019-12-17 13:09:25','Product','Approve'),('BD34E1A6-369E-46F3-B3F612E61355667B','2019-12-17 13:09:25','2019-12-17 13:09:25','Order','Manage'),('C5976436-C246-4449-9B63641C047F5D3E','2019-12-17 13:09:25','2019-12-17 13:09:25','System','Approve'),('C86D9B3A-93B5-4842-A770671489AE6F62','2019-12-17 13:09:25','2019-12-17 13:09:25','System','Manage'),('D24AA556-65DF-4E85-88583A519DF9721E','2019-12-17 13:09:25','2019-12-17 13:09:25','Order','Delete'),('D3118FB8-3A23-4E7A-BF137845D9B075B3','2019-12-17 13:09:25','2019-12-17 13:09:25','Return','Manage'),('E4BAC0C7-9D22-49B8-ADC0F7095A26BA73','2019-12-17 13:09:25','2019-12-17 13:09:25','Product','Edit'),('E63BD4E8-833D-4DA8-923B266E0C246F84','2019-12-17 13:09:25','2019-12-17 13:09:25','Return','Edit'),('FD04E719-4DB1-47E9-BEC3D07317C2F1CC','2019-12-17 13:09:25','2019-12-17 13:09:25','Product','Configure');
-/*!40000 ALTER TABLE `cbc_userPermissions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_userRoles`
---
-
-DROP TABLE IF EXISTS `cbc_userRoles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_userRoles` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(75) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_userRoles`
---
-
-LOCK TABLES `cbc_userRoles` WRITE;
-/*!40000 ALTER TABLE `cbc_userRoles` DISABLE KEYS */;
-INSERT INTO `cbc_userRoles` VALUES ('13C6088A-BF47-413B-8EF30F232FE79FF4','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Administrator'),('4288D24D-84FE-4C8D-B884507D80B1891D','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'User'),('474E7EF3-C8C4-4341-B71B0F351DCF2512','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Editor'),('5348D388-D70B-4B4A-A9DD1E833D518138','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Manager'),('6B022515-6191-47DC-BC5E82A0220F5220','2019-12-17 13:09:26','2019-12-17 13:09:26',1,'Consignor'),('87FC240F-192D-4013-AE4C7DAA2591EC3A','2019-12-17 13:09:25','2019-12-17 13:09:25',1,'Marketer');
-/*!40000 ALTER TABLE `cbc_userRoles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_users`
---
-
-DROP TABLE IF EXISTS `cbc_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_users` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `firstName` varchar(255) DEFAULT NULL,
-  `lastName` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `primaryPhone` char(25) CHARACTER SET utf8 DEFAULT NULL,
-  `secondaryPhone` char(25) CHARACTER SET utf8 DEFAULT NULL,
-  `resetToken` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_users`
---
-
-LOCK TABLES `cbc_users` WRITE;
-/*!40000 ALTER TABLE `cbc_users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_users` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_virtualSKUs`
---
-
-DROP TABLE IF EXISTS `cbc_virtualSKUs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_virtualSKUs` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `location` varchar(255) NOT NULL,
-  `FK_sku` char(36) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_virtualSKUs_FK_sku` (`FK_sku`),
-  CONSTRAINT `fk_cbc_virtualSKUs_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_virtualSKUs`
---
-
-LOCK TABLES `cbc_virtualSKUs` WRITE;
-/*!40000 ALTER TABLE `cbc_virtualSKUs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_virtualSKUs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_wishlistItems`
---
-
-DROP TABLE IF EXISTS `cbc_wishlistItems`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_wishlistItems` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `baselinePrice` decimal(10,0) NOT NULL,
-  `FK_sku` char(36) CHARACTER SET utf8 NOT NULL,
-  `FK_wishlist` char(36) CHARACTER SET utf8 NOT NULL,
-  `discountPrice` decimal(10,0) NOT NULL DEFAULT 0,
-  `quantity` int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_wishlistItems_FK_sku` (`FK_sku`),
-  KEY `fk_cbc_wishlistItems_FK_wishlist` (`FK_wishlist`),
-  CONSTRAINT `fk_cbc_wishlistItems_FK_sku` FOREIGN KEY (`FK_sku`) REFERENCES `cbc_SKUs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cbc_wishlistItems_FK_wishlist` FOREIGN KEY (`FK_wishlist`) REFERENCES `cbc_wishlists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_wishlistItems`
---
-
-LOCK TABLES `cbc_wishlistItems` WRITE;
-/*!40000 ALTER TABLE `cbc_wishlistItems` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_wishlistItems` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cbc_wishlists`
---
-
-DROP TABLE IF EXISTS `cbc_wishlists`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cbc_wishlists` (
-  `id` char(36) CHARACTER SET utf8 NOT NULL,
-  `createdTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modifiedTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `isActive` tinyint(1) NOT NULL DEFAULT 1,
-  `name` varchar(255) NOT NULL,
-  `FK_user` char(36) CHARACTER SET utf8 NOT NULL,
-  `isDefault` tinyint(1) NOT NULL DEFAULT 0,
-  `isPublic` tinyint(1) NOT NULL DEFAULT 0,
-  `description` varchar(750) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_cbc_wishlists_FK_user` (`FK_user`),
-  CONSTRAINT `fk_cbc_wishlists_FK_user` FOREIGN KEY (`FK_user`) REFERENCES `cbc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cbc_wishlists`
---
-
-LOCK TABLES `cbc_wishlists` WRITE;
-/*!40000 ALTER TABLE `cbc_wishlists` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cbc_wishlists` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cf_session_data`
---
-
-DROP TABLE IF EXISTS `cf_session_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cf_session_data` (
-  `expires` varchar(64) NOT NULL,
-  `cfid` varchar(64) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `data` longtext NOT NULL,
-  UNIQUE KEY `ix_cf_session_data` (`cfid`,`name`,`expires`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cf_session_data`
---
-
-LOCK TABLES `cf_session_data` WRITE;
-/*!40000 ALTER TABLE `cf_session_data` DISABLE KEYS */;
-INSERT INTO `cf_session_data` VALUES ('1576591766949','d2326e46-cdbd-4d3e-9881-c769a359b3fa','ContentBox-Docker-','rO0ABXNyAC9sdWNlZS5ydW50aW1lLnR5cGUuc2NvcGUuc3RvcmFnZS5JS1N0b3JhZ2VWYWx1ZSXcdnpeLxPxAgACSgAMbGFzdE1vZGlmaWVkWwAEYmFycnQAAltCeHAAAAFvE/pHOnVyAAJbQqzzF/gGCFTgAgAAeHAAAAQ7rO0ABXNyADhsdWNlZS5jb21tb25zLmNvbGxlY3Rpb24uY29uY3VycmVudC5Db25jdXJyZW50SGFzaE1hcFByb2SZ3hKdhyk9DAAAeHIAJ2x1Y2VlLmNvbW1vbnMuY29sbGVjdGlvbi5BYnN0cmFjdE1hcFByb5cs+1bXolTMDAAAeHBzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAMdwgAAAAQAAAAB3NyABpsdWNlZS5ydW50aW1lLnR5cGUuS2V5SW1wbIT5vy9p9G9nDAAAeHB0AARjZmlkeHNyADNsdWNlZS5ydW50aW1lLnR5cGUuc2NvcGUuc3RvcmFnZS5JS1N0b3JhZ2VTY29wZUl0ZW2OXwiJ9eeLTgIAA0oAC2xhc3RNb2RpZmVkWgAHcmVtb3ZlZEwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHAAAAFvE/pG2QB0ACRkMjMyNmU0Ni1jZGJkLTRkM2UtOTg4MS1jNzY5YTM1OWIzZmFzcQB+AAV0ABBjYm94X2ZsYXNoX3Njb3BleHNxAH4ACAAAAW8T+kc4AHNyAB1sdWNlZS5ydW50aW1lLnR5cGUuU3RydWN0SW1wbBO7DyUhSuS5AgABTAADbWFwdAAhTGx1Y2VlL2NvbW1vbnMvY29sbGVjdGlvbi9NYXBQcm87eHIAJWx1Y2VlLnJ1bnRpbWUudHlwZS51dGlsLlN0cnVjdFN1cHBvcnRnKbKJGDmF4wIAAHhwc3EAfgAAc3EAfgADP0AAAAAAAAB3CAAAABAAAAAAeHhzcQB+AAV0AAlsYXN0dmlzaXR4c3EAfgAIAAABbxP6RzkAc3IAImx1Y2VlLnJ1bnRpbWUudHlwZS5kdC5EYXRlVGltZUltcGyL7K30ezFucgIAAHhyAB5sdWNlZS5ydW50aW1lLnR5cGUuZHQuRGF0ZVRpbWUfMrJraWnmvwIAAHhyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAW8T+kbEeHNxAH4ABXQACXNlc3Npb25pZHhzcQB+AAgAAAFvE/pG2QB0ADlDb250ZW50Qm94LURvY2tlci1fZDIzMjZlNDYtY2RiZC00ZDNlLTk4ODEtYzc2OWEzNTliM2ZhXzBzcQB+AAV0AAt0aW1lY3JlYXRlZHhzcQB+AAgAAAFvE/pHOQBzcQB+ABh3CAAAAW8T86T0eHNxAH4ABXQACHVybHRva2VueHNxAH4ACAAAAW8T+kbZAHQAM0NGSUQ9ZDIzMjZlNDYtY2RiZC00ZDNlLTk4ODEtYzc2OWEzNTliM2ZhJkNGVE9LRU49MHNxAH4ABXQAB2NmdG9rZW54c3EAfgAIAAABbxP6RtkAdAABMHh4');
-/*!40000 ALTER TABLE `cf_session_data` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `cfmigrations`
---
+# Dump of table cfmigrations
+# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `cfmigrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `cfmigrations` (
-  `name` varchar(190) NOT NULL,
+  `name` varchar(190) COLLATE utf8mb4_bin NOT NULL,
   `migration_ran` datetime NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
---
--- Dumping data for table `cfmigrations`
---
 
-LOCK TABLES `cfmigrations` WRITE;
-/*!40000 ALTER TABLE `cfmigrations` DISABLE KEYS */;
-INSERT INTO `cfmigrations` VALUES ('2018_03_31_083126_cbCommerce_Install','2019-12-17 13:09:25'),('2018_10_11_072448_createOrderInvoices','2019-12-17 13:09:25'),('2018_12_04_070709_AddCategorySortOrder','2019-12-17 13:09:25'),('2018_12_04_082801_AddProductSKUSortOrder','2019-12-17 13:09:25'),('2018_12_04_083224_AddProductSKUExternalRefs','2019-12-17 13:09:25'),('2018_12_04_084946_AddSkuModelNumber','2019-12-17 13:09:25'),('2018_12_05_163318_AddManufacturerColumn','2019-12-17 13:09:25'),('2018_12_11_122144_AddSkuBackorderColumns','2019-12-17 13:09:25'),('2018_12_18_085919_AddWishlistBooleans','2019-12-17 13:09:25'),('2018_12_20_162533_CreateCategoryMediaTable','2019-12-17 13:09:26'),('2018_12_20_191257_ChangeOrderColumnName','2019-12-17 13:09:26'),('2018_12_26_102959_AddReviewsSchema','2019-12-17 13:09:26'),('2018_12_27_113301_AddFeatureColumns','2019-12-17 13:09:26'),('2019_01_01_232014_AllowSkuDiscontinueNulls','2019-12-17 13:09:26'),('2019_01_02_123225_FixSKUMediaFKSKUCasing','2019-12-17 13:09:26'),('2019_01_03_105127_AddHitsColumns','2019-12-17 13:09:26'),('2019_01_03_205645_AddConsigneeRole','2019-12-17 13:09:26'),('2019_01_08_151221_AllowNull','2019-12-17 13:09:26'),('2019_01_08_155951_AddFullNameColumn','2019-12-17 13:09:26'),('2019_02_11_152956_AddOptionsEntity','2019-12-17 13:09:26'),('2019_02_11_193830_AddMAPColumnToSKUs','2019-12-17 13:09:26'),('2019_02_11_220408_AddSKUDescriptionFields','2019-12-17 13:09:26'),('2019_03_05_220524_AddConsignmentBatchTable','2019-12-17 13:09:26'),('2019_03_06_073658_RenameConsigneeToConsignor','2019-12-17 13:09:26'),('2019_03_12_224716_CreateTenantSettingsTable','2019-12-17 13:09:26'),('2019_03_19_110458_AddSkuDisplyPricingField','2019-12-17 13:09:26'),('2019_03_21_084255_AddWishlistItemDiscountPrice','2019-12-17 13:09:26'),('2019_03_23_180323_AddDescriptionToWishlist','2019-12-17 13:09:26'),('2019_03_25_081915_AddWishlistItemQuantity','2019-12-17 13:09:26'),('2019_04_17_085301_AddUserResetToken','2019-12-17 13:09:26'),('2019_04_17_191912_AddCategoryAndProductIndexes','2019-12-17 13:09:26'),('2019_04_23_172348_IncreaseResetTokenLength','2019-12-17 13:09:26'),('2019_05_06_072840_AddStorePickupColumnToSkus','2019-12-17 13:09:26');
-/*!40000 ALTER TABLE `cfmigrations` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2019-12-17 13:10:30

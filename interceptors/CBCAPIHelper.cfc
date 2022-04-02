@@ -6,12 +6,11 @@
 * @author      Jon Clausen <jclausen@ortussolutions.com>
 **/
 component{
-    property name="auth" inject="authenticationService@cbauth";
 
     void function preProcess( event, interceptData, buffer, rc, prc ) eventPattern="cbCommerce:API." {
         //timestamps and other auto-generated keys to remove from inbound payloads
         var contextClear = [ "createdTime", "modifiedTime", "href" ];
-        contextClear.each( function( clear ){ structDelete( rc, clear ) } );
+        contextClear.each( function( clear ){ structDelete( rc, clear ); } );
 
         event.paramValue( "includes", "" );
         event.paramValue( "excludes", "" );
@@ -22,13 +21,13 @@ component{
         event.paramvalue( "offset", ( rc.page - 1 ) * rc.maxrows );
         if ( ! isNumeric( rc.offset ) ) { rc.offset = ( rc.page - 1 ) * rc.maxrows; }
         event.paramValue( "sortOrder", "createdTime DESC" );
- 
+
         // By default the active values should be returned
         event.paramValue( "isActive", 1 );
 
-        if( auth.isLoggedIn() ){
-            prc[ "authenticatedUser" ] = auth.getUser();
+        if( auth().isLoggedIn() ){
+            prc[ "authenticatedUser" ] = auth().getUser();
         }
     }
-    
+
 }

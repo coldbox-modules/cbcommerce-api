@@ -39,7 +39,7 @@ component{
             );
         } );
 
-        var searchResults = arguments.entity.getEntities();
+        var searchResults = arguments.entity.get();
 
         structDelete( arguments, "entity" );
 
@@ -68,7 +68,7 @@ component{
         return builder.count();
     }
 
-    
+
 
     /**
 	* @searchCollection 		struct 		The collection of arguments for the search ( e.g. - the public request collection  )
@@ -130,7 +130,7 @@ component{
             "boolean",
             arrayLen( meta.properties.filter(
                 function( prop ){
-                    return prop[ "name" ] == key
+                    return prop[ "name" ] == key;
                 }
             ) )
         );
@@ -144,7 +144,7 @@ component{
                 arrayFilter(
                     meta.functions,
                     function( fn ){
-                        return fn[ "name" ] == key
+                        return fn[ "name" ] == key;
                     }
                 )
             )

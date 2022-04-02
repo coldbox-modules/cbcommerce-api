@@ -8,9 +8,9 @@ component{
     property name="menuService" inject="MenuService@cb";
     property name="templateCache" inject="cachebox:template";
     property name="categoryService" inject="ProductCategoryService@cbCommerce";
-    property name="fractal" inject="Manager@cffractal";
 	property name="HTMLHelper" inject="HTMLHelper@coldbox";
     property name="ORMService" inject="entityservice";
+    property name="resultsMapper" inject="ResultsMapper@mementifier";
 
     void function preProcess( event, interceptData, buffer, rc, prc ) {
 
@@ -24,11 +24,10 @@ component{
                                                         .orderBy( "displayOrder", "ASC" )
                                                         .orderBy( "name", "ASC" )
                                                         .get();
-            return fractal.builder()
-            .collection( topLevelCategories )
-            .withIncludes( "children.children.children" )
-            .withTransformer( transformer )
-            .convert();
+			return resultsMapper.process(
+				collection=topLevelCategories,
+				includes="children.children.children"
+			)
         } );
 
     }

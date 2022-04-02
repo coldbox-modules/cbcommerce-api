@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler"{
 	property name="productSKUService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/skus/{skuId}/media'
+	this.APIBaseURL = '/store/api/v1/skus/{skuId}/media';
 
 	// (GET) /store/api/v1/skus/:skuId/media
 	function index( event, rc, prc ){
@@ -19,23 +19,20 @@ component extends="BaseAPIHandler"{
 							.getResults();
 
 		prc.response.setData(
-			fractal.builder()
-				.collection( media )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			resultsMapper.process(
+				collection = media,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (POST) /store/api/v1/skus/:skuId/media
-	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var sku = productSKUService.newEntity().getOrFail( rc.skuId );
 
@@ -72,17 +69,14 @@ component extends="BaseAPIHandler"{
 
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.skuMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -92,22 +86,19 @@ component extends="BaseAPIHandler"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.skuMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/skus/:skuId/media/:id
-	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -127,23 +118,20 @@ component extends="BaseAPIHandler"{
 		prc.skuMedia.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.skuMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{skuId}', transformed.FK_sku ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (DELETE) /store/api/v1/skus/:skuId/media/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.skuMedia.delete();

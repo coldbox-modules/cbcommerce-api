@@ -1,78 +1,63 @@
-﻿component{
+﻿/**
+* ContentBox - A Modular Content Platform
+* Copyright since 2012 by Ortus Solutions, Corp
+* www.ortussolutions.com/products/contentbox
+* ---
+* ColdBox Configuration
+*/
+component{
 
-	// Configure ColdBox Application
+	// Configure Application
 	function configure(){
 
 		// coldbox directives
 		coldbox = {
 			//Application Setup
-			appName 				= "Module Tester",
+			appName 					= "ContentBox Modular CMS",
 
 			//Development Settings
-			reinitPassword			= "",
-			handlersIndexAutoReload = true,
-			modulesExternalLocation = [],
+			reinitPassword				= "10B1A15141B390DBD27E83D727D47725",
+			handlersIndexAutoReload 	= false,
 
 			//Implicit Events
-			defaultEvent			= "",
-			requestStartHandler		= "",
-			requestEndHandler		= "",
-			applicationStartHandler = "",
-			applicationEndHandler	= "",
-			sessionStartHandler 	= "",
-			sessionEndHandler		= "",
-			missingTemplateHandler	= "",
+			defaultEvent				= "Main.index",
+			requestStartHandler			= "",
+			requestEndHandler			= "",
+			applicationStartHandler 	= "",
+			applicationEndHandler		= "",
+			sessionStartHandler 		= "",
+			sessionEndHandler			= "",
+			missingTemplateHandler		= "",
+
+			//Extension Points
+			applicationHelper 			= "",
+			viewsHelper					= "",
+			modulesExternalLocation		= [],
+			viewsExternalLocation		= "",
+			layoutsExternalLocation 	= "",
+			handlersExternalLocation  	= "",
+			requestContextDecorator 	= "",
+			controllerDecorator			= "",
 
 			//Error/Exception Handling
-			exceptionHandler		= "",
-			onInvalidEvent			= "",
-			customErrorTemplate 	= "/coldbox/system/includes/BugReport.cfm",
+			exceptionHandler			= "",
+			onInvalidEvent				= "",
+			customErrorTemplate			= "",
 
 			//Application Aspects
-			handlerCaching 			= false,
-			eventCaching			= false
+			handlerCaching 				= true,
+			eventCaching				= true,
+			viewCaching 				= true
 		};
 
-		// environment settings, create a detectEnvironment() method to detect it yourself.
-		// create a function with the name of the environment so it can be executed if that environment is detected
-		// the value of the environment is a list of regex patterns to match the cgi.http_host.
-		environments = {
-			development = "localhost,127\.0\.0\.1"
-		};
+		// custom settings
+		settings = {
 
-		// Module Directives
-		modules = {
-			// An array of modules names to load, empty means all of them
-			include = [],
-			// An array of modules names to NOT load, empty means none
-			exclude = []
-		};
-
-		//Register interceptors as an array, we need order
-		interceptors = [
-			 //SES
-			 { class="coldbox.system.interceptors.SES" }
-		];
-
-		//LogBox DSL
-		logBox = {
-			// Define Appenders
-			appenders = {
-				files={class="coldbox.system.logging.appenders.RollingFileAppender",
-					properties = {
-						filename = "tester", filePath="/#appMapping#/logs"
-					}
-				}
-			},
-			// Root Logger
-			root = { levelmax="INFO", appenders="*" },
-			// Implicit Level Categories
-			info = [ "coldbox.system" ]
 		};
 
 		moduleSettings = {
 			"quick" : {
-				"defaultGrammar" : "MySQLGrammar"
+				"defaultGrammar" : "MySQLGrammar@qb"
 			},
 			"cbauth" : {
 				"userServiceClass" : "UserService@cbCommerce"
@@ -89,17 +74,97 @@
 			}
 		};
 
+		// environment settings, create a detectEnvironment() method to detect it yourself.
+		// create a function with the name of the environment so it can be executed if that environment is detected
+		// the value of the environment is a list of regex patterns to match the cgi.http_host.
+		environments = {
+			development = "localhost,dev"
+		};
+
+		//LogBox DSL
+		logBox = {
+			// Define Appenders
+			appenders = {
+				console = { class="coldbox.system.logging.appenders.ConsoleAppender" }
+			},
+			// Root Logger
+			root = { levelmax="INFO", appenders="*" }
+		};
+
+		// Layout Settings
+		layoutSettings = {
+			defaultLayout = "",
+			defaultView   = ""
+		};
+
+		// Interceptor Settings
+		interceptorSettings = {
+			throwOnInvalidStates = false,
+			customInterceptionPoints = ""
+		};
+
+		// ORM Module Configuration
+		orm = {
+			// Enable Injection
+			injection = {
+				enabled = true
+			}
+		};
+
+		//Register interceptors as an array, we need order
+		interceptors = [];
+
+		// ContentBox relies on the Cache Storage for tracking sessions, which delegates to a Cache provider
+		storages = {
+		    // Cache Storage Settings
+		    cacheStorage = {
+		        cachename   = "sessions",
+		        timeout     = 60 // The default timeout of the session bucket, defaults to 60
+		    }
+		};
+
+		// ContentBox Runtime Overrides
+		"contentbox" = {
+			// Runtime Settings Override by site slug
+		  	"settings" = {
+		  		// Default site
+		  		"default" = {
+		  			//"cb_media_directoryRoot" 	= "/docker/mount"
+		  		}
+		  	}
+		};
+
 	}
 
-	/**
-	 * Load the Module you are testing
-	 */
-	function afterAspectsLoad( event, interceptData, rc, prc ){
-		controller.getModuleService()
-			.registerAndActivateModule(
-				moduleName 		= request.MODULE_NAME,
-				invocationPath 	= "moduleroot"
-			);
+	// ORTUS DEVELOPMENT ENVIRONMENT, REMOVE FOR YOUR APP IF NEEDED
+	function development(){
+		//coldbox.debugmode=true;
+		coldbox.handlersIndexAutoReload = true;
+		coldbox.handlerCaching          = false;
+		coldbox.viewCaching             = false;
+		coldbox.eventCaching            = false;
+		coldbox.reinitpassword          = "";
+		coldbox.customErrorTemplate     = "/coldbox/system/exceptions/Whoops.cfm";
+
+		// debugging file
+		logbox.appenders.files = {
+			class="coldbox.system.logging.appenders.RollingFileAppender",
+			properties = {
+				filename = "contentbox", filePath="/logs", async=false
+			}
+		};
+
+		// Mail settings for writing to log files instead of sending mail on dev.
+		mailsettings.protocol = {
+			class = "cbmailservices.models.protocols.FileProtocol",
+			properties = {
+				filePath = "/logs"
+			}
+		};
+		//logbox.debug 	= ["coldbox.system.interceptors.Security"];
+		//logbox.debug 	= [ "coldbox.system.aop" ];
+		//logbox.debug 	= [ "root" ];
+
 	}
 
 }

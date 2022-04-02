@@ -15,24 +15,21 @@ component extends="BaseAPIHandler" { // secured
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
 		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.response.setData(
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
+		).setPagination(
+			searchResults.pagination
 		);
 
 	}
 
 	// (POST) /cbc/api/v1/orders
-	function create( event, rc, prc ) secured="cbcommerce:Orders:Manage"{
+	function create( event, rc, prc ) secured="cbcOrders:Manage"{
 
 		prc.order = entityService.newEntity().fill( rc );
 
@@ -41,17 +38,12 @@ component extends="BaseAPIHandler" { // secured
 		prc.order.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.order )
-				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.order.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -61,22 +53,17 @@ component extends="BaseAPIHandler" { // secured
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.order )
-				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.order.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/orders/:id
-	function update( event, rc, prc ) secured="cbcommerce:Orders:Edit"{
+	function update( event, rc, prc ) secured="cbcOrders:Edit"{
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -88,23 +75,18 @@ component extends="BaseAPIHandler" { // secured
 		prc.order.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.order )
-				.withIncludes( rc.includes )
-				.withTransformer( "OrderTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.order.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 
 	}
 
 	// (DELETE) /cbc/api/v1/orders/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Orders:Manage"{
+	function delete( event, rc, prc ) secured="cbcOrders:Manage"{
 
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 		prc.order.delete();

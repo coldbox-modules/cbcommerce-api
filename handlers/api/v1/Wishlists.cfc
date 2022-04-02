@@ -7,7 +7,7 @@ component extends="BaseAPIHandler" secured{
 	property name="entityService" inject="WishlistService@cbCommerce";
 
 	this.APIBaseURL = '/store/api/v1/wishlists';
-	
+
 	// (GET) /wishlists
 	function index( event, rc, prc ){
 		rc[ "FK_user" ] = prc.authenticatedUser.keyValue();
@@ -29,27 +29,24 @@ component extends="BaseAPIHandler" secured{
 			);
 			searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 		}
-		
-		prc.response.setData( 
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+
+		prc.response.setData(
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
+		).setPagination(
+			searchResults.pagination
 		);
 
 	}
 
 	// (POST) /cbc/api/v1/wishlists
 	function create( event, rc, prc ){
-		
+
 		prc.wishlist = entityService.newEntity().fill( rc );
 
 		prc.wishlist.user().associate( prc.authenticatedUser.keyValue() );
@@ -58,87 +55,72 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlist.save();
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlist )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlist.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
 	// (GET) /cbc/api/v1/wishlists/:id
 	function show( event, rc, prc ){
-		
+
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 
 		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlist )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlist.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/wishlists/:id
 	function update( event, rc, prc ){
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
-		
+
 		//remove this key before population
 		structDelete( rc, "id" );
-		
+
 		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
-		
+
 		prc.wishlist.fill( rc );
 
 		validateModelOrFail( prc.wishlist );
 
 		prc.wishlist.save();
 
-		prc.response.setData( 
-			fractal.builder()
-				.item( prc.wishlist )
-				.withIncludes( rc.includes )
-				.withTransformer( "WishlistTransformer@cbCommerce" )
-				.withItemCallback( 
-					function( transformed ) {
-						transformed[ "href" ] = this.APIBaseURL & '/' & transformed[ "id" ]; 
-						return transformed;
-					} 
-				)
-				.convert()
+		prc.response.setData(
+			prc.wishlist.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
-		
+
 	}
 
 	// (DELETE) /cbc/api/v1/wishlists/:id
 	function delete( event, rc, prc ){
 
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
-		
+
 		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
-		
+
 		// wrap in transaction to maintain items, in case something goes wrong
 		transaction{
 			try{
@@ -154,5 +136,5 @@ component extends="BaseAPIHandler" secured{
 
 	}
 
-	
+
 }

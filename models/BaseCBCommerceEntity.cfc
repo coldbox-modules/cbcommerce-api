@@ -1,12 +1,18 @@
 component extends="quick.models.BaseEntity"{
-    
+
     // Persistent column properties
     property name="id" type="string";
     property name="isActive" type="boolean" default=1;
-    property name="createdTime" type="date" default="#now()#";
-	property name="modifiedTime" type="date" default="#now()#";
+    property name="createdTime" type="date";
+	property name="modifiedTime" type="date";
 
-	variables.id = lcase( createGUID() );
+	variables.id = lcase( createUUID() );
+
+	function init(){
+		variables.createdTime = now();
+		variables.modifiedTime = now();
+		return super.init();
+	}
 
 
 
@@ -17,8 +23,8 @@ component extends="quick.models.BaseEntity"{
 
 	function fill( attributes ) {
 		var data = {};
-		
-		retrieveAttributeNames().each( function( attr ){ 
+
+		retrieveAttributeNames().each( function( attr ){
 			if( structKeyExists( attributes, attr ) ){
 				data[ attr ] = attributes[ attr ];
 			}
@@ -57,7 +63,7 @@ component extends="quick.models.BaseEntity"{
 		}
 
 		var entityInstance = this.find( id );
-		
+
 		if ( isNull( entityInstance ) ) {
 			throw(
 				type = "EntityNotFoundException",
@@ -66,7 +72,7 @@ component extends="quick.models.BaseEntity"{
 		}
 
 		return entityInstance;
-	
+
 	}
 
 }

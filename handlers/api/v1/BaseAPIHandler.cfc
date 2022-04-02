@@ -4,9 +4,7 @@
  * @author Jon Clausen <jclausen@ortussolutions.com>
  **/
 component extends="coldbox.system.EventHandler"{
-
-	property name="fractal" inject="Manager@cffractal";
-
+    property name="resultsMapper" inject="ResultsMapper@mementifier";
 	// Pseudo "constants" used in API Response/Method parsing
 	property name="METHODS";
 	property name="STATUS";
@@ -20,7 +18,7 @@ component extends="coldbox.system.EventHandler"{
 		"PUT" 		: "PUT",
 		"DELETE" 	: "DELETE"
 	};
-	
+
 	// HTTP STATUS CODES
 	STATUS = {
 		"CREATED" 				: 201,
@@ -47,8 +45,23 @@ component extends="coldbox.system.EventHandler"{
 	this.posthandler_only 		= "";
 	this.posthandler_except 	= "";
 	this.aroundHandler_only 	= "";
-	this.aroundHandler_except 	= "";		
-	
+	this.aroundHandler_except 	= "";
+
+	// Abstracted index method
+	function index( event, rc, prc ){
+		var searchResponse = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
+		prc.response.setData(
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
+		).setPagination(
+			searchResults.pagination
+		);
+	}
+
 	/**
 	* Around handler for all actions it inherits
 	*/
@@ -58,6 +71,16 @@ component extends="coldbox.system.EventHandler"{
 		event.paramValue( "maxrows", 25 );
 		event.paramValue( "offset", 0 );
 		event.paramValue( "sortOrder", "createdTime DESC" );
+		event.paramValue( "includes", "" );
+		event.paramValue( "excludes", "" );
+
+		if( structKeyExists( this, "API_BASE_URL" ) ){
+			rc.includes = listAppend( rc.includes, "href" );
+			variables.hrefDefault = this.API_BASE_URL;
+			variables.hrefMapper = function( transformed ) {
+				return this.APIBaseURL & "/" & transformed[ "id" ];
+			};
+		}
 
 		//options includes
 		event.paramValue( "returnOptions", "" );
@@ -67,31 +90,31 @@ component extends="coldbox.system.EventHandler"{
 		} else {
 			event.paramValue( "page", 1 );
 		}
-	
+
 		try{
 			// start a resource timer
 			var stime = getTickCount();
 
-			
+
 			//handle any content payloads
 			// If the inbound content body is a JSON payload capture it
-			if( 
-				len( event.getHTTPContent() ) 
+			if(
+				len( event.getHTTPContent() )
 				&& isJSON(  event.getHTTPContent() )
-				&& isStruct( event.getHTTPContent( json=true ) ) 
+				&& isStruct( event.getHTTPContent( json=true ) )
 			) {
 				structAppend( rc, event.getHTTPContent( json=true ) );
 			}
-			
+
 			// prepare our response object
 			prc.response = getInstance( "APIResponse@cbCommerce" );
 
 
 			// Verify header tokens
-			if( 
+			if(
 			!arrayFindNoCase( ["GET","HEAD","OPTIONS"], event.getHTTPMethod() )
 			&&
-			!CSRFVerifyToken( event.getHTTPHeader( "CSRF-Token", "" ),"cbCommerce" ) 
+			!CSRFVerifyToken( event.getHTTPHeader( "CSRF-Token", "" ),"cbCommerce" )
 			){
 				throw(
 					type="AuthorizationException",
@@ -100,9 +123,9 @@ component extends="coldbox.system.EventHandler"{
 			}
 
 			// prepare argument execution
-			var args = { 
-				event = arguments.event, 
-				rc = arguments.rc, 
+			var args = {
+				event = arguments.event,
+				rc = arguments.rc,
 				prc = arguments.prc,
 				// add for framework error events which fire the aroundHandler()
 				faultAction = arguments.faultAction ?: javacast( "null", 0 ),
@@ -170,7 +193,7 @@ component extends="coldbox.system.EventHandler"{
 		if( !structIsEmpty( event.getRenderData() ) ){
 			return;
 		}
-		
+
 		// Get response data
 		var responseData = prc.response.getDataPacket();
 		// If we have an error flag, render our messages and omit any marshalled data
@@ -196,7 +219,7 @@ component extends="coldbox.system.EventHandler"{
 		// Global Response Headers
 		prc.response.addHeader( "x-response-time", prc.response.getResponseTime() )
 				.addHeader( "x-cached-response", prc.response.getCachedResponse() );
-		
+
 		// Response Headers
 		for( var thisHeader in prc.response.getHeaders() ){
 			event.setHTTPHeader( name=thisHeader.name, value=thisHeader.value );
@@ -207,7 +230,7 @@ component extends="coldbox.system.EventHandler"{
 	* on localized errors
 	*/
 	function onError( event, rc, prc, faultAction, exception ){
-		
+
 		if( !structKeyExists( arguments, "exception" ) ){
 			prc.response
 				.setData( {} )
@@ -217,13 +240,13 @@ component extends="coldbox.system.EventHandler"{
 				.setStatusText( "General application error" );
 
 		} else {
-			
+
 			// Log Locally
 			log.error( "Error in base handler (#arguments.faultAction#): #arguments.exception.message# #arguments.exception.detail#", arguments.exception );
-			
+
 			// Verify response exists, else create one
-			if( !structKeyExists( prc, "response" ) ){ 
-				prc.response = getInstance( "APIResponse@cbCommerce" ); 
+			if( !structKeyExists( prc, "response" ) ){
+				prc.response = getInstance( "APIResponse@cbCommerce" );
 			}
 
 			// Setup General Error Response
@@ -233,17 +256,17 @@ component extends="coldbox.system.EventHandler"{
 				.addMessage( "Base Handler Application Error: #arguments.exception.message#" )
 				.setStatusCode( STATUS.INTERNAL_ERROR )
 				.setStatusText( "General application error" );
-			
+
 			// Development additions
 			if( getSetting( "environment" ) eq "development" ){
 				prc.response.addMessage( "Detail: #arguments.exception.detail#" )
 					.addMessage( "StackTrace: #arguments.exception.stacktrace#" );
 			}
-						
+
 		}
-		
+
 		// Render Error Out
-		event.renderData( 
+		event.renderData(
 			type		= prc.response.getFormat(),
 			data 		= prc.response.getDataPacket( reset=true ),
 			contentType = prc.response.getContentType(),
@@ -267,7 +290,7 @@ component extends="coldbox.system.EventHandler"{
 			.setStatusCode( STATUS.NOT_ALLOWED )
 			.setStatusText( "Invalid HTTP Method" );
 		// Render Error Out
-		event.renderData( 
+		event.renderData(
 			type		= prc.response.getFormat(),
 			data 		= prc.response.getDataPacket( reset=true ),
 			contentType = prc.response.getContentType(),
@@ -291,7 +314,7 @@ component extends="coldbox.system.EventHandler"{
 			.setStatusCode( STATUS.NOT_ALLOWED )
 			.setStatusText( "Invalid Action" );
 		// Render Error Out
-		event.renderData( 
+		event.renderData(
 			type		= prc.response.getFormat(),
 			data 		= prc.response.getDataPacket( reset=true ),
 			contentType = prc.response.getContentType(),
@@ -299,7 +322,7 @@ component extends="coldbox.system.EventHandler"{
 			statusText 	= prc.response.getStatusText(),
 			location 	= prc.response.getLocation(),
 			isBinary 	= prc.response.getBinary()
-		);			
+		);
 	}
 
 	/**************************** RESTFUL UTILITIES ************************/
@@ -308,7 +331,7 @@ component extends="coldbox.system.EventHandler"{
 	* Utility function for miscellaneous 404's
 	**/
 	function routeNotFound( event, rc, prc ){
-		
+
 		if( !structKeyExists( prc, "response" ) ){
 			prc.response = getInstance( "APIResponse@cbCommerce" );
 		}
@@ -322,10 +345,10 @@ component extends="coldbox.system.EventHandler"{
 	/**
 	* Utility method for when an expectation of the request failes ( e.g. an expected paramter is not provided )
 	**/
-	public function onExpectationFailed( 
-		event 	= getRequestContext(), 
+	public function onExpectationFailed(
+		event 	= getRequestContext(),
 		rc 		= getRequestCollection(),
-		prc 	= getRequestCollection( private=true ) 
+		prc 	= getRequestCollection( private=true )
 	){
 		if( !structKeyExists( prc, "response" ) ){
 			prc.response = getInstance( "APIResponse@cbCommerce" );
@@ -334,17 +357,17 @@ component extends="coldbox.system.EventHandler"{
 		prc.response.setError( true )
 			.setStatusCode( STATUS.EXPECTATION_FAILED )
 			.setStatusText( "Expectation Failed" )
-			.addMessage( "An expectation for the request failed. Could not proceed" );		
+			.addMessage( "An expectation for the request failed. Could not proceed" );
 	}
 
 	/**
 	* Utility method to render missing or invalid authentication credentials
 	**/
-	public function onAuthenticationFailure( 
-		event 	= getRequestContext(), 
+	public function onAuthenticationFailure(
+		event 	= getRequestContext(),
 		rc 		= getRequestCollection(),
 		prc 	= getRequestCollection( private=true ),
-		abort 	= false 
+		abort 	= false
 	){
 		if( !structKeyExists( prc, "response" ) ){
 			prc.response = getInstance( "APIResponse@cbCommerce" );
@@ -361,11 +384,11 @@ component extends="coldbox.system.EventHandler"{
 	/**
 	* Utility method to render a failure of authorization on any resource
 	**/
-	public function onAuthorizationFailure( 
-		event 	= getRequestContext(), 
+	public function onAuthorizationFailure(
+		event 	= getRequestContext(),
 		rc 		= getRequestCollection(),
 		prc 	= getRequestCollection( private=true ),
-		abort 	= false 
+		abort 	= false
 	){
 		if( !structKeyExists( prc, "response" ) ){
 			prc.response = getInstance( "APIResponse@cbCommerce" );
@@ -383,18 +406,18 @@ component extends="coldbox.system.EventHandler"{
 		**/
 		if( arguments.abort ){
 
-			event.setHTTPHeader( 
+			event.setHTTPHeader(
 				name 	= "Content-Type",
 	        	value 	= "application/json"
 			);
 
-			event.setHTTPHeader( 
+			event.setHTTPHeader(
 				statusCode = "#STATUS.NOT_AUTHORIZED#",
 	        	statusText = "Not Authorized"
 			);
-			
-			writeOutput( 
-				serializeJSON( prc.response.getDataPacket( reset=true ) ) 
+
+			writeOutput(
+				serializeJSON( prc.response.getDataPacket( reset=true ) )
 			);
 			flush;
 			abort;

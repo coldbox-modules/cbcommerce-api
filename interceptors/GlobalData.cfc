@@ -8,8 +8,8 @@
  **/
  component{
     property name="templateCache" inject="cachebox:template";
-    property name="auth" inject="authenticationService@cbauth";
     property name="mediaConfig" inject="coldbox:setting:media@cbCommerce";
+    property name="resultsMapper" inject="ResultsMapper@mementifier";
 
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
         // set globalData if not present in prc.
@@ -27,23 +27,21 @@
 
         prc.globalData[ "@token" ] = CSRFGenerateToken( "cbCommerce" );
 
-        prc.globalData[ "productConditions" ] = templateCache.getOrSet( 
-            "cbCommerce_global_productConditions", 
+        prc.globalData[ "productConditions" ] = templateCache.getOrSet(
+            "cbCommerce_global_productConditions",
             function(){
                 var model = wirebox.getInstance( "ProductCondition@cbCommerce" );
                 var builder = model.newQuery().where( "isActive", 1 );
-                var conditions = model.getEntities();
+                var conditions = model.get();
 
-                return getInstance( "Manager@cffractal" )
-                    .builder()
-                    .collection( conditions )
-                    .withIncludes( "parent" )
-                    .withTransformer( "ProductConditionTransformer@cbCommerce" )
-                    .convert();
-            } 
+				return variables.resultsMapper.process(
+					collection=conditions,
+					includes="parent"
+				);
+            }
         );
 
-        
+
         // Scope in i18n Resource bundles and format for Vue plugin
         prc.globalData[ "i18n" ] = templateCache.getOrSet(
             "cbCommerce_global_i18n",
@@ -51,7 +49,7 @@
                 var resourceService = getInstance( "ResourceService@cbi18n");
                 var bundles = resourceService.getBundles();
                 var commerceBundles = structKeyArray( bundles )
-                                        .filter( function( key ){ 
+                                        .filter( function( key ){
                                             return left( key, 10 ) == 'cbcommerce';
                                         } );
                 var i18nGlobals = {};
@@ -75,12 +73,8 @@
         );
 
         // if logged in, add the authUser to globalData
-        if( auth.isLoggedIn() ){
-            prc.globalData[ "cbcAuthUser" ] = getInstance( "Manager@cffractal" )
-                .builder()
-				.item( auth.getUser() )
-				.withTransformer( "UserTransformer@cbCommerce" )
-				.convert();
+        if( auth().isLoggedIn() ){
+            prc.globalData[ "cbcAuthUser" ] = auth().getUser().getMemento();
         }
     }
 

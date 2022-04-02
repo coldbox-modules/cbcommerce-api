@@ -16,7 +16,7 @@ services:
       - ./build/docker/mysql/init.db.sql:/docker-entrypoint-initdb.d/init.db.sql
       - ./build/docker/mysql/conf.d:/etc/mysql/mariadb.conf.d/custom.cnf
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
   #App Server
   app:
@@ -40,12 +40,10 @@ services:
       - "61653:8443"
     volumes:
       # Mount our application in delgated mode
-      - ./:/app/modules/contentbox/modules_user/cbCommerce:delegated
-      - ./build/docker/contentbox/config/Coldbox.cfc:/app/config/Coldbox.cfc
-      - ./test-harness/tests:/app/tests
-      - ./test-harness/testbox:/app/testbox
-      - ./test-harness/.cfconfig.json:/app/.cfconfig.json
-      - ./test-harness/modules_app:/app/modules_app
+      - ./test-harness:/app:delegated
+      - ./:/app/modules/cbCommerce:delegated
+      # Prevent recursion
+      - ./build:/app/modules/cbCommerce/test-harness:delegated
     expose:
       - "8080"
       - "8443"

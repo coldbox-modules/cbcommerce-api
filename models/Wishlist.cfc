@@ -1,8 +1,8 @@
 /**
 * cboxCommerce Wishlist Entity
 */
-component   table="cbc_wishlists" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_wishlists"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
 {
@@ -14,6 +14,17 @@ component   table="cbc_wishlists"
    //Foreign Keys
 	property name="FK_user";
 
+	function onDIComplete(){
+		super.onDIComplete();
+		arrayAppend(
+            this.memento.defaultIncludes,
+            [
+                "items"
+            ],
+            true
+        );
+	}
+
    function user(){
 	   return belongsTo( "User@cbCommerce", "FK_user" );
    }
@@ -21,7 +32,7 @@ component   table="cbc_wishlists"
    function items(){
 	   return hasMany( "WishlistItem@cbCommerce", "FK_wishlist" );
 	}
-	
+
 	function delete(){
 		this.getItems().each( function( itemEntity ){
 			itemEntity.delete();

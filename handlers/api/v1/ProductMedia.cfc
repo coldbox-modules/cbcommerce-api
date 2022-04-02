@@ -16,25 +16,21 @@ component extends="BaseAPIHandler"{
 							.orderBy( 'displayOrder', 'ASC')
 							.orderBy( 'createdTime', 'ASC' )
 							.getResults();
-
 		prc.response.setData(
-			fractal.builder()
-				.collection( media )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			resultsMapper.process(
+				collection = media,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (POST) /store/api/v1/products/:productId/media
-	function create( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
 
@@ -72,17 +68,14 @@ component extends="BaseAPIHandler"{
 
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.productMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -92,22 +85,19 @@ component extends="BaseAPIHandler"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.productMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/products/:productId/media/:id
-	function update( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -125,23 +115,20 @@ component extends="BaseAPIHandler"{
 		prc.productMedia.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.productMedia )
-				.withIncludes( rc.includes )
-				.withTransformer( "MediaTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-						transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-						return transformed;
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (DELETE) /store/api/v1/products/:productId/media/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Products:Edit"{
+	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.productMedia.delete();

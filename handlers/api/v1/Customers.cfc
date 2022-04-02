@@ -6,7 +6,6 @@
  **/
 component extends="BaseAPIHandler"{
 	property name="entityService" inject="UserService@cbCommerce";
-	property name="auth" inject="authenticationService@cbauth";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
 	this.API_BASE_URL = "/store/api/v1/customers";
@@ -14,20 +13,8 @@ component extends="BaseAPIHandler"{
 	/**
 	* (GET) /store/api/v1/customers
 	*/
-	function index( event, rc, prc ) secured="cbcommerce:Product:Edit,Order:Edit"{
-		var searchResponse = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
-		prc.response.setData(
-			fractal.builder()
-				.collection( searchResponse.collection )
-				.withIncludes( rc.includes )
-				.withTransformer( "UserTransformer@cbCommerce" )
-				.withPagination( searchResponse.pagination )
-				.withItemCallback( function( transformed ) {
-					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
-					return transformed;
-				} )
-				.convert()
-		);
+	function index( event, rc, prc ) secured="cbcProduct:Edit,Order:Edit"{
+		return super.index( argumentCollection=arguments );
 	}
 
 	/**
@@ -41,15 +28,12 @@ component extends="BaseAPIHandler"{
 		}
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.user )
-				.withIncludes( rc.includes )
-				.withTransformer( "UserTransformer@cbCommerce" )
-				.withItemCallback( function( transformed ) {
-					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
-					return transformed;
-				} )
-				.convert()
+			prc.user.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
@@ -57,7 +41,7 @@ component extends="BaseAPIHandler"{
 	* (POST) /store/api/v1/customers
 	*/
 	function create( event, rc, prc ){
-		if( auth.check() && auth.user().getEmail() == rc.email ){
+		if( auth().check() && auth().user().getEmail() == rc.email ){
 			prc.response.addMessage( "You already have an account under the email #rc.email#" );
 			return onExpectationFailed( argumentCollection=arguments );
 		}
@@ -69,20 +53,17 @@ component extends="BaseAPIHandler"{
 		prc.user.save();
 
 		if( event.getValue( "autologin", true ) ){
-			auth.login( prc.user );
+			auth().login( prc.user );
 		}
 
 		prc.response.setStatusCode( STATUS.CREATED );
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.user )
-				.withIncludes( rc.includes )
-				.withTransformer( "UserTransformer@cbCommerce" )
-				.withItemCallback( function( transformed ) {
-					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
-					return transformed;
-				} )
-				.convert()
+			prc.user.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
@@ -90,7 +71,7 @@ component extends="BaseAPIHandler"{
 	* (PUT|PATCH) /store/api/v1/customers/:id
 	*/
 	function update( event, rc, prc ) secured{
-		if( auth.user().getId() != rc.id  && !auth.user().hasPermission( "Product:Edit,Order:Edit" ) ){
+		if( auth().user().getId() != rc.id  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 		prc.user = entityService.newEntity().getOrFail( rc.id );
@@ -103,22 +84,19 @@ component extends="BaseAPIHandler"{
 
 		prc.response.setStatusCode( STATUS.SUCCESS );
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.user )
-				.withIncludes( rc.includes )
-				.withTransformer( "UserTransformer@cbCommerce" )
-				.withItemCallback( function( transformed ) {
-					transformed[ "href" ] = this.API_BASE_URL & '/' & transformed.id;
-					return transformed;
-				} )
-				.convert()
+			prc.user.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : variables.hrefMapper }
+			)
 		);
 	}
 
 	/**
 	* (DELETE) /store/api/v1/customers/:id
 	*/
-	function delete( event, rc, prc ) secured="cbcommerce:System:Edit"{
+	function delete( event, rc, prc ) secured="cbcSystem:Edit"{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 		prc.user.delete();
 

@@ -6,7 +6,7 @@
     "requestTimeout":"0,0,0,90",
     "robustExceptionEnabled":true,
 	"datasources": {
-        "contentbox":
+        "cbcommerce":
         {
             "allowAlter": true,
             "allowCreate": true,

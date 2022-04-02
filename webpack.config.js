@@ -7,7 +7,8 @@ elixir.config.mergeConfig({
         alias: {
           vue: 'vue',
           Vue: 'vue',
-          jQuery : "jquery"
+          jQuery : "jquery",
+		  ["@cbCommerce"]: `${path.dirname(__filename)}/resources/assets/js`
         }
     },
     plugins : [
@@ -17,12 +18,7 @@ elixir.config.mergeConfig({
             "window.jQuery": "jquery",
             jQuery         : "jquery"
         } )
-    ],
-    resolve: {
-        alias: {
-            ["@cbCommerce"]: `${path.dirname(__filename)}/resources/assets/js`
-        }
-    }
+    ]
 });
 
 module.exports = elixir(function(mix) {

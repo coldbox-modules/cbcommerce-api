@@ -7,7 +7,6 @@ component extends="BaseAPIHandler"{
 
 	property name="productService" inject="ProductService@cbCommerce";
 	property name="entityService" inject="ProductReviewService@cbCommerce";
-    property name="auth" inject="authenticationService@cbauth";
 
 	this.APIBaseURL = '/store/api/v1/products/{productID}/reviews'
 
@@ -17,23 +16,20 @@ component extends="BaseAPIHandler"{
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
+		if( !len( rc.excludes ) ){
+			rc.excludes = "FK_product,FK_sku,FK_user";
+		}
+
 		prc.response.setData(
-			fractal.builder()
-				.collection( searchResults.collection )
-				.withPagination( searchResults.pagination )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductReviewTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-                        transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-                        structDelete( transformed, "FK_product" );
-                        structDelete( transformed, "FK_sku" );
-                        structDelete( transformed, "FK_user" )
-						return transformed;
-					}
-				)
-				.convert()
-		);
+			resultsMapper.process(
+				collection = searchResults.collection,
+				includes=rc.includes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
+		).setPagination( searchResults.pagination );
 
 	}
 
@@ -44,26 +40,21 @@ component extends="BaseAPIHandler"{
         prc.review = entityService.newEntity().fill( rc );
 
         prc.review.product().associate( prc.product );
-        prc.review.user().association( auth.getUser() );
+        prc.review.user().association( auth().getUser() );
 
 		validateModelOrFail( prc.review );
 
 		prc.review.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.review )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductReviewTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-                        transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-                        structDelete( transformed, "FK_product" );
-                        structDelete( transformed, "FK_sku" );
-                        structDelete( transformed, "FK_user" )
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		).setStatusCode( STATUS.CREATED );
 	}
 
@@ -73,24 +64,19 @@ component extends="BaseAPIHandler"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.review )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductReviewTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-                        transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-                        structDelete( transformed, "FK_product" );
-                        structDelete( transformed, "FK_sku" );
-                        structDelete( transformed, "FK_user" )
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 	}
 
 	// (PUT|PATCH) /store/api/v1/products/{productId}/reviews/:id
-	function update( event, rc, prc ) secured="cbcommerce:Product:Manage"{
+	function update( event, rc, prc ) secured="cbcProduct:Manage"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -102,26 +88,20 @@ component extends="BaseAPIHandler"{
 		prc.review.save();
 
 		prc.response.setData(
-			fractal.builder()
-				.item( prc.review )
-				.withIncludes( rc.includes )
-				.withTransformer( "ProductReviewTransformer@cbCommerce" )
-				.withItemCallback(
-					function( transformed ) {
-                        transformed[ "href" ] = replace( this.APIBaseURL, '{productId}', transformed.FK_product ) & '/' & transformed[ "id" ];
-                        structDelete( transformed, "FK_product" );
-                        structDelete( transformed, "FK_sku" );
-                        structDelete( transformed, "FK_user" )
-					}
-				)
-				.convert()
+			prc.productMedia.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : variables.hrefDefault },
+				mappers={ "href" : function( transformed ) {
+					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
+				} }
+			)
 		);
 
 	}
 
 	// (DELETE) /store/api/v1/products/{productId}/reviews/:id
-	function delete( event, rc, prc ) secured="cbcommerce:Product:Manage"{
-
+	function delete( event, rc, prc ) secured="cbcProduct:Manage"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
 		prc.review.delete();
 

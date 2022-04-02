@@ -1,8 +1,8 @@
 /**
 * cboxCommerce Wishlist Entity
 */
-component   table="cbc_wishlistItems" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_wishlistItems"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
 {
@@ -10,11 +10,23 @@ component   table="cbc_wishlistItems"
 	property name="quantity" type="numeric" default=1;
    property name="baselinePrice" type="numeric";
    property name="discountPrice" default="0";
-   
+
 
    //Foreign Keys
 	property name="FK_sku";
    property name="FK_wishlist";
+
+   function onDIComplete(){
+	   super.onDIComplete();
+		arrayAppend(
+			this.memento.defaultIncludes,
+			[
+				"sku",
+				"image"
+			],
+			true
+		);
+   }
 
 
    function sku(){
