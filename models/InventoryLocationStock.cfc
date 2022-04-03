@@ -1,11 +1,11 @@
 /**
 * cboxCommerce Inventory Location Stock Object
 */
-component   table="cbc_inventoryLocationStock" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_inventoryLocationStock"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
-{   
+{
 
 	property name="available" type="numeric" default="0";
 	property name="unaccounted" type="numeric" default="0";
@@ -19,7 +19,7 @@ component   table="cbc_inventoryLocationStock"
 	}
 
 	function location(){
-		return belongsTo( "InventoryLocation@cbCommerce", "FK_inventoryLocation" )
+		return belongsTo( "InventoryLocation@cbCommerce", "FK_inventoryLocation" );
 	}
 
 }

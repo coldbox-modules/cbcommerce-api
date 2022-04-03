@@ -26,16 +26,14 @@ component{
 	this.mappings[ "/root" ]   = rootPath;
 
 	this.mappings[ '/config' ]           = rootPath & "config";
-	this.mappings[ "/coldbox" ]          = rootPath & "lib/frameworks/coldbox";
-	this.mappings[ "/testbox" ]          = rootPath & "lib/frameworks/testbox";
-	this.mappings[ "/contentbox-deps" ]  = rootPath & "modules/contentbox/modules/contentbox-deps";
-	this.mappings[ "/cborm" ] 	 		 = this.mappings[ "/contentbox-deps" ] & "/modules/cborm";
+	this.mappings[ "/coldbox" ]          = rootPath & "coldbox";
+	this.mappings[ "/testbox" ]          = rootPath & "testbox";
 
 	// UPDATE THE NAME OF THE MODULE IN TESTING BELOW
 	request.MODULE_NAME = "cbCommerce";
-	this.datasource = "contentbox";
+	this.datasource = "cbcommerce";
 	// ORM SETTINGS
-	this.ormEnabled = true;
+	this.ormEnabled = false;
 	this.ormSettings = {
 		// ENTITY LOCATIONS, ADD MORE LOCATIONS AS YOU SEE FIT
 		cfclocation=[ "models", "modules", "modules_app" ],
@@ -60,11 +58,7 @@ component{
 		this.ormSettings[ "dialect" ] = systemEnv[ "ORM_DIALECT" ];
 	}
 
-
 	this.mappings[ "/coldbox" ]    = rootPath & "coldbox";
-    this.mappings[ "/quick" ]      = rootPath & "modules/quick";
-    this.mappings[ "/bcrypt" ]     = rootPath & "modules/BCrypt";
-    this.mappings[ "/qb" ]         = rootPath & "modules/quick/modules/qb";
 
 	// The module root path
 	moduleRootPath = REReplaceNoCase( this.mappings[ "/root" ], "#request.module_name#(\\|/)test-harness(\\|/)", "" );
@@ -73,7 +67,7 @@ component{
 
 	// request start
 	public boolean function onRequestStart( String targetPage ){
-		pagePoolClear();
+		// pagePoolClear();
 		if( url.keyExists( "fwreinit" ) ){
 			ormReload();
 		}

@@ -1,7 +1,9 @@
-component extends="BaseHandler"{
+component extends="handlers.api.BaseAPIHandler"{
 
 	function index( event, rc, prc ){
-        event.setView( 'category/index' );
+		prc.response.setData(
+			{}
+		);
     }
 
 }

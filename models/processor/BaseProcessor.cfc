@@ -10,7 +10,7 @@ component accessors="true"{
 	/**
 	 * Get a new reponse object
 	 */
-	function newResponse() provider="ProcessorResponse@cbCommerce";
+	function newResponse() provider="ProcessorResponse@cbCommerce"{};
 
 }
 

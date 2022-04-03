@@ -3,30 +3,26 @@ component {
     this.name           = "cbCommerce";
     this.title          = "cbCommerce";
     this.description    = "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS";
-    this.version        = "1.0.0-alpha1";
+    this.version        = "1.0.0";
     this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
-    this.webUrl         = "https://github.com/jclausen/cbCommerce";
+    this.webUrl         = "https://github.com/coldbox-modules/cbCommerce";
     this.cfmapping      = "cbCommerce";
     this.modelNamespace	= "cbCommerce";
-    this.entryPoint     = "store";
-    this.viewParentLookup = true;
-    this.layoutParentLookup = true;
+    this.entryPoint     = "cbc";
+    this.viewParentLookup = false;
+    this.layoutParentLookup = false;
     this.dependencies   = [
         "cbauth",
         "quick",
         "cfmigrations",
         "cbsecurity",
-        "BCrypt",
-        "cbi18n"
+        "BCrypt"
     ];
 
 	/**
 	 * Configure Module
 	 */
     function configure() {
-		if( len( getSystemSetting( "CBCOMMERCE_ENTRYPOINT", "" ) ) ){
-			this.entryPoint = getSystemSetting( "CBCOMMERCE_ENTRYPOINT" );
-		}
 
         settings = {
             "cbauth" : {
@@ -87,10 +83,6 @@ component {
 			{
 					class="cbCommerce.interceptors.CBCAPIHelper",
 					name="CBCAPIHelperInterceptor"
-			},
-			{
-					class="cbCommerce.interceptors.GlobalData",
-					name="GlobalDataInterceptor"
 			}
         ];
 
@@ -107,17 +99,12 @@ component {
 					}
 				}
 			);
-
 		} else {
 			interceptors.append(
 				[
 					{
 						class="cbCommerce.interceptors.ContentboxSSO",
 						name="CBCContentboxSSOInterceptor"
-					},
-					{
-						class="cbCommerce.interceptors.CBCMenuHelper",
-						name="CBCMenuHelperInterceptor"
 					}
 				],
 				true
@@ -132,25 +119,9 @@ component {
 				href=menuService.buildModuleLink( 'store', 'admin' )
 			);
 		}
-        /**
-        * Overload for ContentBox default Sitemap Routing
-        */
-        appRouter.prepend()
-                    .route( "sitemap" )
-                    .to( "cbCommerce:Sitemap.index" );
+
         // load JavaXT jars
         wirebox.getInstance( "Loader@cbjavaloader" ).appendPaths( variables.modulePath & "/lib");
-
-		moduleSettings = {
-			"cbi18n" : {
-				// Extra resource bundles to load
-				resourceBundles = {
-					"cbCommerce" : "/cbCommerce/includes/i18n/cbCommerce",
-					"cbCommerceAdmin" : "/cbCommerce/includes/i18n/cbCommerceAdmin",
-					"cbCommerceOrders" : "/cbCommerce/includes/i18n/cbCommerceOrders"
-				}
-			}
-		};
 
         //change our binder mapping
         if( settings.products.externalModel ){
@@ -210,17 +181,15 @@ component {
 		}
 
         // Run any outstanding seeders if requested
-        if( structKeyExists( url, "seed" ) && url.seed ){
-            migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
-            migrationService.runAllMigrations( "up" );
-        } else if( structKeyExists( url, "seed" ) && !url.seed ) {
-            migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
-            migrationService.runAllMigrations( "down" );
-        }
-
-		// routes = [
-		// 	"config/Router.cfc"
-		// ];
+		if( controller.getSetting( "environment", "production" ) != "production" ){
+			if( structKeyExists( url, "seed" ) && url.seed ){
+				migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
+				migrationService.runAllMigrations( "up" );
+			} else if( structKeyExists( url, "seed" ) && !url.seed ) {
+				migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
+				migrationService.runAllMigrations( "down" );
+			}
+		}
 
 	}
 

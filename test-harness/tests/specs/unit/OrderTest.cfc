@@ -3,21 +3,13 @@
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.Order"{
-	
+component extends="tests.resources.BaseTest" {
+
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
 	function beforeAll(){
 		super.beforeAll();
-	
-		// load ColdBox
-		this.loadColdbox = true;
-
-		// setup the model
-		super.setup();		
-		
-		// init the model object
-		model.init();
+		variables.model = getWirebox().getInstance( "Order@cbCommerce" );
 	}
 
 	function afterAll(){
@@ -25,11 +17,11 @@ component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.model
 	}
 
 	/*********************************** BDD SUITES ***********************************/
-	
+
 	function run(){
 
 		describe( "cbCommerce.models.Order Suite", function(){
-			
+
 
 		});
 

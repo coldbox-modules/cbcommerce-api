@@ -103,7 +103,7 @@ component   table="cbc_SKUs"
 		virtualSKUs().delete();
 		getMedia().each( function( mediaItem ){
 			mediaItem.delete();
-		} )
+		} );
 		return super.delete( argumentCollection=arguments );
 	}
 

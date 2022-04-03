@@ -3,18 +3,14 @@
 * and then create it, prepare it for mocking and then place it in the variables scope as 'model'. It is your
 * responsibility to update the model annotation instantiation path and init your model.
 */
-component extends="coldbox.system.testing.BaseModelTest" model="cbCommerce.models.Cart"{
+component extends="tests.resources.BaseTest" {
 
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
 	function beforeAll(){
 		super.beforeAll();
 
-		// load ColdBox
-		this.loadColdbox = true;
-
-		// setup the model
-		super.setup();
+		variables.model = new cbCommerce.models.Cart();
 
 		// init the model object
 		model.init();

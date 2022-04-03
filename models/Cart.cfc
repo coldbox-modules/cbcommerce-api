@@ -1,12 +1,12 @@
 /**
-* 
+*
 * CBox Commerce Cart Model
 * @author Jon Clausen <jclausen@ortussolutions.com>
 **/
 component table="cbc_carts"
-            extends="BaseCBCommerceEntity" 
+            extends="BaseCBCommerceEntity"
             accessors="true"
-            quick 
+            quick
 {
 
    //JSON storage
@@ -15,12 +15,12 @@ component table="cbc_carts"
    //Foreign Keys
    property name="FK_user";
    property name="FK_order";
-  
+
    function init(){
        super.init();
        variables.contents = serializeJSON(
            {
-               "items" : [],
+               "items" : []
            }
        );
        variables.audit = serializeJSON( [] );
@@ -56,6 +56,6 @@ component table="cbc_carts"
    }
 
 
-	
+
 }
 
