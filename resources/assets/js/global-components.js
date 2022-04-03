@@ -22,7 +22,7 @@ Vue.use( VTooltip );
 Vue.mixin(titleMixin);
 
 
-Vue.use( 
+Vue.use(
     VueScrollTo,
     {
         container: "body",
@@ -36,7 +36,7 @@ Vue.use(
         onCancel: false,
         x: false,
         y: true
-    } 
+    }
 );
 
 Vue.use(
@@ -85,7 +85,7 @@ Vue.component( "ShoppingCart", require( "@cbCommerce/components/commerce/shoppin
 Vue.component( "cbSlickSlider", require( "@cbCommerce/components/cb-slick-slider" ).default );
 Vue.component( "cbMediaGallery", require( "@cbCommerce/components/cb-media-gallery" ).default );
 Vue.component( "MediaOwlCarousel", require( "@cbCommerce/components/media-owl-carousel" ).default );
-Vue.component( "ContentboxNav", require( "@cbCommerce/components/contentbox-nav" ).default );
+Vue.component( "CbcommerceNav", require( "@cbCommerce/components/cbcommerce-nav" ).default );
 Vue.component( "LoginForm", require( "@cbCommerce/components/login-form" ).default );
 
 export default {

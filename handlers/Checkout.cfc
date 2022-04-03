@@ -1,5 +1,4 @@
 component extends="BaseHandler"{
-	property name="cbHelper" inject="CBHelper@cb";
 	property name="cartService" inject="CartService@cbCommerce";
 
 	function index( event, rc, prc ){
@@ -13,9 +12,6 @@ component extends="BaseHandler"{
 			relocate( prc.xehShoppingCart );
 		}
 
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
-
         prc.assetBag.addJavascriptToFooter("https://js.stripe.com/v3/");
 
         prc.globalData[ "stripeKey" ] = getModuleSettings( "stripecfml" ).publishableKey;
@@ -23,14 +19,10 @@ component extends="BaseHandler"{
     }
 
 	function login( event, rc, prc ){
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "checkout/login" );
     }
 
     function thankyou( event, rc, prc ){
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "checkout/thankyou" );
     }
  }

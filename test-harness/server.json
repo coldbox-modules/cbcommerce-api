@@ -1,7 +1,5 @@
 {
-    "app":{
-        "cfengine":"lucee@5"
-    },
+    "name":"cbcommerce-test-harness",
     "web":{
         "rewrites":{
             "enable":"true"

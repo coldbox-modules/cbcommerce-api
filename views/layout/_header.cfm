@@ -1,7 +1,8 @@
 <cfoutput>
-	<cfset prc.headerMainNav = cb.themeSetting( 'headerMainNav', true )>
-	<cfset prc.globalData[ "rootMenu" ] = cb.menu( slug="main-nav", type="data" )/>
-
+	<cfif prc.isContentBoxContext>
+		<cfset prc.headerMainNav = cb.themeSetting( 'headerMainNav', true )>
+		<cfset prc.globalData[ "rootMenu" ] = cb.menu( slug="main-nav", type="data" )/>
+	</cfif>
 
 	<header id="header">
 		<!--- header-top-row --->
@@ -10,7 +11,11 @@
 				<div class="row">
 					<div class="col-md-6 hidden-xs hidden-sm">
                         <div class="top-welcome">
-                        	#cb.themeSetting( 'headerText', 'Welcome to our Store' )#
+							<cfif prc.isContentBoxContext>
+								#cb.themeSetting( 'headerText', 'Welcome to our Store' )#
+							<cfelse>
+								#getModuleSettings( "cbCommerce", "headerText", "" )#
+							</cfif>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -41,11 +46,11 @@
                         	<div class="row flex-center">
                         		<!--- logo --->
                                 <div class="col-md-3">
-                                    <cfif cb.themeSetting( 'headerLogo' ) is "">
+                                    <cfif prc.isContentBoxContext && cb.themeSetting( 'headerLogo' ) is "">
 										<a href="#cb.linkHome()#" class="navbar-brand" title="#cb.siteTagLine()#" data-toggle="tooltip">
 											<strong>#cb.siteName()#</strong>
 										</a>
-									<cfelse>
+									<cfelseif prc.isContentBoxContext>
 										<a href="#cb.linkHome()#" class="header-logo brand-img" title="#cb.siteTagLine()#" data-toggle="tooltip">
 											<img id="logo-default" src="#cb.themeSetting( 'headerLogo' )#" alt="#cb.siteName()#" class="hidden-xs hidden-sm img-responsive">
 											<!--- to display on viewports less than 992px --->
@@ -68,7 +73,7 @@
                                 <div class="col-md-4 hidden-xs hidden-sm"></div>
                             </div>
                         </div>
-                        <contentbox-nav :prepend-categories="true"></contentbox-nav>
+                        <cbcommerce-nav :prepend-categories="true"></cbcommerce-nav>
                     </div>
                 </div>
              </div>

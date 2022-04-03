@@ -11,40 +11,48 @@
 		<!--- Page Includes --->
 		#renderView( module="cbCommerce", view="layout/_pageIncludes" )#
 		<!--- ContentBoxEvent --->
-		#cb.event( "cbui_beforeHeadEnd" )#
+		#announce( "cbui_beforeHeadEnd" )#
 	</head>
 	<body class="contentbox-module">
 		<!--- ContentBoxEvent --->
-		#cb.event( "cbui_afterBodyStart" )#
+		#announce( "cbui_afterBodyStart" )#
 
-		<div id="app">		
+		<div id="app">
 			<!--- Header --->
 			#renderView( module="cbCommerce", view='layout/_header' )#
 			<!--- ContentBoxEvent --->
-			#cb.event( "cbui_beforeContent" )#
+			#announce( "cbui_beforeContent" )#
 			<!--- Main View --->
 			<section id="body-main" class="body-main-page">
 				<!--- Blank breadcrumbs, for now, so our page layout remains intact --->
 				<div id="body-breadcrumbs" class="col-sm-12"></div>
 				<!--- Determine span length due to sidebar or homepage --->
-				<cfif cb.isHomePage() OR !args.sidebar>
+				<cfif ( prc.isContentBoxContext && cb.isHomePage() ) OR !args.sidebar>
 					<cfset args.span = 12>
 				<cfelse>
 					<cfset args.span = 9>
 				</cfif>
-				<div class="col-sm-#args.span#">
-					#cb.mainView( args=args )#
+				<div class="col-sm-">
+					<cfif prc.isContentBoxContext>
+						#cb.mainView( args=args )#
+					<cfelse>
+						#renderView( args=args )#
+					</cfif>
 				</div>
 			</section>
 			<!--- ContentBoxEvent --->
-			#cb.event( "cbui_afterContent" )#
+			#announce( "cbui_afterContent" )#
 
 			<!--- Footer --->
-			#renderView( module="cbCommerce", view='layout/_footer' )#
+			<cfif prc.isContentBoxContext>
+				#renderView( module="cbCommerce", view='layout/_contentbox_footer' )#
+			<cfelse>
+				#renderView( module="cbCommerce", view='layout/_footer' )#
+			</cfif>
 		</div>
 
 		<!--- ContentBoxEvent --->
-		#cb.event( "cbui_beforeBodyEnd" )#
+		#announce( "cbui_beforeBodyEnd" )#
 
 		<!--- before body end includes --->
 		#renderView( module="cbCommerce", view='layout/_beforeBodyEndIncludes' )#

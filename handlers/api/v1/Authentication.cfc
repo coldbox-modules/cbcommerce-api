@@ -61,7 +61,9 @@ component extends="BaseAPIHandler"{
         prc.user.setResetToken( getInstance( "EncryptionService@cbCommerce" ).createGenericToken( rc.email ) ).save();
 
         // Prepare our contentbox objects
-        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		if( getController().getModuleService().isModuleRegistered( "contentbox" ) ){
+			getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		}
         // reset our layout to none
         event.noLayout();
 

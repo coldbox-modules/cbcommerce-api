@@ -12,6 +12,10 @@
     property name="resultsMapper" inject="ResultsMapper@mementifier";
 
  	void function preProcess( event, interceptData, buffer, rc, prc ) {
+		prc.isContentBoxContext = getController().getModuleService().isModuleRegistered( "contentbox" );
+		if( prc.isContentBoxContext ){
+			prc.cbHelper = getInstance( "CBHelper@cb" );
+		}
         // set globalData if not present in prc.
         if( !structKeyExists( prc, "globalData" ) ){
             prc[ "globalData" ] = {

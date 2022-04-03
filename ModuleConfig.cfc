@@ -218,6 +218,10 @@ component {
             migrationService.runAllMigrations( "down" );
         }
 
+		// routes = [
+		// 	"config/Router.cfc"
+		// ];
+
 	}
 
 }

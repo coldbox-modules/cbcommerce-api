@@ -1,7 +1,7 @@
 <cfoutput>
 	<!--- ContentBoxEvent --->
-	#cb.event("cbui_BeforeSideBar")#
-	
+	#announce("cbui_BeforeSideBar")#
+
 	<div class="sidebar-nav">
 		<ul>
 			#cb.subPageMenu( page=cb.getCurrentPage(), type="li" )#
@@ -9,5 +9,5 @@
 	</div>
 
 	<!--- ContentBoxEvent --->
-	#cb.event("cbui_afterSideBar")#
+	#announce("cbui_afterSideBar")#
 </cfoutput>

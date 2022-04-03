@@ -19,8 +19,10 @@ component extends="BaseAPIHandler"{
             from=rc.email,
             subject=rc.subject
         );
-        // Prepare our contentbox
-        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+        // Prepare our contentbox objects
+		if( getController().getModuleService().isModuleRegistered( "contentbox" ) ){
+			getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		}
         // reset our layout to none
         event.noLayout();
 
@@ -35,7 +37,7 @@ component extends="BaseAPIHandler"{
     function wishlistQuote( event, rc, prc ) secured{
         paramRequest( argumentCollection = arguments );
         if( prc.response.getError() ) return;
-        
+
         prc.wishlist = getInstance( "Wishlist@CBCommerce" ).getOrFail( rc.wishlistId );
 
         if( !len( prc.authenticatedUser.getPrimaryPhone() ) ){
@@ -47,8 +49,10 @@ component extends="BaseAPIHandler"{
             from=prc.authenticatedUser.getEmail(),
             subject="Custom Quote Request from " & prc.authenticatedUser.getFullName()
         );
-        // Prepare our contentbox
-        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+        // Prepare our contentbox objects
+		if( getController().getModuleService().isModuleRegistered( "contentbox" ) ){
+			getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		}
         // reset our layout to none
         event.noLayout();
 
@@ -64,10 +68,10 @@ component extends="BaseAPIHandler"{
         paramRequest( argumentCollection = arguments );
 
         if( prc.response.getError() ) return;
-        
+
         prc.cart = getInstance( "CartService@cbCommerce" ).getActiveCart();
 
-        var subject = !isNull( prc.cart.getCustomer() ) 
+        var subject = !isNull( prc.cart.getCustomer() )
                         ? "Custom Quote Request from " & prc.cart.getCustomer().getFullName()
                         : "Custom Quote Request";
 
@@ -76,14 +80,16 @@ component extends="BaseAPIHandler"{
             from=structKeyExists( prc, "authenticatedUser" ) ? prc.authenticatedUser.getEmail() : rc.email,
             subject=subject
         );
-        
-        // Prepare our contentbox
-        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+
+        // Prepare our contentbox objects
+		if( getController().getModuleService().isModuleRegistered( "contentbox" ) ){
+			getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		}
         // reset our layout to none
         event.noLayout();
 
         quoteMail.setBody( renderView( view="email/quotes/cart", module="cbCommerce" ) );
-        
+
         mailService.send( quoteMail );
 
         prc.response.setStatusCode( status.CREATED ).setData( { "message" : "Your quotation request was successfully sent"} );
@@ -98,17 +104,19 @@ component extends="BaseAPIHandler"{
 
         prc.sku = getInstance( "ProductSKU@CBCommerce" ).getOrFail( rc.skuId );
 
-        var subject = structKeyExists( prc, "authenticatedUser" ) 
+        var subject = structKeyExists( prc, "authenticatedUser" )
                         ? "Custom Quote Request from " & prc.authenticatedUser.getFullName()
                         : "Custom Quote Request";
-        
+
         var quoteMail = mailService.newMail(
             to=event.getValue( "recipient", getSetting( "mailSettings" ).to ),
             from=structKeyExists( prc, "authenticatedUser" ) ? prc.authenticatedUser.getEmail() : rc.email,
             subject=subject
         );
-        // Prepare our contentbox
-        getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+        // Prepare our contentbox objects
+		if( getController().getModuleService().isModuleRegistered( "contentbox" ) ){
+			getInstance( "CBHelper@cb" ).prepareUIRequest( "modules" );
+		}
         // reset our layout to none
         event.noLayout();
 

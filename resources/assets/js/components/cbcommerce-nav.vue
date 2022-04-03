@@ -13,31 +13,32 @@
 		    </div>
 		    <div id="navbar-main-collapse">
 		        <ul :class="rootMenu.menuClass">
+					<template v-if="prependCategories">
+						<cbcommerce-nav-item
+							v-for="( navItem, index) in categoriesNav"
+							:key="`cbcommerce_nav_item_${index}`"
+							:navItem="navItem"></cbcommerce-nav-item>
+					</template>
 
-		            <contentbox-nav-item
-		                v-if="prependCategories"
-		                v-for="( navItem, index) in categoriesNav"
-		                :key="`cbcommerce_nav_item_${index}`"
-		                :navItem="navItem"></contentbox-nav-item>
-
-		            <contentbox-nav-item
+		            <cbcommerce-nav-item
 		                v-for="(navItem, index) in rootMenu.menuItems"
 		                :key="`contentbox_nav_item_${index}`"
-		                :navItem="navItem"></contentbox-nav-item>
+		                :navItem="navItem"></cbcommerce-nav-item>
 
-		            <contentbox-nav-item
-		                v-if="!prependCategories"
-		                v-for="( navItem, index) in categoriesNav"
-		                :key="`cbcommerce_nav_item_${index}`"
-		                :navItem="navItem"></contentbox-nav-item>
 
+					<template v-if="!prependCategories">
+						<cbcommerce-nav-item
+							v-for="( navItem, index) in categoriesNav"
+							:key="`cbcommerce_nav_item_${index}`"
+							:navItem="navItem"></cbcommerce-nav-item>
+					</template>
 		        </ul>
 		    </div>
 		</nav>
 	</div>
 </template>
 <script>
-import ContentboxNavItem from './contentbox-nav-item';
+import CbcommerceNavItem from './cbcommerce-nav-item';
 import { mapState } from 'vuex';
 export default {
     props : {
@@ -47,7 +48,7 @@ export default {
         }
     },
     components:{
-        ContentboxNavItem
+        CbcommerceNavItem
     },
     data(){
     	return{

@@ -1,27 +1,18 @@
 component extends="BaseHandler"{
-    property name="cbHelper" inject="CBHelper@cb";
 
 	function index( event, rc, prc ) cache="false"{
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "account/index" );
     }
 
 	function login( event, rc, prc ) cache="false"{
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "account/login" );
     }
 
 	function create( event, rc, prc ) cache="false"{
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "account/create" );
     }
 
     function edit( event, rc, prc ) cache="false" secured{
-        // Tell ColdBox to use the ContentBox theme
-       cbHelper.prepareUIRequest();
         event.setView( "account/edit" );
     }
 
