@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler"{
     property name="mailService" inject="MailService@cbmailservices";
 
-	this.APIBaseURL = '/store/api/v1/authentication'
+	this.APIBaseURL = '/cbc/api/v1/authentication'
 
     // Authentication check
 	// (POST) /cbc/api/v1/authentication

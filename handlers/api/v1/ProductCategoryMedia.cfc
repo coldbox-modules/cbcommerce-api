@@ -6,9 +6,9 @@
 component extends="BaseAPIHandler"{
 	property name="categoryService" inject="ProductCategoryService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/product-categories/{categoryId}/media';
+	this.APIBaseURL = '/cbc/api/v1/product-categories/{categoryId}/media';
 
-	// (GET) /store/api/v1/product-categories/:categoryId/media
+	// (GET) /cbc/api/v1/product-categories/:categoryId/media
 	function index( event, rc, prc ){
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
@@ -31,7 +31,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /store/api/v1/product-categories/:categoryId/media
+	// (POST) /cbc/api/v1/product-categories/:categoryId/media
 	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
@@ -81,7 +81,7 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /store/api/v1/product-categories/:categoryId/media/:id
+	// (GET) /cbc/api/v1/product-categories/:categoryId/media/:id
 	function show( event, rc, prc ){
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
@@ -98,7 +98,7 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/product-categories/:categoryId/media/:id
+	// (PUT|PATCH) /cbc/api/v1/product-categories/:categoryId/media/:id
 	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
@@ -126,7 +126,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (DELETE) /store/api/v1/product-categories/:categoryId/media/:id
+	// (DELETE) /cbc/api/v1/product-categories/:categoryId/media/:id
 	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );

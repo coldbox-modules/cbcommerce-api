@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest" {
 
 	function run(){
 
-		describe( "cbCommerce.models.Order Suite", function(){
+		describe( "cbCommerce.models.Order Spec", function(){
 
 
 		});

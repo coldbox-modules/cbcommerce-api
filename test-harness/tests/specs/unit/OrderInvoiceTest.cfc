@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "OrderInvoice Suite", function(){
+		describe( "OrderInvoice Spec", function(){
 
 
 		});

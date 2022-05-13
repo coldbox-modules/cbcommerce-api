@@ -1,9 +1,9 @@
 component {
-
+	this.packageInfo = deserializeJSON( fileRead( getDirectoryFromPath( getCurrentTemplatePath() ) & "/box.json" ) );
     this.name           = "cbCommerce";
     this.title          = "cbCommerce";
     this.description    = "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS";
-    this.version        = "1.0.0";
+    this.version        = this.packageInfo.version;
     this.author         = "Jon Clausen <jclausen@ortussolutions.com>";
     this.webUrl         = "https://github.com/coldbox-modules/cbCommerce";
     this.cfmapping      = "cbCommerce";
@@ -15,6 +15,7 @@ component {
         "cbauth",
         "quick",
         "cfmigrations",
+		"mockdatacfc",
         "cbsecurity",
         "BCrypt"
     ];
@@ -25,6 +26,13 @@ component {
     function configure() {
 
         settings = {
+			"info" : {
+				"name" : this.title,
+				"description" : this.title,
+				"documentation" : this.packageInfo.documentation,
+				"description" : this.packageInfo.shortDescription,
+				"version" : this.version
+			},
             "cbauth" : {
                 "userServiceClass" : "UserService@cbCommerce"
             },
@@ -143,6 +151,8 @@ component {
 			// Cookie Storage settings
 			cookieStorage = {
 				useEncryption 	= true,
+				secure = true,
+				httpOnly = false,
 				encryptionSeed 	= getSystemSetting( "CBCOMMERCE_ENCRYPT_SEED", "jxPp16lyN9M4bNFL2NR5ow==" ), // `generateSecretKey( "AES" )`
 		        encryptionAlgorithm = getSystemSetting( "CBCOMMERCE_ENCRYPT_ALGORITHM", "AES/CBC/PKCS5Padding" ),
 		        encryptionEncoding = getSystemSetting( "CBCOMMERCE_ENCRYPT_ENCODING", "HEX" )
@@ -174,11 +184,6 @@ component {
         migrationService.getManager().setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
         migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/migrations' );
         migrationService.runAllMigrations( "up" );
-
-        // TODO: Only run seeds in development mode, investigate if we want this in production
-		if( controller.getSetting( "environment" ) neq "development" ){
-			return;
-		}
 
         // Run any outstanding seeders if requested
 		if( controller.getSetting( "environment", "production" ) != "production" ){

@@ -60,7 +60,7 @@ component extends="BaseQuickEntityService" singleton{
             var serializedProduct = sku.getProduct().getMemento(
 										includes="href",
 										defaults={ "href" : "" },
-										mappers={ "href" : function( transformed ) { return '/store/api/v1/products/' & transformed[ "id" ]; } }
+										mappers={ "href" : function( transformed ) { return '/cbc/api/v1/products/' & transformed[ "id" ]; } }
 									);
 
             if( arrayLen( serializedProduct.media ) ){

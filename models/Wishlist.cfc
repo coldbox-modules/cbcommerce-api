@@ -14,8 +14,7 @@ component   table="cbc_wishlists"
    //Foreign Keys
 	property name="FK_user";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
             this.memento.defaultIncludes,
             [

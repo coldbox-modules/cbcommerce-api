@@ -18,8 +18,7 @@ component   table="cbc_media"
 	property name="fileLocation" type="string";
 	property name="fileSizeBytes" type="string";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			[

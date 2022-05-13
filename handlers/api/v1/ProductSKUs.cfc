@@ -7,7 +7,7 @@ component extends="BaseAPIHandler"{
 
 	property name="entityService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/skus'
+	this.APIBaseURL = '/cbc/api/v1/skus'
 
 	// (GET) /cbc/api/v1/skus
 	function index( event, rc, prc ){

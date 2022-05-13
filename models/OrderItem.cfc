@@ -20,8 +20,7 @@ component   table="cbc_orderItems"
 	property name="FK_order";
 	// property name="FK_sku";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
             this.memento.defaultIncludes,
             [

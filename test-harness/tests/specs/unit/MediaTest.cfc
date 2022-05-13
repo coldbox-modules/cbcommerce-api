@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "Media Suite", function(){
+		describe( "Media Spec", function(){
 
 
 		});

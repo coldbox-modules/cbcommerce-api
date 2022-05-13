@@ -17,10 +17,18 @@ component{
         prc.mediaItem = getInstance( "Media@cbCommerce" ).find( rc.id );
 
         if( isNull( prc.mediaItem ) || !fileExists( expandPath( prc.mediaItem.getFileLocation() ) ) ){
-            rc.format="json";
-        	return runEvent( event="cbCommerce:api.v1.BaseAPIHandler.routeNotFound", eventArgs=arguments, prePostExempt=true );
+            runEvent( event="cbCommerce:api.v1.BaseAPIHandler.routeNotFound", eventArgs=arguments, prePostExempt=true );
+			return event.renderData(
+				type		= prc.response.getFormat(),
+				data 		= prc.response.getDataPacket( reset=true ),
+				contentType = prc.response.getContentType(),
+				statusCode 	= prc.response.getStatusCode(),
+				statusText 	= prc.response.getStatusText(),
+				location 	= prc.response.getLocation(),
+				isBinary 	= prc.response.getBinary()
+			);
         }
-        
+
         event.paramValue( "format", listLast( rc.path, "." ) );
 
     	var imageArgs = {};
@@ -61,27 +69,27 @@ component{
     }
 
     function writeToBrowser( eventArgs, imageArgs ) {
-    	
+
     	eventArgs.event.noRender();
-        
+
         var media = eventArgs.prc.mediaItem;
 
         if( structKeyExists( imageArgs, "mimeType" ) && listFirst( imageArgs.mimeType, "/" ) == 'image' && structKeyExists( imageArgs, "width" ) ){
 
         	var mediaPath = media.getVariation( argumentCollection=imageArgs );
-        
+
         } else {
-        
+
         	var mediaPath = expandPath( media.getFileLocation() );
-        
+
         }
 
         eventArgs.event.setHTTPHeader( name="cache-control", value="max-age=86400" );
 
-        eventArgs.event.sendFile( 
-        	file=mediaPath, 
-        	disposition=( media.isImage() || media.isPDF() ) ? 'inline' : 'attachment' 
+        eventArgs.event.sendFile(
+        	file=mediaPath,
+        	disposition=( media.isImage() || media.isPDF() ) ? 'inline' : 'attachment'
         );
-	        
+
     }
 }

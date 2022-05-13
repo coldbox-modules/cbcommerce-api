@@ -21,7 +21,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "OrderShipment Suite", function(){
+		describe( "OrderShipment Spec", function(){
 
 
 		});

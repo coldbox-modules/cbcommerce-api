@@ -4,7 +4,6 @@ services:
 
   mysql:
     image: mariadb
-    restart: always
     environment:
       MYSQL_DATABASE: cbcommerce
       MYSQL_USER: cbcommerce

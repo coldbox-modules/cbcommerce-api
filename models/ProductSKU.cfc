@@ -38,19 +38,20 @@ component   table="cbc_SKUs"
 	property name="FK_subCondition";
 	property name="FK_consignmentBatch";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
             this.memento.defaultIncludes,
             [
-                "onHand",
                 "media",
-                "condition",
+                "onHand",
                 "options",
+                "condition",
                 "subCondition"
             ],
             true
         );
+		this.memento.mappers[ "onHand" ] = function( item, memento ){ return len( memento.onHand ) ? memento.onHand : 0; };
+		scopeWithOnHand();
 	}
 
 	function product(){
@@ -122,9 +123,35 @@ component   table="cbc_SKUs"
 									.where( 'cbc_inventoryLocationStock.isActive', 1 )
 									.where( 'cbc_inventoryLocationStock.available', '>=', 1 );
 				}
+			);
+
+		} );
+	}
+
+	function scopeWhereAvailable( query ){
+        return query.where( function( subquery ){
+			return subquery
+			.where( "cbc_SKUs.isActive", 1 )
+			.whereExists(
+				function( subSubQuery ){
+					return subSubQuery.from( 'cbc_inventoryLocationStock' )
+									.whereColumn( 'cbc_inventoryLocationStock.FK_sku', '=', 'cbc_SKUs.id' )
+									.where( 'cbc_inventoryLocationStock.isActive', 1 )
+									.where( 'cbc_inventoryLocationStock.available', '>=', 1 );
+				}
 			)
 			.orWhere( 'cbc_SKUs.allowBackorder', 1 );
 
 		} );
+	}
+
+	function scopeWithOnHand(){
+		appendVirtualAttribute( "onHand" );
+		return addSubselect(
+			"onHand",
+			newEntity( "InventoryLocationStock@cbcommerce" )
+				.whereColumn( "cbc_inventoryLocationStock.FK_sku", "=", "cbc_SKUs.id" )
+				.reselectRaw( "sum(available) as onHand" )
+		);
 	}
 }

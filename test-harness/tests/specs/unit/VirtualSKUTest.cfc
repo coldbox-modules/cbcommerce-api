@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "VirtualSKU Suite", function(){
+		describe( "VirtualSKU Spec", function(){
 
 
 		});

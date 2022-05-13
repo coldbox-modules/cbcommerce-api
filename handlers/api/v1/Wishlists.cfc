@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler" secured{
 	property name="entityService" inject="WishlistService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/wishlists';
+	this.APIBaseURL = '/cbc/api/v1/wishlists';
 
 	// (GET) /wishlists
 	function index( event, rc, prc ){

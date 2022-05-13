@@ -69,8 +69,7 @@ component{
                 "authorizationAjaxOverrideEvent"  = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure"
 			},
 			"stripecfml" : {
-				"apiKey" : getSystemSetting( "STRIPE_API_KEY", "" ),
-				"publishableKey" : getSystemSetting( "STRIPE_PUBLISHABLE_KEY", "" )
+				"apiKey" : getSystemSetting( "STRIPE_API_KEY", "" )
 			}
 		};
 

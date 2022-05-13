@@ -12,7 +12,7 @@ component extends="BaseAPIHandler" {
 	property name="processor" inject="StripeProcessor@cbCommerce";
 	property name="cartService" inject="CartService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/payments'
+	this.APIBaseURL = '/cbc/api/v1/payments'
 
 	// (GET) /cbc/api/v1/payments
 	function index( event, rc, prc ){

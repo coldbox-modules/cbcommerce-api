@@ -24,7 +24,7 @@ component extends="tests.resources.BaseTest" {
 
 	function run(){
 
-		describe( "InventoryLocationStock Suite", function(){
+		describe( "InventoryLocationStock Spec", function(){
 
 
 		});

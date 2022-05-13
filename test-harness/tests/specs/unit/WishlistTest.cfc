@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "Wishlist Suite", function(){
+		describe( "Wishlist Spec", function(){
 
 
 		});

@@ -1,7 +1,7 @@
 /**
 * cboxCommerce default Product Category Object
 */
-component   table="cbc_productSKUOptions"  
+component   table="cbc_productSKUOptions"
 			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
@@ -12,6 +12,16 @@ component   table="cbc_productSKUOptions"
 
 	//Foreign Keys
 	property name="FK_sku";
+
+	function instanceReady(){
+		arrayAppend(
+			this.memento.defaultExcludes,
+			[
+				"sku"
+			],
+			true
+		);
+	}
 
 	function sku(){
 		return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );

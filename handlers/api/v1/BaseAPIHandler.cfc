@@ -68,7 +68,7 @@ component extends="coldbox.system.EventHandler"{
 	function aroundHandler( event, rc, prc, targetAction, eventArguments ){
 
 		event.paramValue( "currency", "USD" );
-		event.paramValue( "maxrows", 25 );
+		event.paramValue( "maxrows", 10 );
 		event.paramValue( "offset", 0 );
 		event.paramValue( "sortOrder", "createdTime DESC" );
 		event.paramValue( "includes", "" );
@@ -444,5 +444,9 @@ component extends="coldbox.system.EventHandler"{
         }
         return this;
     }
+
+	function hrefMapper( item, memento ){
+		return this.APIBaseURL & "/" & memento.id;
+	}
 
 }

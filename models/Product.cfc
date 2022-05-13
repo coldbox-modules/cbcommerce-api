@@ -25,8 +25,7 @@ component   table="cbc_products"
 		hasOptions = { required : true, type : "numeric" }
 	};
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
             this.memento.defaultIncludes,
             [
@@ -38,11 +37,18 @@ component   table="cbc_products"
             ],
             true
         );
+		scopeWithStartingPrice();
+		scopeWithAverageRating();
+		scopeWithRatingCount();
 	}
 
 	// Relationships
 	function skus(){
 		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' );
+	}
+
+	function activeSkus(){
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' ).whereAvailable();
 	}
 
 	function categories(){
@@ -61,11 +67,11 @@ component   table="cbc_products"
 		return hasMany( "ProductReview@cbCommerce", "FK_product");
 	}
 
-	// filtered relationships
-	function activeSkus(){
-		return skus()
-				.where( 'isActive', 1 )
-				.whereInStock();
+	function getReviewSummary(){
+		return {
+			"count" : variables.ratingCount,
+			"average" : len( variables.averageRating ) ? variables.averageRating : javacast( "null", 0 )
+		};
 	}
 
 	// delete overload
@@ -80,6 +86,37 @@ component   table="cbc_products"
 		} );
 		this.categories().sync([]);
 		return super.delete();
+	}
+
+	function scopeWithStartingPrice(){
+		appendVirtualAttribute( "startingPrice" );
+		return addSubselect(
+			"startingPrice",
+			newEntity( "ProductSKU@cbcommerce" )
+				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
+				.reselectRaw( "min( basePrice ) as startingPrice" )
+
+		);
+	}
+
+	function scopeWithAverageRating(){
+		appendVirtualAttribute( "averageRating" );
+		return addSubselect(
+			"averageRating",
+			newEntity( "ProductReview@cbcommerce" )
+				.whereColumn( "cbc_productReviews.FK_product", "=", "cbc_products.id" )
+				.reSelectRaw( "avg(rating) as avgRating" )
+        );
+	}
+
+	function scopeWithRatingCount(){
+		appendVirtualAttribute( "ratingCount" );
+		return addSubselect(
+			"ratingCount",
+			newEntity( "ProductReview@cbcommerce" )
+				.whereColumn( "cbc_productReviews.FK_product", "=", "cbc_products.id" )
+				.reSelectRaw( "count(*) as ratingCount" )
+        );
 	}
 
     function scopeHasUsedSKU( query ){

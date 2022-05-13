@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "cbCommerce.models.Payment Suite", function(){
+		describe( "cbCommerce.models.Payment Spec", function(){
 
 
 		});

@@ -8,7 +8,7 @@ component extends="BaseAPIHandler" secured{
 	property name="wishlistService" inject="WishlistService@cbCommerce";
 	property name="skuService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/wishlists/{wishlist}/items'
+	this.APIBaseURL = '/cbc/api/v1/wishlists/{wishlist}/items'
 
 	// (GET) /wishlists/::wishlistId/items
 	function index( event, rc, prc ){

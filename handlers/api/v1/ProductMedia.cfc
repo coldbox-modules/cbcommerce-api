@@ -6,9 +6,9 @@
 component extends="BaseAPIHandler"{
 	property name="productService" inject="ProductService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/products/{productId}/media'
+	this.APIBaseURL = '/cbc/api/v1/products/{productId}/media'
 
-	// (GET) /store/api/v1/products/:productId/media
+	// (GET) /cbc/api/v1/products/:productId/media
 	function index( event, rc, prc ){
 
 		var product = productService.newEntity().getOrFail( rc.productId );
@@ -29,7 +29,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /store/api/v1/products/:productId/media
+	// (POST) /cbc/api/v1/products/:productId/media
 	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
@@ -79,7 +79,7 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /store/api/v1/products/:productId/media/:id
+	// (GET) /cbc/api/v1/products/:productId/media/:id
 	function show( event, rc, prc ){
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
@@ -96,7 +96,7 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/products/:productId/media/:id
+	// (PUT|PATCH) /cbc/api/v1/products/:productId/media/:id
 	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
@@ -127,7 +127,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (DELETE) /store/api/v1/products/:productId/media/:id
+	// (DELETE) /cbc/api/v1/products/:productId/media/:id
 	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );

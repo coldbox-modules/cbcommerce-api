@@ -19,16 +19,14 @@
         "quick":"^4.2.4",
         "cbsecurity":"^2.15.0",
         "BCrypt":"^3.0.1",
-        "coldbox-asset-bag":"^1.0.3",
-        "stripecfml":"^1.1.5",
-        "cbi18n":"^2.2.0"
+        "stripecfml":"^3.2.1"
     },
     "devDependencies":{
-        "mockdatacfc":"^3.0.0+7"
+        "mockdatacfc":"^3.5.0",
+        "cbSwagger":"^2.6.0+147"
     },
     "installPaths":{
         "quick":"modules/quick/",
-        "coldbox-asset-bag":"modules/coldbox-asset-bag/",
         "cfmigrations":"modules/cfmigrations/",
         "cbsecurity":"modules/cbsecurity/",
         "cbvalidation":"modules/cbvalidation/",
@@ -36,7 +34,7 @@
         "cbjavaloader":"modules/cbjavaloader/",
         "mockdatacfc":"modules/mockdatacfc/",
         "BCrypt":"modules/BCrypt/",
-        "cbi18n":"modules/cbi18n/"
+        "cbSwagger":"modules/cbSwagger/"
     },
     "scripts":{
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",

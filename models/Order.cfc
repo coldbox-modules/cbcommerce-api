@@ -23,8 +23,7 @@ component   table="cbc_orders"
 	property name="FK_billingAddress";
 	property name="FK_invoice";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			[

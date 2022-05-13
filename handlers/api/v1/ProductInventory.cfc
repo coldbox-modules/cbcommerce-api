@@ -7,7 +7,7 @@ component extends="BaseAPIHandler" secured="cbcInventoryLocationStocks:Manage"{
 
 	property name="entityService" inject="InventoryLocationStockService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/product-inventory'
+	this.APIBaseURL = '/cbc/api/v1/product-inventory'
 
 	// (GET) /cbc/api/v1/product-inventory
 	function index( event, rc, prc ){

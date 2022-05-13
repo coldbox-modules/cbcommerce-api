@@ -16,8 +16,7 @@ component   table="cbc_wishlistItems"
 	property name="FK_sku";
    property name="FK_wishlist";
 
-   function onDIComplete(){
-	   super.onDIComplete();
+   function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			[

@@ -6,9 +6,9 @@
 component extends="BaseAPIHandler" secured{
 	property name="entityService" inject="ConsignmentBatchService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/consigment-batches';
+	this.APIBaseURL = '/cbc/api/v1/consigment-batches';
 
-	// (GET) /store/api/v1/consigment-batches
+	// (GET) /cbc/api/v1/consigment-batches
 	function index( event, rc, prc ){
 
         if( !auth().user().hasPermission( "Products:Edit" ) ){
@@ -32,7 +32,7 @@ component extends="BaseAPIHandler" secured{
 
 	}
 
-	// (POST) /store/api/v1/consigment-batches
+	// (POST) /cbc/api/v1/consigment-batches
 	function create( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		var sku = entityService.newEntity().getOrFail( rc.skuId );
@@ -59,7 +59,7 @@ component extends="BaseAPIHandler" secured{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /store/api/v1/consigment-batches/:id
+	// (GET) /cbc/api/v1/consigment-batches/:id
 	function show( event, rc, prc ){
 
 
@@ -79,7 +79,7 @@ component extends="BaseAPIHandler" secured{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/consigment-batches/:id
+	// (PUT|PATCH) /cbc/api/v1/consigment-batches/:id
 	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
 
@@ -108,7 +108,7 @@ component extends="BaseAPIHandler" secured{
 
 	}
 
-	// (DELETE) /store/api/v1/consigment-batches/:id
+	// (DELETE) /cbc/api/v1/consigment-batches/:id
 	function delete( event, rc, prc ) secured="cbcProducts:Manage"{
 
 		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );

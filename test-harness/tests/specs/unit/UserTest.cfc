@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "cbCommerce.models.User Suite", function(){
+		describe( "cbCommerce.models.User Spec", function(){
 
 
 		});

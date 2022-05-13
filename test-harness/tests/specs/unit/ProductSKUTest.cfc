@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "ProductSKU Suite", function(){
+		describe( "ProductSKU Spec", function(){
 
 
 		});

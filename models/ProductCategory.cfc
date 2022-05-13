@@ -16,7 +16,7 @@ component   table="cbc_productCategories"
 	//Foreign Keys
 	property name="FK_parent";
 
-	function onDIComplete(){
+	function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			["media"],

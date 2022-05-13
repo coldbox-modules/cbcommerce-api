@@ -22,6 +22,7 @@ component accessors="true"{
 	property name="responsetime"	type="numeric"		default="0";
 	property name="cachedResponse" 	type="boolean"		default=0;
 	property name="headers" 		type="array";
+	property name="pagination"      type="struct";
 
 	/**
 	* Constructor
@@ -42,6 +43,7 @@ component accessors="true"{
 		variables.responsetime		= 0;
 		variables.cachedResponse 	= false;
 		variables.headers 			= [];
+		variables.pagination        = {};
 
 		return this;
 	}
@@ -76,6 +78,10 @@ component accessors="true"{
 			"messages" 		 = variables.messages,
 			"data" 			 = variables.data
 		};
+
+		if( !structIsEmpty( variables.pagination ) ){
+			packet[ "pagination" ] = variables.pagination;
+		}
 
 		// Are we reseting the data packet
 		if( arguments.reset ){

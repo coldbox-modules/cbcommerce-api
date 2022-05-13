@@ -9,7 +9,7 @@ component extends="tests.resources.BaseTest"{
 
 	function beforeAll(){
 		super.beforeAll();
-		variables.model = getWirebox().getInstance( "OrderItem@cbCommerce" );
+		variables.model = getWirebox().getInstance( "ProductCategoryMedia@cbCommerce" );
 	}
 
 	function afterAll(){
@@ -20,7 +20,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "OrderItem Suite", function(){
+		describe( "ProductCategoryMedia Spec", function(){
 
 
 		});

@@ -15,8 +15,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
     property name="_normalizedPermissions" persistent="false";
 
-	function onDIComplete(){
-		super.onDIComplete();
+	function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			[

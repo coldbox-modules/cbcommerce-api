@@ -8,17 +8,17 @@ component extends="BaseAPIHandler"{
 	property name="entityService" inject="UserService@cbCommerce";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
-	this.API_BASE_URL = "/store/api/v1/customers";
+	this.API_BASE_URL = "/cbc/api/v1/customers";
 
 	/**
-	* (GET) /store/api/v1/customers
+	* (GET) /cbc/api/v1/customers
 	*/
 	function index( event, rc, prc ) secured="cbcProduct:Edit,Order:Edit"{
 		return super.index( argumentCollection=arguments );
 	}
 
 	/**
-	* (GET) /store/api/v1/customers/:id
+	* (GET) /cbc/api/v1/customers/:id
 	*/
 	function show( event, rc, prc ) secured{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
@@ -38,7 +38,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	/**
-	* (POST) /store/api/v1/customers
+	* (POST) /cbc/api/v1/customers
 	*/
 	function create( event, rc, prc ){
 		if( auth().check() && auth().user().getEmail() == rc.email ){
@@ -68,7 +68,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	/**
-	* (PUT|PATCH) /store/api/v1/customers/:id
+	* (PUT|PATCH) /cbc/api/v1/customers/:id
 	*/
 	function update( event, rc, prc ) secured{
 		if( auth().user().getId() != rc.id  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
@@ -94,7 +94,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	/**
-	* (DELETE) /store/api/v1/customers/:id
+	* (DELETE) /cbc/api/v1/customers/:id
 	*/
 	function delete( event, rc, prc ) secured="cbcSystem:Edit"{
 		prc.user = entityService.newEntity().getOrFail( rc.id );

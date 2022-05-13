@@ -6,9 +6,9 @@
 component extends="BaseAPIHandler"{
 	property name="productSKUService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/skus/{skuId}/media';
+	this.APIBaseURL = '/cbc/api/v1/skus/{skuId}/media';
 
-	// (GET) /store/api/v1/skus/:skuId/media
+	// (GET) /cbc/api/v1/skus/:skuId/media
 	function index( event, rc, prc ){
 
 		var productSKU = productSKUService.newEntity().getOrFail( rc.skuId );
@@ -31,7 +31,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /store/api/v1/skus/:skuId/media
+	// (POST) /cbc/api/v1/skus/:skuId/media
 	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var sku = productSKUService.newEntity().getOrFail( rc.skuId );
@@ -80,7 +80,7 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /store/api/v1/skus/:skuId/media/:id
+	// (GET) /cbc/api/v1/skus/:skuId/media/:id
 	function show( event, rc, prc ){
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
@@ -97,7 +97,7 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/skus/:skuId/media/:id
+	// (PUT|PATCH) /cbc/api/v1/skus/:skuId/media/:id
 	function update( event, rc, prc ) secured="cbcProducts:Edit"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
@@ -130,7 +130,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (DELETE) /store/api/v1/skus/:skuId/media/:id
+	// (DELETE) /cbc/api/v1/skus/:skuId/media/:id
 	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );

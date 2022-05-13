@@ -8,9 +8,9 @@ component extends="BaseAPIHandler"{
 	property name="productService" inject="ProductService@cbCommerce";
 	property name="entityService" inject="ProductReviewService@cbCommerce";
 
-	this.APIBaseURL = '/store/api/v1/products/{productID}/reviews'
+	this.APIBaseURL = '/cbc/api/v1/products/{productID}/reviews'
 
-	// (GET) /store/api/v1/products/{productId}/reviews
+	// (GET) /cbc/api/v1/products/{productId}/reviews
 	function index( event, rc, prc ){
         rc[ "FK_product" ] = rc.productId;
 
@@ -33,7 +33,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (POST) /store/api/v1/products/{productId}/reviews
+	// (POST) /cbc/api/v1/products/{productId}/reviews
 	function create( event, rc, prc ) secured{
 
         prc.product = productService.findOrFail( rc.productId );
@@ -58,7 +58,7 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /store/api/v1/products/{productId}/reviews/:id
+	// (GET) /cbc/api/v1/products/{productId}/reviews/:id
 	function show( event, rc, prc ){
 
 		prc.review = entityService.newEntity().getOrFail( rc.id );
@@ -75,7 +75,7 @@ component extends="BaseAPIHandler"{
 		);
 	}
 
-	// (PUT|PATCH) /store/api/v1/products/{productId}/reviews/:id
+	// (PUT|PATCH) /cbc/api/v1/products/{productId}/reviews/:id
 	function update( event, rc, prc ) secured="cbcProduct:Manage"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
@@ -100,7 +100,7 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (DELETE) /store/api/v1/products/{productId}/reviews/:id
+	// (DELETE) /cbc/api/v1/products/{productId}/reviews/:id
 	function delete( event, rc, prc ) secured="cbcProduct:Manage"{
 		prc.review = entityService.newEntity().getOrFail( rc.id );
 		prc.review.delete();

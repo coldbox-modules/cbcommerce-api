@@ -10,10 +10,7 @@ component extends="tests.resources.BaseTest" {
 	function beforeAll(){
 		super.beforeAll();
 
-		variables.model = new cbCommerce.models.Cart();
-
-		// init the model object
-		model.init();
+		variables.model = getWirebox().getInstance( "Cart@cbcommerce" );
 	}
 
 	function afterAll(){
@@ -24,7 +21,7 @@ component extends="tests.resources.BaseTest" {
 
 	function run(){
 
-		describe( "cbCommerce.models.Cart Suite", function(){
+		describe( "cbCommerce.models.Cart Spec", function(){
 
 
 		});

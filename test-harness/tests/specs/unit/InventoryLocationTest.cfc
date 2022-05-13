@@ -22,7 +22,7 @@ component extends="tests.resources.BaseTest"{
 
 	function run(){
 
-		describe( "LocationInventory Suite", function(){
+		describe( "LocationInventory Spec", function(){
 
 
 		});
