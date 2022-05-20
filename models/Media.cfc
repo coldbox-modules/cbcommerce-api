@@ -28,9 +28,9 @@ component   table="cbc_media"
 		);
 	}
 
-	function url(){
+	function getSrc(){
 		var extension = listLast( getFileLocation(), "." );
-		return "/store/media/" & keyValue() & "." & extension;
+		return "/cbc/media/" & variables.id & "." & extension;
 	}
 
 		/**

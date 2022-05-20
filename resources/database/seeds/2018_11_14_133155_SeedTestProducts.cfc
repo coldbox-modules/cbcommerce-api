@@ -9,6 +9,7 @@ component {
                                 "description" = "sentence"
 							}
                             );
+		var resourcesDirectory = replace( getDirectoryFromPath( getCurrentTemplatePath() ), "/seeds", "" );
         createdCategories = [];
         mockCategories.each( function( cat ){
             var created = wirebox.getInstance( "ProductCategory@cbCommerce" );
@@ -16,10 +17,21 @@ component {
             arrayAppend( createdCategories, created );
         } );
 
+		var mockInventoryLocation = wirebox.getInstance( "InventoryLocation@cbCommerce" );
+		mockInventoryLocation.fill( {
+			"name"  : "Primary Warehouse",
+			"description"  : "The primary warehouse location",
+			"address1" : "123 Anywhere Lane",
+			"city" : "Grand Rapids",
+			"province" : "MI",
+			"postalCode" : "49546",
+			"country" : "USA"
+		} ).save();
+
 
         var mockProducts = wirebox.getInstance( "MockData@MockDataCFC" )
                             .mock(argumentCollection={
-                                $num=100,
+                                $num=30,
                                 "name" = "words",
                                 "shortDescription" = "sentence",
                                 "description" = "sentence"
@@ -31,6 +43,22 @@ component {
             var cost = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:50:2000" ) );
             var basePrice = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:#cost*1.1#:#cost*1.3#" ) );
             var minimumPrice = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:#cost#:#basePrice#" ) );
+
+			var mediaItem = wirebox.getInstance( "Media@cbCommerce" );
+			var mediaFile = resourcesDirectory & '/migration-data/SeedTestProducts-Images/' & randRange( 1, 9 ) & '.jpg';
+		    mediaItem.loadFile(
+				filePath=mediaFile,
+				pathExtension="products/#createdProduct.getId()#"
+			).fill(
+				{
+					"title" : listLast( mediaFile, "/" ),
+					"caption" : "Product image for #createdProduct.getName()#"
+				}
+			).save().refresh();
+
+			var productMedia = wirebox.getInstance( "ProductMedia@cbCommerce" ).fill( { "isPrimary" : 1, "FK_product" : createdProduct.getId(), "FK_media" : mediaItem.getId() } );
+			productMedia.save();
+
 
             var mockSkus = wirebox.getInstance( "MockData@MockDataCFC" )
                                     .mock( argumentCollection={
@@ -48,20 +76,31 @@ component {
                 var createdSku = wirebox.getInstance( "ProductSKU@cbcommerce" );
                 createdSku.fill( sku );
                 createdSku.save().refresh();
+				var stock = wirebox.getInstance( "InventoryLocationStock@cbCommerce" );
+				stock.fill(
+					{
+						"available" : 100,
+						"allowBackorder" : 1,
+						"FK_sku" : createdSKU.getId(),
+						"FK_inventoryLocation" : mockInventoryLocation.getId()
+					}
+				).save();
+
+				var mediaItem = wirebox.getInstance( "Media@cbCommerce" );
+				var mediaFile = resourcesDirectory & '/migration-data/SeedTestProducts-Images/' & randRange( 1, 9 ) & '.jpg';
+				mediaItem.loadFile(
+					filePath=mediaFile,
+					pathExtension="products/#createdProduct.getId()#/skus/#createdSKU.getId()#"
+				).fill(
+					{
+						"title" : listLast( mediaFile, "/" ),
+						"caption" : "Product sku image for #createdProduct.getName()# sku #createdSku.getId()#"
+					}
+				).save().refresh();
+
+				var productSkuMedia = wirebox.getInstance( "ProductSKUMedia@cbCommerce" ).fill( { "isPrimary" : 1, "FK_sku" : createdSku.getId(), "FK_media" : mediaItem.getId() } );
+				productSkuMedia.save();
             } );
-
-            var mockMedia = wirebox.getInstance( "MockData@MockDataCFC" )
-                                        .mock( argumentCollection={
-                                            $num = "rnd:1:8",
-                                            "title" = "words",
-                                            "caption" = "sentence"
-                                        });
-
-            for( var i = 1; i <= arrayLen( mockMedia ); i++ ){
-                var mediaItem = wirebox.getInstance( "Media@cbCommerce");
-                var mediaFile = expandPath( '/resources/database/migration-data/SeedTestProducts-Images/' & i & '.jpg' );
-            }
-
         } );
 
 

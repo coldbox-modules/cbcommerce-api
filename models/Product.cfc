@@ -37,6 +37,13 @@ component   table="cbc_products"
             ],
             true
         );
+		arrayAppend(
+            this.memento.defaultExcludes,
+            [
+                "requiredOptions"
+            ],
+            true
+        );
 		scopeWithStartingPrice();
 		scopeWithAverageRating();
 		scopeWithRatingCount();
@@ -250,7 +257,7 @@ component   table="cbc_products"
 		required QueryBuilder builder
 	 ){
 
-		with( 'media' );
+		with( 'media.mediaItem' );
 
 		if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
 			with( 'activeSkus' );
