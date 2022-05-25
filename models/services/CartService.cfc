@@ -125,7 +125,7 @@ component extends="BaseQuickEntityService" singleton{
 
 
     private function ensureCart(){
-        var cartId = cookieStorage.getVar( "cartId" );
+        var cartId = cookieStorage.get( "cartId" );
 
         if( isNull( cartId ) && auth.isLoggedIn() ){
             //if user is logged in check first for an existing active cart
@@ -162,7 +162,7 @@ component extends="BaseQuickEntityService" singleton{
             activeCart.save();
         }
 
-        cookieStorage.setVar( "cartId", activeCart.getId() );
+        cookieStorage.set( "cartId", activeCart.getId() );
 
         return activeCart;
 

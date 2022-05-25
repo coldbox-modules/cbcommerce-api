@@ -2,7 +2,7 @@ component extends="quick.models.BaseEntity"{
 
     // Persistent column properties
     property name="id" type="string";
-    property name="isActive" type="boolean" default=1;
+    property name="isActive" type="boolean" default=1 casts="BooleanCast@quick";
     property name="createdTime" type="date";
 	property name="modifiedTime" type="date";
 

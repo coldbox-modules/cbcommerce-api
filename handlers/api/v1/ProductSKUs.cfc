@@ -7,7 +7,7 @@ component extends="BaseAPIHandler"{
 
 	property name="entityService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/cbc/api/v1/skus'
+	this.APIBaseURL = '/cbc/api/v1/skus';
 
 	// (GET) /cbc/api/v1/skus
 	function index( event, rc, prc ){
@@ -44,7 +44,7 @@ component extends="BaseAPIHandler"{
 				//attach the user and consignor roles
 				var consignorRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignor" ).first();
 				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
-				consignor.roles().sync( [ consignorRole.keyValue(), userRole.keyValue() ] );
+				consignor.roles().sync( [ consignorRole.keyValues()[1], userRole.keyValues()[1] ] );
 				prc.sku.consignor().associate( consignor );
 			}
 		} else {
@@ -65,8 +65,8 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setStatusCode( STATUS.CREATED );
 	}
@@ -80,8 +80,8 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -125,7 +125,7 @@ component extends="BaseAPIHandler"{
 				//attach the user and consignor roles
 				var consignorRole = getInstance( "UserRole@cbCommerce" ).where( "name", "consignor" ).first();
 				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
-				consignor.roles().sync( [ consignorRole.keyValue(), userRole.keyValue() ] );
+				consignor.roles().sync( [ consignorRole.keyValues()[1], userRole.keyValues()[1] ] );
 				prc.sku.consignor().associate( consignor );
 			}
 		} else {
@@ -149,8 +149,8 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 

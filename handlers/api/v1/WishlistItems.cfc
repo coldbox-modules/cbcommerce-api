@@ -8,13 +8,13 @@ component extends="BaseAPIHandler" secured{
 	property name="wishlistService" inject="WishlistService@cbCommerce";
 	property name="skuService" inject="ProductSKUService@cbCommerce";
 
-	this.APIBaseURL = '/cbc/api/v1/wishlists/{wishlist}/items'
+	this.APIBaseURL = '/cbc/api/v1/wishlists/{wishlist}/items';
 
 	// (GET) /wishlists/::wishlistId/items
 	function index( event, rc, prc ){
 
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
-		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -34,7 +34,7 @@ component extends="BaseAPIHandler" secured{
 
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
 
-		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -49,8 +49,8 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlistItem = entityService.newEntity().fill( {
 			"baselinePrice" : skuEntity.getBasePrice(),
-			"FK_sku" : skuEntity.keyValue(),
-			"FK_wishlist" : wishlist.keyValue()
+			"FK_sku" : skuEntity.keyValues()[1],
+			"FK_wishlist" : wishlist.keyValues()[1]
 		} );
 
 		validateModelOrFail( prc.wishlistItem );
@@ -73,7 +73,7 @@ component extends="BaseAPIHandler" secured{
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		var wishlist = prc.wishlistItem.getWishlist();
 
-		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -95,7 +95,7 @@ component extends="BaseAPIHandler" secured{
 
 		var wishlist = prc.wishlistItem.getWishlist();
 
-		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -122,7 +122,7 @@ component extends="BaseAPIHandler" secured{
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		var wishlist = prc.wishlistItem.getWishlist();
 
-		if( wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 		prc.wishlistItem.delete();

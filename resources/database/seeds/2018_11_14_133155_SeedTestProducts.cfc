@@ -13,7 +13,22 @@ component {
         createdCategories = [];
         mockCategories.each( function( cat ){
             var created = wirebox.getInstance( "ProductCategory@cbCommerce" );
-            created.fill( cat ).save();
+            created.fill( cat ).save().refresh();
+			var mediaItem = wirebox.getInstance( "Media@cbCommerce" );
+			var mediaFile = resourcesDirectory & '/migration-data/SeedTestProducts-Images/' & randRange( 1, 9 ) & '.jpg';
+		    mediaItem.loadFile(
+				filePath=mediaFile,
+				pathExtension="categories/#created.getId()#"
+			).fill(
+				{
+					"title" : listLast( mediaFile, "/" ),
+					"caption" : "category image for #created.getName()#",
+					"designation" : "category"
+				}
+			).save().refresh();
+
+			var categoryMedia = wirebox.getInstance( "ProductCategoryMedia@cbCommerce" ).fill( { "isPrimary" : 1, "FK_category" : created.getId(), "FK_media" : mediaItem.getId() } );
+			categoryMedia.save();
             arrayAppend( createdCategories, created );
         } );
 
@@ -40,6 +55,7 @@ component {
         mockProducts.each( function( prod ){
             var createdProduct = wirebox.getInstance( "Product@cbCommerce" );
             createdProduct.fill( prod ).save().refresh();
+			createdProduct.categories().sync( [ createdCategories[ randRange( 1, 5 ) ] ] );
             var cost = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:50:2000" ) );
             var basePrice = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:#cost*1.1#:#cost*1.3#" ) );
             var minimumPrice = arrayLen( wirebox.getInstance( "MockData@MockDataCFC" ).mock( $num = "rnd:#cost#:#basePrice#" ) );
@@ -52,7 +68,8 @@ component {
 			).fill(
 				{
 					"title" : listLast( mediaFile, "/" ),
-					"caption" : "Product image for #createdProduct.getName()#"
+					"caption" : "Product image for #createdProduct.getName()#",
+					"designation" : "product"
 				}
 			).save().refresh();
 
@@ -94,7 +111,8 @@ component {
 				).fill(
 					{
 						"title" : listLast( mediaFile, "/" ),
-						"caption" : "Product sku image for #createdProduct.getName()# sku #createdSku.getId()#"
+						"caption" : "Product sku image for #createdProduct.getName()# sku #createdSku.getId()#",
+						"designation" : "sku"
 					}
 				).save().refresh();
 

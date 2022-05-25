@@ -14,8 +14,8 @@ component{
 
         event.paramValue( "includes", "" );
         event.paramValue( "excludes", "" );
-        event.paramValue( "maxrows", 25 );
-        if ( ! isNumeric( rc.maxrows ) ) { rc.maxrows = 25; }
+        event.paramValue( "maxrows", 10 );
+        if ( ! isNumeric( rc.maxrows ) ) { rc.maxrows = 10; }
         event.paramValue( "page", 1 );
         if ( ! isNumeric( rc.page ) ) { rc.page = 1; }
         event.paramvalue( "offset", ( rc.page - 1 ) * rc.maxrows );

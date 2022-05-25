@@ -4,9 +4,17 @@
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
 component extends="BaseAPIHandler"{
-    property name="mailService" inject="MailService@cbmailservices";
 
-	this.APIBaseURL = '/cbc/api/v1/authentication'
+	this.APIBaseURL = '/cbc/api/v1/authentication';
+
+	// (GET) /cbc/api/v1/authentication/token
+	function token(){
+		var token = csrfGenerateToken( "cbCommerce" );
+		prc.response
+				.setData( { "@token" : token } )
+				.addHeader( "CSRF-Verify-Token", token )
+				.setStatusCode( STATUS.SUCCESS );
+	}
 
     // Authentication check
 	// (POST) /cbc/api/v1/authentication
@@ -54,6 +62,7 @@ component extends="BaseAPIHandler"{
 
     // ( POST ) /cbc/api/v1/authentication/password-reset
     function passwordReset( event, rc, prc ){
+		var mailService = getInstance( "MailService@cbmailservices" );
         if( !event.valueExists( 'email' ) || !len( rc.email ) ){
             return onExpectationFailed( argumentCollection=arguments );
         }

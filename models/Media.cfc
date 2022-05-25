@@ -7,6 +7,7 @@ component   table="cbc_media"
 			quick
 {
 	property name="mediaSettings" inject="coldbox:setting:media@cbCommerce" persistent="false";
+	property name="requestService" inject="coldbox:RequestService" persistent="false";
 	property name="mediaUtil" inject="MediaUtil@cbCommerce" persistent="false";
 	property name="jLoader" inject="loader@cbjavaloader" persistent="false";
 	property name="log" inject="logbox:logger:{this}" persistent="false";
@@ -30,7 +31,7 @@ component   table="cbc_media"
 
 	function getSrc(){
 		var extension = listLast( getFileLocation(), "." );
-		return "/cbc/media/" & variables.id & "." & extension;
+		return requestService.getContext().getHTMLBaseURL() & "cbc/media/" & variables.id & "." & extension;
 	}
 
 		/**
@@ -233,8 +234,14 @@ component   table="cbc_media"
 
 		var ext = listLast( arguments.mimeType, "/" );
 
+        // For OpenJDK jpeg images we don't know if there is an alpha channel encoder, so we need to make the variation a png or it will write an empty file on our resize
+		var system = createObject( "java", "java.lang.System" );
+		if( ( !isNull( arguments.width ) || !isNull( arguments.height ) ) && findNoCase( "openjdk", system.getProperty( "java.runtime.name" ) ) && ( ext == "jpeg"  || ext == "jpg" ) ){
+            ext = 'png';
+        }
+
 		var filePath = expandPath( getFileLocation() );
-		var variationName = keyValue() & "_" & width & "x" & height & '_x' & x & '_y' & y  & "." & ext;
+		var variationName = keyValues()[1] & "_" & width & "x" & height & '_x' & x & '_y' & y  & "." & ext;
 		var filesDirectory = getDirectoryFromPath( filePath );
 		var variationsDirectory = filesDirectory & "variations";
 		var variationPath = variationsDirectory & "/" & variationName;

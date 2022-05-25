@@ -7,7 +7,7 @@ component extends="BaseAPIHandler" { // secured
 
 	property name="entityService" inject="OrderService@cbCommerce";
 
-	this.APIBaseURL = '/cbc/api/v1/orders'
+	this.APIBaseURL = '/cbc/api/v1/orders';
 
 	// (GET) /cbc/api/v1/orders
 	function index( event, rc, prc ){

@@ -88,7 +88,7 @@ component   table="cbc_productCategories"
 	function getPrimaryImageURL(){
 		var catMediaItem = media()
 							.with( 'mediaItem' )
-							.where( 'FK_category', keyValue() )
+							.where( 'FK_category', keyValues()[1] )
 							.where( 'isActive', 1 )
 							.where( 'isPrimary', 1 )
 							.limit( 1 )

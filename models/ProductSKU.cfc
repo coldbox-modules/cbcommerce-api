@@ -7,12 +7,12 @@ component   table="cbc_SKUs"
 			quick
 {
 	// Persistent column properties
-	property name="isVirtual" type="boolean" default=0;
-	property name="isConsigned" type="boolean" default=0;
-	property name="allowBackorder" type="boolean" default=0;
-    property name="isFeatured" type="boolean" default=0;
-	property name="showPricing" type="boolean" default=0;
-	property name="pickUpInStore" type="boolean" default=0;
+	property name="isVirtual" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="isConsigned" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="allowBackorder" type="boolean" default=0 casts="BooleanCast@quick";
+    property name="isFeatured" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="showPricing" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="pickUpInStore" type="boolean" default=0 casts="BooleanCast@quick";
 	property name="summary" type="string" default="";
 	property name="description" type="string" default="";
 	property name="cost" type="numeric";
@@ -38,24 +38,96 @@ component   table="cbc_SKUs"
 	property name="FK_subCondition";
 	property name="FK_consignmentBatch";
 
+	this.memento = {
+		"defaultIncludes" : [
+			"id",
+			"modelNumber",
+			"pickUpInStore",
+			"displayOrder",
+			"isConsigned",
+			"displayPrice",
+			"salePrice",
+			"summary",
+			"description",
+			"allowBackorder",
+			"isVirtual",
+			"isFeatured",
+			"isActive",
+			"conditionDescription",
+			"modifiedTime",
+			"packagedWeight",
+			"createdTime",
+			"showPricing",
+			"externalId",
+			"media",
+			"onHand",
+			"options",
+			"condition",
+			"subCondition"
+		],
+		"defaultExcludes" : [
+			"product.media",
+			"product.hitCount"
+		],
+		"profiles"     : {
+			"admin" : {
+				"defaultIncludes" : [
+					"id",
+					"modelNumber",
+					"pickUpInStore",
+					"displayOrder",
+					"isConsigned",
+					"summary",
+					"description",
+					"basePrice",
+					"minimumPrice",
+					"MSRP",
+					"MAP",
+					"cost",
+					"consignor",
+					"allowBackorder",
+					"isVirtual",
+					"isFeatured",
+					"isActive",
+					"conditionDescription",
+					"modifiedTime",
+					"packagedWeight",
+					"createdTime",
+					"showPricing",
+					"externalId",
+					"media",
+					"onHand",
+					"options",
+					"condition",
+					"subCondition"
+				]
+			}
+		}
+	};
+
 	function instanceReady(){
 		arrayAppend(
-            this.memento.defaultIncludes,
-            [
-                "media",
-                "onHand",
-                "options",
-                "condition",
-                "subCondition"
-            ],
-            true
-        );
+			this.memento.defaultExcludes,
+			[
+				"cost",
+				"FK_product",
+				"FK_consignor",
+				"FK_subCondition",
+				"FK_condition"
+			],
+			true
+		);
 		this.memento.mappers[ "onHand" ] = function( item, memento ){ return len( memento.onHand ) ? memento.onHand : 0; };
 		scopeWithOnHand();
 	}
 
 	function product(){
-		return belongsTo( "Product@cbCommerce", "FK_product" );
+		return belongsTo( "Product@cbCommerce", "FK_product" )
+			   .withLowestStartingPrice()
+		       .withLowestPricedSKU()
+			   .withStartingPriceMSRP()
+		       .withAverageRating()
+		       .withRatingCount();
 	}
 
 	function media(){
@@ -153,5 +225,18 @@ component   table="cbc_SKUs"
 				.whereColumn( "cbc_inventoryLocationStock.FK_sku", "=", "cbc_SKUs.id" )
 				.reselectRaw( "sum(available) as onHand" )
 		);
+	}
+
+	function getDisplayPrice(){
+		var displayPrice = variables.basePrice;
+		if( variables.MAP > displayPrice ){
+			displayPrice = variable.MAP;
+		}
+		return displayPrice;
+	}
+
+	function getSalePrice(){
+		var salePrice = variables.basePrice;
+		return salePrice;
 	}
 }

@@ -6,7 +6,7 @@
 component extends="BaseAPIHandler"{
 	property name="entityService" inject="ProductCategoryService@cbCommerce";
 
-	this.APIBaseURL = '/cbc/api/v1/product-categories'
+	this.APIBaseURL = '/cbc/api/v1/product-categories';
 
 	// (GET) /cbc/api/v1/product-categories
 	function index( event, rc, prc ){
@@ -29,8 +29,8 @@ component extends="BaseAPIHandler"{
 			prc.category.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setStatusCode( STATUS.CREATED );
 	}
@@ -44,8 +44,8 @@ component extends="BaseAPIHandler"{
 			prc.category.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -72,8 +72,8 @@ component extends="BaseAPIHandler"{
 			prc.category.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 

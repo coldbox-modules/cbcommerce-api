@@ -80,7 +80,7 @@ component accessors="true"{
 		};
 
 		if( !structIsEmpty( variables.pagination ) ){
-			packet[ "pagination" ] = variables.pagination;
+			packet.data[ "pagination" ] = variables.pagination;
 		}
 
 		// Are we reseting the data packet

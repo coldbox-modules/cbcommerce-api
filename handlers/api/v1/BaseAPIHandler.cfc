@@ -52,13 +52,13 @@ component extends="coldbox.system.EventHandler"{
 		var searchResponse = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 		prc.response.setData(
 			resultsMapper.process(
-				collection = searchResults.collection,
+				collection = searchResponse.collection,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setPagination(
-			searchResults.pagination
+			searchResponse.pagination
 		);
 	}
 
@@ -111,16 +111,16 @@ component extends="coldbox.system.EventHandler"{
 
 
 			// Verify header tokens
-			if(
-			!arrayFindNoCase( ["GET","HEAD","OPTIONS"], event.getHTTPMethod() )
-			&&
-			!CSRFVerifyToken( event.getHTTPHeader( "CSRF-Token", "" ),"cbCommerce" )
-			){
-				throw(
-					type="AuthorizationException",
-					message="The CSRF token provided was not valid"
-				);
-			}
+			// if(
+			// !arrayFindNoCase( ["GET","HEAD","OPTIONS"], event.getHTTPMethod() )
+			// &&
+			// !CSRFVerifyToken( event.getHTTPHeader( "CSRF-Token", "" ),"cbCommerce" )
+			// ){
+			// 	throw(
+			// 		type="AuthorizationException",
+			// 		message="The CSRF token provided was not valid"
+			// 	);
+			// }
 
 			// prepare argument execution
 			var args = {

@@ -1,7 +1,7 @@
 /**
 * cboxCommerce default Product Category Object
 */
-component   table="cbc_productCategoryMedia"  
+component   table="cbc_productCategoryMedia"
 			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
@@ -12,7 +12,20 @@ component   table="cbc_productCategoryMedia"
 	//Foreign Keys
 	property name="FK_media";
 	property name="FK_category";
-	
+
+
+	this.memento = {
+		"defaultIncludes" : [
+			"id",
+			"createdTime",
+			"isActive",
+			"modifiedTime",
+			"isPrimary",
+			"displayOrder",
+			"mediaItem"
+		]
+	};
+
 	function mediaItem(){
 		return belongsTo( "Media@cbCommerce", "FK_media" );
 	}

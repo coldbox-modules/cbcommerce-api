@@ -16,7 +16,7 @@ component{
 	**/
 	public any function search(
 		required searchCollection,
-		maxrows = 50,
+		maxrows = 25,
 		offset = 0,
 		sortOrder = "createdTime DESC"
 	) {
@@ -79,7 +79,7 @@ component{
 	**/
     public QueryBuilder function newBuilder(
 		required searchCollection,
-		maxrows = 50,
+		maxrows = 25,
 		offset = 0,
         sortOrder = "createdTime DESC",
         entity

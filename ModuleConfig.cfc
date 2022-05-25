@@ -15,9 +15,11 @@ component {
         "cbauth",
         "quick",
         "cfmigrations",
+        "cbmailservices",
 		"mockdatacfc",
         "cbsecurity",
-        "BCrypt"
+        "BCrypt",
+		"cors"
     ];
 
 	/**

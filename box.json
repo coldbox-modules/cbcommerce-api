@@ -19,7 +19,9 @@
         "quick":"^4.2.4",
         "cbsecurity":"^2.15.0",
         "BCrypt":"^3.0.1",
-        "stripecfml":"^3.2.1"
+        "stripecfml":"^3.2.1",
+        "cors":"^3.0.5",
+        "cbmailservices":"^2.1.0+60"
     },
     "devDependencies":{
         "mockdatacfc":"^3.5.0",
@@ -34,7 +36,9 @@
         "cbjavaloader":"modules/cbjavaloader/",
         "mockdatacfc":"modules/mockdatacfc/",
         "BCrypt":"modules/BCrypt/",
-        "cbSwagger":"modules/cbSwagger/"
+        "cbSwagger":"modules/cbSwagger/",
+        "cors":"modules/cors/",
+        "cbmailservices":"modules/cbmailservices/"
     },
     "scripts":{
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",

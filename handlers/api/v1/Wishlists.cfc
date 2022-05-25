@@ -10,7 +10,7 @@ component extends="BaseAPIHandler" secured{
 
 	// (GET) /wishlists
 	function index( event, rc, prc ){
-		rc[ "FK_user" ] = prc.authenticatedUser.keyValue();
+		rc[ "FK_user" ] = prc.authenticatedUser.keyValues()[1];
 
 		if( rc.sortOrder == "createdTime DESC" ){
 			rc.sortOrder = "isDefault DESC, name ASC";
@@ -49,7 +49,7 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlist = entityService.newEntity().fill( rc );
 
-		prc.wishlist.user().associate( prc.authenticatedUser.keyValue() );
+		prc.wishlist.user().associate( prc.authenticatedUser.keyValues()[1] );
 
 		validateModelOrFail( prc.wishlist );
 
@@ -70,7 +70,7 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 
-		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( prc.wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -91,7 +91,7 @@ component extends="BaseAPIHandler" secured{
 		//remove this key before population
 		structDelete( rc, "id" );
 
-		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( prc.wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -117,7 +117,7 @@ component extends="BaseAPIHandler" secured{
 
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 
-		if( prc.wishlist.getUser().keyValue() != prc.authenticatedUser.keyValue() ){
+		if( prc.wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 

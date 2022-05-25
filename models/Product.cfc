@@ -11,9 +11,9 @@ component   table="cbc_products"
 	property name="shortDescription" type="string" default="";
 	property name="description" type="string" default="";
 	property name="manufacturer" type="string" default="";
-    property name="isFeatured" type="boolean" default=0;
+    property name="isFeatured" type="boolean" default=0 casts="BooleanCast@quick";
 	// need to scope this as a bit until quick fixes the boolean handling
-	property name="hasOptions" type="numeric" default=0;
+	property name="hasOptions" type="numeric" default=0 casts="BooleanCast@quick";
 	property name="requiredOptions" type="string" default="{}";
 	property name="displayOrder" type="numeric" default=0;
 	property name="hitCount" type="numeric" default=0;
@@ -44,7 +44,9 @@ component   table="cbc_products"
             ],
             true
         );
-		scopeWithStartingPrice();
+		scopeWithLowestStartingPrice();
+		scopeWithLowestPricedSKU();
+		scopeWithStartingPriceMSRP();
 		scopeWithAverageRating();
 		scopeWithRatingCount();
 	}
@@ -81,6 +83,14 @@ component   table="cbc_products"
 		};
 	}
 
+	function getStartingPrice(){
+		return {
+			"basePrice" : variables.lowestStartingPrice,
+			"MSRP" : len( variables.startingPriceMSRP ) ? variables.startingPriceMSRP : 0,
+			"SKU" : variables.lowestPricedSKU
+		};
+	}
+
 	// delete overload
 	function delete(){
 		this.getMedia().each( function( productMedia ){
@@ -95,14 +105,38 @@ component   table="cbc_products"
 		return super.delete();
 	}
 
-	function scopeWithStartingPrice(){
-		appendVirtualAttribute( "startingPrice" );
+	function scopeWithLowestStartingPrice(){
 		return addSubselect(
-			"startingPrice",
+			"lowestStartingPrice",
 			newEntity( "ProductSKU@cbcommerce" )
 				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
-				.reselectRaw( "min( basePrice ) as startingPrice" )
+				.whereAvailable()
+				.reselectRaw( "min( basePrice ) as lowestStartingPrice" )
 
+		);
+	}
+
+	function scopeWithLowestPricedSKU(){
+		return addSubselect(
+			"lowestPricedSKU",
+			newEntity( "ProductSKU@cbcommerce" )
+				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
+				.reselectRaw( "cbc_SKUs.id as lowestPricedSKU" )
+				.whereAvailable()
+				.orderBy( "cbc_SKUs.basePrice", "asc" )
+				.limit( 1 )
+		);
+	}
+
+	function scopeWithStartingPriceMSRP(){
+		return addSubselect(
+			"startingPriceMSRP",
+			newEntity( "ProductSKU@cbcommerce" )
+				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
+				.reselectRaw( "cbc_SKUs.MSRP as startingPriceMSRP" )
+				.whereAvailable()
+				.orderBy( "cbc_SKUs.basePrice", "asc" )
+				.limit( 1 )
 		);
 	}
 
@@ -201,9 +235,9 @@ component   table="cbc_products"
 
 	function scopeWhereWithinCategory( query, string categoryId ){
 		var categoryIds = listToArray( categoryId );
-		var categories = categories().whereIn( 'id', categoryIds ).getResults();
+		var categories = variables._wirebox.getInstance( "ProductCategory@cbCommerce" ).whereIn( 'id', categoryIds ).get();
 		categories.each( function( category ){
-			arrayAppend( categoryIds, category.keyValue() );
+			arrayAppend( categoryIds, category.keyValues(), true );
 			appendChildCategoryIdentifiers( categoryIds, category );
 		} );
 		return query.whereExists(
@@ -247,7 +281,7 @@ component   table="cbc_products"
 
 	private void function appendChildCategoryIdentifiers( required array idArray, required ProductCategory category ){
 		category.getChildren().each( function( child ){
-			arrayAppend( idArray, child.keyValue() );
+			arrayAppend( idArray, child.keyValues()[1] );
 			appendChildCategoryIdentifiers( idArray, child );
 		} );
 	}
@@ -347,7 +381,7 @@ component   table="cbc_products"
 	 function getPrimaryImageURL(){
 		var productMedia = media()
 							.with( 'mediaItem' )
-							.where( 'FK_product', keyValue() )
+							.where( 'FK_product', keyValues()[1] )
 							.where( 'isActive', 1 )
 							.limit( 1 )
 							.orderBy( 'isPrimary', 'DESC' )

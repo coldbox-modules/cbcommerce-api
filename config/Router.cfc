@@ -43,6 +43,12 @@ component{
                 .toHandler( "API.v1.ContactForms" );
 
         // API Routing
+        route( "api/v1/authentication/token" )
+                .withAction({
+                    HEAD : "token",
+                    GET  : "token"
+                })
+                .toHandler( "API.v1.Authentication" );
 
         route( "api/v1/authentication/password-reset" )
                 .withAction({
