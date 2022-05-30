@@ -47,9 +47,9 @@ component {
         var mockProducts = wirebox.getInstance( "MockData@MockDataCFC" )
                             .mock(argumentCollection={
                                 $num=30,
-                                "name" = "words",
-                                "shortDescription" = "sentence",
-                                "description" = "sentence"
+                                "name" = "words:2",
+                                "shortDescription" = "sentence:3",
+                                "description" = "sentence:4"
                             });
 
         mockProducts.each( function( prod ){
@@ -81,6 +81,8 @@ component {
                                     .mock( argumentCollection={
                                         $num = "rnd:1:5",
                                         "cost" = "num:#cost#:#cost#",
+										"summary" = "sentence",
+										"description" = "sentence:4",
                                         "basePrice" = "num:#basePrice#:#basePrice#",
                                         "minimumPrice" = "num:#minimumPrice#:#minimumPrice#",
                                         "packagedWeight" = "num:1:20",
@@ -90,6 +92,7 @@ component {
 
             mockSkus.each( function( sku ){
 				sku[ "FK_product" ] = createdProduct.getId();
+				sku[ "modelNumber" ] = listLast( createUUID, "-" );
                 var createdSku = wirebox.getInstance( "ProductSKU@cbcommerce" );
                 createdSku.fill( sku );
                 createdSku.save().refresh();

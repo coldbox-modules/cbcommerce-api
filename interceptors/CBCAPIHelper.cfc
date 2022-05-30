@@ -12,6 +12,7 @@ component{
         var contextClear = [ "createdTime", "modifiedTime", "href" ];
         contextClear.each( function( clear ){ structDelete( rc, clear ); } );
 
+        event.paramValue( "profile", "" );
         event.paramValue( "includes", "" );
         event.paramValue( "excludes", "" );
         event.paramValue( "maxrows", 10 );

@@ -2,7 +2,7 @@
 * User Role Entity
 */
 component quick table="cbc_userRoles"extends="BaseCBCommerceEntity" accessors="true"{
-    
+
     // Persistent column properties
     property name="name";
 
@@ -11,10 +11,10 @@ component quick table="cbc_userRoles"extends="BaseCBCommerceEntity" accessors="t
     }
 
     function permissions(){
-        return belongsToMany( "UserPermission@cbCommerce", "cbc_lookups_roles_permissions", "FK_role", "FK_permission" );
+        return belongsToMany( "UserPermission@cbCommerce", "cbc_lookups_roles_permissions", "FK_user_role", "FK_permission" );
     }
 
 
-	
+
 }
 

@@ -9,14 +9,22 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /cbc/api/v1/authentication/token
 	function token(){
-		var token = csrfGenerateToken( "cbCommerce" );
+		var user = auth().check() ? auth().getUser() : getInstance( "User@cbcommerce" );
 		prc.response
-				.setData( { "@token" : token } )
-				.addHeader( "CSRF-Verify-Token", token )
+				.setData( { "@token" : getInstance( "JWTService@cbsecurity" ).fromUser( user )  } )
 				.setStatusCode( STATUS.SUCCESS );
 	}
 
     // Authentication check
+	// (HEAD) /cbc/api/v1/authentication
+	function check(){
+		if( auth().check() ){
+			prc.response.setStatusCode( STATUS.SUCCESS );
+		} else {
+			return onAuthorizationFailure( argumentCollection=arguments );
+		}
+	}
+
 	// (POST) /cbc/api/v1/authentication
 	function create( event, rc, prc ){
 
@@ -43,11 +51,10 @@ component extends="BaseAPIHandler"{
 		if( !auth().isLoggedIn() ){
             return onAuthorizationFailure( argumentCollection=arguments );
         }
-
         prc.response.setData(
             {
-                "success" : true
-            }
+				"@token" : getInstance( "JWTService@cbsecurity" ).fromUser( auth().getUser() )
+			}
         );
 
     }

@@ -58,6 +58,7 @@ component{
 
         route( "api/v1/authentication" )
                 .withAction( {
+					HEAD : "check",
                     GET : "get",
                     POST : "create",
                     DELETE : "delete"

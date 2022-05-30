@@ -21,7 +21,8 @@
         "BCrypt":"^3.0.1",
         "stripecfml":"^3.2.1",
         "cors":"^3.0.5",
-        "cbmailservices":"^2.1.0+60"
+        "cbmailservices":"^2.1.0+60",
+        "cbvalidation":"^3.3.0+10"
     },
     "devDependencies":{
         "mockdatacfc":"^3.5.0",

@@ -22,7 +22,7 @@ component extends="BaseAPIHandler"{
 			resultsMapper.process(
 				collection = media,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
 				} }
@@ -73,7 +73,7 @@ component extends="BaseAPIHandler"{
 			prc.categoryMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
 				} }
@@ -90,7 +90,7 @@ component extends="BaseAPIHandler"{
 			prc.categoryMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
 				} }
@@ -117,7 +117,7 @@ component extends="BaseAPIHandler"{
 			prc.categoryMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{categoryId}', rc.categoryId ) & '/' & transformed[ "id" ];
 				} }

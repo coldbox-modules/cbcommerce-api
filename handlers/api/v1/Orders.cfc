@@ -15,12 +15,11 @@ component extends="BaseAPIHandler" { // secured
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
 		prc.response.setData(
-			prc.response.setData(
 			resultsMapper.process(
 				collection = searchResults.collection,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setPagination(
 			searchResults.pagination
@@ -41,8 +40,9 @@ component extends="BaseAPIHandler" { // secured
 			prc.order.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setStatusCode( STATUS.CREATED );
 	}
@@ -56,8 +56,9 @@ component extends="BaseAPIHandler" { // secured
 			prc.order.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -78,8 +79,9 @@ component extends="BaseAPIHandler" { // secured
 			prc.order.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 

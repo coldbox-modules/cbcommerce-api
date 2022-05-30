@@ -21,7 +21,8 @@ component   table="cbc_productMedia"
 			"modifiedTime",
 			"isPrimary",
 			"displayOrder",
-			"mediaItem"
+			"mediaItem",
+			"FK_product"
 		]
 	};
 

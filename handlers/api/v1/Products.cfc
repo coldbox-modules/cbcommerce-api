@@ -22,8 +22,24 @@ component extends="BaseAPIHandler"{
 			resultsMapper.process(
 				collection = searchResults.collection,
 				includes=rc.includes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var productHref = memento.href & "/" & memento.id;
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = productHref & "/media/" & media.id;
+							} );
+						}
+						if( memento.keyExists( "skus" ) ){
+							memento.skus.each( function( sku ){
+								sku[ "href" ] = replace( this.APIBaseURL, "products", "skus" ) & "/" & sku.id;
+							} );
+						}
+						return productHref;
+					}
+				}
 			)
 		).setPagination( searchResults.pagination );
 
@@ -62,8 +78,24 @@ component extends="BaseAPIHandler"{
 			prc.product.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var productHref = memento.href & "/" & memento.id;
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = productHref & "/media/" & media.id;
+							} );
+						}
+						if( memento.keyExists( "skus" ) ){
+							memento.skus.each( function( sku ){
+								sku[ "href" ] = replace( this.APIBaseURL, "products", "skus" ) & "/" & sku.id;
+							} );
+						}
+						return productHref;
+					}
+				}
 			)
 		).setStatusCode( STATUS.CREATED );
 
@@ -86,8 +118,24 @@ component extends="BaseAPIHandler"{
 			prc.product.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var productHref = memento.href & "/" & memento.id;
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = productHref & "/media/" & media.id;
+							} );
+						}
+						if( memento.keyExists( "skus" ) ){
+							memento.skus.each( function( sku ){
+								sku[ "href" ] = replace( this.APIBaseURL, "products", "skus" ) & "/" & sku.id;
+							} );
+						}
+						return productHref;
+					}
+				}
 			)
 		);
 	}
@@ -124,8 +172,24 @@ component extends="BaseAPIHandler"{
 			prc.product.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var productHref = memento.href & "/" & memento.id;
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = productHref & "/media/" & media.id;
+							} );
+						}
+						if( memento.keyExists( "skus" ) ){
+							memento.skus.each( function( sku ){
+								sku[ "href" ] = replace( this.APIBaseURL, "products", "skus" ) & "/" & sku.id;
+							} );
+						}
+						return productHref;
+					}
+				}
 			)
 		);
 

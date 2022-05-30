@@ -56,6 +56,9 @@ component{
 		};
 
 		moduleSettings = {
+			"mementifier" : {
+				"nullDefaultValue" : {}
+			},
 			"quick" : {
 				"defaultGrammar" : "MySQLGrammar@qb"
 			},

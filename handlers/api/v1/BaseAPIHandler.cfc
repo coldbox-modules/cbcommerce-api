@@ -54,6 +54,7 @@ component extends="coldbox.system.EventHandler"{
 			resultsMapper.process(
 				collection = searchResponse.collection,
 				includes=rc.includes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
@@ -76,10 +77,6 @@ component extends="coldbox.system.EventHandler"{
 
 		if( structKeyExists( this, "API_BASE_URL" ) ){
 			rc.includes = listAppend( rc.includes, "href" );
-			variables.hrefDefault = this.API_BASE_URL;
-			variables.hrefMapper = function( transformed ) {
-				return this.APIBaseURL & "/" & transformed[ "id" ];
-			};
 		}
 
 		//options includes

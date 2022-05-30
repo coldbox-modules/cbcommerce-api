@@ -22,7 +22,7 @@ component extends="BaseAPIHandler" secured{
 			resultsMapper.process(
 				collection = searchResults.collection,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
 			)
 		);
@@ -61,7 +61,7 @@ component extends="BaseAPIHandler" secured{
 			prc.wishlistItem.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
 			)
 		).setStatusCode( STATUS.CREATED );
@@ -81,7 +81,7 @@ component extends="BaseAPIHandler" secured{
 			prc.wishlistItem.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
 			)
 		);
@@ -109,7 +109,7 @@ component extends="BaseAPIHandler" secured{
 			prc.wishlistItem.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) { return replace( this.APIBaseURL, "{wishlist}", rc.wishlistId ) & '/' & transformed[ "id" ]; } }
 			)
 		);

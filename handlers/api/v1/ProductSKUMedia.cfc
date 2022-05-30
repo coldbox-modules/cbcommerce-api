@@ -22,7 +22,7 @@ component extends="BaseAPIHandler"{
 			resultsMapper.process(
 				collection = media,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
 				} }
@@ -69,10 +69,10 @@ component extends="BaseAPIHandler"{
 
 
 		prc.response.setData(
-			prc.productMedia.getMemento(
+			prc.skuMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
 				} }
@@ -86,10 +86,10 @@ component extends="BaseAPIHandler"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 
 		prc.response.setData(
-			prc.productMedia.getMemento(
+			prc.skuMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
 				} }
@@ -118,10 +118,10 @@ component extends="BaseAPIHandler"{
 		prc.skuMedia.save();
 
 		prc.response.setData(
-			prc.productMedia.getMemento(
+			prc.skuMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{skuId}', rc.skuId ) & '/' & transformed[ "id" ];
 				} }

@@ -23,6 +23,8 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 			],
 			true
 		);
+
+		this.memento.neverInclude=["password"];
 	}
 
     function addresses(){
@@ -81,7 +83,6 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     }
 
     function getNormalizedPermissions(){
-
         if( isNull( variables._normalizedPermissions ) ){
             var permissions = [];
             this.getRoles().each( function( role ){
@@ -122,11 +123,21 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
         if( structKeyExists( searchCollection, "role" ) ){
             builder.join( "cbc_lookups_users_roles", "FK_user", "=", "users.id" )
-                    .join( "cbc_userRoles", "cbc_userRoles.id", "=", "cbc_lookups_users_roles.FK_role" )
+                    .join( "cbc_userRoles", "cbc_userRoles.id", "=", "cbc_lookups_users_roles.FK_user_role" )
                     .where( "cbc_userRoles.name", searchCollection.role );
         }
 
     }
+
+	function getJwtCustomClaims(){
+		return getMemento(
+			includes=[ "roles" ]
+		);
+	}
+
+	function getJwtScopes(){
+		return getNormalizedPermissions();
+	}
 
 }
 

@@ -8,6 +8,10 @@ component extends="quick.models.BaseEntity"{
 
 	variables.id = lcase( createUUID() );
 
+	this.memento = {
+		"iso8601Format" = true
+	};
+
 	function init(){
 		variables.createdTime = now();
 		variables.modifiedTime = now();

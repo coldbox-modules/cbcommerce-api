@@ -20,7 +20,7 @@ component extends="BaseAPIHandler"{
 			resultsMapper.process(
 				collection = media,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
 				} }
@@ -33,7 +33,6 @@ component extends="BaseAPIHandler"{
 	function create( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
-
 		try{
 			var mediaAttachment = getInstance( "Media@cbCommerce" )
 								.loadFile(
@@ -42,13 +41,11 @@ component extends="BaseAPIHandler"{
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttachment.save();
+			mediaAttachment.save().refresh();
 
+			rc.FK_product = rc.productId;
+			rc.FK_media = mediaAttachment.getId();
 			prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).fill( rc );
-			prc.productMedia.mediaItem().associate( mediaAttachment );
-			prc.productMedia.product().associate( product );
-
-			prc.productMedia.save();
 
 			validateModelOrFail( prc.productMedia );
 
@@ -71,7 +68,7 @@ component extends="BaseAPIHandler"{
 			prc.productMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
 				} }
@@ -88,7 +85,7 @@ component extends="BaseAPIHandler"{
 			prc.productMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
 				} }
@@ -104,9 +101,10 @@ component extends="BaseAPIHandler"{
 
 		var mediaAttachment = prc.productMedia.getMediaItem();
 
-		mediaAttachment.fill( rc );
-
-		validateModelOrFail( mediaAttachment );
+		if( structKeyExists( rc, "mediaItem" ) ){
+			mediaAttachment.fill( rc.mediaItem );
+			validateModelOrFail( mediaAttachment );
+		}
 
 		prc.productMedia.fill( rc );
 
@@ -118,7 +116,7 @@ component extends="BaseAPIHandler"{
 			prc.productMedia.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
+				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( transformed ) {
 					return replace( this.APIBaseURL, '{productId}', rc.productId ) & '/' & transformed[ "id" ];
 				} }
@@ -129,11 +127,9 @@ component extends="BaseAPIHandler"{
 
 	// (DELETE) /cbc/api/v1/products/:productId/media/:id
 	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
-
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.productMedia.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
-
 	}
 
 

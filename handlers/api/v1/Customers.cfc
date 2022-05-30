@@ -8,7 +8,7 @@ component extends="BaseAPIHandler"{
 	property name="entityService" inject="UserService@cbCommerce";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
-	this.API_BASE_URL = "/cbc/api/v1/customers";
+	this.APIBaseURL = "/cbc/api/v1/customers";
 
 	/**
 	* (GET) /cbc/api/v1/customers
@@ -31,8 +31,8 @@ component extends="BaseAPIHandler"{
 			prc.user.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -61,8 +61,8 @@ component extends="BaseAPIHandler"{
 			prc.user.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -87,8 +87,8 @@ component extends="BaseAPIHandler"{
 			prc.user.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}

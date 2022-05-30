@@ -16,6 +16,7 @@ component {
         "quick",
         "cfmigrations",
         "cbmailservices",
+        "cbvalidation",
 		"mockdatacfc",
         "cbsecurity",
         "BCrypt",

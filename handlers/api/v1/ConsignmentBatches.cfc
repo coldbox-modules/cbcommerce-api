@@ -23,8 +23,8 @@ component extends="BaseAPIHandler" secured{
 			resultsMapper.process(
 				collection = searchResults.collection,
 				includes=rc.includes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setPagination(
 			searchResults.pagination
@@ -53,8 +53,8 @@ component extends="BaseAPIHandler" secured{
 			prc.batch.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		).setStatusCode( STATUS.CREATED );
 	}
@@ -73,8 +73,8 @@ component extends="BaseAPIHandler" secured{
 			prc.batch.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 	}
@@ -101,8 +101,8 @@ component extends="BaseAPIHandler" secured{
 			prc.batch.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-				defaults={ "href" : variables.hrefDefault },
-				mappers={ "href" : variables.hrefMapper }
+				defaults={ "href" : this.APIBaseURL },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
 		);
 

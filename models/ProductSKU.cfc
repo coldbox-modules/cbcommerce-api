@@ -32,11 +32,11 @@ component   table="cbc_SKUs"
 	property name="externalId" type="string";
 
 	//Foreign Keys
-	property name="FK_product";
-	property name="FK_consignor";
-	property name="FK_condition";
-	property name="FK_subCondition";
-	property name="FK_consignmentBatch";
+	property name="FK_product" default="";
+	property name="FK_consignor" default="";
+	property name="FK_condition" default="";
+	property name="FK_subCondition" default="";
+	property name="FK_consignmentBatch" default="";
 
 	this.memento = {
 		"defaultIncludes" : [
@@ -102,6 +102,13 @@ component   table="cbc_SKUs"
 					"subCondition"
 				]
 			}
+		},
+		"mappers" : {
+			"MSRP" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"MAP" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"minimumPrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"cost" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"basePrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); }
 		}
 	};
 

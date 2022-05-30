@@ -19,6 +19,7 @@ component extends="BaseAPIHandler"{
 
 	// (POST) /cbc/api/v1/skus
 	function create( event, rc, prc ) secured="cbcProduct:Edit"{
+		rc.profile = "admin";
 
 		if( structKeyExists( rc, "discontinueOn" ) && !len( rc.discontinueOn ) ){
 			structDelete( rc, "discontinueOn" );
@@ -65,6 +66,7 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
@@ -80,6 +82,7 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
@@ -149,6 +152,7 @@ component extends="BaseAPIHandler"{
 			prc.sku.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
+				profile=rc.profile,
 				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
