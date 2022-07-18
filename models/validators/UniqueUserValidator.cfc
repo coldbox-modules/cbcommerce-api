@@ -1,11 +1,11 @@
 /**
 * cbCommerce Unique User Validator
 */
-component accessors="true" implements="cbvalidation.models.validators.IValidator" singleton{
+component accessors="true" implements="cbvalidation.interfaces.IValidator" singleton{
 
    property name="userService" inject="UserService@cbCommerce";
    property name="auth" inject="AuthenticationService@cbAuth";
-   
+
     UniqueUserValidator function init(){
         variables.name  = "UniqueUserValidator";
         return this;
@@ -19,7 +19,14 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
     * @targetValue.hint The target value to validate
     * @validationData.hint The validation data the validator was created with
     */
-    boolean function validate( required cbvalidation.models.result.IValidationResult validationResult, required any target, required string field, any targetValue, any validationData){
+    boolean function validate(
+		required any validationResult,
+		required any target,
+		required string field,
+		any targetValue,
+		any validationData,
+		struct rules
+	){
 
         var q = userService.newEntity()
                                         .where( 'email', target.getEmail() );
@@ -27,7 +34,7 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
             q.where( 'id', '!=', target.getId() )
         }
         var recordCount = q.count();
-        
+
         if( recordCount ){
             var errorArgs = {
 				message 		= "A user with the email '#arguments.targetValue#' already exists in the database.",
@@ -41,7 +48,7 @@ component accessors="true" implements="cbvalidation.models.validators.IValidator
             return true;
         }
     }
-    
+
     /**
     * Get the name of the validator
     */

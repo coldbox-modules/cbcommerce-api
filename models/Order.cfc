@@ -22,6 +22,7 @@ component   table="cbc_orders"
 	property name="FK_shippingAddress";
 	property name="FK_billingAddress";
 	property name="FK_invoice";
+	property name="FK_deliveryMethod";
 
 	function instanceReady(){
 		arrayAppend(
@@ -30,7 +31,8 @@ component   table="cbc_orders"
 				"customer",
                 "items",
                 "shippingAddress",
-                "billingAddress"
+                "billingAddress",
+                "deliveryMethod"
 			],
 			true
 		);
@@ -54,6 +56,10 @@ component   table="cbc_orders"
 
     function invoices(){
         return belongsTo( "OrderInvoice@cbCommerce", "FK_invoice" );
+    }
+
+    function deliveryMethod(){
+        return belongsTo( "DeliveryMethod@cbCommerce", "FK_deliveryMethod" );
     }
 }
 

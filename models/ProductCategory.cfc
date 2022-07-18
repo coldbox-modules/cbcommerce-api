@@ -10,7 +10,7 @@ component   table="cbc_productCategories"
 	property name="name" type="string" default="";
 	property name="description" type="string" default="";
 	property name="displayOrder" type="numeric" default=0;
-    property name="isFeatured" type="boolean" default=0;
+    property name="isFeatured" type="boolean" default=0 casts="BooleanCast@quick";
 	property name="hitCount" type="numeric" default=0;
 
 	//Foreign Keys
@@ -103,6 +103,18 @@ component   table="cbc_productCategories"
 		}
 	}
 
+	function delete(){
+		transaction{
+			this.getProducts().each( function( product ){
+				product.categories().detach( getId() );
+			} );
+			this.getChildren().each( function( child ){
+				child.parent().dissociate();
+			} );
+			return super.delete();
+		}
+	}
+
 	function filterSearch(
 		required struct searchCollection,
 		required QueryBuilder builder
@@ -111,5 +123,6 @@ component   table="cbc_productCategories"
 			this.scopeHasProductInCondition( builder, searchCollection.productCondition );
 		}
 	 }
+
 
 }

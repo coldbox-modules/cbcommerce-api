@@ -142,6 +142,22 @@ component{
                 handler    = "API.v1.Payments"
             );
 
+			route( 'api/v1/settings' )
+                    .withAction(
+                        {
+                            "GET"  : "index"
+                        }
+                    )
+                    .toHandler( "API.v1.Settings" );
+
+			route( 'api/v1/product-conditions' )
+                    .withAction(
+                        {
+                            "GET"  : "index"
+                        }
+                    )
+                    .toHandler( "API.v1.ProductConditions" );
+
             // Wishlist Item Routes
             route( 'api/v1/wishlists/:wishlistId/items/:id' )
                     .withAction(

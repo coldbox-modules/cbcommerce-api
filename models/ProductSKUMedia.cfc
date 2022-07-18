@@ -6,7 +6,7 @@ component   table="cbc_productSKUMedia"
 			accessors="true"
 			quick
 {
-	property name="isPrimary" type="boolean" default=0;
+	property name="isPrimary" type="boolean" default=0 casts="BooleanCast@quick";
 	property name="displayOrder" type="numeric" default=0;
 
 	//Foreign Keys

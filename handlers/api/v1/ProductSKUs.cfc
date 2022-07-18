@@ -28,16 +28,16 @@ component extends="BaseAPIHandler"{
 		prc.sku = entityService.newEntity().fill( rc );
 
 		if( structKeyExists( rc, "condition" ) ){
-			prc.sku.condition().associate( rc.condition.id );
+			prc.sku.setFK_condition( rc.condition.id );
 		}
 
 		if( structKeyExists( rc, "subCondition" ) ){
-			prc.sku.subCondition().associate( rc.subCondition.id );
+			prc.sku.setFK_subCondition( rc.subCondition.id );
 		}
 
 		if( prc.sku.getIsConsigned() ){
 			if( structKeyExists( rc.consignor, "id" ) ){
-				prc.sku.consignor().associate( rc.consignor.id );
+				prc.sku.setFK_consignor( rc.consiginor.id );
 			} else {
 				var consignor = getInstance( "User@cbCommerce" ).fill( rc.consignor );
 				validateModelOrFail( consignor );
@@ -46,7 +46,7 @@ component extends="BaseAPIHandler"{
 				var consignorRole = getInstance( "UserRole@cbCommerce" ).where( "name", "Consignor" ).first();
 				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "user" ).first();
 				consignor.roles().sync( [ consignorRole.keyValues()[1], userRole.keyValues()[1] ] );
-				prc.sku.consignor().associate( consignor );
+				prc.sku.setFK_consignor( consignor.getId() );
 			}
 		} else {
 			prc.sku.setFK_consignor( javacast( "null", 0 ) );
@@ -55,6 +55,15 @@ component extends="BaseAPIHandler"{
 		validateModelOrFail( prc.sku );
 
 		prc.sku.save();
+
+		if( event.getValue( "isVirtual", false ) && event.valueExists( "location" ) ){
+			var virtualSKU = getInstance( "VirtualSKU@cbCommerce" ).fill(
+				{
+					"FK_sku" : prc.sku.getId(),
+					"location" : rc.virtualSKU.location
+				}
+			).save();
+		}
 
 		if( structKeyExists( rc, "options" ) && isArray( rc.options ) ){
 			rc.options.each( function( option ){
@@ -133,6 +142,10 @@ component extends="BaseAPIHandler"{
 			}
 		} else {
 			prc.sku.setFK_consignor( javacast( "null", 0 ) );
+		}
+
+		if( prc.sku.getIsVirtual() ){
+			prc.sku.getVirtualSKU().fill( { "location" : rc.virtualSKU.location } ).save();
 		}
 
 		validateModelOrFail( prc.sku );

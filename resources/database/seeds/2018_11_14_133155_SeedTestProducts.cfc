@@ -90,9 +90,12 @@ component {
                                         "packagingY" = "num:1:20"
                                     });
 
+			var newCondition = wirebox.getInstance( "ProductCondition@cbCommerce" ).where( "name", "New" ).first();
+
             mockSkus.each( function( sku ){
 				sku[ "FK_product" ] = createdProduct.getId();
-				sku[ "modelNumber" ] = listLast( createUUID, "-" );
+				sku[ "modelNumber" ] = listLast( createUUID(), "-" );
+				sku[ "FK_condition"] = newCondition.getId();
                 var createdSku = wirebox.getInstance( "ProductSKU@cbcommerce" );
                 createdSku.fill( sku );
                 createdSku.save().refresh();

@@ -23,14 +23,24 @@ component extends="BaseAPIHandler"{
 
 		validateModelOrFail( prc.category );
 
-		prc.category.save();
+		prc.category.save().refresh();
 
 		prc.response.setData(
 			prc.category.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var categoryHref = memento.href & "/" & memento.id
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = categoryHref & "/media/" & media.id;
+							} );
+						}
+						return categoryHref;
+					}
+				}
 			)
 		).setStatusCode( STATUS.CREATED );
 	}
@@ -45,7 +55,17 @@ component extends="BaseAPIHandler"{
 				includes=rc.includes,
 				excludes=rc.excludes,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var categoryHref = memento.href & "/" & memento.id
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = categoryHref & "/media/" & media.id;
+							} );
+						}
+						return categoryHref;
+					}
+				}
 			)
 		);
 	}
@@ -73,7 +93,17 @@ component extends="BaseAPIHandler"{
 				includes=rc.includes,
 				excludes=rc.excludes,
 				defaults={ "href" : this.APIBaseURL },
-				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+				mappers={
+					"href" : function( item, memento ){
+						var categoryHref = memento.href & "/" & memento.id
+						if( memento.keyExists( "media" ) ){
+							memento.media.each( function( media ){
+								media[ "href" ] = categoryHref & "/media/" & media.id;
+							} );
+						}
+						return categoryHref;
+					}
+				}
 			)
 		);
 

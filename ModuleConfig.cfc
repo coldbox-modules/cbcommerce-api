@@ -46,6 +46,12 @@ component {
                 "externalModelMapping" : {},
                 "defaultCurrency"      : "USD"
             },
+			"features" : {
+				"consignment" : getSystemSetting( "CBCOMMERCE_ENABLE_CONSIGNMENT", true ),
+				"used" : getSystemSetting( "CBCOMMERCE_ENABLE_USED_PRODUCTS", true ),
+				"subscriptions" : getSystemSetting( "CBCOMMERCE_ENABLE_SUBSCRIPTIONS", true ),
+				"virtualProducts" : getSystemSetting( "CBCOMMERCE_ENABLE_VIRTUAL", true )
+			},
             "media" : {
                 //local or s3 storage currently supported
                 "driver" : getSystemSetting( 'CBC_MEDIA_DRIVER', 'local' ),
@@ -72,7 +78,39 @@ component {
 						//credentials will vary, depending on the implmented processor
                     }
                 }
-            }
+            },
+			"deliveryMethods" : [
+				{
+					"label" : "In Store Pickup",
+					"description"  : "Local pickup in store",
+					"isFlatRate" : true,
+					"flatRateFee" : 0
+				},
+				{
+					"label" : "USPS Ground",
+					"description"  : "United States Postal Service Ground",
+					"isFlatRate" : false,
+					"calculatorModel" : "USPSGroundCalculator@cbcommerce"
+				},
+				{
+					"label" : "USPS Priority Mail - 3 day",
+					"description"  : "United States Postal Service Priority Mail",
+					"isFlatRate" : false,
+					"calculatorModel" : "USPSPriorityCalculator@cbcommerce"
+				},
+				{
+					"label" : "USPS Express Mail - 2 day",
+					"description"  : "United States Postal Service Priority Mail",
+					"isFlatRate" : false,
+					"calculatorModel" : "USPSExpressCalculator@cbcommerce"
+				},
+				{
+					"label" : "FedEx Overnight Service",
+					"description"  : "Federal Express Overnight",
+					"isFlatRate" : false,
+					"calculatorModel" : "FedExOvernightCalculator@cbcommerce"
+				}
+			]
             // An optional "storage" key may be provided which specifies custom cb storage and matches the settings structure of that module
         };
 
@@ -100,6 +138,7 @@ component {
     }
 
     function onLoad() {
+
 		var isContentBoxContext = controller.getModuleService().isModuleRegistered( "contentbox" );
 		if( !isContentBoxContext ){
 			structAppend(
@@ -187,6 +226,29 @@ component {
         migrationService.getManager().setDatasource( !isNull( settings.datasource ) ? settings.datasource : getApplicationMetadata().datasource );
         migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/migrations' );
         migrationService.runAllMigrations( "up" );
+
+		// expand delivery method setting to include identifiers
+		settings.deliveryMethods = wirebox.getInstance( "DeliveryMethodService@cbCommerce" ).ensureDeliveryMethods( settings.deliveryMethods );
+
+		// Perform any settings overrides after all migrations are run
+		wirebox.getInstance( "SettingService@cbcommerce" ).newBuilder({}).get().each( function( setting ){
+			switch( setting.getName() ){
+				case "s3":{
+					variables.settings.media.s3 = setting.getValue();
+				}
+				default : {
+					if( listLen( setting.getName(), "." ) > 1 ){
+						var path = listToArray( setting.getName(), "." );
+						var key = arrayLast( nesting );
+						var nesting = path.slice( 1, path.len()-1 );
+						var nested = evaluate( "variables.settings.#nesting#" );
+						nested[ key ] = setting.getValue();
+					} else {
+						variables.settings[ setting.getName() ] = setting.getValue();
+					}
+				}
+			}
+		} );
 
         // Run any outstanding seeders if requested
 		if( controller.getSetting( "environment", "production" ) != "production" ){

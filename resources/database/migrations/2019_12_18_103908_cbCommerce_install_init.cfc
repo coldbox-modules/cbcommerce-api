@@ -2,6 +2,16 @@ component {
 
     function up( schema, query ) {
 
+        schema.create( "cbc_settings", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.boolean( "isActive" ).default( 1 );
+            table.string('name', 255);
+            table.text( "value" );
+            table.string( 'description', 255 ).nullable();
+        } );
+
         schema.create( "cbc_users", function( table ){
             table.uuid( "id" ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
@@ -438,6 +448,19 @@ component {
 
         });
 
+		schema.create( "cbc_deliveryMethods", function( table ){
+            table.uuid( "id" ).primaryKey();
+            table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
+            table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
+			table.integer( "sortOrder" ).default( 0 );
+            table.boolean( "isActive" ).default( 1 );
+            table.string('label', 255);
+            table.string( 'description', 500 ).nullable();
+            table.boolean( "isFlatRate" ).default( 1 );
+            table.decimal( "flatRateFee",  8, 2  ).default( 0 );
+			table.string( "calculatorModel" ).nullable();
+        } );
+
         schema.create( "cbc_orders", function( table ){
             table.uuid( "id" ).primaryKey();
             table.timestamp( "createdTime" ).default( 'CURRENT_TIMESTAMP' );
@@ -455,17 +478,24 @@ component {
 			table.uuid( "FK_invoice" )
 					.references( "id" )
 					.onTable( "cbc_orderInvoices" );
+
 			table.uuid( "FK_user" )
 					.references( "id" )
 					.onTable( "cbc_users" )
 					.onUpdate( "CASCADE" )
 					.onDelete( "CASCADE" );
+
 			table.uuid( "FK_shippingAddress" )
 					.references( "id" )
 					.onTable( "cbc_customerAddresses" );
+
 			table.uuid( "FK_billingAddress" )
 					.references( "id" )
 					.onTable( "cbc_customerAddresses" );
+
+			table.uuid( "FK_deliveryMethod" )
+					.references( "id" )
+					.onTable( "cbc_deliveryMethods" );
         } );
 
 		schema.alter( "cbc_orders", function( table ){
@@ -521,6 +551,10 @@ component {
             table.uuid( "FK_inventoryLocation" )
                     .references( "id" )
                     .onTable( "cbc_inventoryLocations" );
+
+			table.uuid( "FK_deliveryMethod" )
+					.references( "id" )
+					.onTable( "cbc_deliveryMethods" );
 
         });
 
@@ -696,16 +730,6 @@ component {
 
         } );
 
-
-
-        query.newQuery().from( "cbc_userRoles" ).insert(
-            values = [
-                {
-                    "id" : createUUID(),
-                    "name" : "Consignor"
-                }
-            ]
-        );
 
         //======
 

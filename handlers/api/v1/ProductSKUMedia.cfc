@@ -44,16 +44,16 @@ component extends="BaseAPIHandler"{
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttachment.save();
+			mediaAttachment.save().refresh();
+
+			rc.FK_media = mediaAttachment.getId();
+			rc.FK_sku = sku.getId();
 
 			prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).fill( rc );
-			prc.skuMedia.mediaItem().associate( mediaAttachment );
-			prc.skuMedia.sku().associate( sku );
-			prc.skuMedia.save();
 
 			validateModelOrFail( prc.skuMedia );
 
-			prc.skuMedia.save();
+			prc.skuMedia.save().refresh();
 		} catch( any e ){
 			if( !isNull( mediaAttachment ) ){
 				var mediaPath = expandPath( mediaAttachment.getFileLocation() );

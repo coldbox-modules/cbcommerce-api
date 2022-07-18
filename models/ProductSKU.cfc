@@ -63,7 +63,10 @@ component   table="cbc_SKUs"
 			"onHand",
 			"options",
 			"condition",
-			"subCondition"
+			"subCondition",
+			"packagingX",
+			"packagingY",
+			"packagingZ"
 		],
 		"defaultExcludes" : [
 			"product.media",
@@ -99,7 +102,11 @@ component   table="cbc_SKUs"
 					"onHand",
 					"options",
 					"condition",
-					"subCondition"
+					"subCondition",
+					"packagingX",
+					"packagingY",
+					"packagingZ",
+					"virtualSKU"
 				]
 			}
 		},
@@ -144,8 +151,8 @@ component   table="cbc_SKUs"
 					.orderBy( 'createdTime', 'ASC' );
 	}
 
-	function virtualSKUs(){
-		return hasMany( "VirtualSKU@cbCommerce", "FK_sku" );
+	function virtualSKU(){
+		return hasOne( "VirtualSKU@cbCommerce", "FK_sku" );
 	}
 
 	function consignor(){

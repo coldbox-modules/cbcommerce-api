@@ -44,17 +44,16 @@ component extends="BaseAPIHandler"{
 								);
 
 			mediaAttachment.fill( rc );
-			mediaAttachment.save();
+			mediaAttachment.save().refresh();
+
+			rc.FK_media = mediaAttachment.getId();
+			rc.FK_category = category.getId();
 
 			prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).fill( rc );
-			prc.categoryMedia.mediaItem().associate( mediaAttachment );
-			prc.categoryMedia.category().associate( category );
-
-			prc.categoryMedia.save();
 
 			validateModelOrFail( prc.categoryMedia );
 
-			prc.categoryMedia.save();
+			prc.categoryMedia.save().refresh();
 		} catch( any e ){
 			if( !isNull( mediaAttachment ) ){
 				var mediaPath = expandPath( mediaAttachment.getFileLocation() );
@@ -130,9 +129,7 @@ component extends="BaseAPIHandler"{
 	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
-		var mediaAttachment = prc.categoryMedia.getMediaItem();
 		prc.categoryMedia.delete();
-		mediaAttachment.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 
 	}

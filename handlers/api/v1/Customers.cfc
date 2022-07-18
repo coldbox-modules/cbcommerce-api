@@ -14,6 +14,8 @@ component extends="BaseAPIHandler"{
 	* (GET) /cbc/api/v1/customers
 	*/
 	function index( event, rc, prc ) secured="cbcProduct:Edit,Order:Edit"{
+		// param API to customers only
+		param rc.role = "User";
 		return super.index( argumentCollection=arguments );
 	}
 
@@ -46,12 +48,24 @@ component extends="BaseAPIHandler"{
 			return onExpectationFailed( argumentCollection=arguments );
 		}
 
+		// param this value for customers created through the admin.
+		param rc.password = createUUID();
+
 		prc.user = entityService.newEntity().fill( rc );
 
 		validateModelOrFail( prc.user );
 
-		prc.user.save();
+		transaction{
+			prc.user.save();
+			var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "User" ).get();
+			prc.user.roles().attach( userRole );
 
+			if( rc.keyExists( "addresses" ) ){
+				rc.addresses.each( function( address ){
+					
+				} )
+			}
+		}
 		if( event.getValue( "autologin", true ) ){
 			auth().login( prc.user );
 		}

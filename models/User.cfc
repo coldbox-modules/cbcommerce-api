@@ -58,7 +58,7 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     this.constraints = {
 		firstName : { required : true },
         password : { required : true },
-        email : { required : true, validator : "UniqueUserValidator@cbCommerce" }
+        email : { required : true, validator : "cbCommerce.models.validators.UniqueUserValidator" }
 	};
 
     function hasPermission( permission ){
@@ -121,8 +121,8 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
                     );
         }
 
-        if( structKeyExists( searchCollection, "role" ) ){
-            builder.join( "cbc_lookups_users_roles", "FK_user", "=", "users.id" )
+        if( structKeyExists( searchCollection, "role" ) && searchCollection.role != "all" ){
+            builder.join( "cbc_lookups_users_roles", "FK_user", "=", "cbc_users.id" )
                     .join( "cbc_userRoles", "cbc_userRoles.id", "=", "cbc_lookups_users_roles.FK_user_role" )
                     .where( "cbc_userRoles.name", searchCollection.role );
         }
@@ -131,12 +131,12 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 
 	function getJwtCustomClaims(){
 		return getMemento(
-			includes=[ "roles" ]
+			includes=this.isLoaded() ? [ "roles" ] : []
 		);
 	}
 
 	function getJwtScopes(){
-		return getNormalizedPermissions();
+		return this.isLoaded() ? getNormalizedPermissions() : [];
 	}
 
 }
