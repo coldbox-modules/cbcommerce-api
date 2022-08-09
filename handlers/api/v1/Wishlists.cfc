@@ -3,13 +3,13 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler"{
 	property name="entityService" inject="WishlistService@cbCommerce";
 
 	this.APIBaseURL = '/cbc/api/v1/wishlists';
 
 	// (GET) /wishlists
-	function index( event, rc, prc ){
+	function index( event, rc, prc ) secured{
 		rc[ "FK_user" ] = prc.authenticatedUser.keyValues()[1];
 
 		if( rc.sortOrder == "createdTime DESC" ){
@@ -21,7 +21,7 @@ component extends="BaseAPIHandler" secured{
 		if( !searchResults.pagination.total ){
 			entityService.newEntity().create(
 				{
-					"name" : $r( 'default_wishlist_title@cbCommerce', "My List" ),
+					"name" : "My List",
 					"isDefault" : 1,
 					"isPublic" : 0,
 					"FK_user" : rc.FK_user
@@ -46,7 +46,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (POST) /cbc/api/v1/wishlists
-	function create( event, rc, prc ){
+	function create( event, rc, prc ) secured{
 
 		prc.wishlist = entityService.newEntity().fill( rc );
 
@@ -68,7 +68,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (GET) /cbc/api/v1/wishlists/:id
-	function show( event, rc, prc ){
+	function show( event, rc, prc ) secured{
 
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 
@@ -88,7 +88,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/wishlists/:id
-	function update( event, rc, prc ){
+	function update( event, rc, prc ) secured{
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 
 		//remove this key before population
@@ -117,7 +117,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (DELETE) /cbc/api/v1/wishlists/:id
-	function delete( event, rc, prc ){
+	function delete( event, rc, prc ) secured{
 
 		prc.wishlist = entityService.newEntity().getOrFail( rc.id );
 

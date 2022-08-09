@@ -32,7 +32,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/product-categories/:categoryId/media
-	function create( event, rc, prc ) secured="cbcProducts:Edit"{
+	function create( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		var category = categoryService.newEntity().getOrFail( rc.categoryId );
 
@@ -98,7 +98,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/product-categories/:categoryId/media/:id
-	function update( event, rc, prc ) secured="cbcProducts:Edit"{
+	function update( event, rc, prc ) secured="cbcProduct:Edit"{
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -126,7 +126,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/product-categories/:categoryId/media/:id
-	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
+	function delete( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		prc.categoryMedia = getInstance( "ProductCategoryMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.categoryMedia.delete();

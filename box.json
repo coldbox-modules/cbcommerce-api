@@ -1,6 +1,6 @@
 {
     "name":"cbCommerce",
-    "version":"1.0.0",
+    "version":"1.0.0-beta",
     "author":"Ortus Solutions, Corp",
     "location":"git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v1.0.0",
     "homepage":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce",
@@ -45,7 +45,10 @@
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",
         "onRelease":"publish",
         "postPublish":"!git push && !git push --tags",
-        "harness:install":"install && cd test-harness && install"
+        "harness:install":"install && cd test-harness && install",
+		"format":"cfformat run config,handlers,interceptors,models --overwrite",
+        "format:watch":"cfformat watch config,handlers,interceptors,models ./.cfformat.json",
+        "format:check":"cfformat check config,handlers,interceptors,models"
     },
     "ignore":[
         "**/.*",

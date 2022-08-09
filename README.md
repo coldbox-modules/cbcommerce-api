@@ -1,4 +1,4 @@
-# cbox-commerce
+# cbCommerce
 
 [![Master Branch Build Status](https://img.shields.io/travis/jclausen/cbox-commerce/master.svg?style=flat-square&label=master)](https://travis-ci.org/jclausen/cbox-commerce)
 

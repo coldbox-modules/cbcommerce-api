@@ -12,17 +12,25 @@ component{
         variables.cwd           = getCWD().reReplace( "\.$", "" );
         variables.artifactsDir  = cwd & "/.artifacts";
         variables.buildDir      = cwd & "/.tmp";
-        variables.apiDocsURL    = "http://localhost:60299/apidocs/";
-        variables.testRunner    = "http://localhost:60299/tests/runner.cfm";
+        variables.apiDocsURL    = "http://localhost:8080/apidocs/";
+        variables.testRunner    = "http://localhost:8080/tests/runner.cfm";
 
         // Source Excludes Not Added to final binary
         variables.excludes      = [
-            ".gitignore",
-            ".travis.yml",
+			".gitignore",
+			".cfformat.json",
+			".cflintrc",
+			".editorconfig",
+			".gitattributes",
+			".markdownlint.json",
+			".travis.yml",
             ".artifacts",
             ".tmp",
             "build",
-            "test-harness",
+			"test-harness",
+			"node_modules",
+			"modules",
+			"resources",
             ".DS_Store",
             ".git"
         ];
@@ -56,6 +64,8 @@ component{
         buildID=createUUID(),
         branch="development"
     ){
+		// Create project mapping
+		fileSystemUtil.createMapping( arguments.projectName, variables.cwd );
 
         // Run the tests
         runTests();
@@ -68,7 +78,10 @@ component{
         docs( argumentCollection=arguments );
 
         // checksums
-        buildChecksums();
+		buildChecksums();
+
+		// Build latest changelog
+		latestChangelog();
 
         // Finalize Message
         print.line()
@@ -76,7 +89,7 @@ component{
             .toConsole();
     }
 
-     /**
+    /**
      * Run the test suites
      */
     function runTests(){
@@ -86,7 +99,8 @@ component{
         command( 'testbox run' )
             .params(
                 runner = variables.testRunner,
-                verbose = true
+				verbose = true,
+				outputFile = "build/results.json"
             )
             .run();
 
@@ -125,7 +139,7 @@ component{
 
         // Copy source
         print.blueLine( "Copying source to build folder..." ).toConsole();
-        copy( variables.cwd, variables.projectBuildDir );
+		copy( variables.cwd, variables.projectBuildDir );
 
         // Create build ID
         fileWrite( "#variables.projectBuildDir#/#projectName#-#version#+#buildID#", "Built with love on #dateTimeFormat( now(), "full")#" );
@@ -134,7 +148,7 @@ component{
         print.greenLine( "Updating version identifier to #arguments.version#" ).toConsole();
         command( 'tokenReplace' )
             .params(
-                path = "/#variables.projectBuildDir#/**",
+                path = "/#variables.projectBuildDir#/**.json,/#variables.projectBuildDir#/**.cfc",
                 token = "@build.version@",
                 replacement = arguments.version
             )
@@ -143,7 +157,7 @@ component{
         print.greenLine( "Updating build identifier to #arguments.buildID#" ).toConsole();
         command( 'tokenReplace' )
             .params(
-                path = "/#variables.projectBuildDir#/**",
+                path = "/#variables.projectBuildDir#/**.json,/#variables.projectBuildDir#/**.cfc",
                 token = ( arguments.branch == "master" ? "@build.number@" : "+@build.number@" ),
                 replacement = ( arguments.branch == "master" ? arguments.buildID : "-snapshot" )
             )
@@ -172,14 +186,16 @@ component{
         print.greenLine( "Generating API Docs, please wait..." ).toConsole();
         directoryCreate( arguments.outputDir, true, true );
 
-        command( 'docbox generate' )
-            .params(
-                "source"               =  "models",
-                "mapping"              =  "models",
-                "strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
-                "strategy-outputDir"   = arguments.outputDir
-            )
-            .run();
+		command( 'docbox generate' )
+			.params(
+				"source"               =  "models",
+				"mapping"              =  "models",
+				"mappings:/cbcommerce" = "#variables.projectBuildDir#/test-harness/modules/cbcommerce",
+				"mappings:/stachebox" = "#variables.projectBuildDir#",
+				"strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
+				"strategy-outputDir"   = arguments.outputDir
+			)
+			.run();
 
         print.greenLine( "API Docs produced at #arguments.outputDir#" ).toConsole();
 
@@ -192,7 +208,28 @@ component{
             overwrite=true,
             recurse=true
         );
-    }
+	}
+
+	/**
+	 * Build the latest changelog file: changelog-latest.md
+	 */
+	function latestChangelog(){
+		print.blueLine( "Building latest changelog..." ).toConsole();
+
+		if( !fileExists( variables.cwd & "changelog.md" ) ){
+			return error( "Cannot continue building, changelog.md file doesn't exist!" );
+		}
+
+		fileWrite(
+			variables.cwd & "changelog-latest.md",
+			fileRead( variables.cwd & 'changelog.md' ).split( '----' )[2].trim() & chr( 13 ) & chr( 10 )
+		);
+
+		print
+			.greenLine( "Latest changelog file created at `changelog-latest.md`" )
+			.line()
+			.line( fileRead( variables.cwd & "changelog-latest.md" ) );
+	}
 
     /********************************************* PRIVATE HELPERS *********************************************/
 

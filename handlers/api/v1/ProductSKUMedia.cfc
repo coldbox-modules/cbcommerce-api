@@ -32,7 +32,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/skus/:skuId/media
-	function create( event, rc, prc ) secured="cbcProducts:Edit"{
+	function create( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		var sku = productSKUService.newEntity().getOrFail( rc.skuId );
 
@@ -98,7 +98,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/skus/:skuId/media/:id
-	function update( event, rc, prc ) secured="cbcProducts:Edit"{
+	function update( event, rc, prc ) secured="cbcProduct:Edit"{
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -131,7 +131,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/skus/:skuId/media/:id
-	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
+	function delete( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		prc.skuMedia = getInstance( "ProductSKUMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.skuMedia.delete();

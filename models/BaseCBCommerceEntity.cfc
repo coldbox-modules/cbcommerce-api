@@ -6,7 +6,7 @@ component extends="quick.models.BaseEntity"{
     property name="createdTime" type="date";
 	property name="modifiedTime" type="date";
 
-	variables.id = lcase( createUUID() );
+	variables.id = "";
 
 	this.memento = {
 		"iso8601Format" = true
@@ -16,6 +16,12 @@ component extends="quick.models.BaseEntity"{
 		variables.createdTime = now();
 		variables.modifiedTime = now();
 		return super.init();
+	}
+
+	function preSave(){
+		if( !len( variables.id ) ){
+			variables.id = lcase( createUUID() );
+		}
 	}
 
 

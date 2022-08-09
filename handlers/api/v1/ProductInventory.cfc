@@ -3,7 +3,7 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" secured="cbcInventoryLocationStocks:Manage"{
+component extends="BaseAPIHandler" secured="cbcProduct:Manage"{
 
 	property name="entityService" inject="InventoryLocationStockService@cbCommerce";
 

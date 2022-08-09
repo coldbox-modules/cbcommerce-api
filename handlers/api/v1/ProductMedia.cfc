@@ -30,7 +30,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/products/:productId/media
-	function create( event, rc, prc ) secured="cbcProducts:Edit"{
+	function create( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		var product = productService.newEntity().getOrFail( rc.productId );
 		try{
@@ -94,7 +94,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/products/:productId/media/:id
-	function update( event, rc, prc ) secured="cbcProducts:Edit"{
+	function update( event, rc, prc ) secured="cbcProduct:Edit"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -126,7 +126,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/products/:productId/media/:id
-	function delete( event, rc, prc ) secured="cbcProducts:Edit"{
+	function delete( event, rc, prc ) secured="cbcProduct:Edit"{
 		prc.productMedia = getInstance( "ProductMedia@cbCommerce" ).getOrFail( rc.id );
 		prc.productMedia.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );

@@ -17,7 +17,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (POST) /cbc/api/v1/product-categories
-	function create( event, rc, prc ) secured="cbcProducts:Manage"{
+	function create( event, rc, prc ) secured="cbcProduct:Manage"{
 
 		prc.category = entityService.newEntity().fill( rc );
 
@@ -71,7 +71,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/product-categories/:id
-	function update( event, rc, prc ) secured="cbcProducts:Edit"{
+	function update( event, rc, prc ) secured="cbcProduct:Edit"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
@@ -110,7 +110,7 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (DELETE) /cbc/api/v1/product-categories/:id
-	function delete( event, rc, prc ) secured="cbcProducts:Manage"{
+	function delete( event, rc, prc ) secured="cbcProduct:Manage"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 		prc.category.delete();

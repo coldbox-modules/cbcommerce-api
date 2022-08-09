@@ -35,7 +35,7 @@ component {
             table.string( 'suffix', 75 );
         } );
 
-        var prefixes  = [ "cbcProduct", "cbcOrder", "cbcReturn" , "cbcSystem" ];
+        var prefixes  = [ "cbcProduct", "cbcOrder", "cbcReturn" , "cbcSystem", "cbcCustomer" ];
         var suffixes = [ "Configure", "Manage" , "Edit", "Approve", "Delete" ];
 
         for( var prefix in prefixes ){
@@ -49,6 +49,14 @@ component {
                 );
             }
         }
+
+		query.newQuery().from( "cbc_userPermissions" ).insert(
+			values = {
+					"id" : createUUID(),
+					"prefix" : "cbcAdmin",
+					"suffix" : "Login"
+			}
+		);
 
         schema.create( "cbc_userRoles", function( table ){
             table.uuid( 'id' ).primaryKey();

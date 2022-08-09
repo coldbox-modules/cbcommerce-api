@@ -25,6 +25,14 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 		);
 
 		this.memento.neverInclude=["password"];
+		this.memento.defaults = {
+			"id" : "",
+			"firstName" : "",
+			"lastName" : "",
+			"primaryPhone" : "",
+			"secondaryPhone" : "",
+			"email" : ""
+		};
 	}
 
     function addresses(){
@@ -85,15 +93,26 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
     function getNormalizedPermissions(){
         if( isNull( variables._normalizedPermissions ) ){
             var permissions = [];
-            this.getRoles().each( function( role ){
-                role.getPermissions().each( function( permission ){
-                    arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
-                } );
-            } );
+			if( isInRole( "Administrator" ) ){
+				permissions = variables._wirebox.getInstance( "UserPermission@cbCommerce" )
+										.newQuery()
+										.select( [ "prefix", "suffix" ] )
+										.get()
+										.map( function( perm ){
+											var item = [ perm[ "prefix" ], perm[ "suffix" ] ];
+											return item.toList( ":" );
+										} );
+			} else {
+				this.getRoles().each( function( role ){
+					role.getPermissions().each( function( permission ){
+						arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
+					} );
+				} );
 
-            this.getExplicitPermissions().each( function (permission ){
-                arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
-            } );
+				this.getExplicitPermissions().each( function (permission ){
+					arrayAppend( permissions, permission.getPrefix() & ":" & permission.getSuffix() );
+				} );
+			}
 
             variables._normalizedPermissions = [];
             variables._normalizedPermissions.addAll(

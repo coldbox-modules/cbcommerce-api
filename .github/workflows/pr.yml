@@ -10,28 +10,22 @@ jobs:
     name: Tests
     runs-on: ubuntu-20.04
     env:
-      DB_USER: root
-      DB_PASSWORD: root
+      MYSQL_DATABASE: cbcommerce
+      MYSQL_USER: cbcommerce
+      MYSQL_PASSWORD: "c6C0mm3rc3!"
+      MYSQL_ROOT_PASSWORD: "c6C0mm3rc3!"
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        cfengine: [ "lucee@5", "adobe@2016", "adobe@2018", "adobe@2021" ]
-        javaVersion: [ "openjdk8", "openjdk11" ]
+        cfengine: [ "lucee5", "adobe2018", "adobe2021" ]
+        javaVersion: [ "openjdk11" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup Database and Fixtures
+      - name: Setup Database
         run: |
-          sudo systemctl start mysql.service
-          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} -e 'CREATE DATABASE contentbox;'
-          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} < tests/resources/sql/mysql/contentbox.sql
-
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: "adopt"
-          java-version: "11"
+            docker run -d -p "3306:3306" --name mariadb -e 'MYSQL_DATABASE=${{env.MYSQL_DATABASE}}' -e 'MYSQL_USER=${{env.MYSQL_USER}}' -e 'MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}}' -e 'MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}}' mariadb
 
       - name: Setup CommandBox CLI
         uses: Ortus-Solutions/setup-commandbox@v2.0.1
@@ -41,62 +35,57 @@ jobs:
           touch .env
           printf "ENVIRONMENT=development\n" >> .env
           printf "DB_HOST=127.0.0.1\n" >> .env
-          printf "DB_DATABASE=contentbox\n" >> .env
-          printf "DB_DRIVER=MySQL\n" >> .env
-          printf "DB_USER=${{ env.DB_USER }}\n" >> .env
-          printf "DB_PASSWORD=${{ env.DB_PASSWORD }}\n" >> .env
-          printf "DB_CLASS=com.mysql.cj.jdbc.Driver\n" >> .env
-          printf "DB_BUNDLEVERSION=8.0.19\n" >> .env
-          printf "DB_BUNDLENAME=com.mysql.cj\n" >> .env
+          printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> .env
+          printf "DB_USER=${{ env.MYSQL_USER }}\n" >> .env
+          printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> .env
+
+      - name: Cache CommandBox Dependencies
+        uses: actions/cache@v1
+        if: ${{ true }}
+        with:
+          path: ~/.CommandBox/artifacts
+          key: ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/contentbox/box.json' ) }}
+          restore-keys: |
+            ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/contentbox/box.json' ) }}
 
       - name: Install Dependencies
         run: |
-          # Site dependencies
-          box install
-          # ContentBox dependencies
-          cd modules/contentbox && box install
+          box run-script harness:install
 
       - name: Start ${{ matrix.cfengine }}/${{ matrix.javaVersion }} Server
         run: |
-          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" javaVersion=${{ matrix.javaVersion }} --noSaveSettings --debug
-          # Install Adobe 2021 cfpm modules
-          if [[ "${{ matrix.cfengine }}" == "adobe@2021" ]] ; then
-            box run-script install:2021
-          fi
-          curl http://127.0.0.1:8589
+          # Startup the Server
+          docker run -d -p "8080:8080" --name app  -v './test-harness:/app' -v ./:/app/modules/cbcommerce -v ./build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
 
-      - name: Run Web App Tests
+      - name: Run Migrations and Seed Database
+        run: |
+          curl http://127.0.0.1:8080?seed=true
+
+      - name: Run Tests
         run: |
           mkdir tests/results/web
-          box package set testbox.runner="http://127.0.0.1:8589/tests/runner.cfm"
-          box testbox run --verbose outputFile=tests/results/test-results outputFormats=json,antjunit
+          box package set testbox.runner="http://127.0.0.1:8080/tests/runner.cfm"
+          box testbox run --verbose outputFile=tests/results/web/test-results outputFormats=json,antjunit
 
-      - name: Run API Tests
-        run: |
-          mkdir tests/results/api
-          box package set testbox.runner="http://127.0.0.1:8589/tests/runner-api.cfm"
-          box testbox run --verbose outputFile=tests/results/test-results outputFormats=json,antjunit
-
-      - name: Publish PR Test Reports
-        uses: mikepenz/action-junit-report@v2
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          report_paths: 'tests/results/**/*.xml'
+          files: tests/results/**/*.xml
           check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
 
-      - name: Failure debugging
+      - name: Upload Test Results Artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: contentbox-test-results-${{ matrix.cfengine }}
+          path: |
+            tests/results/**/*
+
+      - name: Failure Debugging Info
         if: ${{ failure() }}
         run: |
-          if [[ "{{ matrix.cfengine }}" == "adobe@2016" ]] ; then
-            cat .engines/acf2016/WEB-INF/cfusion/logs/hibernatesql.log
-          fi
-          if [[ "{{ matrix.cfengine }}" == "adobe@2018" ]] ; then
-            cat .engines/acf2018/WEB-INF/cfusion/logs/hibernatesql.log
-          fi
-          if [[ "{{ matrix.cfengine }}" == "adobe@2021" ]] ; then
-            cat .engines/acf2021/WEB-INF/cfusion/logs/hibernatesql.log
-          fi
-          box server log serverConfigFile="server-${{ matrix.cfengine }}.json"
+          docker logs app
 
   format:
     name: Format
@@ -107,9 +96,4 @@ jobs:
 
       - uses: Ortus-Solutions/commandbox-action@v1.0.2
         with:
-          cmd: run-script format
-
-      - name: Commit Format Changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply cfformat changes
+          cmd: run-script format:check
