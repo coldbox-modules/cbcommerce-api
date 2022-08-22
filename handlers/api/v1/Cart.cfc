@@ -19,21 +19,19 @@ component extends="BaseAPIHandler"{
 
 	// (POST) /cbc/api/v1/cart/:itemId
 	function addItem( event, rc, prc ){
-		entityService.addItem( argumentCollection=rc ).save();
 
 		prc.response.setData(
-			entityService.getActiveCart().getContents()
+			entityService.addItem( argumentCollection=rc ).save().getContents()
 		);
 
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/cart/:itemId
 	function updateItem( event, rc, prc ){
-		rc.append = false;
-		entityService.updateItem( argumentCollection=rc ).save();
+		param rc.append = false;
 
 		prc.response.setData(
-			entityService.getActiveCart().getContents()
+			entityService.updateItem( argumentCollection=rc ).save().getContents()
 		);
 
 	}

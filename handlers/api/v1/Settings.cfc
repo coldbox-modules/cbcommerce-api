@@ -18,6 +18,24 @@ component extends="BaseAPIHandler"{
 				if( isAdmin ){
 					acc[ key ] = value;
 				}
+				// payment configuration is always sent
+				else if( key == "payments" ){
+					acc[ key ] = {
+						"processors" : value.processors.reduce(
+											function( acc, proc ){
+												var entry = {
+													"name" : proc.name
+												};
+												if( proc.keyExists( "expose" ) ){
+													entry.append( proc.expose, true );
+												}
+												acc.append( entry );
+												return acc;
+											},
+											[]
+										)
+					}
+				}
 				else if( exposedSettings.contains( key ) ){
 					acc[ key ] = value;
 				}

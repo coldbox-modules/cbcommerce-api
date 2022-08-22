@@ -10,6 +10,7 @@ component quick table="cbc_customerAddresses"extends="BaseCBCommerceEntity" acce
     property name="postalCode" default="" type="string";
     property name="country" default="USA" type="string";
     property name="designation" default="" type="string";
+    property name="isPrimary" type="boolean" default=0 casts="BooleanCast@quick";
     property name="fullName" default="" type="string";
     property name="FK_user" type="string";
 

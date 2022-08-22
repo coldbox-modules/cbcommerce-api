@@ -8,15 +8,15 @@ component   table="cbc_wishlistItems"
 {
 
 	property name="quantity" type="numeric" default=1;
-   property name="baselinePrice" type="numeric";
-   property name="discountPrice" default="0";
+	property name="baselinePrice" type="numeric";
+	property name="discountPrice" default="0";
 
 
    //Foreign Keys
 	property name="FK_sku";
-   property name="FK_wishlist";
+	property name="FK_wishlist";
 
-   function instanceReady(){
+	function instanceReady(){
 		arrayAppend(
 			this.memento.defaultIncludes,
 			[
@@ -25,15 +25,20 @@ component   table="cbc_wishlistItems"
 			],
 			true
 		);
-   }
+	}
 
 
-   function sku(){
+	function sku(){
        return belongsTo( "ProductSKU@cbCommerce", "FK_sku" );
-   }
+	}
 
-   function wishlist(){
+	function wishlist(){
 	   return belongsTo( "Wishlist@cbCommerce", "FK_wishlist" );
-   }
+	}
+
+	function getImage(){
+		var skuImages = this.getSku().getMedia();
+		return skuImages.len() ? skuImages[ 1 ] : javacast( "null", 0 );
+	}
 
 }

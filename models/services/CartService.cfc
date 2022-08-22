@@ -29,7 +29,7 @@ component extends="BaseQuickEntityService" singleton{
         if( isNull( arguments.targetCart) ){
         	var cart = ensureCart();
         } else {
-        	var cart = targetCart;
+        	var cart = arguments.targetCart;
         }
 
         var sku = skuEntity().find( itemId );
@@ -44,23 +44,20 @@ component extends="BaseQuickEntityService" singleton{
 
         var appendQuantity = arguments.quantity;
 
-        items.each( function( item ){
-            if( item.sku.id == sku.getId() ){
-                itemExists = true;
-                if( append ){
-                    item.quantity += appendQuantity;
-                } else {
-                    item.quantity = appendQuantity;
-                }
-                item.updated = dateUtil.toISO8601( now() );
-            }
-        } );
+		var itemIndex = items.find( function( item ){ return item.sku.id == sku.getId(); } );
 
-        if( !itemExists ){
-            var serializedProduct = sku.getProduct().getMemento(
+		if( itemIndex ){
+			if( append ){
+				items[ itemIndex ].quantity += appendQuantity;
+			} else {
+				items[ itemIndex ].quantity = appendQuantity;
+			}
+			items[ itemIndex ].updated = dateUtil.toISO8601( now() );
+		} else {
+			var serializedProduct = sku.getProduct().getMemento(
 										includes="href",
 										defaults={ "href" : "" },
-										mappers={ "href" : function( transformed ) { return '/cbc/api/v1/products/' & transformed[ "id" ]; } }
+										mappers={ "href" : function( item, memento ) { return '/cbc/api/v1/products/' & memento[ "id" ]; } }
 									);
 
             if( arrayLen( serializedProduct.media ) ){
@@ -88,7 +85,9 @@ component extends="BaseQuickEntityService" singleton{
 
             newItem.sku[ "quantity" ] = appendQuantity;
             arrayAppend( items, newItem );
-        }
+		}
+
+		contents.items = items;
 
         return cart.setContents( contents );
 
@@ -106,18 +105,13 @@ component extends="BaseQuickEntityService" singleton{
         var contents = cart.getContents();
         var items = contents.items;
 
-        var deleteIndex = 0;
+        var deleteIndex = items.find( function( item ){ return item.sku.id == itemId; } );
 
-        for( var i = 1; i <= arrayLen( items ); i++ ){
-            var item = items[ i ];
-            if( item.sku.id != itemId ) continue;
-            deleteIndex = i;
-            break;
-        }
-
-        if( deleteIndex > 0 ){
+        if( deleteIndex ){
             arrayDeleteAt( items, deleteIndex );
         }
+
+		contents.items = items;
 
         return cart.setContents( contents );
 
@@ -127,26 +121,26 @@ component extends="BaseQuickEntityService" singleton{
     private function ensureCart(){
         var cartId = cookieStorage.get( "cartId" );
 
-        if( isNull( cartId ) && auth.isLoggedIn() ){
+        if( isNull( cartId ) && auth.check() ){
             //if user is logged in check first for an existing active cart
             var activeCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
-        } else if( !isNull( cartId ) && !auth.isLoggedIn()){
+        } else if( !isNull( cartId ) && !auth.check()){
         	//if user is not logged in check for active cart with null user
         	var activeCart = newEntity().where( 'id', cartId ).whereNull( 'FK_user').first();
-        } else if( !isNull( cartId ) && auth.isLoggedIn() ) {
+        } else if( !isNull( cartId ) && auth.check() ) {
             var activeCart = newEntity().find( cartId );
         }
 
         if( isNull( activeCart ) ){
             activeCart = newEntity();
-            if( auth.isLoggedIn() ){
+            if( auth.check() ){
                 activeCart.customer().associate( auth.user() );
             }
             activeCart.save();
         }
 
         //persist the user if the cart was created before assigning
-        if( auth.isLoggedIn() && isNull( activeCart.getCustomer() ) ){
+        if( auth.check() && isNull( activeCart.getCustomer() ) ){
         	// check if user has previous assigned cart
         	var userCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
         	if( !isNull( userCart ) ){

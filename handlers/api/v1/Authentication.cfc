@@ -9,7 +9,8 @@ component extends="BaseAPIHandler"{
 
 	// (GET) /cbc/api/v1/authentication/token
 	function token(){
-		var user = auth().check() ? auth().getUser() : getInstance( "User@cbcommerce" );
+		var authenticated = auth().check();
+		var user = authenticated ? auth().getUser() : getInstance( "User@cbcommerce" );
 		prc.response
 				.setData( { "@token" : getInstance( "JWTService@cbsecurity" ).fromUser( user )  } )
 				.setStatusCode( STATUS.SUCCESS );

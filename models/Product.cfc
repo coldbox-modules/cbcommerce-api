@@ -53,11 +53,11 @@ component   table="cbc_products"
 
 	// Relationships
 	function skus(){
-		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' );
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).withOnHand();
 	}
 
 	function activeSkus(){
-		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).with( 'media' ).whereAvailable();
+		return hasMany( "ProductSKU@cbCommerce", "FK_product" ).withOnHand().with( 'media' ).whereAvailable();
 	}
 
 	function categories(){
@@ -151,7 +151,6 @@ component   table="cbc_products"
 	}
 
 	function scopeWithRatingCount(){
-		appendVirtualAttribute( "ratingCount" );
 		return addSubselect(
 			"ratingCount",
 			newEntity( "ProductReview@cbcommerce" )

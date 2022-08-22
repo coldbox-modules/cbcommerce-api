@@ -12,6 +12,7 @@ component {
     this.viewParentLookup = false;
     this.layoutParentLookup = false;
     this.dependencies   = [
+		"cors",
         "cbauth",
         "quick",
         "cfmigrations",
@@ -19,8 +20,7 @@ component {
         "cbvalidation",
 		"mockdatacfc",
         "cbsecurity",
-        "BCrypt",
-		"cors"
+        "BCrypt"
     ];
 
 	/**
@@ -72,12 +72,15 @@ component {
                 "securityService" : "SecurityService@cbCommerce"
             },
             "payments" : {
-                "processor" : {
-                    "default" : "StripeProcessor@cbCommerce",
-                    "credentials" : {
-						//credentials will vary, depending on the implmented processor
-                    }
-                }
+				"processors" : [
+					{
+						"name" : "Stripe",
+						"processor" : "StripeProcessor@cbCommerce",
+						"expose" : {
+							"stripeKey" : getSystemSetting( "STRIPE_PUBLISHABLE_KEY", "" )
+						}
+					}
+				]
             },
 			"deliveryMethods" : [
 				{

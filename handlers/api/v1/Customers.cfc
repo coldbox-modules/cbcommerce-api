@@ -6,6 +6,7 @@
  **/
 component extends="BaseAPIHandler"{
 	property name="entityService" inject="UserService@cbCommerce";
+	property name="addressService" inject="CustomerAddressService@cbCommerce";
 
 	//This variables is used in assembling hypermedia hrefs during data marshalling
 	this.APIBaseURL = "/cbc/api/v1/customers";
@@ -56,15 +57,21 @@ component extends="BaseAPIHandler"{
 		validateModelOrFail( prc.user );
 
 		transaction{
-			prc.user.save();
-			var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "User" ).get();
-			prc.user.roles().attach( userRole );
+			try{
+				prc.user.save();
+				var userRole = getInstance( "UserRole@cbCommerce" ).where( "name", "User" ).get();
+				prc.user.roles().attach( userRole );
 
-			if( rc.keyExists( "addresses" ) ){
-				rc.addresses.each( function( address ){
-					
-				} )
+				if( rc.keyExists( "addresses" ) ){
+					rc.addresses.each( function( address ){
+
+					} )
+				}
+			} catch( any e ){
+				transactionRollback();
+				rethrow;
 			}
+
 		}
 		if( event.getValue( "autologin", true ) ){
 			auth().login( prc.user );
@@ -115,6 +122,89 @@ component extends="BaseAPIHandler"{
 		prc.user.delete();
 
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
+	}
+
+	/**
+	* (POST) /cbc/api/v1/customers/:customerId/addresses
+	*/
+	function createAddress( event, rc, prc ) secured{
+		if( auth().user().getId() != rc.customerId  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
+			return onAuthorizationFailure( argumentCollection=arguments );
+		}
+
+		rc.FK_user = rc.customerId;
+		prc.address = addressService.newEntity().fill( rc );
+
+		validateModelOrFail( prc.address );
+
+		transaction{
+			try{
+				if( prc.address.getIsPrimary() ){
+					addressService.newEntity()
+									.newQuery()
+									.where( "isPrimary", 1 )
+									.update( { "isPrimary" : 0 } );
+				}
+				prc.address.save();
+			} catch( any e ){
+				transactionRollback();
+				rethrow;
+			}
+		}
+
+		prc.response.setData(
+			prc.address.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : this.APIBaseURL & "/" & rc.customerId & "/addresses"  },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+			)
+		);
+
+
+	}
+
+
+
+	/**
+	* (PUT) /cbc/api/v1/customers/:customerId/addresses/:id
+	*/
+	function updateAddress( event, rc, prc ) secured{
+		if( auth().user().getId() != rc.customerId  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
+			return onAuthorizationFailure( argumentCollection=arguments );
+		}
+		prc.address = addressService.newEntity().getOrFail( rc.id );
+
+		validateModelOrFail( prc.address );
+
+
+		transaction{
+			try{
+				if( prc.address.getIsPrimary() ){
+					addressService.newEntity().newQuery()
+									.where( "isPrimary", 1 )
+									.where( "id", "!=", rc.id )
+									.update( { "isPrimary" : 0 } );
+				}
+
+				prc.address.save();
+			} catch( any e ){
+				transactionRollback();
+				rethrow;
+			}
+		}
+
+
+		prc.response.setData(
+			prc.address.getMemento(
+				includes=rc.includes,
+				excludes=rc.excludes,
+				defaults={ "href" : this.APIBaseURL & "/" & rc.customerId & "/addresses"  },
+				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
+			)
+		);
+
+
 	}
 
 }

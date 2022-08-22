@@ -115,7 +115,8 @@ component   table="cbc_SKUs"
 			"MAP" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
 			"minimumPrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
 			"cost" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
-			"basePrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); }
+			"basePrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"onHand" : function( item, memento ){ return len( item ) ? item : 0 }
 		}
 	};
 
@@ -131,7 +132,6 @@ component   table="cbc_SKUs"
 			],
 			true
 		);
-		this.memento.mappers[ "onHand" ] = function( item, memento ){ return len( memento.onHand ) ? memento.onHand : 0; };
 		scopeWithOnHand();
 	}
 
@@ -232,7 +232,6 @@ component   table="cbc_SKUs"
 	}
 
 	function scopeWithOnHand(){
-		appendVirtualAttribute( "onHand" );
 		return addSubselect(
 			"onHand",
 			newEntity( "InventoryLocationStock@cbcommerce" )

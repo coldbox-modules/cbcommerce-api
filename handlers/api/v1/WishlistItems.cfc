@@ -3,7 +3,7 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" secured{
+component extends="BaseAPIHandler"{
 	property name="entityService" inject="WishlistItemService@cbCommerce";
 	property name="wishlistService" inject="WishlistService@cbCommerce";
 	property name="skuService" inject="ProductSKUService@cbCommerce";
@@ -11,7 +11,7 @@ component extends="BaseAPIHandler" secured{
 	this.APIBaseURL = '/cbc/api/v1/wishlists/{wishlist}/items';
 
 	// (GET) /wishlists/::wishlistId/items
-	function index( event, rc, prc ){
+	function index( event, rc, prc ) secured{
 
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
 		if( wishlist.getUser().keyValues()[1] != prc.authenticatedUser.keyValues()[1] ){
@@ -30,7 +30,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (POST) /cbc/api/v1/wishlists/:wishlistId/items
-	function create( event, rc, prc ){
+	function create( event, rc, prc ) secured{
 
 		var wishlist = wishlistService.newEntity().getOrFail( rc.wishlistId );
 
@@ -68,7 +68,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (GET) /cbc/api/v1/wishlists/:wishlistId/items/:id
-	function show( event, rc, prc ){
+	function show( event, rc, prc ) secured{
 
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		var wishlist = prc.wishlistItem.getWishlist();
@@ -88,7 +88,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/wishlists/:wishlistId/items/:id
-	function update( event, rc, prc ){
+	function update( event, rc, prc ) secured{
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -117,7 +117,7 @@ component extends="BaseAPIHandler" secured{
 	}
 
 	// (DELETE) /cbc/api/v1/wishlists/:wishlistId/items/:id
-	function delete( event, rc, prc ){
+	function delete( event, rc, prc ) secured{
 
 		prc.wishlistItem = entityService.newEntity().getOrFail( rc.id );
 		var wishlist = prc.wishlistItem.getWishlist();
