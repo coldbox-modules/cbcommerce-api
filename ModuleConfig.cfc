@@ -87,30 +87,35 @@ component {
 					"label" : "In Store Pickup",
 					"description"  : "Local pickup in store",
 					"isFlatRate" : true,
+					"isDefault" : false,
 					"flatRateFee" : 0
 				},
 				{
 					"label" : "USPS Ground",
 					"description"  : "United States Postal Service Ground",
 					"isFlatRate" : false,
+					"isDefault" : true,
 					"calculatorModel" : "USPSGroundCalculator@cbcommerce"
 				},
 				{
 					"label" : "USPS Priority Mail - 3 day",
 					"description"  : "United States Postal Service Priority Mail",
 					"isFlatRate" : false,
+					"isDefault" : false,
 					"calculatorModel" : "USPSPriorityCalculator@cbcommerce"
 				},
 				{
 					"label" : "USPS Express Mail - 2 day",
 					"description"  : "United States Postal Service Priority Mail",
 					"isFlatRate" : false,
+					"isDefault" : false,
 					"calculatorModel" : "USPSExpressCalculator@cbcommerce"
 				},
 				{
 					"label" : "FedEx Overnight Service",
 					"description"  : "Federal Express Overnight",
 					"isFlatRate" : false,
+					"isDefault" : false,
 					"calculatorModel" : "FedExOvernightCalculator@cbcommerce"
 				}
 			]

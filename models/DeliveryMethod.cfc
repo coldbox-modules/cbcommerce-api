@@ -14,6 +14,8 @@ component   table="cbc_deliveryMethods"
    property name="isFlatRate" type="boolean" default=0 casts="BooleanCast@quick";
    property name="flatRateFee" type="numeric";
 
+   property name="isDefault" type="boolean" default=0 casts="BooleanCast@quick";
+
    property name="calculatorModel" type="string";
 
    this.memento = {

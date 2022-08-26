@@ -120,21 +120,24 @@ component extends="BaseQuickEntityService" singleton{
 
     private function ensureCart(){
         var cartId = cookieStorage.get( "cartId" );
-
         if( isNull( cartId ) && auth.check() ){
             //if user is logged in check first for an existing active cart
             var activeCart = newEntity().where( 'isActive', 1 ).where( 'FK_user', auth.user().getId() ).first();
         } else if( !isNull( cartId ) && !auth.check()){
         	//if user is not logged in check for active cart with null user
-        	var activeCart = newEntity().where( 'id', cartId ).whereNull( 'FK_user').first();
+        	var activeCart = newEntity().where( 'isActive', 1 ).where( 'id', cartId ).whereNull( 'FK_user').first();
         } else if( !isNull( cartId ) && auth.check() ) {
             var activeCart = newEntity().find( cartId );
+			// reset cart if it has been deactivated
+			if( !activeCart.getIsActive() ){
+				activeCart = javacast( "null", 0 );
+			}
         }
 
         if( isNull( activeCart ) ){
             activeCart = newEntity();
             if( auth.check() ){
-                activeCart.customer().associate( auth.user() );
+				activeCart.fill( { "FK_user" : auth.user().getId() } );
             }
             activeCart.save();
         }

@@ -14,11 +14,6 @@ component extends="BaseQuickEntityService" singleton threadsafe{
 	function init(){
 		return this;
 	}
-
-	function onDIComplete(){
-		variables.processor = wirebox.getInstance( settings.payments.processor.default );
-	}
-
 	/**
 	 * Get the current processor name
 	 */
@@ -29,8 +24,8 @@ component extends="BaseQuickEntityService" singleton threadsafe{
 	/**
 	 * Get the current system processor implementation
 	 */
-	cbcommerce.models.processor.IPaymentProcessor function getProcessor(){
-		return variables.processor;
+	cbcommerce.models.processor.IPaymentProcessor function getProcessor( required name ){
+		return wirebox.getInstance( arguments.name & "Processor@cbCommerce" );
 	}
 
 	/**

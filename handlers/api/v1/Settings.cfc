@@ -13,34 +13,40 @@ component extends="BaseAPIHandler"{
 	function index( event, rc, prc ){
 		var exposedSettings = entityService.newEntity().getExposedSettings();
 		var isAdmin = auth().check() && auth().getUser().isInRole( "Administrator" );
-		prc.response.setData(
-			variables.settings.reduce( function( acc, key, value ){
-				if( isAdmin ){
-					acc[ key ] = value;
+		prc.settings = variables.settings.reduce( function( acc, key, value ){
+			if( isAdmin ){
+				acc[ key ] = value;
+			}
+			// payment configuration is always sent
+			else if( key == "payments" ){
+				acc[ key ] = {
+					"processors" : value.processors.reduce(
+										function( acc, proc ){
+											var entry = {
+												"name" : proc.name
+											};
+											if( proc.keyExists( "expose" ) ){
+												entry.append( proc.expose, true );
+											}
+											acc.append( entry );
+											return acc;
+										},
+										[]
+									)
 				}
-				// payment configuration is always sent
-				else if( key == "payments" ){
-					acc[ key ] = {
-						"processors" : value.processors.reduce(
-											function( acc, proc ){
-												var entry = {
-													"name" : proc.name
-												};
-												if( proc.keyExists( "expose" ) ){
-													entry.append( proc.expose, true );
-												}
-												acc.append( entry );
-												return acc;
-											},
-											[]
-										)
-					}
-				}
-				else if( exposedSettings.contains( key ) ){
-					acc[ key ] = value;
-				}
-				return acc;
-			}, {} )
-		).setStatusCode( status.SUCCESS );
+			}
+			else if( exposedSettings.contains( key ) ){
+				acc[ key ] = value;
+			}
+			return acc;
+		}, {} );
+
+		prc.settings[ "deliveryMethods" ] = getInstance( "DeliveryMethod@cbCommerce" )
+												.where( "isActive", "=", 1 )
+												.orderBy( "sortOrder" )
+												.get()
+												.map( function( dm ){ return dm.getMemento(); } );
+
+		prc.response.setData( prc.settings ).setStatusCode( status.SUCCESS );
 	}
 }

@@ -7,7 +7,7 @@ component   table="cbc_orderItems"
 			quick
 {
     // Persistent column properties
-    property name="isVirtual" type="boolean" default=0;
+    property name="isVirtual" type="boolean" default=0  casts="BooleanCast@quick";
     property name="quantityOrdered" type="numeric" default=1;
     property name="quantityCancelled" type="numeric" default=0;
     property name="quantityRefunded" type="numeric" default=0;
@@ -48,19 +48,11 @@ component   table="cbc_orderItems"
     */
 
     public struct function getProductSnapshot(){
-    	if( isSimpleValue( variables.productSnapshot ) ){
-    		assignAttribute( retrieveAliasForColumn( 'productSnapshot' ), deserializeJSON( variables.productSnapshot ) );
-        }
-        return  variables.productSnapshot;
+		return deserializeJSON( variables.productSnapshot );
     }
 
     function setProductSnapshot( any productSnapshot ){
-
-		if( !isSimpleValue( arguments.productSnapshot ) ){
-			arguments.productSnapshot = serializeJSON( arguments.productSnapshot );
-		}
-
-		assignAttribute( retrieveAliasForColumn( 'productSnapshot' ), arguments.productSnapshot );
+		variables.productSnapshot = !isSimpleValue( arguments.productSnapshot ) ? serializeJSON( arguments.productSnapshot ) : arguments.productSnapshot;
 	}
 
 }

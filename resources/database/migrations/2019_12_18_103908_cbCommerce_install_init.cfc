@@ -462,6 +462,7 @@ component {
             table.timestamp( "modifiedTime" ).default( 'CURRENT_TIMESTAMP' );
 			table.integer( "sortOrder" ).default( 0 );
             table.boolean( "isActive" ).default( 1 );
+            table.boolean( "isDefault" ).default( 0 );
             table.string('label', 255);
             table.string( 'description', 500 ).nullable();
             table.boolean( "isFlatRate" ).default( 1 );
