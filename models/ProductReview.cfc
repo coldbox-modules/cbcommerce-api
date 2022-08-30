@@ -1,18 +1,18 @@
 /**
 * cboxCommerce default Product Object
 */
-component   table="cbc_productReviews" 
-			extends="BaseCBCommerceEntity" 
+component   table="cbc_productReviews"
+			extends="BaseCBCommerceEntity"
 			accessors="true"
 			quick
-{   
+{
 
-	
-	property name="isPublished" type="numeric";
-	property name="rating" type="numeric";
-	property name="relevancyScore" type="numeric";
+
+	property name="isPublished" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="rating" type="numeric" default=0;
+	property name="relevancyScore" type="numeric" default=0;
 	property name="comment" type="string" default="";
-	
+
 	//Foreign Keys
 	property name="FK_user";
 	property name="FK_product";
@@ -24,7 +24,7 @@ component   table="cbc_productReviews"
 		FK_product = { required : true },
 		rating = { required : true, type : "numeric" }
 	};
-	
+
 
 	function user(){
 		return belongsTo( "User@cbCommerce", "FK_user" );
@@ -37,5 +37,5 @@ component   table="cbc_productReviews"
 	function sku(){
 		return hasMany( "ProductSku@cbCommerce", "FK_sku" );
 	}
-	
+
 }

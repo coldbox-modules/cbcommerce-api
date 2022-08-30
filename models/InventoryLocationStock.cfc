@@ -9,8 +9,8 @@ component   table="cbc_inventoryLocationStock"
 
 	property name="available" type="numeric" default="0";
 	property name="unaccounted" type="numeric" default="0";
-	property name="countRequired" type="boolean" default=0;
-	property name="allowBackorder" type="boolean" default=0;
+	property name="countRequired" type="boolean" default=0 casts="BooleanCast@quick";
+	property name="allowBackorder" type="boolean" default=0 casts="BooleanCast@quick";
 	property name="FK_sku" type="string";
 	property name="FK_inventoryLocation" type="string";
 

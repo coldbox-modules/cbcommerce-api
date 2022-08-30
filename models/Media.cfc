@@ -47,6 +47,10 @@ component   table="cbc_media"
 		string pathExtension = "products",
 		string mimeAccept = "*"
 	){
+		// We need an identifier on this entity to load a file
+		if( !len( variables.id ) ){
+			variables.id = lcase( createUUID() );
+		}
 
 		var filesPath = mediaSettings.storageLocation & "/" & pathExtension;
 
@@ -169,20 +173,20 @@ component   table="cbc_media"
 
 	// Media delivery and manipulation functions
 	public function isImage(){
-		if( fileExists( expandPath( getFileLocation() ) ) ) {
+		if( fileExists( expandPath( this.getFileLocation() ) ) ) {
 			return MediaUtil.isImage( getOriginalFileName() );
 		}
 		else {
 			log.error(
-					"Media Location Not Found: #expandPath( getFileLocation() )#"
+					"Media Location Not Found: #expandPath( this.getFileLocation() )#"
 			);
 			return false;
 		}
 	}
 
 	public function isPDF(){
-		if( fileExists( expandPath( getFileLocation() ) )) {
-			return findNoCase( "pdf", fileGetMimeType( expandPath( getFileLocation() ) ) );
+		if( fileExists( expandPath( this.getFileLocation() ) )) {
+			return findNoCase( "pdf", fileGetMimeType( expandPath( this.getFileLocation() ) ) );
 		}
 		else {
 			log.error(
@@ -199,7 +203,7 @@ component   table="cbc_media"
 	**/
 	public function getFileInputStream(){
 
-		var mediaPath = expandPath( getFileLocation() );
+		var mediaPath = expandPath( this.getFileLocation() );
 
 
 		var fileInputStream = createObject(
@@ -224,12 +228,12 @@ component   table="cbc_media"
 
 	public string function getVariation( numeric width, numeric height, any x=0, any y=0, mimeType ){
 
-		if ( ! this.isImage( getFileLocation() ) ){
-			return expandPath( getFileLocation() );
+		if ( ! this.isImage( this.getFileLocation() ) ){
+			return expandPath( this.getFileLocation() );
 		}
 
 		if( isNull( arguments.mimeType ) ){
-			arguments.mimeType = fileGetMimeType( expandPath( getFileLocation() ) );
+			arguments.mimeType = fileGetMimeType( expandPath( this.getFileLocation() ) );
 		}
 
 		var ext = listLast( arguments.mimeType, "/" );
@@ -240,7 +244,7 @@ component   table="cbc_media"
             ext = 'png';
         }
 
-		var filePath = expandPath( getFileLocation() );
+		var filePath = expandPath( this.getFileLocation() );
 		var variationName = keyValues()[1] & "_" & width & "x" & height & '_x' & x & '_y' & y  & "." & ext;
 		var filesDirectory = getDirectoryFromPath( filePath );
 		var variationsDirectory = filesDirectory & "variations";

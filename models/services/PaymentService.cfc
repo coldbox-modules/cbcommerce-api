@@ -14,12 +14,6 @@ component extends="BaseQuickEntityService" singleton threadsafe{
 	function init(){
 		return this;
 	}
-	/**
-	 * Get the current processor name
-	 */
-	function getProcessorName(){
-		return getProcessor().getName();
-	}
 
 	/**
 	 * Get the current system processor implementation

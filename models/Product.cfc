@@ -18,7 +18,7 @@ component   table="cbc_products"
 	property name="displayOrder" type="numeric" default=0;
 	property name="hitCount" type="numeric" default=0;
 	// an external reference id used for syncing data between systems
-	property name="externalId" type="string";
+	property name="externalId" type="string" default="";
 
 	this.constraints = {
 		name = { required : true },
@@ -401,12 +401,7 @@ component   table="cbc_products"
 	}
 
 	function setRequiredOptions( any options ){
-
-		if( !isSimpleValue( arguments.options ) ){
-			arguments.options = serializeJSON( arguments.options );
-		}
-
-		assignAttribute( retrieveAliasForColumn( 'requiredOptions' ), arguments.options );
+		variables.options = !isSimpleValue( arguments.options ) ? serializeJSON( arguments.options ) : arguments.options;
 	}
 
 }

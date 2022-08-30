@@ -3,6 +3,7 @@
 */
 component quick table="cbc_customerAddresses"extends="BaseCBCommerceEntity" accessors="true"{
 
+    property name="fullName" default="" type="string";
 	property name="address1" default="" type="string";
     property name="address2" default="" type="string";
     property name="city" default="" type="string";
@@ -11,7 +12,6 @@ component quick table="cbc_customerAddresses"extends="BaseCBCommerceEntity" acce
     property name="country" default="USA" type="string";
     property name="designation" default="" type="string";
     property name="isPrimary" type="boolean" default=0 casts="BooleanCast@quick";
-    property name="fullName" default="" type="string";
     property name="FK_user" type="string";
 
     function customer(){

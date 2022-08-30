@@ -24,11 +24,9 @@ component accessors="true"{
 		return this;
 	}
 
-	function getMemento(){
-		return {
-			"error" 	: variables.error,
-			"content" 	: variables.content
-		};
-	}
+	this.memento.defaultIncludes = [
+		"content",
+		"error"
+	];
 
 }
