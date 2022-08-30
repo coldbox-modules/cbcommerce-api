@@ -23,7 +23,11 @@ component extends="tests.resources.BaseTest" {
 
 		describe( "cbCommerce.models.ConsignmentFeeType Spec", function(){
 
-
+			it( "Tests the model defaults", function(){
+				expect( model.getName() ).toBeString().toHaveLength( 0 );
+				expect( model.getDescription() ).toBeString().toHaveLength( 0 );
+				expect( model.getDisplayOrder() ).toBeNumeric().toBe( 0 );
+			} );
 		});
 
 	}

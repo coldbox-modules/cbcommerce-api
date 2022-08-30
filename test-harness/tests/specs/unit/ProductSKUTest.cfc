@@ -22,6 +22,17 @@ component extends="tests.resources.BaseTest"{
 
 		describe( "ProductSKU Spec", function(){
 
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getIsVirtual() ).toBeBoolean().toBe( false );
+				expect( model.getIsConsigned() ).toBeBoolean().toBe( false );
+				expect( model.getAllowBackorder() ).toBeBoolean().toBe( false );
+				expect( model.getIsFeatured() ).toBeBoolean().toBe( false );
+				expect( model.getShowPricing() ).toBeBoolean().toBe( false );
+				expect( model.getPickUpInStore() ).toBeBoolean().toBe( false );
+				expect( model.getSummary() ).toBeString().toHaveLength( 0 );
+				expect( model.getDescription() ).toBeString().toHaveLength( 0 );
+			});
 
 		});
 

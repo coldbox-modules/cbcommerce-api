@@ -22,8 +22,10 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "cbCommerce.models.Cart Spec", function(){
-
-
+			it( "Tests the model defaults", function(){
+				expect( variables.model.getContents() ).toBeStruct().toHaveKey( "items" );
+				expect( variables.model.getAudit() ).toBeArray().toHaveLength( 0 );
+			} );
 		});
 
 	}

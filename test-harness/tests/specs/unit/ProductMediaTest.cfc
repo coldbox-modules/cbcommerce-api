@@ -21,8 +21,11 @@ component extends="tests.resources.BaseTest"{
 	function run(){
 
 		describe( "ProductMedia Spec", function(){
-
-
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getIsPrimary() ).toBeBoolean().toBe( false );
+				expect( model.getDisplayOrder() ).toBeNumeric().toBe( 0 );
+			});
 		});
 
 	}

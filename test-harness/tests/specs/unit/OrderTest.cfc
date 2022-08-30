@@ -21,8 +21,9 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "cbCommerce.models.Order Spec", function(){
-
-
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+			});
 		});
 
 	}

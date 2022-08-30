@@ -22,6 +22,19 @@ component extends="tests.resources.BaseTest"{
 
 		describe( "Product Spec", function(){
 
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getName() ).toBeString().toHaveLength( 0 );
+				expect( model.getDescription() ).toBeString().toHaveLength( 0 );
+				expect( model.getShortDescription() ).toBeString().toHaveLength( 0 );
+				expect( model.getExternalId() ).toBeString().toHaveLength( 0 );
+				expect( model.getManufacturer() ).toBeString().toHaveLength( 0 );
+				expect( model.getIsFeatured() ).toBeBoolean().toBe( false );
+				expect( model.getHasOptions() ).toBeBoolean().toBe( false );
+				expect( model.getRequiredOptions() ).toBeStruct().toHaveLength( 0 );
+				expect( model.getDisplayOrder() ).toBeNumeric().toBe( 0 );
+				expect( model.getHitCount() ).toBeNumeric().toBe( 0 );
+			});
 
 		});
 

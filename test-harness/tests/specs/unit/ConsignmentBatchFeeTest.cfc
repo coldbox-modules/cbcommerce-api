@@ -22,7 +22,10 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "cbCommerce.models.ConsignmentBatchFee Spec", function(){
-
+			it( "Tests the model defaults", function(){
+				expect( variables.model.getNotes() ).toHaveLength( 0 );
+				expect( variables.model.getIsPaid() ).toBe( 0 );
+			} );
 
 		});
 

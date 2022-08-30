@@ -5,7 +5,7 @@ component extends="tests.resources.BaseTest"{
 	function beforeAll(){
 		super.beforeAll();
 
-		paymentService = getInstance( "PaymentService@cbCommerce" );
+		variables.model = getInstance( "PaymentService@cbCommerce" );
 	}
 
 	function afterAll(){
@@ -19,11 +19,15 @@ component extends="tests.resources.BaseTest"{
 		describe( "Payment Service", function(){
 
 			it( "can be created", function(){
-				expect( paymentService ).toBeComponent();
+				expect( variables.model ).toBeComponent();
 			});
 
+			it( "can retreive a new entity", function(){
+				expect( variables.model.newEntity() ).toBeInstanceOf( "cbCommerce.models.Payment" );
+			} );
+
 			it( "can retrieve processor", function(){
-				var processor = paymentService.getProcessor();
+				var processor = variables.model.getProcessor( "Stripe" );
 				expect( processor ).toBeComponent();
 				expect( processor.getName() ).toBe( "Stripe CFML" );
 			});

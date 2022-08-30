@@ -22,6 +22,11 @@ component extends="tests.resources.BaseTest"{
 
 		describe( "ProductSKUOption Spec", function(){
 
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getName() ).toBeString().toHaveLength( 0 );
+				expect( model.getDisplayOrder() ).toBeNumeric().toBe( 0 );
+			});
 
 		});
 

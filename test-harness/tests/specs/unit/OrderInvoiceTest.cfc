@@ -21,8 +21,10 @@ component extends="tests.resources.BaseTest"{
 	function run(){
 
 		describe( "OrderInvoice Spec", function(){
-
-
+			it( "Tests model defaults", function(){
+				expect( model.getTerms() ).toBeString().toHaveLength( 0 );
+				expect( model.getNotes() ).toBeString().toHaveLength( 0 );
+			});
 		});
 
 	}

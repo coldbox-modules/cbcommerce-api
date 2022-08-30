@@ -26,6 +26,13 @@ component extends="tests.resources.BaseTest"{
 				expect( model ).toBeComponent();
 			});
 
+			it( "Has consistent repsponse format", function(){
+				model.setError( true );
+				model.setContent( "This is a test response" );
+				var response = model.getMemento();
+				expect( response ).toHaveKey( "error" ).toHaveKey( "content" );
+			} );
+
 		});
 
 	}

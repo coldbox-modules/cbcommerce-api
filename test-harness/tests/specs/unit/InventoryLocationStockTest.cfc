@@ -25,7 +25,12 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "InventoryLocationStock Spec", function(){
-
+			it( "Tests model defaults", function(){
+				expect( model.getAvailable() ).toBeNumeric().toBe( 0 );
+				expect( model.getUnaccounted() ).toBeNumeric().toBe( 0 );
+				expect( model.getCountRequired() ).toBeBoolean().toBe( false );
+				expect( model.getAllowBackorder() ).toBeBoolean().toBe( false );
+			} );
 
 		});
 

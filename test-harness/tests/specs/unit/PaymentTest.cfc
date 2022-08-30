@@ -21,8 +21,11 @@ component extends="tests.resources.BaseTest"{
 	function run(){
 
 		describe( "cbCommerce.models.Payment Spec", function(){
-
-
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getExternalTransactionId() ).toBeString().toHaveLength( 0 );
+				expect( model.getComment() ).toBeString().toHaveLength( 0 );
+			});
 		});
 
 	}

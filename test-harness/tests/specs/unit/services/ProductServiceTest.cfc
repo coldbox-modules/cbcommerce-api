@@ -22,6 +22,15 @@ component extends="tests.resources.BaseTest"{
 				expect( variables.model ).toBeComponent();
 			});
 
+			it( "can retreive a new entity", function(){
+				expect( variables.model.newEntity() ).toBeInstanceOf( "cbCommerce.models.Product" );
+			} );
+
+			it( "Tests getActiveUsedProducts", function(){
+				var products = model.getActiveUsedProducts();
+				expect( products ).toBeArray();
+			} );
+
 		});
 
 	}

@@ -22,7 +22,16 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "cbCommerce.models.CustomerAddress Spec", function(){
-
+			it( "Tests model defaults", function(){
+				expect( model.getFullName() ).toBeString().toHaveLength( 0 );
+				expect( model.getAddress1() ).toBeString().toHaveLength( 0 );
+				expect( model.getAddress2() ).toBeString().toHaveLength( 0 );
+				expect( model.getCity() ).toBeString().toHaveLength( 0 );
+				expect( model.getProvince() ).toBeString().toHaveLength( 0 );
+				expect( model.getPostalCode() ).toBeString().toHaveLength( 0 );
+				expect( model.getCountry() ).toBeString().toHaveLength( 3 ).toBe( "USA" );
+				expect( model.getIsPrimary() ).toBeBoolean().toBe( false );
+			});
 
 		});
 

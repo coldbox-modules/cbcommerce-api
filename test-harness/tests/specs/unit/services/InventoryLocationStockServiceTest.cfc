@@ -21,6 +21,9 @@ component extends="tests.resources.BaseTest"{
 			it( "can be created", function(){
 				expect( variables.model ).toBeComponent();
 			});
+			it( "can retreive a new entity", function(){
+				expect( variables.model.newEntity() ).toBeInstanceOf( "cbCommerce.models.InventoryLocationStock" );
+			} );
 
 		});
 

@@ -22,6 +22,9 @@ component extends="tests.resources.BaseTest"{
 
 		describe( "cbCommerce.models.User Spec", function(){
 
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+			});
 
 		});
 

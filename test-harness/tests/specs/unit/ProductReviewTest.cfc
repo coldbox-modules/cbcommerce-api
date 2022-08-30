@@ -21,8 +21,12 @@ component extends="tests.resources.BaseTest"{
 	function run(){
 
 		describe( "ProductReview Spec", function(){
-
-
+			it( "Tests model defaults", function(){
+				expect( model.getId() ).toBeString().toHaveLength( 0 );
+				expect( model.getIsPublished() ).toBeBoolean().toBe( false );
+				expect( model.getRating() ).toBeNumeric().toBe( 0 );
+				expect( model.getRelevancyScore() ).toBeNumeric().toBe( 0 );
+			});
 		});
 
 	}

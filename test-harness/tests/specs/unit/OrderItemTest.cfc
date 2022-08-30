@@ -21,7 +21,14 @@ component extends="tests.resources.BaseTest" {
 	function run(){
 
 		describe( "cbCommerce.models.OrderItem Spec", function(){
-
+			it( "Tests model defaults", function(){
+				expect( model.getIsVirtual() ).toBeBoolean().toBe( false );
+				expect( model.getQuantityOrdered() ).toBeNumeric().toBe( 1 );
+				expect( model.getQuantityCancelled() ).toBeNumeric().toBe( 0 );
+				expect( model.getQuantityRefunded() ).toBeNumeric().toBe( 0 );
+				expect( model.getQuantityDownloaded() ).toBeNumeric().toBe( 0 );
+				expect( model.getProductSnapshot() ).toBeStruct().toHaveLength( 0 );
+			});
 
 		});
 
