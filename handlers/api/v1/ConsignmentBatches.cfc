@@ -35,18 +35,17 @@ component extends="BaseAPIHandler" secured{
 	// (POST) /cbc/api/v1/consigment-batches
 	function create( event, rc, prc ) secured="cbcProduct:Manage"{
 
-		var sku = entityService.newEntity().getOrFail( rc.skuId );
-
         prc.batch = getInstance( "ConsignmentBatch@cbCommerce" ).fill( rc );
         validateModelOrFail( prc.batch );
         prc.batch.save();
 
         if( structKeyExists( rc, "skus" ) && isArray( rc.skus ) ){
-            prc.batch.skus().sync(
+            prc.batch.setSkus(
                 rc.skus.map( function( sku ){
-                    return isSimpleValue( sku ) ? sku : sku.id;
+                    return getInstance( "ProductSKU@cbcommerce" ).findOrFail( isSimpleValue( sku ) ? sku : sku.id );
                 } )
             );
+			prc.batch.save().refresh();
         }
 
 		prc.response.setData(
@@ -62,10 +61,9 @@ component extends="BaseAPIHandler" secured{
 	// (GET) /cbc/api/v1/consigment-batches/:id
 	function show( event, rc, prc ){
 
+        prc.batch = entityService.newEntity().getOrFail( rc.id );
 
-        prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
-
-        if( !auth().user().hasPermission( "Products:Edit" ) || auth().user().getId() != prc.batch.getFK_consignor() ){
+        if( !auth().user().hasPermission( "cbcProduct:Edit" ) && auth().user().getId() != prc.batch.getFK_consignor() ){
             return onAuthorizationFailure( argumentCollection = arguments );
         }
 
@@ -81,7 +79,7 @@ component extends="BaseAPIHandler" secured{
 
 	// (PUT|PATCH) /cbc/api/v1/consigment-batches/:id
 	function update( event, rc, prc ) secured="cbcProduct:Edit"{
-		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
+		prc.batch = entityService.newEntity().getOrFail( rc.id );
 
 		prc.batch.fill( rc );
 
@@ -90,11 +88,12 @@ component extends="BaseAPIHandler" secured{
         prc.batch.save();
 
         if( structKeyExists( rc, "skus" ) && isArray( rc.skus ) ){
-            prc.batch.skus().sync(
+            prc.batch.setSkus(
                 rc.skus.map( function( sku ){
-                    return isSimpleValue( sku ) ? sku : sku.id;
+                    return getInstance( "ProductSKU@cbcommerce" ).findOrFail( isSimpleValue( sku ) ? sku : sku.id );
                 } )
             );
+			prc.batch.save().refresh();
         }
 
 		prc.response.setData(
@@ -111,7 +110,7 @@ component extends="BaseAPIHandler" secured{
 	// (DELETE) /cbc/api/v1/consigment-batches/:id
 	function delete( event, rc, prc ) secured="cbcProduct:Manage"{
 
-		prc.batch = consignmentBatchService.newEntity().getOrFail( rc.id );
+		prc.batch = entityService.newEntity().getOrFail( rc.id );
 		prc.batch.delete();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 

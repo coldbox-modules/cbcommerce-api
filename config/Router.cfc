@@ -134,20 +134,19 @@ component{
                 handler    = "API.v1.Orders"
             );
 
-			route( 'api/v1/customers/:customerId/addresses' )
-                    .withAction(
-                        {
-                            "POST"  : "createAddress"
-                        }
-                    )
-                    .toHandler( "API.v1.Customers" );
-
-
 
 			route( 'api/v1/customers/:customerId/addresses/:id' )
                     .withAction(
                         {
                             "PUT"  : "updateAddress"
+                        }
+                    )
+                    .toHandler( "API.v1.Customers" );
+
+			route( 'api/v1/customers/:customerId/addresses' )
+                    .withAction(
+                        {
+                            "POST"  : "createAddress"
                         }
                     )
                     .toHandler( "API.v1.Customers" );

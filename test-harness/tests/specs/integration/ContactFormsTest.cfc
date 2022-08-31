@@ -16,7 +16,7 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 
 	function run(){
 
-		describe( "BaseAPIHandler Suite", function(){
+		describe( "Carts Suite", function(){
 
 			beforeEach(function( currentSpec ){
 				// Setup as a new ColdBox request for this suite, VERY IMPORTANT. ELSE EVERYTHING LOOKS LIKE THE SAME REQUEST.

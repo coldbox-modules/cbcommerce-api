@@ -69,6 +69,14 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
         email : { required : true, validator : "cbCommerce.models.validators.UniqueUserValidator" }
 	};
 
+	function delete(){
+		this.getCarts().each( function( cart ){ cart.delete() } );
+		this.getAddresses().each( function( addr ){ addr.delete() } );
+		this.roles().sync( [] );
+		this.explicitPermissions().sync( [] );
+		return super.delete();
+	}
+
     function hasPermission( permission ){
       if( !isLoaded() ) return false;
       if( this.isInRole( "Administrator" ) ) return true;

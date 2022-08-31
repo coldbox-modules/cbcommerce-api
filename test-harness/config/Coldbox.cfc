@@ -62,15 +62,6 @@ component{
 			"quick" : {
 				"defaultGrammar" : "MySQLGrammar@qb"
 			},
-			"cbauth" : {
-				"userServiceClass" : "UserService@cbCommerce"
-			},
-			"cbguard" : {
-                "authenticationOverrideEvent"     = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
-                "authenticationAjaxOverrideEvent" = "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
-                "authorizationOverrideEvent"      = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
-                "authorizationAjaxOverrideEvent"  = "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure"
-			},
 			"stripecfml" : {
 				"apiKey" : getSystemSetting( "STRIPE_API_KEY", "" )
 			}

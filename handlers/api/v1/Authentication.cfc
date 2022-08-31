@@ -61,7 +61,7 @@ component extends="BaseAPIHandler"{
     }
 
 
-	// (DELETE) /cbc/api/v1/authentication/:id
+	// (DELETE) /cbc/api/v1/authentication
 	function delete( event, rc, prc ){
 		auth().logout();
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );

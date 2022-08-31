@@ -1,7 +1,7 @@
 /**
 * cboxCommerce Consignment Batch Model
 */
-component table="cbc_consignmentBatches"  
+component table="cbc_consignmentBatches"
         extends="BaseCBCommerceEntity"
         accessors="true"
         quick
@@ -15,7 +15,7 @@ component table="cbc_consignmentBatches"
 
 	//Foreign Keys
 	property name="FK_consignor";
-	
+
 	function consignor(){
 		return belongsTo( "User@cbCommerce", "FK_consignor" );
 	}
@@ -29,7 +29,7 @@ component table="cbc_consignmentBatches"
     }
 
 	function delete(){
-        skus().sync([]);
+        this.setSkus( [] );
 		return super.delete();
 	}
 

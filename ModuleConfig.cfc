@@ -39,6 +39,13 @@ component {
             "cbauth" : {
                 "userServiceClass" : "UserService@cbCommerce"
             },
+			"cbsecurity" : {
+                "invalidAuthenticationEvent"    : "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
+				"invalidAuthorizationEvent"     : "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
+				"defaultAuthorizationAction"    : "override",
+				"defaultAuthenticationAction"   : "override",
+				"handlerAnnotationSecurity"     : true
+			},
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases
                 "externalModel"        : false,
@@ -149,14 +156,7 @@ component {
 
 		var isContentBoxContext = controller.getModuleService().isModuleRegistered( "contentbox" );
 		if( !isContentBoxContext ){
-			structAppend(
-				settings,
-				{
-					"cbsecurity" : {
-						"userService" : "UserService@cbCommerce"
-					}
-				}
-			);
+			settings.cbSecurity[ "userService" ] = "UserService@cbCommerce";
 		} else {
 			interceptors.append(
 				[

@@ -6,19 +6,8 @@ component extends="tests.resources.BaseTest"{
 		super.beforeAll();
 
 		variables.model = getInstance( "UserService@cbCommerce" );
-		variables.testUser = variables.model.newEntity().where( "email", "jclausen+customer@ortussolutions.com" ).first();
-		variables.testPassword = "testing1234!@##$";
-		if( isNull( testUser ) ){
-			variables.testUser = getInstance( "User@cbCommerce" ).newEntity().fill( {
-				"firstName" : "Jon",
-				"lastName" : "Customer",
-				"email" : "jclausen+customer@ortussolutions.com",
-				"password" : variables.testPassword
-			} ).save().refresh();
-		} else {
-			// Ensure our password is consistent
-			variables.testUser.setPassword( variables.testPassword ).save();
-		}
+		ensureTestCustomer();
+		variables.testUser = variables.testCustomer;
 	}
 
 	function afterAll(){

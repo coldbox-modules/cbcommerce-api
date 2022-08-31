@@ -14,7 +14,7 @@ component extends="BaseAPIHandler"{
 	/**
 	* (GET) /cbc/api/v1/customers
 	*/
-	function index( event, rc, prc ) secured="cbcProduct:Edit,Order:Edit"{
+	function index( event, rc, prc ) secured="cbcOrder:Edit"{
 		// param API to customers only
 		param rc.role = "User";
 		return super.index( argumentCollection=arguments );
@@ -26,7 +26,7 @@ component extends="BaseAPIHandler"{
 	function show( event, rc, prc ) secured{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 
-		if( !prc.authenticatedUser.hasPermission( "Product:Edit,Order:Edit" ) && prc.authenticatedUser.getId() != rc.id  ){
+		if( !prc.authenticatedUser.hasPermission( "cbcOrder:Edit" ) && prc.authenticatedUser.getId() != rc.id  ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -92,7 +92,7 @@ component extends="BaseAPIHandler"{
 	* (PUT|PATCH) /cbc/api/v1/customers/:id
 	*/
 	function update( event, rc, prc ) secured{
-		if( auth().user().getId() != rc.id  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
+		if( auth().user().getId() != rc.id  && !auth().user().hasPermission( "cbcOrder:Edit" ) ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 		prc.user = entityService.newEntity().getOrFail( rc.id );
@@ -117,10 +117,9 @@ component extends="BaseAPIHandler"{
 	/**
 	* (DELETE) /cbc/api/v1/customers/:id
 	*/
-	function delete( event, rc, prc ) secured="cbcSystem:Edit"{
+	function delete( event, rc, prc )  secured="cbcOrder:Edit"{
 		prc.user = entityService.newEntity().getOrFail( rc.id );
 		prc.user.delete();
-
 		prc.response.setData({}).setStatusCode( STATUS.NO_CONTENT );
 	}
 
@@ -128,7 +127,7 @@ component extends="BaseAPIHandler"{
 	* (POST) /cbc/api/v1/customers/:customerId/addresses
 	*/
 	function createAddress( event, rc, prc ) secured{
-		if( auth().user().getId() != rc.customerId  && !auth().user().hasPermission( "Product:Edit,Order:Edit" ) ){
+		if( auth().user().getId() != rc.customerId  && !auth().user().hasPermission( "cbcOrder:Edit" ) ){
 			return onAuthorizationFailure( argumentCollection=arguments );
 		}
 
@@ -159,12 +158,10 @@ component extends="BaseAPIHandler"{
 				defaults={ "href" : this.APIBaseURL & "/" & rc.customerId & "/addresses"  },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
-		);
+		).setStatusCode( STATUS.CREATED );
 
 
 	}
-
-
 
 	/**
 	* (PUT) /cbc/api/v1/customers/:customerId/addresses/:id
@@ -175,8 +172,9 @@ component extends="BaseAPIHandler"{
 		}
 		prc.address = addressService.newEntity().getOrFail( rc.id );
 
-		validateModelOrFail( prc.address );
+		prc.address.fill( rc );
 
+		validateModelOrFail( prc.address );
 
 		transaction{
 			try{
