@@ -116,7 +116,10 @@ component{
         var md = getUtil().getInheritedMetadata( entity );
         for( var key in searchCollection ){
             if( !len( searchCollection[ key ] ) ) continue;
-            if( hasMetaProperty( md, key ) ){
+			if( ( left( key, 3 ) == 'has' || left( key, 2 ) == 'is' ) && isBoolean( searchCollection[ key ] ) ){
+				searchCollection[ key ] = searchCollection[ key ] ? 1 : 0;
+			}
+			if( hasMetaProperty( md, key ) ){
                 q.where( key, searchCollection[ key ] );
             } else if( hasMetaFunction( md, key ) ) {
                 var fn = q[ key ];

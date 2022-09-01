@@ -7,7 +7,7 @@ component   table="cbc_orders"
 			quick
 {
 
-    property name="approvaltime" type="date";
+    property name="approvalTime" type="date";
     property name="fulfilledTime" type="date";
     property name="subtotal" type="numeric";
     property name="shipping" type="numeric";
@@ -45,6 +45,10 @@ component   table="cbc_orders"
     function items(){
         return hasMany( "OrderItem@cbCommerce", "FK_order" );
     }
+
+	function payments(){
+		return hasMany( "Payment@cbCommerce", "FK_order" );
+	}
 
     function shippingAddress(){
         return belongsTo( "CustomerAddress@cbCommerce", "FK_shippingAddress" );

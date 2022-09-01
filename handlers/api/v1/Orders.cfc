@@ -3,14 +3,19 @@
 * @package cbCommerce.handlers
 * @author Jon Clausen <jclausen@ortussolutions.com>
 */
-component extends="BaseAPIHandler" { // secured
+component extends="BaseAPIHandler"{
 
 	property name="entityService" inject="OrderService@cbCommerce";
 
 	this.APIBaseURL = '/cbc/api/v1/orders';
 
 	// (GET) /cbc/api/v1/orders
-	function index( event, rc, prc ){
+	function index( event, rc, prc ) secured{
+		param rc.sortOrder = "createdTime DESC";
+
+		if( !auth().user().hasPermission( "cbcOrder:Approve,cbcOrder:Edit" ) ){
+			rc.FK_user = auth().user().getId();
+		}
 
 		var searchResults = entityService.search( rc, rc.maxrows, rc.offset, rc.sortOrder );
 
@@ -28,7 +33,7 @@ component extends="BaseAPIHandler" { // secured
 	}
 
 	// (POST) /cbc/api/v1/orders
-	function create( event, rc, prc ) secured="cbcOrders:Manage"{
+	function create( event, rc, prc ) secured="cbcOrder:Manage"{
 
 		prc.order = entityService.newEntity().fill( rc );
 
@@ -48,7 +53,7 @@ component extends="BaseAPIHandler" { // secured
 	}
 
 	// (GET) /cbc/api/v1/orders/:id
-	function show( event, rc, prc ){
+	function show( event, rc, prc ) secured{
 
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 
@@ -64,7 +69,7 @@ component extends="BaseAPIHandler" { // secured
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/orders/:id
-	function update( event, rc, prc ) secured="cbcOrders:Edit"{
+	function update( event, rc, prc ) secured="cbcOrder:Edit"{
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -79,7 +84,6 @@ component extends="BaseAPIHandler" { // secured
 			prc.order.getMemento(
 				includes=rc.includes,
 				excludes=rc.excludes,
-
 				defaults={ "href" : this.APIBaseURL },
 				mappers={ "href" : function( item, memento ){ return memento.href & "/" & memento.id; } }
 			)
@@ -88,7 +92,7 @@ component extends="BaseAPIHandler" { // secured
 	}
 
 	// (DELETE) /cbc/api/v1/orders/:id
-	function delete( event, rc, prc ) secured="cbcOrders:Manage"{
+	function delete( event, rc, prc ) secured="cbcOrder:Manage"{
 
 		prc.order = entityService.newEntity().getOrFail( rc.id );
 		prc.order.delete();

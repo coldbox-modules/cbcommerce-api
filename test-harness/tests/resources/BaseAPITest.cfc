@@ -275,5 +275,82 @@ component extends="BaseTest"{
         expectConsistentEventResponse( result, STATUS.NOT_AUTHORIZED );
     }
 
+	function ensureCustomerOrder( customer ){
+		var order = getInstance( "Order@cbCommerce" ).where( "FK_user", customer.getId() ).first();
+		if( isNull( order ) ){
+			var shippingAddress = getInstance( "CustomerAddress@cbCommerce" )
+								.where( "designation", "shipping" )
+								.where( "FK_user", customer.getId() )
+								.first();
+			var billingAddress = getInstance( "CustomerAddress@cbCommerce" )
+									.where( "designation", "billing" )
+									.where( "FK_user", customer.getId() )
+									.first();
+			if( isNull( shippingAddress ) ){
+				shippingAddress = getInstance( "CustomerAddress@cbcommerce" )
+									.fill({
+										"FK_user" : customer.getId(),
+										"fullName" : customer.getFullName(),
+										"address1" : "123 Anywhere Lane",
+										"city" : "Grand Rapids",
+										"province" : "MI",
+										"postalCode" : "49546",
+										"country" : "USA",
+										"isPrimary" : false,
+										"designation" : "shipping"
+									}).save().refresh();
+			}
+			if( isNull( billingAddress ) ){
+				billingAddress = getInstance( "CustomerAddress@cbcommerce" )
+										.fill({
+											"FK_user" : customer.getId(),
+											"fullName" : customer.getFullName(),
+											"address1" : "123 Anywhere Lane",
+											"city" : "Grand Rapids",
+											"province" : "MI",
+											"postalCode" : "49546",
+											"country" : "USA",
+											"isPrimary" : false,
+											"designation" : "shipping"
+										}).save().refresh();
+			}
+			var order = getInstance( "Order@cbCommerce" ).create( {
+				"FK_user" : customer.getId(),
+				"subtotal" : 10,
+				"shipping" : 10,
+				"fees" : 0,
+				"tax" : .60,
+				"discount" : 0,
+				"total" : 20.60,
+				"FK_shippingAddress" : shippingAddress.getId(),
+				"FK_billingAddress" : billingAddress.getId(),
+				"FK_deliveryMethod" : getInstance( "DeliveryMethod@cbcommerce" ).first().getId(),
+				"paidInFull" : now(),
+				"approvalTime" : now(),
+				"createdTime" : now(),
+				"modifiedTime" : now()
+			} ).refresh();
+		}
+		return order;
+	}
+
+
+
+	function ensureTestPayment( customer ){
+		var order = ensureCustomerOrder( customer );
+		return order.getPayments().len()
+				? order.getPayments()[ 1 ]
+				: getInstance( "Payment@cbCommerce" ).create(
+				{
+					"externalTransactionId" : createUUID(),
+					"amount" : order.getTotal(),
+					"comment" : "Test payment",
+					"lastFour" : "1234",
+					"paymentMethod" : "Visa",
+					"FK_order" : order.getId()
+				}
+				).refresh();
+	}
+
 
 }

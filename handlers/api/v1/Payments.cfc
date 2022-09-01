@@ -14,7 +14,7 @@ component extends="BaseAPIHandler" {
 	this.APIBaseURL = '/cbc/api/v1/payments';
 
 	// (GET) /cbc/api/v1/payments
-	function index( event, rc, prc ){
+	function index( event, rc, prc ) secured="cbcOrder:Manage"{
 		return super.index( argumentCollection=arguments );
 	}
 
@@ -190,9 +190,12 @@ component extends="BaseAPIHandler" {
 	}
 
 	// (GET) /cbc/api/v1/payments/:id
-	function show( event, rc, prc ){
+	function show( event, rc, prc ) secured{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
+		if( !auth().user().hasPermission( "cbcOrder:Manage" ) && prc.payment.getOrder().getFK_User() != auth().user().getId() ){
+			return onAuthorizationFailure( argumentCollection=arguments );
+		}
 
 		prc.response.setData(
 			prc.payment.getMemento(
@@ -205,7 +208,7 @@ component extends="BaseAPIHandler" {
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/payments/:id
-	function update( event, rc, prc ) secured="cbcPayments:Edit"{
+	function update( event, rc, prc ) secured="cbcOrder:Manage"{
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
 		structDelete( rc, "id" );
@@ -229,7 +232,7 @@ component extends="BaseAPIHandler" {
 	}
 
 	// (DELETE) /cbc/api/v1/payments/:id
-	function delete( event, rc, prc ) secured="cbcPayments:Manage"{
+	function delete( event, rc, prc ) secured="cbcOrder:Manage"{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		prc.payment.delete();
