@@ -59,6 +59,9 @@ component{
 			"mementifier" : {
 				"nullDefaultValue" : {}
 			},
+			"cbauth" : {
+                "userServiceClass" : "UserService@cbCommerce"
+            },
 			"quick" : {
 				"defaultGrammar" : "MySQLGrammar@qb"
 			},

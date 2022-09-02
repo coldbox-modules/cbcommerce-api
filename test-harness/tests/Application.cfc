@@ -67,7 +67,6 @@ component{
 
 	// request start
 	public boolean function onRequestStart( String targetPage ){
-		// pagePoolClear();
 		if( url.keyExists( "fwreinit" ) ){
 			ormReload();
 		}
