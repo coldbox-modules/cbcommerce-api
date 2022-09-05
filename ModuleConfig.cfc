@@ -203,6 +203,7 @@ component {
 				useEncryption 	= true,
 				secure = true,
 				httpOnly = false,
+				domain = CGI.SERVER_NAME,
 				encryptionSeed 	= getSystemSetting( "CBCOMMERCE_ENCRYPT_SEED", "jxPp16lyN9M4bNFL2NR5ow==" ), // `generateSecretKey( "AES" )`
 		        encryptionAlgorithm = getSystemSetting( "CBCOMMERCE_ENCRYPT_ALGORITHM", "AES/CBC/PKCS5Padding" ),
 		        encryptionEncoding = getSystemSetting( "CBCOMMERCE_ENCRYPT_ENCODING", "HEX" )
