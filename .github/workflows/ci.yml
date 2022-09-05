@@ -48,6 +48,8 @@ jobs:
           printf "DB_USERNAME=${{ env.MYSQL_USER }}\n" >> test-harness/.env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> test-harness/.env
           printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> test-harness/.env
+          printf "STRIPE_API_KEY=${{ env.STRIPE_API_KEY }}\n" >> test-harness/.env
+          printf "STRIPE_PUBLISHABLE_KEY=${{ env.STRIPE_PUBLISHABLE_KEY }}\n" >> test-harness/.env
 
       - name: Cache CommandBox Dependencies
         uses: actions/cache@v1
