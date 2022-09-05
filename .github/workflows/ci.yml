@@ -71,13 +71,13 @@ jobs:
         run: |
           mkdir tests/results/web
           box package set testbox.runner="http://127.0.0.1:8080/tests/runner.cfm"
-          box testbox run --verbose outputFile=tests/results/web/test-results outputFormats=json,antjunit
+          box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          files: tests/results/**/*.xml
+          files: test-harness/tests/results/**/*.xml
           check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
 
       - name: Upload Test Results Artifacts
@@ -86,7 +86,7 @@ jobs:
         with:
           name: cbcommerce-api-test-results-${{ matrix.cfengine }}
           path: |
-            tests/results/**/*
+            test-harness/tests/results/**/*
 
       - name: Failure Debugging Info
         if: ${{ failure() }}
