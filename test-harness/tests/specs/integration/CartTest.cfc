@@ -67,6 +67,8 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 
 				authenticationService.login( variables.testCustomer );
 
+				expect( variables.cartService.getActiveCart() ).toBeInstanceOf( "cbCommerce.models.Cart" );
+
 				var eventArgs = newEventArgs( "POST" );
 
                 var event = execute(
@@ -93,6 +95,8 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 				expect( variables ).toHaveKey( "testSKU" );
 
 				authenticationService.login( variables.testCustomer );
+
+				expect( variables.cartService.getActiveCart() ).toBeInstanceOf( "cbCommerce.models.Cart" );
 
 				var cart = variables.cartService.getActiveCart();
 				variables.cartService.addItem( variables.testSKU.getId(), 1, cart );
@@ -122,6 +126,7 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 				authenticationService.login( variables.testCustomer );
 
 				var cart = variables.cartService.getActiveCart();
+				expect( cart ).toBeInstanceOf( "cbCommerce.models.Cart" )
 				variables.cartService.addItem( variables.testSKU.getId(), 1, cart );
 
 				var eventArgs = newEventArgs( "DELETE" );

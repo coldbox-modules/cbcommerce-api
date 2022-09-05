@@ -190,8 +190,7 @@ component{
 			.params(
 				"source"               =  "models",
 				"mapping"              =  "models",
-				"mappings:/cbcommerce" = "#variables.projectBuildDir#/test-harness/modules/cbcommerce",
-				"mappings:/stachebox" = "#variables.projectBuildDir#",
+				"mappings:/cbcommerce" = "#variables.projectBuildDir#",
 				"strategy-projectTitle" = "#arguments.projectName# v#arguments.version#",
 				"strategy-outputDir"   = arguments.outputDir
 			)
