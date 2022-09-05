@@ -22,11 +22,11 @@ jobs:
       MYSQL_USER: cbcommerce
       MYSQL_PASSWORD: "c6C0mm3rc3!"
       MYSQL_ROOT_PASSWORD: "c6C0mm3rc3!"
+      DB_CLASS: com.mysql.jdbc.Driver
     strategy:
       fail-fast: false
       matrix:
         cfengine: [ "lucee5", "adobe2018", "adobe2021" ]
-        javaVersion: [ "openjdk11" ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -46,6 +46,7 @@ jobs:
           printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> .env
           printf "DB_USER=${{ env.MYSQL_USER }}\n" >> .env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> .env
+          printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> .env
           cat .env
 
       - name: Cache CommandBox Dependencies
@@ -61,7 +62,7 @@ jobs:
         run: |
           box run-script harness:install
 
-      - name: Start ${{ matrix.cfengine }}/${{ matrix.javaVersion }} Server
+      - name: Start ${{ matrix.cfengine }} Server
         run: |
           # Startup the Server
           docker run -d -p "8080:8080" --name app  -v ${GITHUB_WORKSPACE}/test-harness:/app -v ${GITHUB_WORKSPACE}:/app/modules/cbcommerce -v ${GITHUB_WORKSPACE}/build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
@@ -79,7 +80,7 @@ jobs:
         if: always()
         with:
           files: test-harness/tests/results/**/*.xml
-          check_name: "${{ matrix.cfengine }}/${{ matrix.javaVersion }} Test Results"
+          check_name: "${{ matrix.cfengine }} Test Results"
 
       - name: Upload Test Results Artifacts
         if: always()
