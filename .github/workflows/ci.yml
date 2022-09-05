@@ -40,14 +40,14 @@ jobs:
 
       - name: Setup .env For Runner
         run: |
-          touch .env
-          printf "ENVIRONMENT=development\n" >> .env
-          printf "DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb)\n" >> .env
-          printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> .env
-          printf "DB_USER=${{ env.MYSQL_USER }}\n" >> .env
-          printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> .env
-          printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> .env
-          cat .env
+          touch test-harness/.env
+          printf "ENVIRONMENT=development\n" >> test-harness/.env
+          printf "DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb)\n" >> test-harness/.env
+          printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> test-harness/.env
+          printf "DB_USER=${{ env.MYSQL_USER }}\n" >> test-harness/.env
+          printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> test-harness/.env
+          printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> test-harness/.env
+          cat test-harness/.env
 
       - name: Cache CommandBox Dependencies
         uses: actions/cache@v1
