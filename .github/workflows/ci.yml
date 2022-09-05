@@ -70,6 +70,7 @@ jobs:
           docker run -d -p "8080:8080" --name app  -v ${GITHUB_WORKSPACE}/test-harness:/app -v ${GITHUB_WORKSPACE}:/app/modules/cbcommerce -v ${GITHUB_WORKSPACE}/build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
           if [[ "${{ matrix.cfengine }}" == "adobe2021" ]] ; then
             docker exec app /bin/sh -c "cd /app && box cfpm install zip,mysql,document,feed"
+            docker restart app
           fi
           sleep 60
           curl http://127.0.0.1:8080?seed=true
