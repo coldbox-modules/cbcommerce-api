@@ -69,7 +69,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          mkdir test-harness/tests/results/web
+          mkdir -p ${GITHUB_WORKSPACE}/test-harness/tests/results/web
           box package set testbox.runner="http://127.0.0.1:8080/tests/runner.cfm"
           box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
 
