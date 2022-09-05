@@ -8,9 +8,7 @@
     "devDependencies":{
         "coldbox":"be",
         "testbox":"^4.5.0",
-        "route-visualizer":"^1.4.0",
-        "commandbox-dotenv":"*",
-        "commandbox-cfconfig":"*"
+        "route-visualizer":"^1.4.0"
     },
     "installPaths":{
         "coldbox":"coldbox/",

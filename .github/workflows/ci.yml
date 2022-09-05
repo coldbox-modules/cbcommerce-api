@@ -33,7 +33,7 @@ jobs:
 
       - name: Setup Database
         run: |
-            docker run -d -p "3306:3306" --name mariadb -e 'MYSQL_DATABASE=${{env.MYSQL_DATABASE}}' -e 'MYSQL_USER=${{env.MYSQL_USER}}' -e 'MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}}' -e 'MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}}' mariadb
+            docker run -d -p "3306:3306" --expose 3306 --name mariadb -e 'MYSQL_DATABASE=${{env.MYSQL_DATABASE}}' -e 'MYSQL_USER=${{env.MYSQL_USER}}' -e 'MYSQL_PASSWORD=${{env.MYSQL_PASSWORD}}' -e 'MYSQL_ROOT_PASSWORD=${{env.MYSQL_ROOT_PASSWORD}}' mariadb
 
       - name: Setup CommandBox CLI
         uses: Ortus-Solutions/setup-commandbox@v2.0.1
