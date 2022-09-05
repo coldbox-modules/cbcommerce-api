@@ -42,7 +42,7 @@ jobs:
         run: |
           touch .env
           printf "ENVIRONMENT=development\n" >> .env
-          printf "DB_HOST=127.0.0.1\n" >> .env
+          printf "DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb)\n" >> .env
           printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> .env
           printf "DB_USER=${{ env.MYSQL_USER }}\n" >> .env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> .env
