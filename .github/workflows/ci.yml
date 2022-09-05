@@ -46,6 +46,7 @@ jobs:
           printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> .env
           printf "DB_USER=${{ env.MYSQL_USER }}\n" >> .env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> .env
+          cat .env
 
       - name: Cache CommandBox Dependencies
         uses: actions/cache@v1
