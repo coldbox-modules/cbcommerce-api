@@ -42,7 +42,7 @@ component   table="cbc_deliveryMethods"
 	   if( getIsFlatRate() ){
 		  return getFlatRateFee();
 	   } else if( !isNull( getCalculatorModel() ) ) {
-		  raturn wirebox.getInstance( getCalculatorModel() ).calculate( argumentCollection=arguments );
+		  return wirebox.getInstance( getCalculatorModel() ).calculate( argumentCollection=arguments );
 	   } else {
 		   throw( "There is no shipping rate calculation available for #getTitle()#" );
 	   }
