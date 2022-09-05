@@ -45,6 +45,7 @@ jobs:
           printf "DB_HOST=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb)\n" >> test-harness/.env
           printf "DB_DATABASE=${{env.MYSQL_DATABASE}}\n" >> test-harness/.env
           printf "DB_USER=${{ env.MYSQL_USER }}\n" >> test-harness/.env
+          printf "DB_USERNAME=${{ env.MYSQL_USER }}\n" >> test-harness/.env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> test-harness/.env
           printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> test-harness/.env
           cat test-harness/.env
