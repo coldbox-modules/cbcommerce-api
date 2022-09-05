@@ -63,7 +63,7 @@ jobs:
       - name: Start ${{ matrix.cfengine }}/${{ matrix.javaVersion }} Server
         run: |
           # Startup the Server
-          docker run -d -p "8080:8080" --name app  -v test-harness:/app -v .:/app/modules/cbcommerce -v build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
+          docker run -d -p "8080:8080" --name app  -v ${GITHUB_WORKSPACE}/test-harness:/app -v ${GITHUB_WORKSPACE}:/app/modules/cbcommerce -v ${GITHUB_WORKSPACE}/build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
 
       - name: Run Migrations and Seed Database
         run: |
