@@ -48,7 +48,6 @@ jobs:
           printf "DB_USERNAME=${{ env.MYSQL_USER }}\n" >> test-harness/.env
           printf "DB_PASSWORD=${{ env.MYSQL_PASSWORD }}\n" >> test-harness/.env
           printf "DB_CLASS=${{ env.DB_CLASS }}\n" >> test-harness/.env
-          cat test-harness/.env
 
       - name: Cache CommandBox Dependencies
         uses: actions/cache@v1
@@ -73,7 +72,7 @@ jobs:
       - name: Run Tests
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/test-harness/tests/results/web
-          box package set testbox.runner="http://127.0.0.1:8080/tests/runner.cfm"
+          box package set testbox.runner="http://127.0.0.1:8080/tests/runner.cfm?seed=true"
           box testbox run --verbose outputFile=test-harness/tests/results/web/test-results outputFormats=json,antjunit
 
       - name: Publish Test Results
