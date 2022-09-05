@@ -7,6 +7,9 @@ on:
       - development
       - main
 
+env:
+  MODULE_ID: cbcommerce-api
+
 jobs:
   #############################################
   # Tests First baby! We fail, no build :(
@@ -49,9 +52,9 @@ jobs:
         if: ${{ true }}
         with:
           path: ~/.CommandBox/artifacts
-          key: ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/contentbox/box.json' ) }}
+          key: ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/cbcommerce-api/box.json' ) }}
           restore-keys: |
-            ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/contentbox/box.json' ) }}
+            ${{ runner.OS }}-commandbox-cache-${{ hashFiles( 'box.json' ) }}-${{ hashFiles( 'modules/cbcommerce-api/box.json' ) }}
 
       - name: Install Dependencies
         run: |
@@ -60,7 +63,7 @@ jobs:
       - name: Start ${{ matrix.cfengine }}/${{ matrix.javaVersion }} Server
         run: |
           # Startup the Server
-          docker run -d -p "8080:8080" --name app  -v './test-harness:/app' -v ./:/app/modules/cbcommerce -v ./build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
+          docker run -d -p "8080:8080" --name app  -v test-harness:/app -v .:/app/modules/cbcommerce -v build:/app/modules/cbcommerce/test-harness ortussolutions/commandbox:${{matrix.cfengine}}
 
       - name: Run Migrations and Seed Database
         run: |
@@ -83,7 +86,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: contentbox-test-results-${{ matrix.cfengine }}
+          name: cbcommerce-api-test-results-${{ matrix.cfengine }}
           path: |
             tests/results/**/*
 
@@ -111,47 +114,34 @@ jobs:
           distribution: "adopt"
           java-version: "11"
 
-      - name: Setup CommandBox CLI
-        uses: Ortus-Solutions/setup-commandbox@v2.0.1
+      - name: Setup CommandBox
+        uses: Ortus-Solutions/setup-commandbox@main
         with:
-          forgeboxAPIKey: ${{ secrets.FORGEBOX_API_TOKEN }}
+          forgeboxAPIKey: ${{ secrets.FORGEBOX_TOKEN }}
 
       - name: Setup Environment Variables For Build Process
         id: current_version
         run: |
           echo "VERSION=`cat box.json | jq '.version' -r`" >> $GITHUB_ENV
+          box package set version=@build.version@+@build.number@
           # master or snapshot
+          echo "Github Ref is $GITHUB_REF"
           echo "BRANCH=master" >> $GITHUB_ENV
           if [ $GITHUB_REF == 'refs/heads/development' ]
           then
             echo "BRANCH=development" >> $GITHUB_ENV
           fi
-
-      - name: Build Docs
+      - name: Build ${{ env.MODULE_ID }}
         run: |
-          # Normalize swagger doc results
-          cp -v tests/results/contentbox-test-results-lucee@5/contentbox-swagger.json tests/results/
-          #ls -lR tests/results
-          # Run Docs Build
-          box run-script build:allDocs
-
-      - name: Build cbCommerce Variants for ${{ env.BRANCH }} v${{ env.VERSION }}
-        run: |
-          ant -Dcontentbox.version=${{ env.VERSION }} -Dbuild.number=${{ github.run_number }} -Dbuild.branch=${{ env.BRANCH }} -f build/build.xml
-          cat build/build-contentbox/module/box.json
-
-      - name: List Variants
-        run: ls -R
-        working-directory: build/build-contentbox
-
+          box install commandbox-docbox
+          box task run taskfile=build/Build target=run :version=${{ env.VERSION }} :projectName=${{ env.MODULE_ID }} :buildID=${{ github.run_number }} :branch=${{ env.BRANCH }}
       - name: Upload Build Artifacts
         if: success()
         uses: actions/upload-artifact@v2
         with:
-          name: contentbox-variants
+          name: ${{ env.MODULE_ID }}
           path: |
-            artifacts/**/*
-
+            .artifacts/**/*
       - name: Upload Binaries to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -160,8 +150,8 @@ jobs:
           AWS_S3_BUCKET: "downloads.ortussolutions.com"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
-          SOURCE_DIR: "artifacts"
-          DEST_DIR: "ortussolutions"
+          SOURCE_DIR: ".artifacts/${{ env.MODULE_ID }}"
+          DEST_DIR: "ortussolutions/coldbox-modules/${{ env.MODULE_ID }}"
 
       - name: Upload API Docs to S3
         uses: jakejarvis/s3-sync-action@master
@@ -171,17 +161,14 @@ jobs:
           AWS_S3_BUCKET: "apidocs.ortussolutions.com"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
-          SOURCE_DIR: "build/build-contentbox/apidocs"
-          DEST_DIR: "contentbox/${{ env.VERSION }}"
+          SOURCE_DIR: ".tmp/apidocs"
+          DEST_DIR: "coldbox-modules/${{ env.MODULE_ID }}/${{ env.VERSION }}"
 
-      - name: Publish
+      - name: Publish To ForgeBox
         run: |
-          ROOT_DIR=`pwd`
-          cd $ROOT_DIR/build/build-contentbox/module && box forgebox publish
-          cd $ROOT_DIR/build/build-contentbox/site && box forgebox publish
-          cd $ROOT_DIR/build/build-contentbox/installer && box forgebox publish
-          cd $ROOT_DIR/build/build-contentbox/installer-module && box forgebox publish
-
+          cd .tmp/${{ env.MODULE_ID }}
+          cat box.json
+          box forgebox publish
       - name: Inform Slack
         if: ${{ always() }}
         uses: rtCamp/action-slack-notify@v2
@@ -189,7 +176,7 @@ jobs:
           SLACK_CHANNEL: coding
           SLACK_COLOR: ${{ job.status }} # or a specific color like 'green' or '#ff00ff'
           SLACK_ICON_EMOJI: ":bell:"
-          SLACK_MESSAGE: 'cbCommerce Built with ${{ job.status }}!'
-          SLACK_TITLE: "cbCommerce Build"
+          SLACK_MESSAGE: '${{ env.MODULE_ID }} Built with ${{ job.status }}!'
+          SLACK_TITLE: "${{ env.MODULE_ID }} Build"
           SLACK_USERNAME: CI
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
