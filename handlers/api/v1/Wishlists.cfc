@@ -47,10 +47,9 @@ component extends="BaseAPIHandler"{
 
 	// (POST) /cbc/api/v1/wishlists
 	function create( event, rc, prc ) secured{
+		rc.FK_user = auth().user().getID();
 
 		prc.wishlist = entityService.newEntity().fill( rc );
-
-		prc.wishlist.user().associate( prc.authenticatedUser.keyValues()[1] );
 
 		validateModelOrFail( prc.wishlist );
 

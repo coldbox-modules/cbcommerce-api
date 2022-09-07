@@ -1,16 +1,16 @@
 {
-    "name":"cbCommerce",
-    "version":"1.0.0-beta",
+    "name":"cbcommerce-api",
+    "version":"@build.version@",
     "author":"Ortus Solutions, Corp",
-    "location":"git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v1.0.0",
-    "homepage":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce",
-    "documentation":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce",
+    "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cbcommerce-ui/@build.version@/cbcommerce-ui-@build.version@.zip",
+    "homepage":"https://cbcommerce.ortusbooks.com",
+    "documentation":"https://cbcommerce.ortusbooks.com",
     "repository":{
         "type":"git",
-        "URL":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce"
+        "URL":"https://github.com/coldbox-modules/cbcommerce-api"
     },
-    "bugs":"https://gitlab.ortushq.com/coldbox-modules/cbox-commerce/issues",
-    "slug":"cbCommerce",
+    "bugs":"https://github.com/coldbox-modules/cbcommerce-api/issues",
+    "slug":"cbcommerce-api",
     "shortDescription":"An e-commerce module for the coldbox platform",
     "description":"An e-commerce module for the coldbox platform",
     "type":"modules",
@@ -53,7 +53,6 @@
     "ignore":[
         "**/.*",
         "test-harness",
-        "examples",
         "*/.md"
     ],
     "cfmigrations":{

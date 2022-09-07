@@ -27,6 +27,7 @@ includes/images
 includes/js
 includes/*.json
 resources/apidocs/examples/tmp/**
+*-latest.md
 # log files
 logs/**
 /nbproject/private/
