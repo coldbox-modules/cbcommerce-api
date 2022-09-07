@@ -261,6 +261,7 @@ component {
 
         // Run any outstanding seeders if requested
 		if( controller.getSetting( "environment", "production" ) != "production" ){
+			setting requesttimeout=500;
 			if( structKeyExists( url, "seed" ) && url.seed ){
 				migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
 				migrationService.runAllMigrations( "up" );
