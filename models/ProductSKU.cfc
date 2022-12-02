@@ -111,11 +111,11 @@ component   table="cbc_SKUs"
 			}
 		},
 		"mappers" : {
-			"MSRP" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
-			"MAP" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
-			"minimumPrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
-			"cost" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
-			"basePrice" : function( item, memento ){ return item.len() ? item : javacast( "null", 0 ); },
+			"MSRP" : function( item, memento ){ return len( item ) ? item : javacast( "null", 0 ); },
+			"MAP" : function( item, memento ){ return len( item ) ? item : javacast( "null", 0 ); },
+			"minimumPrice" : function( item, memento ){ return len( item ) ? item : javacast( "null", 0 ); },
+			"cost" : function( item, memento ){ return len( item ) ? item : javacast( "null", 0 ); },
+			"basePrice" : function( item, memento ){ return len( item ) ? item : javacast( "null", 0 ); },
 			"onHand" : function( item, memento ){ return len( item ) ? item : 0 }
 		}
 	};
