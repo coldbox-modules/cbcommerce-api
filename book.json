@@ -1,0 +1,12 @@
+{
+    "gitbook": "3.2.3",
+    "title": "cbCommerce",
+    "author": "Ortus Solutions",
+    "description": "A modular e-commerce ecosystem for the Coldbox Framework",
+    "language": "en",
+    "root": "./build/docs",
+    "structure": {
+        "readme": "Introduction.md",
+        "summary": "Summary.md"
+    }
+}

@@ -1,0 +1,11 @@
+# Github pages configuration
+title: cbCommerce
+description: A modular e-commerce ecosystem for the Coldbox Framework
+logo: /_assets/images/cbcommerce-icon.png
+
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+theme: jekyll-theme-cayman
