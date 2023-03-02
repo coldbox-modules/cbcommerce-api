@@ -2,7 +2,7 @@
     "name":"cbcommerce-api",
     "version":"@build.version@",
     "author":"Ortus Solutions, Corp",
-    "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cbcommerce-ui/@build.version@/cbcommerce-ui-@build.version@.zip",
+    "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cbcommerce-api/@build.version@/cbcommerce-api-@build.version@.zip",
     "homepage":"https://cbcommerce.ortusbooks.com",
     "documentation":"https://cbcommerce.ortusbooks.com",
     "repository":{
