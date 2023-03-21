@@ -59,9 +59,6 @@ component{
 			"mementifier" : {
 				"nullDefaultValue" : {}
 			},
-			"cbauth" : {
-                "userServiceClass" : "UserService@cbCommerce"
-            },
 			"quick" : {
 				"defaultGrammar" : "MySQLGrammar@qb"
 			},
@@ -97,14 +94,6 @@ component{
 		interceptorSettings = {
 			throwOnInvalidStates = false,
 			customInterceptionPoints = ""
-		};
-
-		// ORM Module Configuration
-		orm = {
-			// Enable Injection
-			injection = {
-				enabled = true
-			}
 		};
 
 		//Register interceptors as an array, we need order

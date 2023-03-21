@@ -15,18 +15,18 @@
     "description":"An e-commerce module for the coldbox platform",
     "type":"modules",
     "dependencies":{
-        "cfmigrations":"^3.0.6",
-        "quick":"^4.2.4",
-        "cbsecurity":"^2.15.0",
-        "BCrypt":"^3.0.1",
-        "stripecfml":"^3.2.1",
-        "cors":"^3.0.5",
-        "cbmailservices":"^2.1.0+60",
-        "cbvalidation":"^3.3.0+10"
+        "cfmigrations":"^4.0.0",
+        "quick":"^5.3.1",
+        "cbsecurity":"^3.1.0",
+        "BCrypt":"^3.1.0",
+        "stripecfml":"^3.4.0",
+        "cors":"^3.0.8",
+        "cbmailservices":"^2.7.1",
+        "cbvalidation":"^4.1.0",
+        "cbSwagger":"be"
     },
     "devDependencies":{
-        "mockdatacfc":"^3.5.0",
-        "cbSwagger":"^2.6.0+147"
+        "mockdatacfc":"^3.6.0"
     },
     "installPaths":{
         "quick":"modules/quick/",
@@ -45,7 +45,7 @@
         "postVersion":"package set location='git@gitlab.ortushq.com:coldbox-modules/cbox-commerce.git#v`package version`'",
         "onRelease":"publish",
         "postPublish":"!git push && !git push --tags",
-        "harness:install":"install && cd test-harness && install",
+        "harness:install":"install --force && cd test-harness && install --force",
 		"format":"cfformat run config,handlers,interceptors,models --overwrite",
         "format:watch":"cfformat watch config,handlers,interceptors,models ./.cfformat.json",
         "format:check":"cfformat check config,handlers,interceptors,models"

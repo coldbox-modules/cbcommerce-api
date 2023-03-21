@@ -1,5 +1,5 @@
 component {
-    
+
     function up( SchemaBuilder schema, QueryBuilder query ) {
 
         var userService = application.wirebox.getInstance( "UserService@cbCommerce" );
@@ -32,7 +32,7 @@ component {
         var userService = application.wirebox.getInstance( "UserService@cbCommerce" );
         var adminUsers = userService.newEntity().where( "email", "adminuser@cbcommerce.com" ).get();
 
-        adminUsers.each( 
+        adminUsers.each(
             function( adminUser ){
                 adminUser.delete();
             }

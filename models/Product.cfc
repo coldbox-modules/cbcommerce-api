@@ -44,11 +44,11 @@ component   table="cbc_products"
             ],
             true
         );
-		scopeWithLowestStartingPrice();
-		scopeWithLowestPricedSKU();
-		scopeWithStartingPriceMSRP();
-		scopeWithAverageRating();
-		scopeWithRatingCount();
+		this.withLowestStartingPrice();
+		this.withLowestPricedSKU();
+		this.withStartingPriceMSRP();
+		this.withAverageRating();
+		this.withRatingCount();
 	}
 
 	// Relationships
@@ -105,8 +105,8 @@ component   table="cbc_products"
 		return super.delete();
 	}
 
-	function scopeWithLowestStartingPrice(){
-		return addSubselect(
+	function scopeWithLowestStartingPrice( qb ){
+		qb.addSubselect(
 			"lowestStartingPrice",
 			newEntity( "ProductSKU@cbcommerce" )
 				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
@@ -114,10 +114,11 @@ component   table="cbc_products"
 				.reselectRaw( "min( basePrice ) as lowestStartingPrice" )
 
 		);
+		appendVirtualAttribute( "lowestStartingPrice" );
 	}
 
-	function scopeWithLowestPricedSKU(){
-		return addSubselect(
+	function scopeWithLowestPricedSKU( qb ){
+		qb.addSubselect(
 			"lowestPricedSKU",
 			newEntity( "ProductSKU@cbcommerce" )
 				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
@@ -126,10 +127,11 @@ component   table="cbc_products"
 				.orderBy( "cbc_SKUs.basePrice", "asc" )
 				.limit( 1 )
 		);
+		appendVirtualAttribute( "lowestPricedSKU" );
 	}
 
-	function scopeWithStartingPriceMSRP(){
-		return addSubselect(
+	function scopeWithStartingPriceMSRP( qb ){
+		qb.addSubselect(
 			"startingPriceMSRP",
 			newEntity( "ProductSKU@cbcommerce" )
 				.whereColumn( "cbc_SKUs.FK_product", "=", "cbc_products.id" )
@@ -138,25 +140,27 @@ component   table="cbc_products"
 				.orderBy( "cbc_SKUs.basePrice", "asc" )
 				.limit( 1 )
 		);
+		appendVirtualAttribute( "startingPriceMSRP" );
 	}
 
-	function scopeWithAverageRating(){
-		appendVirtualAttribute( "averageRating" );
-		return addSubselect(
+	function scopeWithAverageRating( qb ){
+		qb.addSubselect(
 			"averageRating",
 			newEntity( "ProductReview@cbcommerce" )
 				.whereColumn( "cbc_productReviews.FK_product", "=", "cbc_products.id" )
 				.reSelectRaw( "avg(rating) as avgRating" )
         );
+		appendVirtualAttribute( "averageRating" );
 	}
 
-	function scopeWithRatingCount(){
-		return addSubselect(
+	function scopeWithRatingCount( qb ){
+		qb.addSubselect(
 			"ratingCount",
 			newEntity( "ProductReview@cbcommerce" )
 				.whereColumn( "cbc_productReviews.FK_product", "=", "cbc_products.id" )
 				.reSelectRaw( "count(*) as ratingCount" )
         );
+		appendVirtualAttribute( "ratingCount" );
 	}
 
     function scopeHasUsedSKU( query ){
@@ -290,12 +294,12 @@ component   table="cbc_products"
 		required QueryBuilder builder
 	 ){
 
-		with( 'media.mediaItem' );
+		this.with( 'media.mediaItem' );
 
 		if( ! structKeyExists( searchCollection, "activeSkusOnly" ) || searchCollection.activeSkusOnly ){
-			with( 'activeSkus' );
+			this.with( 'activeSkus' );
 		} else {
-			with( 'skus' );
+			this.with( 'skus' );
 		}
 
 		if( structKeyExists( searchCollection, "category" ) ){

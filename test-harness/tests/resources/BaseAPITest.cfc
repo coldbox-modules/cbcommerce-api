@@ -2,6 +2,8 @@ component extends="BaseTest"{
 
     property name="saveResponses" default="false";
 
+	variables.saveResponses = true;
+
     //HTTP STATUS CODES
     variables.STATUS = {
         "CREATED":201,

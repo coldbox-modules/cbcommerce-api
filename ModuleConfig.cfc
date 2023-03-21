@@ -36,15 +36,89 @@ component {
 				"description" : this.packageInfo.shortDescription,
 				"version" : this.version
 			},
-            "cbauth" : {
-                "userServiceClass" : "UserService@cbCommerce"
-            },
 			"cbsecurity" : {
-                "invalidAuthenticationEvent"    : "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
-				"invalidAuthorizationEvent"     : "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
-				"defaultAuthorizationAction"    : "override",
-				"defaultAuthenticationAction"   : "override",
-				"handlerAnnotationSecurity"     : true
+				"authentication" : {
+					"userService" : "UserService@cbCommerce"
+				},
+				"firewall" : {
+					"autoLoadFirewall"              : true,
+					"handlerAnnotationSecurity"     : true,
+					"invalidAuthenticationEvent"    : "cbCommerce:api.v1.BaseAPIHandler.onAuthenticationFailure",
+					"invalidAuthorizationEvent"     : "cbCommerce:api.v1.BaseAPIHandler.onAuthorizationFailure",
+					"defaultAuthorizationAction"    : "override",
+					"defaultAuthenticationAction"   : "override"
+				},
+				"csrf" : {
+					// By default we load up an interceptor that verifies all non-GET incoming requests against the token validations
+					"enableAutoVerifier"     : false,
+					// By default, all csrf tokens have a life-span of 30 minutes. After 30 minutes, they expire and we aut-generate new ones.
+					"rotationTimeout"        : 30,
+					// The WireBox mapping to use for the CacheStorage
+					"cacheStorage"           : "CacheStorage@cbstorages",
+					// Enable/Disable the cbAuth login/logout listener in order to rotate keys
+					"enableAuthTokenRotator" : true
+				}
+			},
+			"cbswagger" : {
+				// A convention route, relative to your app root, where request/response samples are stored ( e.g. resources/apidocs/responses/[module].[handler].[action].[HTTP Status Code].json )
+				"samplesPath" : "cbcommerce/resources/apidocs",
+				// Information about your API
+				"info"		:{
+					"title" 			: "cbCommerce Application Programming Interface",
+					"description" 		: "cbCommerce is the eCommerce Platform for the ContentBox Modular CMS",
+					"termsOfService"	: "",
+					"contact" 		:{
+						"name": "Ortus Solutions",
+						"url": "https://ortussolutions.com",
+						"email": "Jon Clausen<jclausen@ortussolutions.com>"
+					},
+					"license": {
+						"name": "Apache 2.0",
+						"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+					},
+					"version":"1.0.0",
+					"externalDocs" : {
+						"description": "cbCommerce Documentation",
+						"url": "https://cbcommerce.ortusbooks.com/"
+					}
+				},
+				"tags" : [],
+				// https://swagger.io/specification/#serverObject
+				"servers" : [
+					{
+						"url" 			: "https://api.cbcommerce.dev/api/v1/settings",
+						"description" 	: "Development testing"
+					}
+				],
+				// An element to hold various schemas for the specification.
+				// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#componentsObject
+				"components" : {
+					// Define your security schemes here
+					// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject
+					"securitySchemes" : {
+						"JsonWebToken" : {
+							"type" 			: "apiKey",
+							"description" 	: "A valid JWT issued by the Authentication API endpoint, presented as an authorization Bearer token",
+							"name" 			: "Authorization",
+							"in" 			: "header",
+							"bearerFormat"  : "JWT"
+						},
+						"CSRFToken" : {
+							"type" 			: "apiKey",
+							"description" 	: "A server-issued CSRF token. Required for all methods except GET, HEAD, OPTIONS",
+							"name" 			: "x-csrf-token",
+							"in" 			: "header"
+						}
+					}
+				},
+
+				// A default declaration of Security Requirement Objects to be used across the API.
+				// https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject
+				// Only one of these requirements needs to be satisfied to authorize a request.
+				// Individual operations may set their own requirements with `@security`
+				"security" : [
+					{ "JsonWebToken" : [], "CSRFToken" : [] }
+				]
 			},
             "products" : {
                 // Allows for the configuration of an external products model, to interface with existing databases
@@ -269,6 +343,12 @@ component {
 				migrationService.setMigrationsDirectory( '/cbCommerce/resources/database/seeds' );
 				migrationService.runAllMigrations( "down" );
 			}
+		}
+
+		var allModuleSettings = controller.getSetting( "moduleSettings" );
+		param allModuleSettings.cbauth = {};
+		if( allModuleSettings.cbauth.keyExists( "userServiceClass" ) ){
+			allModuleSettings.cbauth[ "userServiceClass" ] = "UserService@cbcommerce";
 		}
 
 	}

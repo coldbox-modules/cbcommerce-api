@@ -106,18 +106,13 @@ component extends="coldbox.system.EventHandler"{
 			// prepare our response object
 			prc.response = getInstance( "APIResponse@cbCommerce" );
 
-
-			// Verify header tokens
-			// if(
-			// !arrayFindNoCase( ["GET","HEAD","OPTIONS"], event.getHTTPMethod() )
-			// &&
-			// !CSRFVerifyToken( event.getHTTPHeader( "CSRF-Token", "" ),"cbCommerce" )
-			// ){
-			// 	throw(
-			// 		type="AuthorizationException",
-			// 		message="The CSRF token provided was not valid"
-			// 	);
-			// }
+			prc.response.addHeader(
+				"Access-Control-Expose-Headers",
+				"x-csrf-token"
+			).addHeader(
+				"x-csrf-token",
+				csrfToken()
+			);
 
 			// prepare argument execution
 			var args = {

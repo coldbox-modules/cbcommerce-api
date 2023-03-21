@@ -4,7 +4,6 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 
 	function beforeAll(){
 		super.beforeAll();
-		variables.saveResponses = true;
 		super.beforeAll();
 		ensureAdminUser();
 		variables.authenticationService = getInstance( "AuthenticationService@cbauth" );

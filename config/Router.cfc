@@ -16,7 +16,7 @@ component{
                         "post" : "send"
                     }
                 )
-                .toHandler( "API.v1.ContactForms" );
+                .toHandler( "api.v1.ContactForms" );
 
         route( "api/v1/quote-request/wishlist/:wishlistId" )
                 .withAction(
@@ -24,7 +24,7 @@ component{
                         "post" : "wishlistQuote"
                     }
                 )
-                .toHandler( "API.v1.ContactForms" );
+                .toHandler( "api.v1.ContactForms" );
 
         route( "api/v1/quote-request/cart" )
                 .withAction(
@@ -32,7 +32,7 @@ component{
                         "post" : "cartQuote"
                     }
                 )
-                .toHandler( "API.v1.ContactForms" );
+                .toHandler( "api.v1.ContactForms" );
 
         route( "api/v1/quote-request/sku/:skuId" )
                 .withAction(
@@ -40,7 +40,7 @@ component{
                         "post" : "skuQuote"
                     }
                 )
-                .toHandler( "API.v1.ContactForms" );
+                .toHandler( "api.v1.ContactForms" );
 
         // API Routing
         route( "api/v1/authentication/token" )
@@ -48,13 +48,13 @@ component{
                     HEAD : "token",
                     GET  : "token"
                 })
-                .toHandler( "API.v1.Authentication" );
+                .toHandler( "api.v1.Authentication" );
 
         route( "api/v1/authentication/password-reset" )
                 .withAction({
                     POST : "passwordReset"
                 })
-                .toHandler( "API.v1.Authentication" );
+                .toHandler( "api.v1.Authentication" );
 
         route( "api/v1/authentication" )
                 .withAction( {
@@ -63,7 +63,7 @@ component{
                     POST : "create",
                     DELETE : "delete"
                 } )
-                .toHandler( "API.v1.Authentication" );
+                .toHandler( "api.v1.Authentication" );
 
         route( "api/v1/cart/:itemId" )
                 .withAction(
@@ -74,64 +74,64 @@ component{
                         "DELETE" : "deleteItem"
                     }
                 )
-                .toHandler( "API.v1.Cart" );
+                .toHandler( "api.v1.Cart" );
 
         route( "api/v1/cart" )
                 .withAction({
                     "GET" : "get"
                 })
-                .toHandler( "API.v1.Cart" );
+                .toHandler( "api.v1.Cart" );
 
         //statistical routes
-        route( "api/v1/statistics/products/:id" ).withAction({ "POST" : "productView" } ).toHandler( "API.v1.Statistics");
-        route( "api/v1/statistics/categories/:id" ).withAction({ "POST" : "categoryView" } ).toHandler( "API.v1.Statistics");
+        route( "api/v1/statistics/products/:id" ).withAction({ "POST" : "productView" } ).toHandler( "api.v1.Statistics");
+        route( "api/v1/statistics/categories/:id" ).withAction({ "POST" : "categoryView" } ).toHandler( "api.v1.Statistics");
 
         route( "api/v1/products/count" )
                 .withAction({
                     "GET" : "count"
                 })
-                .toHandler( "API.v1.Products" );
+                .toHandler( "api.v1.Products" );
 
         // Resource Routes ( auto-magic method conventions )
         	resources(
                 resource   = "api/v1/products/:productId/reviews",
-                handler    = "API.v1.ProductReviews"
+                handler    = "api.v1.ProductReviews"
             );
             resources(
                 resource = "api/v1/products/:productId/media",
-                handler = "API.v1.ProductMedia"
+                handler = "api.v1.ProductMedia"
             );
             resources(
                 resource   = "api/v1/products",
-                handler    = "API.v1.Products"
+                handler    = "api.v1.Products"
             );
             resources(
                 resource = "api/v1/skus/:skuId/media",
-                handler = "API.v1.ProductSKUMedia"
+                handler = "api.v1.ProductSKUMedia"
             );
 			resources(
                 resource = "api/v1/skus",
-                handler  = "API.v1.ProductSKUs"
+                handler  = "api.v1.ProductSKUs"
             );
 			resources(
                 resource = "api/v1/consignment-batches",
-                handler  = "API.v1.ConsignmentBatches"
+                handler  = "api.v1.ConsignmentBatches"
             );
 			resources(
                 resource = "api/v1/product-categories/:categoryId/media",
-                handler = "API.v1.ProductCategoryMedia"
+                handler = "api.v1.ProductCategoryMedia"
             );
 			resources(
                 resource   = "api/v1/product-categories",
-                handler    = "API.v1.ProductCategories"
+                handler    = "api.v1.ProductCategories"
             );
 			resources(
                 resource   = "api/v1/product-inventory",
-                handler    = "API.v1.ProductInventory"
+                handler    = "api.v1.ProductInventory"
             );
 			resources(
                 resource   = "api/v1/orders",
-                handler    = "API.v1.Orders"
+                handler    = "api.v1.Orders"
             );
 
 
@@ -141,7 +141,7 @@ component{
                             "PUT"  : "updateAddress"
                         }
                     )
-                    .toHandler( "API.v1.Customers" );
+                    .toHandler( "api.v1.Customers" );
 
 			route( 'api/v1/customers/:customerId/addresses' )
                     .withAction(
@@ -149,17 +149,17 @@ component{
                             "POST"  : "createAddress"
                         }
                     )
-                    .toHandler( "API.v1.Customers" );
+                    .toHandler( "api.v1.Customers" );
 
 			resources(
                 resource   = "api/v1/customers",
-                handler    = "API.v1.Customers"
+                handler    = "api.v1.Customers"
             );
 
 
 			resources(
                 resource   = "api/v1/payments",
-                handler    = "API.v1.Payments"
+                handler    = "api.v1.Payments"
             );
 
 			route( 'api/v1/settings' )
@@ -168,7 +168,7 @@ component{
                             "GET"  : "index"
                         }
                     )
-                    .toHandler( "API.v1.Settings" );
+                    .toHandler( "api.v1.Settings" );
 
 			route( 'api/v1/product-conditions' )
                     .withAction(
@@ -176,7 +176,7 @@ component{
                             "GET"  : "index"
                         }
                     )
-                    .toHandler( "API.v1.ProductConditions" );
+                    .toHandler( "api.v1.ProductConditions" );
 
             // Wishlist Item Routes
             route( 'api/v1/wishlists/:wishlistId/items/:id' )
@@ -188,7 +188,7 @@ component{
                             "DELETE" : "delete"
                         }
                     )
-                    .toHandler( "API.v1.WishlistItems" );
+                    .toHandler( "api.v1.WishlistItems" );
 
             route( 'api/v1/wishlists/:wishlistId/items' )
                     .withAction(
@@ -197,13 +197,21 @@ component{
                             "POST" : "create"
                         }
                     )
-                    .toHandler( "API.v1.WishlistItems" );
+                    .toHandler( "api.v1.WishlistItems" );
 
             // Core wishlist resource routes
             resources(
                 resource   = "api/v1/wishlists",
-                handler    = "API.v1.Wishlists"
+                handler    = "api.v1.Wishlists"
             );
+
+			route( 'api/v1' )
+					.withAction(
+						{
+							"GET" : "index"
+						}
+					)
+					.toHandler( "api.v1.Documentation" );
 
             route( "/" )
                 .toHandler( "Main" );

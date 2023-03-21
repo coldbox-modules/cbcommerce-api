@@ -13,12 +13,35 @@ component extends="BaseAPIHandler" {
 
 	this.APIBaseURL = '/cbc/api/v1/payments';
 
-	// (GET) /cbc/api/v1/payments
-	function index( event, rc, prc ) secured="cbcOrder:Manage"{
+	/**
+	* @annotation (GET) /cbc/api/v1/payments
+	* @summary Retrieves a list of payments
+	* @responses { "200" : { "description" : "The return list of orders", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/Payments.index.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	* @security { "JsonWebToken" : [ "cbcOrder:Manage", "cbcOrder:Approve" ] }
+	*/
+	function index( event, rc, prc ) secured="cbcOrder:Manage,cbcOrder:Approve"{
 		return super.index( argumentCollection=arguments );
 	}
 
-	// (POST) /cbc/api/v1/payments
+	/**
+	* @annotation (POST) /cbc/api/v1/payments
+	* @summary Creates a new payment
+	* @requestBody {
+		"FK_user" : "5e1d79a4-55fd-46de-857b06c22454fbdd",
+		"subtotal" : 10,
+		"shipping" : 10,
+		"fees" : 0,
+		"tax" : .60,
+		"discount" : 0,
+		"total" : 20.60,
+		"FK_shippingAddress" : "8ead8e41-1ff4-4696-a8d68ef54f917d30",
+		"FK_billingAddress" : "8ead8e41-1ff4-4696-a8d68ef54f917d30",
+		"FK_deliveryMethod" : "22152f42-1fee-4f7c-aaea0aa56d555775",
+		"paidInFull" : "2023-03-18T16:50:32+00:00",
+		"approvalTime" : "2023-03-18T16:50:32+00:00"
+	}
+	* @responses { "200" : { "description" : "Payment successfully created", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/Payments.create.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	*/
 	function create( event, rc, prc ){
 		var isNewUser = !auth().check();
 		var defaultShippingMethod = getInstance( "DeliveryMethod@cbCommerce" ).where( "isDefault", 1 ).first();
@@ -189,7 +212,13 @@ component extends="BaseAPIHandler" {
 
 	}
 
-	// (GET) /cbc/api/v1/payments/:id
+	/**
+	* @annotation (GET) /cbc/api/v1/payments/:id
+	* @params-id { "description" : "GUID identifier of the payment", "in" : "path" }
+	* @summary Retrieves a single payment
+	* @responses { "200" : { "description" : "The return object representing the payment", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/Payments.show.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	* @security { "JsonWebToken" : [ "cbcOrder:Manage","[Authenticated users restricted to their own orders]" ] }
+	*/
 	function show( event, rc, prc ) secured{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
@@ -207,7 +236,27 @@ component extends="BaseAPIHandler" {
 		);
 	}
 
-	// (PUT|PATCH) /cbc/api/v1/payments/:id
+	/**
+	* @annotation (PUT|PATCH) /cbc/api/v1/payments/:id
+	* @summary Creates a new payment
+	* @params-id { "description" : "GUID identifier of the payment", "in" : "path" }
+	* @requestBody {
+		"FK_user" : "5e1d79a4-55fd-46de-857b06c22454fbdd",
+		"subtotal" : 10,
+		"shipping" : 10,
+		"fees" : 0,
+		"tax" : .60,
+		"discount" : 0,
+		"total" : 20.60,
+		"FK_shippingAddress" : "8ead8e41-1ff4-4696-a8d68ef54f917d30",
+		"FK_billingAddress" : "8ead8e41-1ff4-4696-a8d68ef54f917d30",
+		"FK_deliveryMethod" : "22152f42-1fee-4f7c-aaea0aa56d555775",
+		"paidInFull" : "2023-03-18T16:50:32+00:00",
+		"approvalTime" : "2023-03-18T16:50:32+00:00"
+	}
+	* @responses { "200" : { "description" : "Payment successfully created", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/Payments.create.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	* @security { "JsonWebToken" : [ "cbcOrder:Manage" ] }
+	*/
 	function update( event, rc, prc ) secured="cbcOrder:Manage"{
 		prc.payment = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
@@ -231,7 +280,13 @@ component extends="BaseAPIHandler" {
 
 	}
 
-	// (DELETE) /cbc/api/v1/payments/:id
+	/**
+	* @annotation (DELETE) /cbc/api/v1/payments/:id
+	* @summary Deletes a payments
+	* @param-id The identifier GUID of the order to be deleted
+	* @responses { "204" : { "description" : "Payment successfully deleted", "content" : {} } }
+	* @security { "JsonWebToken" : [ "cbcOrder:Manage" ] }
+	**/
 	function delete( event, rc, prc ) secured="cbcOrder:Manage"{
 
 		prc.payment = entityService.newEntity().getOrFail( rc.id );

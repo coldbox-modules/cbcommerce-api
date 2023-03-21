@@ -8,7 +8,12 @@ component extends="BaseAPIHandler"{
 
 	this.APIBaseURL = '/cbc/api/v1/product-categories';
 
-	// (GET) /cbc/api/v1/product-categories
+	/**
+	* @annotation (GET) /cbc/api/v1/product-categories
+	* @summary Retrieves a list of product categories
+	* @responses { "200" : { "description" : "The return list of product categories", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/ProductCategories.index.json" } } } } }
+	* @security { "JsonWebToken" : [ "cbcOrder:Approve", "cbcOrder:Edit", "[Authenticated users restricted to their own product categories]" ] }
+	*/
 	function index( event, rc, prc ){
 		if( rc.sortOrder == 'createdTime DESC' ){
 			rc.sortOrder = 'displayOrder ASC, name ASC';
@@ -16,7 +21,18 @@ component extends="BaseAPIHandler"{
 		return super.index( argumentCollection=arguments );
 	}
 
-	// (POST) /cbc/api/v1/product-categories
+	/**
+	* @annotation (POST) /cbc/api/v1/product-categories
+	* @summary Creates a new product category
+	* @requestBody {
+		"name" : "Test category",
+		"description" : "Test category",
+		"displayOrder" : 1,
+		"isFeatured" : 0
+	}
+	* @responses { "200" : { "description" : "Product category successfully created", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/ProductCategories.create.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	* @security { "JsonWebToken" : [ "cbcProduct:Manage" ] }
+	*/
 	function create( event, rc, prc ) secured="cbcProduct:Manage"{
 
 		prc.category = entityService.newEntity().fill( rc );
@@ -45,7 +61,12 @@ component extends="BaseAPIHandler"{
 		).setStatusCode( STATUS.CREATED );
 	}
 
-	// (GET) /cbc/api/v1/product-categories/:id
+	/**
+	* @annotation (GET) /cbc/api/v1/product-categories/:id
+	* @params-id { "description" : "GUID identifier of the product category", "in" : "path" }
+	* @summary Retrieves a single product category
+	* @responses { "200" : { "description" : "The return object representing the product category", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/ProductCategories.show.json" } } } } }
+	*/
 	function show( event, rc, prc ){
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
@@ -71,7 +92,20 @@ component extends="BaseAPIHandler"{
 	}
 
 	// (PUT|PATCH) /cbc/api/v1/product-categories/:id
-	function update( event, rc, prc ) secured="cbcProduct:Edit"{
+	/**
+	* @annotation (POST) /cbc/api/v1/product-categories
+	* @summary Creates a new product category
+	* @params-id { "description" : "GUID identifier of the product category", "in" : "path" }
+	* @requestBody {
+		"name" : "Test category",
+		"description" : "Test category",
+		"displayOrder" : 1,
+		"isFeatured" : 0
+	}
+	* @responses { "200" : { "description" : "Product category successfully updated", "content" : { "application/json" : { "schema" : { "$ref" : "/cbcommerce/resources/apidocs/responses/ProductCategories.update.json" } } } }, "403" : { "description" : "User not authorized", "content" : { "application/json" : { "$ref" : "/cbcommerce/resources/apidocs/responses/BaseAPIHandler.onAuthorizationFailure.json" } } } }
+	* @security { "JsonWebToken" : [ "cbcProduct:Edit","cbcProduct:Manage" ] }
+	*/
+	function update( event, rc, prc ) secured="cbcProduct:Edit,cbcProduct:Manage"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );
 		//remove this key before population
@@ -109,7 +143,13 @@ component extends="BaseAPIHandler"{
 
 	}
 
-	// (DELETE) /cbc/api/v1/product-categories/:id
+	/**
+	* @annotation (DELETE) /cbc/api/v1/product-categories/:id
+	* @summary Deletes a product category
+	* @param-id The identifier GUID of the product category to be deleted
+	* @responses { "204" : { "description" : "Product category successfully deleted", "content" : {} } }
+	* @security { "JsonWebToken" : [ "cbcProduct:Manage" ] }
+	**/
 	function delete( event, rc, prc ) secured="cbcProduct:Manage"{
 
 		prc.category = entityService.newEntity().getOrFail( rc.id );

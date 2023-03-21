@@ -132,7 +132,7 @@ component   table="cbc_SKUs"
 			],
 			true
 		);
-		scopeWithOnHand();
+		this.withOnHand();
 	}
 
 	function product(){
@@ -231,13 +231,14 @@ component   table="cbc_SKUs"
 		} );
 	}
 
-	function scopeWithOnHand(){
-		return addSubselect(
+	function scopeWithOnHand( qb ){
+		qb.addSubselect(
 			"onHand",
 			newEntity( "InventoryLocationStock@cbcommerce" )
 				.whereColumn( "cbc_inventoryLocationStock.FK_sku", "=", "cbc_SKUs.id" )
 				.reselectRaw( "sum(available) as onHand" )
 		);
+		appendVirtualAttribute( "onHand" );
 	}
 
 	function getDisplayPrice(){

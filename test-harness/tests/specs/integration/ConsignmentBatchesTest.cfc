@@ -3,7 +3,6 @@ component extends="tests.resources.BaseAPITest" appMapping="/"{
 	/*********************************** LIFE CYCLE Methods ***********************************/
 
 	function beforeAll(){
-		variables.saveResponses = true;
 		super.beforeAll();
 		ensureTestCustomer();
 		ensureAdminUser();
