@@ -107,6 +107,9 @@ component quick table="cbc_users" extends="BaseCBCommerceEntity" accessors="true
 										.select( [ "prefix", "suffix" ] )
 										.get()
 										.map( function( perm ){
+											if( isInstanceOf( perm, "UserPermission" ) ){
+												perm = perm.getMemento();
+											}
 											var item = [ perm[ "prefix" ], perm[ "suffix" ] ];
 											return item.toList( ":" );
 										} );
